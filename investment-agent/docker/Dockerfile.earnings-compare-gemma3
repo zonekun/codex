@@ -1,0 +1,45 @@
+FROM nvidia/cuda:12.3.1-runtime-ubuntu22.04
+
+# tzdata 等のインタラクティブプロンプトを抑制
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=Asia/Tokyo
+
+# Python 3.12 + システム依存
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    software-properties-common \
+    && add-apt-repository ppa:deadsnakes/ppa \
+    && apt-get update && apt-get install -y --no-install-recommends \
+    python3.12 \
+    curl ca-certificates zstd \
+    && curl -sS https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py \
+    && python3.12 /tmp/get-pip.py \
+    && ln -sf /usr/bin/python3.12 /usr/local/bin/python \
+    && rm -rf /var/lib/apt/lists/*
+
+# Ollama インストール（CUDA を自動検出して GPU 推論を有効化）
+RUN curl -fsSL https://ollama.ai/install.sh | sh
+
+WORKDIR /app
+
+# Python 依存インストール
+RUN python -m pip install --no-cache-dir \
+    "google-cloud-bigquery>=3.20" \
+    "google-cloud-storage>=2.16" \
+    "google-auth>=2.22" \
+    "pdfplumber>=0.11" \
+    "structlog>=24.0" \
+    "tenacity>=8.0" \
+    "requests>=2.31"
+
+# スクリプトコピー
+COPY scripts/earnings_compare/ scripts/earnings_compare/
+
+# Cloud Run Job 必須設定
+ENV PYTHONUTF8=1
+ENV PYTHONUNBUFFERED=1
+
+# モデル名・モデルパスは Cloud Run Job の環境変数で上書きする
+# MODEL_NAME=gemma3:12b
+# OLLAMA_MODELS=/mnt/gemma3/test/ollama-models-gemma3/models
+
+ENTRYPOINT ["python", "-m", "scripts.earnings_compare.main"]

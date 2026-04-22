@@ -1,0 +1,38 @@
+{
+  "source": "non-tdnet(pdf)",
+  "format": "pdf",
+  "fields": [
+    {
+      "key": "はっ酵乳類 1日当たり販売数量（前年同月比）",
+      "name": "はっ酵乳類 1日当たり販売数量（前年同月比）",
+      "row_label_regex": "はっ酵乳計\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)",
+      "value_type": "percentage",
+      "group": 10
+    },
+    {
+      "key": "ヤクルト類 1日当たり販売数量（前年同月比）",
+      "name": "ヤクルト類 1日当たり販売数量（前年同月比）",
+      "row_label_regex": "ヤクルトシリーズ計\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)",
+      "value_type": "percentage",
+      "group": 10
+    },
+    {
+      "key": "国内乳製品 1日当たり販売数量（前年同月比）",
+      "name": "国内乳製品 1日当たり販売数量（前年同月比）",
+      "row_label_regex": "合計\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)",
+      "value_type": "percentage",
+      "group": 10
+    }
+  ],
+  "ticker": "2267",
+  "company_name": "2267",
+  "created_at": "2026-04-05T09:38:40.839659+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "000000_2267_国内乳製品月次データ（4～1月度）（137KB）_2ecdc59d",
+  "sample_submission_date": "",
+  "report_url": "TDNET文書",
+  "sample_file": "000000_2267_国内乳製品月次データ（4～1月度）（137KB）_2ecdc59d",
+  "_source_renamed_at": "2026-04-18T16:36:34+09:00",
+  "_source_renamed_from": "pdf",
+  "manual_override": true
+}

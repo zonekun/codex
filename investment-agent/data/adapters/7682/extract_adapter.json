@@ -1,0 +1,64 @@
+{
+  "source": "pdf",
+  "format": "pdf",
+  "doc_title_pattern": "月次売上高前年比較表",
+  "year_from_title_regex": "(?P<year>\\d{4})年",
+  "month_from_title_regex": "(?P<month>\\d{1,2})月",
+  "fields": [
+    {
+      "key": "全店 売上（前年同月比）",
+      "name": "全店 売上（前年同月比）",
+      "row_label_regex": "^売上高\\s+([\\d.]+)\\%\\s+([\\d.]+)\\%\\s+([\\d.]+)\\%\\s+([\\d.]+)\\%\\s+([\\d.]+)\\%\\s+([\\d.]+)%",
+      "value_type": "percentage",
+      "group": 6
+    },
+    {
+      "key": "全店 客単価（前年同月比）",
+      "name": "全店 客単価（前年同月比）",
+      "row_label_regex": "^客単価\\s+([\\d.]+)\\%\\s+([\\d.]+)\\%\\s+([\\d.]+)\\%\\s+([\\d.]+)\\%\\s+([\\d.]+)\\%\\s+([\\d.]+)%",
+      "value_type": "percentage",
+      "group": 6
+    },
+    {
+      "key": "全店 客数（前年同月比）",
+      "name": "全店 客数（前年同月比）",
+      "row_label_regex": "^全店 来客数\\s+([\\d.]+)\\%\\s+([\\d.]+)\\%\\s+([\\d.]+)\\%\\s+([\\d.]+)\\%\\s+([\\d.]+)\\%\\s+([\\d.]+)%",
+      "value_type": "percentage",
+      "group": 6
+    },
+    {
+      "key": "既存店 売上高（前年同月比）",
+      "name": "既存店 売上高（前年同月比）",
+      "row_label_regex": "^売上高\\s+([\\d.]+)\\%\\s+([\\d.]+)\\%\\s+([\\d.]+)\\%\\s+([\\d.]+)\\%\\s+([\\d.]+)\\%\\s+([\\d.]+)%",
+      "value_type": "percentage",
+      "group": 6,
+      "use_last_number": true,
+      "notes": "「全店計」セクションの売上高"
+    },
+    {
+      "key": "既存店 客単価（前年同月比）",
+      "name": "既存店 客単価（前年同月比）",
+      "row_label_regex": "^客単価\\s+([\\d.]+)\\%\\s+([\\d.]+)\\%\\s+([\\d.]+)\\%\\s+([\\d.]+)\\%\\s+([\\d.]+)\\%\\s+([\\d.]+)%",
+      "value_type": "percentage",
+      "group": 6,
+      "use_last_number": true,
+      "notes": "「全店計」セクションの客単価"
+    },
+    {
+      "key": "既存店 客数（前年同月比）",
+      "name": "既存店 客数（前年同月比）",
+      "row_label_regex": "^既存店 来客数\\s+([\\d.]+)\\%\\s+([\\d.]+)\\%\\s+([\\d.]+)\\%\\s+([\\d.]+)\\%\\s+([\\d.]+)\\%\\s+([\\d.]+)%",
+      "value_type": "percentage",
+      "group": 6
+    }
+  ],
+  "extraction_notes": "タイトルから「2026年1月」のデータと判断し、表の6番目の数値（1月）を抽出する。全店と既存店で同じ行ラベルが出現する場合（売上高、客単価）、既存店はuse_last_number=trueで最後の出現行から抽出する。",
+  "ticker": "7682",
+  "company_name": "7682",
+  "created_at": "2026-04-04T01:11:28.176499+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "202602_7682_2026年2月10日月次売上高前年比較表（2026年1月）（103KB）_d45e99ef",
+  "sample_submission_date": "",
+  "report_url": "TDNET文書",
+  "sample_file": "202602_7682_2026年2月10日月次売上高前年比較表（2026年1月）（103KB）_d45e99ef"
+}

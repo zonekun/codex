@@ -1,0 +1,14 @@
+{
+  "source": "pdf",
+  "format": "pdf",
+  "fields": [],
+  "extraction_notes": "提供されたテキストは統合報告書であり、月次開示データ（国内 紙巻たばこ 売上、販売数量など）は含まれていません。そのため、抽出対象のメトリクスに対応するデータが見つかりませんでした。",
+  "ticker": "2914",
+  "company_name": "2914",
+  "created_at": "2026-04-04T00:41:29.747363+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "000000_2914_çµ±åå_±åæ¸2025PDF_18.2mb_ea7ef7e1",
+  "sample_submission_date": "",
+  "report_url": "TDNET文書",
+  "sample_file": "000000_2914_çµ±åå_±åæ¸2025PDF_18.2mb_ea7ef7e1"
+}

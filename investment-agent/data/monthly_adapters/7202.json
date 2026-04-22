@@ -1,0 +1,11 @@
+{
+  "ticker": "7202",
+  "company_name": "いすゞ自動車",
+  "ir_page_url": "https://www.isuzu.co.jp/company/investor/financial/",
+  "updated_at": "2026-03-17T19:50:05.080860+09:00",
+  "last_checked": "2026-03-17",
+  "status": "skip",
+  "type": null,
+  "skip_reason": "月次開示ページ・ダウンロードリンク未発見",
+  "note": "no_links_confirmed"
+}

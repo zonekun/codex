@@ -1,0 +1,44 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "extraction_method": "gemini",
+  "fields": [
+    {
+      "key": "連結 売上高（百万円）",
+      "name": "連結 売上高（百万円）",
+      "description": "売上高（百万円）の表の「2025年12月期」行の「12月」列にある連結売上高（百万円）の実数値。",
+      "value_type": "integer"
+    },
+    {
+      "key": "連結 売上高（前年同月比）",
+      "name": "連結 売上高（前年同月比）",
+      "description": "売上高（百万円）の表の下にある「対前年月増減率」行の「12月」列にある連結売上高の前年同月比（%）の数値。",
+      "value_type": "percentage"
+    },
+    {
+      "key": "連結 従業員数（人）",
+      "name": "連結 従業員数（人）",
+      "description": "従業員数推移 (連結)の表の「2025年12月期」行の「12月」列にある連結従業員数（人）の実数値。",
+      "value_type": "integer"
+    },
+    {
+      "key": "連結 コンサル人員（人）",
+      "name": "連結 コンサル人員（人）",
+      "description": "「３ヶ年従業員数比較 (連結)」の表において、「2025/12/31」の列に対応するコンサルタント人員（人）の実数値。",
+      "value_type": "integer"
+    },
+    {
+      "key": "連結 採用決定人数（人）",
+      "name": "連結 採用決定人数（人）",
+      "description": "採用決定人数の表の「2025年12月期」行の「12月」列にある連結採用決定人数（人）の実数値。",
+      "value_type": "integer"
+    }
+  ],
+  "ticker": "2124",
+  "company_name": "2124",
+  "created_at": "2026-03-28T19:53:03.026546+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2025年12月期第４四半期の月次連結売上高及び事業実績数値(国内人材紹介事業)",
+  "sample_submission_date": "2026-02-13",
+  "fields_count": 5
+}

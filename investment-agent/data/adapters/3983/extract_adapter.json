@@ -1,0 +1,28 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "extraction_method": "gemini",
+  "fields": [
+    {
+      "key": "ZAC 契約ライセンス数",
+      "name": "ZAC 契約ライセンス数",
+      "description": "クラウドソリューション事業のZACライセンスに関する表の「契約ライセンス数」行、「1月」列にある数値（千ライセンス）。",
+      "value_type": "float",
+      "unit_scale": 1000
+    },
+    {
+      "key": "ZAC 新規獲得ライセンス数",
+      "name": "ZAC 新規獲得ライセンス数",
+      "description": "クラウドソリューション事業のZACライセンスに関する表の「新規獲得 ライセンス数」行、「1月」列にある数値（千ライセンス）。",
+      "value_type": "float",
+      "unit_scale": 1000
+    }
+  ],
+  "ticker": "3983",
+  "company_name": "3983",
+  "created_at": "2026-03-29T18:38:58.857344+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2026年12月期月次情報のお知らせ（1月度）",
+  "sample_submission_date": "2026-02-13",
+  "fields_count": 2
+}

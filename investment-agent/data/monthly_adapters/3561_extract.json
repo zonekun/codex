@@ -1,0 +1,72 @@
+{
+  "source": "non-tdnet(pdf)",
+  "format": "pdf",
+  "extraction_method": "gemini",
+  "doc_title_pattern": "月次|MONTHLY|Monthly|業績動向|Store Performance|速報",
+  "fields": [
+    {
+      "key": "国内 全店 売上（前年同月比）",
+      "name": "国内 全店 売上（前年同月比）",
+      "description": "国内店舗（Domestic Stores）の Sales 行 × All stores 列（JP:「売上高 / 全店」、EN:「Sales / All stores」）の月次前年同月比（％）。**対象月度（文書タイトルに記載された月）の値のみ取得し、テーブルに並ぶ他月（特に未来月）は絶対に取らない。** 1 PDFから1月分の値のみが record 化される。",
+      "value_type": "percentage",
+      "_manual_description": true
+    },
+    {
+      "key": "国内 全店 客単価（前年同月比）",
+      "name": "国内 全店 客単価（前年同月比）",
+      "description": "国内店舗の Average Check 行 × All stores 列（JP:「客単価 / 全店」、EN:「Average Check / All stores」）の月次前年同月比（％）。**対象月度（文書タイトルに記載された月）の値のみ取得し、テーブルに並ぶ他月（特に未来月）は絶対に取らない。** 1 PDFから1月分の値のみが record 化される。",
+      "value_type": "percentage",
+      "_manual_description": true
+    },
+    {
+      "key": "国内 全店 客数（前年同月比）",
+      "name": "国内 全店 客数（前年同月比）",
+      "description": "国内店舗の Customer count 行 × All stores 列（JP:「客数 / 全店」、EN:「Customer count / All stores」）の月次前年同月比（％）。**対象月度（文書タイトルに記載された月）の値のみ取得し、テーブルに並ぶ他月（特に未来月）は絶対に取らない。** 1 PDFから1月分の値のみが record 化される。",
+      "value_type": "percentage",
+      "_manual_description": true
+    },
+    {
+      "key": "国内 全店 店舗数",
+      "name": "国内 全店 店舗数",
+      "description": "国内店舗の Store count の All stores 行（JP:「店舗数 / 全店」、EN:「Store count / All stores」）の月末時点の店舗数（整数）。『うち既存店 / Of which Existing stores』『その他ブランド / Other stores』『ライセンス / Licensed stores』『合計 / Total』ではなく、最上段の全店（All stores）を抽出すること。**対象月度（文書タイトルに記載された月）の値のみ取得し、テーブルに並ぶ他月（特に未来月）は絶対に取らない。** 1 PDFから1月分の値のみが record 化される。",
+      "value_type": "integer",
+      "_manual_description": true
+    },
+    {
+      "key": "国内 既存店 売上（前年同月比）",
+      "name": "国内 既存店 売上（前年同月比）",
+      "description": "国内店舗の Sales 行 × Existing stores 列（JP:「売上高 / 既存店」、EN:「Sales / Existing stores」）の月次前年同月比（％）。**対象月度（文書タイトルに記載された月）の値のみ取得し、テーブルに並ぶ他月（特に未来月）は絶対に取らない。** 1 PDFから1月分の値のみが record 化される。",
+      "value_type": "percentage",
+      "_manual_description": true
+    },
+    {
+      "key": "国内 既存店 客単価（前年同月比）",
+      "name": "国内 既存店 客単価（前年同月比）",
+      "description": "国内店舗の Average Check 行 × Existing stores 列（JP:「客単価 / 既存店」、EN:「Average Check / Existing stores」）の月次前年同月比（％）。**対象月度（文書タイトルに記載された月）の値のみ取得し、テーブルに並ぶ他月（特に未来月）は絶対に取らない。** 1 PDFから1月分の値のみが record 化される。",
+      "value_type": "percentage",
+      "_manual_description": true
+    },
+    {
+      "key": "国内 既存店 客数（前年同月比）",
+      "name": "国内 既存店 客数（前年同月比）",
+      "description": "国内店舗の Customer count 行 × Existing stores 列（JP:「客数 / 既存店」、EN:「Customer count / Existing stores」）の月次前年同月比（％）。**対象月度（文書タイトルに記載された月）の値のみ取得し、テーブルに並ぶ他月（特に未来月）は絶対に取らない。** 1 PDFから1月分の値のみが record 化される。",
+      "value_type": "percentage",
+      "_manual_description": true
+    }
+  ],
+  "gemini_custom_prompt": "力の源ホールディングス（3561、ブランド: 一風堂/IPPUDO）の月次業績動向PDF。抽出対象は『国内店舗 / Domestic Stores』の表のみ。『海外店舗 / International Stores』や国別（USA/Singapore/Taiwan/Australia 等）の表の値は絶対に抽出しないこと。\n\n会計年度: 3月決算（Fiscal Year ending March 31）。『2026年3月期』= 『Fiscal Year ending March 31, 2026』= 2025年4月〜2026年3月。\n\nPDFは日本語版と英語版の2種類がある（内容は同じ）:\n- 日本語版ヘッダー: 『４月 ５月 ６月 ７月 ８月 ９月 １０月 １１月 １２月 １月 ２月 ３月 年度計』\n- 英語版ヘッダー: 『Apr May Jun Jul Aug Sep Oct Nov Dec Jan Feb Mar Year total』\n会計年度は 4月（Apr）始まり3月（Mar）終わり。1月〜3月は翌暦年（例: 2026年3月期なら Jan/Feb/Mar は 2026年1〜3月）、4月〜12月は年度と同じ暦年（2025年4〜12月）に対応する。\n\n抽出する行（日英対応）:\n- Sales（売上高）× All stores（全店） / Existing stores（既存店）\n- Customer count（客数）× All stores / Existing stores\n- Average Check（客単価）× All stores / Existing stores\n- Store count（店舗数）× All stores（最上段の『全店』行。『うち既存店 / Of which Existing stores』『その他ブランド / Other stores』『ライセンス / Licensed stores』『合計 / Total』は対象外）\n\nルール:\n- year_total（年度計）列は絶対に抽出しない。\n- 空欄・『-』の月はその月をスキップ（fields に含めない）。\n- 値は %記号・カンマを除去した数値のみ。Store count は整数、それ以外は小数1桁の％。\n- PDFには前年（Reference/参考）の表も含まれる。そちらの月次値も抽出して良い（異なる year_month として出力）。\n- 出力キー名は上記 fields の key をそのまま使用すること（日本語キー）。",
+  "ticker": "3561",
+  "company_name": "力の源ホールディングス",
+  "updated_at": "2026-04-15T22:05:00+09:00",
+  "created_by": "manual-gemini-3561-english-pdf",
+  "fields_count": 7,
+  "overwrite_past_months": false,
+  "gemini_multi_month": true,
+  "manual_override": true,
+  "manual_override_note": "2026-04-15 直近PDFが英語のみになったためGemini(gemini-3-flash-preview)に移行。日英両対応のプロンプトで Domestic Stores のみ抽出。",
+  "manual_override_at": "2026-04-15T22:05:00+09:00",
+  "_source_renamed_at": "2026-04-18T16:36:34+09:00",
+  "_source_renamed_from": "pdf",
+  "p2_regression_fix_at": "2026-04-18T18:49:20+09:00",
+  "_owpm_changed_from": true
+}

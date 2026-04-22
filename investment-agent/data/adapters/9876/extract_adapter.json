@@ -1,0 +1,66 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "doc_title_pattern": "(\\d{4}年\\d{1,2}月期 \\d{1,2}月度 月次売上高前年比速報のお知らせ)",
+  "year_from_title_regex": "(\\d{4})年\\d{1,2}月期",
+  "month_from_title_regex": "(\\d{1,2})月度",
+  "fields": [
+    {
+      "key": "全社 売上（前年同月比）",
+      "name": "全社 売上（前年同月比）",
+      "row_label_regex": "売上高",
+      "value_type": "percentage",
+      "notes": "Under '全社' section. Extract the value for '2月度' (7th data column in the second table block)."
+    },
+    {
+      "key": "全社 客数（前年同月比）",
+      "name": "全社 客数（前年同月比）",
+      "row_label_regex": "客数",
+      "value_type": "percentage",
+      "notes": "Under '全社' section. Extract the value for '2月度' (7th data column in the second table block)."
+    },
+    {
+      "key": "全社 客単価（前年同月比）",
+      "name": "全社 客単価（前年同月比）",
+      "row_label_regex": "客単価",
+      "value_type": "percentage",
+      "notes": "Under '全社' section. Extract the value for '2月度' (7th data column in the second table block)."
+    },
+    {
+      "key": "全社 店舗数",
+      "name": "全社 店舗数",
+      "row_label_regex": "当\\s*年",
+      "value_type": "integer",
+      "notes": "Extract the last number on the line, which corresponds to '月度末 店舗数'."
+    },
+    {
+      "key": "既存店 売上（前年同月比）",
+      "name": "既存店 売上（前年同月比）",
+      "row_label_regex": "売上高",
+      "value_type": "percentage",
+      "notes": "Under '既 存 店' section. Extract the value for '2月度' (7th data column in the second table block)."
+    },
+    {
+      "key": "既存店 客数（前年同月比）",
+      "name": "既存店 客数（前年同月比）",
+      "row_label_regex": "客数",
+      "value_type": "percentage",
+      "notes": "Under '既 存 店' section. Extract the value for '2月度' (7th data column in the second table block)."
+    },
+    {
+      "key": "既存店 客単価（前年同月比）",
+      "name": "既存店 客単価（前年同月比）",
+      "row_label_regex": "客単価",
+      "value_type": "percentage",
+      "notes": "Under '既 存 店' section. Extract the value for '2月度' (7th data column in the second table block)."
+    }
+  ],
+  "extraction_notes": "For percentage fields, locate the '2月度' column in the relevant '全社' or '既存店' table block (typically the second block for full year data) and extract the corresponding value. For '全社 店舗数', extract the last number on the line starting with '当 年'.",
+  "ticker": "9876",
+  "company_name": "コックス",
+  "created_at": "2026-03-21T20:07:40.463656+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2026年２月期 ２月度 月次売上高前年比速報のお知らせ",
+  "sample_submission_date": "2026-03-05",
+  "fields_count": 7
+}

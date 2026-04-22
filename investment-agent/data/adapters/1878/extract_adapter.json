@@ -1,0 +1,58 @@
+{
+  "source": "download",
+  "format": "xls",
+  "sheet_name": "Sheet1",
+  "label_col_index": 0,
+  "month_row_index": 1,
+  "data_start_row": 5,
+  "fields": [
+    {
+      "key": "1人当たり受注高（万円/人・月）",
+      "name": "1人当たり受注高（万円/人・月）",
+      "row_label_regex": "1人当たり受注高.*万円",
+      "value_type": "float",
+      "notes": "Matches column header cells (row 2, 3, 4) in column 6: '1人当たり受注高', 'Orders per', '（万円）'"
+    },
+    {
+      "key": "入居者斡旋（件）",
+      "name": "入居者斡旋（件）",
+      "row_label_regex": "入居者斡旋件数",
+      "value_type": "integer",
+      "notes": "Matches column header cell (row 2) in column 8: '入居者斡旋件数'. Assumes '件数' implies '件'."
+    },
+    {
+      "key": "受注トレンド 6ヶ月移動平均（百万円）",
+      "name": "受注トレンド 6ヶ月移動平均（百万円）",
+      "row_label_regex": "受注トレンド.*6ヶ月移動平均",
+      "value_type": "float",
+      "notes": "Matches column header cells (row 2, 3) in column 7: '受注トレンド', '*6ヶ月移動平均'"
+    },
+    {
+      "key": "空室在庫（ヶ月）",
+      "name": "空室在庫（ヶ月）",
+      "row_label_regex": "空室在庫.*カ月",
+      "value_type": "float",
+      "notes": "Matches column header cells (row 2, 4) in column 13: '空室在庫', '（カ月）'"
+    },
+    {
+      "key": "空室数（戸）",
+      "name": "空室数（戸）",
+      "row_label_regex": "空室数",
+      "value_type": "integer",
+      "notes": "Matches column header cell (row 2) in column 14: '空室数'. Assumes '数' implies '戸'."
+    },
+    {
+      "key": "管理戸数（戸）",
+      "name": "管理戸数（戸）",
+      "row_label_regex": "管理戸数",
+      "value_type": "integer",
+      "notes": "Matches column header cell (row 2) in column 17: '管理戸数'. Assumes '数' implies '戸'."
+    }
+  ],
+  "extraction_notes": "このデータは列指向の形式であり、メトリクスはヘッダー行（2, 3, 4）の結合されたテキストによって識別されます。スキーマの 'label_col_index' はダミー値（0）として設定され、'month_row_index' は月が記載されている列のインデックス（1）として解釈されています。以下のメトリクスは、ヘッダー行に明示的なラベルが見つからなかったため、抽出できませんでした: '入居者斡旋（前年同月比）', '家賃ベース入居率（前年差）', '建設事業 受注高（前年同月比）', '建設事業 受注高（百万円）', '建設営業人員（人）'。",
+  "ticker": "1878",
+  "company_name": "1878",
+  "created_at": "2026-04-04T00:45:33.081508+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_file": "202603_1878_エクセル形式による過去データのダウンロードはこちらから_a4b6a594.xls"
+}

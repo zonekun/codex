@@ -1,0 +1,23 @@
+FROM node:20-slim
+
+RUN apt-get update && apt-get install -y --no-install-recommends git ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# FRED MCP サーバーのソースを取得
+RUN git clone https://github.com/kablewy/fred-mcp-server .
+
+# 元の依存関係 + express（SSE HTTP サーバー用）
+RUN npm install && npm install express && npm install --save-dev @types/express
+
+# SSE エントリーポイントを配置
+COPY scripts/fred_mcp_server_sse.ts src/server_sse.ts
+
+# TypeScript ビルド（src/ 全体 → dist/）
+RUN npm run build
+
+ENV PORT=8080
+EXPOSE 8080
+
+CMD ["node", "dist/server_sse.js"]

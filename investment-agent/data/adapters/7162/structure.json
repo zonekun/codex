@@ -1,0 +1,14 @@
+{
+  "ticker": "7162",
+  "company_name": "7162",
+  "metrics": [
+    {
+      "name": "CO2 削減効果（kg-CO2）"
+    },
+    {
+      "name": "発電量（kWh）"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

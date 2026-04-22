@@ -1,0 +1,39 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "doc_title_pattern": "(\\d{4}年\\d{1,2}月度)\\s*月次売上高推移のお知らせ",
+  "year_from_title_regex": "(\\d{4})年",
+  "month_from_title_regex": "(\\d{1,2})月度",
+  "fields": [
+    {
+      "key": "連結 売上（百万円）",
+      "name": "連結 売上（百万円）",
+      "row_label_regex": "{year}年.*?月次クラウド関連事業売上高.*?[(（]百万円[)）]\\s*([\\d,]+)\\s*前年同期比",
+      "value_type": "integer",
+      "notes": "{year}年セクションの月次クラウド売上(百万円) use_last_number (round9)",
+      "use_last_number": true
+    },
+    {
+      "key": "連結 売上（前年同月比）",
+      "name": "連結 売上（前年同月比）",
+      "row_label_regex": "{year}年.*?月次クラウド関連事業売上高.*?前年同期比\\s+([\\d.]+)%",
+      "value_type": "percentage",
+      "notes": "{year}年セクションの月次クラウド売上前年比(%) use_last_number (round9)",
+      "use_last_number": true
+    }
+  ],
+  "extraction_notes": "文書タイトルから対象年月を抽出し、その月の連結売上高および前年同月比を、該当する行から抽出する。行の特定には「■YYYY年MM月期の月次連結売上高」のパターンを使用し、その行内から「(百万円)」または「前年同期比」に続く数値を抽出する。",
+  "ticker": "4776",
+  "company_name": "4776",
+  "created_at": "2026-03-24T16:09:59.674038+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2026年１月度　月次売上高推移のお知らせ",
+  "sample_submission_date": "2026-02-24",
+  "fields_count": 2,
+  "updated_at": "2026-03-24",
+  "updated_by": "round9_batch_fix",
+  "extraction_method": "gemini",
+  "manual_override": true,
+  "manual_override_note": "コード修正必要→gemini method変更（元: gemini）",
+  "manual_override_at": "2026-04-08T22:08:48.124396+09:00"
+}

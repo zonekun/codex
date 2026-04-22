@@ -1,0 +1,12 @@
+.gcloudignore
+.git
+.gitignore
+.env
+keys/
+data/
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+node_modules/
+*.log

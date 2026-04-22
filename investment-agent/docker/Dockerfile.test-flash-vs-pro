@@ -1,0 +1,18 @@
+FROM python:3.12-slim
+
+WORKDIR /app
+
+RUN pip install --no-cache-dir \
+    PyPDF2>=3.0 \
+    google-cloud-storage>=2.16 \
+    google-cloud-bigquery>=3.0 \
+    google-genai>=1.0 \
+    langchain-text-splitters>=0.2 \
+    pdfminer.six>=20231228
+
+COPY scripts/test_flash_vs_pro.py scripts/test_flash_vs_pro.py
+
+ENV PYTHONUTF8=1
+ENV PYTHONUNBUFFERED=1
+
+ENTRYPOINT ["python", "scripts/test_flash_vs_pro.py"]

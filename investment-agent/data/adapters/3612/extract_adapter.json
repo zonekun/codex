@@ -1,0 +1,41 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "doc_title_pattern": "国内小売事業 \\d{4}年\\d{1,2}月期　月次売上概況（\\d{1,2}月度）",
+  "year_from_title_regex": "国内小売事業 (\\d{4})年\\d{1,2}月期",
+  "month_from_title_regex": "月次売上概況（(\\d{1,2})月度）",
+  "fields": [
+    {
+      "key": "国内小売 売上（前年同月比）",
+      "name": "国内小売 売上（前年同月比）",
+      "row_label_regex": "国内小売売上",
+      "value_type": "percentage"
+    },
+    {
+      "key": "小売 店舗数",
+      "name": "小売 店舗数",
+      "row_label_regex": "月末（期末）小売店舗数",
+      "value_type": "integer"
+    },
+    {
+      "key": "国内小売 既存店 売上（前年同月比）",
+      "name": "国内小売 既存店 売上（前年同月比）",
+      "row_label_regex": "既存店売上",
+      "value_type": "percentage"
+    },
+    {
+      "key": "Ｅコマース売上（前年同月比）",
+      "name": "Ｅコマース売上（前年同月比）",
+      "row_label_regex": "Eコマース売上",
+      "value_type": "percentage"
+    }
+  ],
+  "extraction_notes": "月次売上概況の表形式データから、各指標の行ラベルを正規表現で特定し、対応する数値を抽出します。前年同月比はパーセンテージ、店舗数は整数として扱います。",
+  "ticker": "3612",
+  "company_name": "3612",
+  "created_at": "2026-03-17T18:37:08.885166+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "国内小売事業 2026年2月期　月次売上概況（2月度）",
+  "sample_submission_date": "2026-03-04",
+  "fields_count": 4
+}

@@ -1,0 +1,44 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "doc_title_pattern": "^(\\d{4})年(\\d{1,2})月期\\s*(\\d{1,2})月度\\s*主要KPI（会員数及び店舗数）についてのお知らせ$",
+  "year_from_title_regex": "(\\d{4})年",
+  "month_from_title_regex": "(\\d{1,2})月度",
+  "fields": [
+    {
+      "key": "全店 店舗数",
+      "name": "全店 店舗数",
+      "row_label_regex": "^全店",
+      "value_type": "integer",
+      "notes": "「（2）店舗数の状況」セクションの「全店」行から、タイトルで指定された月の値を取得。"
+    },
+    {
+      "key": "会員数（万人）",
+      "name": "会員数（万人）",
+      "row_label_regex": "^会員数 \\(単位[:：]万[人⼈]\\)",
+      "value_type": "float",
+      "notes": "「（1）会員数の状況」セクションの「会員数 (単位：万人)」行から、タイトルで指定された月の値を取得。",
+      "bc_floor": true
+    },
+    {
+      "key": "会員数（前年同月比）",
+      "name": "会員数（前年同月比）",
+      "row_label_regex": "^前年同[月⽉]⽐ \\(単位[:：]％\\)",
+      "value_type": "percentage",
+      "notes": "「（1）会員数の状況」セクションの「前年同月比 (単位：％）」行から、タイトルで指定された月の値を取得。"
+    }
+  ],
+  "extraction_notes": "月次データは、タイトルから抽出した月に対応する列の値を抽出する。",
+  "ticker": "212A",
+  "company_name": "212A",
+  "created_at": "2026-03-24T08:15:58.403714+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2025年10月期　９月度　主要KPI（会員数及び店舗数）についてのお知らせ",
+  "sample_submission_date": "2025-10-01",
+  "fields_count": 3,
+  "manual_override": true,
+  "manual_override_note": "Gemini精度限界対策: PDF構造に合わせた詳細custom_prompt",
+  "manual_override_at": "2026-04-10T07:50:05.268169+09:00",
+  "custom_prompt": "このPDFには4つのKPIテーブルがあります（上から順に）:\n1. 会員数（全店）: 23万人台の大きな数値 ← こちらを使う\n2. 会員数（既存店）: 15万人台の小さな数値 ← 使わない\n3. 店舗数（全店、FC含む）: 240前後の大きな数値 ← こちらを使う\n4. 店舗数（直営店のみ）: 181前後の小さな数値 ← 使わない\n「全店 店舗数」→ 3番目テーブル（FC含む全店、数値が大きい方）\n「会員数」→ 1番目テーブル（全店会員数、数値が大きい方）\n「会員数（前年同月比）」→ 1番目テーブルの前年同月比行",
+  "overwrite_past_months": true
+}

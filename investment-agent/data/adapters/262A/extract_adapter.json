@@ -1,0 +1,41 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "doc_title_pattern": "(\\d{4})年(\\d{1,2})月度.*国内月次売上速報",
+  "year_from_title_regex": "(\\d{4})年",
+  "month_from_title_regex": "(\\d{1,2})月",
+  "fields": [
+    {
+      "key": "Zoff 全店 売上（前年同月比）",
+      "name": "Zoff 全店 売上（前年同月比）",
+      "row_label_regex": "Zoff事業\\s+全店（%）",
+      "value_type": "percentage"
+    },
+    {
+      "key": "Zoff 全店 店舗数",
+      "name": "Zoff 全店 店舗数",
+      "row_label_regex": "Zoff事業\\s+月末店舗数（店）",
+      "value_type": "integer"
+    },
+    {
+      "key": "Zoff 既存店 売上（前年同月比）",
+      "name": "Zoff 既存店 売上（前年同月比）",
+      "row_label_regex": "Zoff事業\\s+既存店（%）",
+      "value_type": "percentage"
+    },
+    {
+      "key": "メガネスーパー 店舗数",
+      "name": "メガネスーパー 店舗数",
+      "row_label_regex": "メガネスーパー事業\\s+月末店舗数（店）",
+      "value_type": "integer"
+    }
+  ],
+  "extraction_notes": "月次売上速報の表形式データから、タイトルに記載された月の値（2列目）を抽出します。",
+  "ticker": "262A",
+  "company_name": "262A",
+  "created_at": "2026-03-24T08:23:08.358993+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2026年2月度(2026年12月期)国内月次売上速報",
+  "sample_submission_date": "2026-03-05",
+  "fields_count": 4
+}

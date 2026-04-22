@@ -1,0 +1,25 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "doc_title_pattern": "決算補足資料",
+  "year_from_title_regex": "(\\d{4})年",
+  "month_from_title_regex": "第(\\d)四半期",
+  "fields": [
+    {
+      "key": "全店 売上（前年同月比）",
+      "name": "全店 売上（前年同月比）",
+      "row_label_regex": "([\\d,.]+)\\s+([\\d,.]+)\\s+([\\d,.]+)\\s+([\\d,.]+)\\s+([\\d,.]+)\\s+([\\d,.]+).+売上高",
+      "value_type": "percentage",
+      "group": 5
+    }
+  ],
+  "extraction_notes": "本資料は四半期決算補足資料であり、月次売上データは含まれていません。そのため、連結損益計算書の「売上高」の前年同期比（中間期累計）を「全店 売上（前年同月比）」として抽出しています。既存店売上および店舗数は記載がないため除外しました。",
+  "ticker": "8278",
+  "company_name": "フジ",
+  "created_at": "2026-04-11T22:48:25.261503+09:00",
+  "created_by": "gemini-3-flash-preview",
+  "sample_doc_title": "2025年２月期　第２四半期（中間期）決算補足資料",
+  "sample_submission_date": "2024-10-07",
+  "report_url": "TDNET文書",
+  "fields_count": 1
+}

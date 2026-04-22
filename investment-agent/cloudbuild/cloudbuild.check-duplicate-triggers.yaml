@@ -1,0 +1,12 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - build
+      - -f
+      - docker/Dockerfile.check-duplicate-triggers
+      - -t
+      - us-west1-docker.pkg.dev/gmailpj-357912/tools/check-duplicate-triggers:latest
+      - .
+
+images:
+  - us-west1-docker.pkg.dev/gmailpj-357912/tools/check-duplicate-triggers:latest

@@ -1,0 +1,13 @@
+{
+  "ticker": "3148",
+  "company_name": "(株)クリエイトＳＤホールディングス",
+  "ir_page_url": "http://www.createsdhd.co.jp/index.html",
+  "updated_at": "2026-04-12T10:19:35.964926+09:00",
+  "last_checked": "2026-04-12",
+  "status": "active",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": null,
+  "link_href_pattern": null,
+  "note": "月次ページ発見（サブページ）: http://www.createsdhd.co.jp/index.html"
+}

@@ -1,0 +1,24 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "extraction_method": "gemini",
+  "doc_title_pattern": "^(\\d{4}年\\d{1,2}月期 第\\d四han期決算説明会資料)$",
+  "year_from_title_regex": "(\\d{4})年",
+  "month_from_title_regex": "(\\d{1,2})月期",
+  "fields": [
+    {
+      "key": "全社 売上（百万円）",
+      "name": "全社 売上（百万円）",
+      "description": "2026年9月期 第1四半期の実績売上高（百万円）。「2026年9月期業績予想の進捗」セクションの表、「2026年9月期 １Q実績」列の「売上高」行にある数値。",
+      "value_type": "integer"
+    }
+  ],
+  "extraction_notes": "「月次営業利益（円）」と「月次純資産（円）」は、文書中に月次データがなく、四半期データのみが百万円単位で記載されているため抽出していません。",
+  "ticker": "3624",
+  "company_name": "3624",
+  "created_at": "2026-03-28T19:54:00.553754+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2026年９月期 第１四半期決算説明会資料",
+  "sample_submission_date": "2026-02-12",
+  "fields_count": 1
+}

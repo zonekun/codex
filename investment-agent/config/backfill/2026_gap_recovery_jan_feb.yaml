@@ -1,0 +1,27 @@
+# 2026-01-19〜02-27 漏れ分リカバリ（約 2,900 件）
+# 背景: 初期バックフィル時の TICKER 絞り込み途中切れ（02-10 漏れは ticker 4356-8132 集中）
+# 詳細: docs/knowledges/tools/013_tdnet_load.md L835-938
+#       docs/plans/20260417_091112_tdnet_load_ai_split.md L154,159-170
+# 前提: GCS PDF 残存確認済（実行前に別途チェック）
+
+name: 2026_gap_recovery_jan_feb
+
+loads:
+  - job: tdnet-load-daily
+    region: us-west1
+    env:
+      DATE_FROM: "20260119"
+      DATE_TO: "20260227"
+
+workflows:
+  - name: ai_processing_flow
+    location: us-central1
+    data:
+      date_from: "20260119"
+      date_to: "20260227"
+
+options:
+  parallel_loads: 1
+  poll_interval_s: 120
+  notify_on_start: true
+  notify_each_load: true

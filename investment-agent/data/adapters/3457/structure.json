@@ -1,0 +1,14 @@
+{
+  "ticker": "3457",
+  "company_name": "3457",
+  "metrics": [
+    {
+      "name": "オープン店舗数"
+    },
+    {
+      "name": "チェーン加盟店舗数"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

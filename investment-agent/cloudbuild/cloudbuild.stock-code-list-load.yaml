@@ -1,0 +1,12 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - build
+      - -f
+      - docker/Dockerfile.stock-code-list-load
+      - -t
+      - us-west1-docker.pkg.dev/gmailpj-357912/stock/stock-code-list-load:latest
+      - .
+
+images:
+  - us-west1-docker.pkg.dev/gmailpj-357912/stock/stock-code-list-load:latest

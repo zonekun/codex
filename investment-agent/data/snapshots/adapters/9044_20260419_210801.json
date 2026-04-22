@@ -1,0 +1,42 @@
+{
+  "source": "non-tdnet(pdf)",
+  "format": "pdf",
+  "doc_title_pattern": "(\\d{4})(\\d{2})_\\d{4}_(\\d{4})年(\\d{1,2})月_",
+  "year_from_title_regex": "(\\d{4})年",
+  "month_from_title_regex": "(\\d{1,2})月",
+  "fields": [
+    {
+      "key": "輸送人員（前年同月比）",
+      "name": "輸送人員（前年同月比）",
+      "row_label_regex": "1． 輸送人員 Number of Passengers Carried.*?4月 Apr\\.\\s+全線\\(All lines\\)\\s+[\\d,]+\\s+[\\d.]+\\%\\s+[\\d,]+\\s+[\\d.]+\\%\\s+[\\d,]+\\s+([\\d.]+)%",
+      "value_type": "percentage",
+      "group": 1
+    },
+    {
+      "key": "運輸収入 定期外（前年同月比）",
+      "name": "運輸収入 定期外（前年同月比）",
+      "row_label_regex": "2． 運輸収入 Revenue from Passengers.*?4月 Apr\\.\\s+全線\\(All lines\\)\\s+[\\d,]+\\s+[\\d.]+\\%\\s+[\\d,]+\\s+([\\d.]+)%",
+      "value_type": "percentage",
+      "group": 1
+    },
+    {
+      "key": "運輸収入 定期（前年同月比）",
+      "name": "運輸収入 定期（前年同月比）",
+      "row_label_regex": "2． 運輸収入 Revenue from Passengers.*?4月 Apr\\.\\s+全線\\(All lines\\)\\s+[\\d,]+\\s+([\\d.]+)%",
+      "value_type": "percentage",
+      "group": 1
+    }
+  ],
+  "extraction_notes": "各メトリクスは、該当するセクション（輸送人員または運輸収入）内で、'4月 Apr.'行の'全線(All lines)'データから、対応する前年同月比（パーセンテージ）を抽出します。row_label_regexはセクションタイトルから開始し、目的の行と値までをカバーします。パーセンテージ値はキャプチャグループ1で取得します。",
+  "ticker": "9044",
+  "company_name": "9044",
+  "created_at": "2026-04-05T10:26:41.000709+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "202504_9044_2025年4月_月次営業概況のお知らせ(PDF_134KB)_65fc0bb3",
+  "sample_submission_date": "",
+  "report_url": "TDNET文書",
+  "sample_file": "202504_9044_2025年4月_月次営業概況のお知らせ(PDF_134KB)_65fc0bb3",
+  "_source_renamed_at": "2026-04-18T16:36:34+09:00",
+  "_source_renamed_from": "pdf",
+  "manual_override": true
+}

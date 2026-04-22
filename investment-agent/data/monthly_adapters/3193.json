@@ -1,0 +1,57 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "extraction_method": "gemini",
+  "doc_title_pattern": "月次報告((?P<year>\\d{4})年(?P<month>\\d{1,2})月度)",
+  "year_from_title_regex": "(?P<year>\\d{4})",
+  "month_from_title_regex": "(?P<month>\\d{1,2})",
+  "fields": [
+    {
+      "key": "全店 売上（前年同月比）",
+      "name": "全店 売上（前年同月比）",
+      "description": "「2．2026年7月期 売上高前年同月比 の状況 （1）当期月次動向」表の「全店売上高」行のにある前年同月比の数値（%）。",
+      "value_type": "percentage",
+      "_manual_description": true
+    },
+    {
+      "key": "全店 店舗数",
+      "name": "全店 店舗数",
+      "description": "「１．2026年7月期 店舗数の状況」表の「総 計」行のにある店舗数の実数値（店舗）。",
+      "value_type": "integer",
+      "_manual_description": true
+    },
+    {
+      "key": "既存店 売上（前年同月比）",
+      "name": "既存店 売上（前年同月比）",
+      "description": "「2．2026年7月期 売上高前年同月比 の状況 （1）当期月次動向」表の「既存店売上高」行のにある前年同月比の数値（%）。",
+      "value_type": "percentage",
+      "_manual_description": true
+    },
+    {
+      "key": "既存店 客数（前年同月比）",
+      "name": "既存店 客数（前年同月比）",
+      "description": "「2．2026年7月期 売上高前年同月比 の状況 （1）当期月次動向」表の「客 数」行のにある前年同月比の数値（%）。",
+      "value_type": "percentage",
+      "_manual_description": true
+    },
+    {
+      "key": "既存店 客単価（前年同月比）",
+      "name": "既存店 客単価（前年同月比）",
+      "description": "「2．2026年7月期 売上高前年同月比 の状況 （1）当期月次動向」表の「客単価」行のにある前年同月比の数値（%）。",
+      "value_type": "percentage",
+      "_manual_description": true
+    }
+  ],
+  "extraction_notes": "月次報告の当期月次動向（2026年7月期）の表から、対象月の各メトリクスを抽出。店舗数は「１．2026年7月期 店舗数の状況」表の「総 計」行から抽出。",
+  "ticker": "3193",
+  "company_name": "3193",
+  "created_at": "2026-03-29T18:33:45.162463+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "月次報告（2026年2月度）",
+  "sample_submission_date": "2026-03-06",
+  "fields_count": 5,
+  "manual_override": true,
+  "desc_rewrite_at": "2026-04-17T23:15:49+09:00",
+  "_doc_title_pattern_fixed_at": "2026-04-18T23:24:05.248532+09:00",
+  "_doc_title_pattern_fixed_from": "月次報告（(?P<year>\\d{4})年(?P<month>\\d{1,2})月度）"
+}

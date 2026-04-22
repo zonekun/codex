@@ -1,0 +1,17 @@
+{
+  "ticker": "2337",
+  "company_name": "2337",
+  "metrics": [
+    {
+      "name": "CO2削減量（kg-CO2）"
+    },
+    {
+      "name": "発電量（kWh)"
+    },
+    {
+      "name": "発電量（前年同月比）"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

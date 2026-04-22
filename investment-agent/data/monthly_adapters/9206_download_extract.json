@@ -1,0 +1,16 @@
+{
+  "ticker": "9206",
+  "company_name": "スターフライヤー",
+  "updated_at": "2026-04-19T10:47:01.033325+09:00",
+  "type": "scrape_links",
+  "ir_page_url": "https://www.starflyer.jp/starflyer/ir/traffic_figures/",
+  "status": "active",
+  "note": "スターフライヤー輸送実績。ltp=None",
+  "last_checked": "2026-03-16",
+  "link_text_pattern": null,
+  "link_href_pattern": ".*\\.(pdf|xlsx|xls)",
+  "playwright_required": true,
+  "skip_reason": null,
+  "manual_override": true,
+  "manual_override_at": "2026-04-19T10:47:01.033325+09:00"
+}

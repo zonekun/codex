@@ -1,0 +1,34 @@
+{
+  "source": "pdf",
+  "format": "pdf",
+  "doc_title_pattern": "^(\\d{6})_.*当社主要ＫＰＩ（(\\d{4}年\\d{1,2}月度)）に関するお知らせ",
+  "year_from_title_regex": "^(\\d{4})\\d{2}",
+  "month_from_title_regex": "^\\d{4}(\\d{2})",
+  "fields": [
+    {
+      "key": "投資家数（人）",
+      "name": "投資家数（人）",
+      "row_label_regex": "2026年2月\\s+([\\d,]+)",
+      "value_type": "integer",
+      "group": 1,
+      "use_last_number": false
+    },
+    {
+      "key": "投資家数（人）",
+      "name": "投資家数（人）",
+      "row_label_regex": "2026年2月\\s+([\\d,]+)",
+      "value_type": "integer",
+      "group": 1,
+      "use_last_number": false
+    }
+  ],
+  "extraction_notes": "テーブルは逆時系列順に並んでおり、最新月のデータ（文書タイトルと一致する月）は各テーブルの最初のデータ行にあります。そのため、use_last_numberはfalseに設定され、row_label_regexは特定の最新月を対象としています。",
+  "ticker": "2998",
+  "company_name": "2998",
+  "created_at": "2026-04-04T00:30:12.005677+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "202602_2998_2026_03_06適時開示当社主要ＫＰＩ（2026年２月度）に関するお知らせ（_e4dcf6f9",
+  "sample_submission_date": "",
+  "report_url": "TDNET文書",
+  "sample_file": "202602_2998_2026_03_06適時開示当社主要ＫＰＩ（2026年２月度）に関するお知らせ（_e4dcf6f9"
+}

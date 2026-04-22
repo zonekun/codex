@@ -1,0 +1,213 @@
+# ai_processing_flow — TDnet AI処理 Workflows（本番）
+#
+# Step 1: tdnet-ai-prepare Cloud Run Job 呼出（OCR+正規表現+state.json）
+# Step 2: Callback endpoint 作成 + TPU VM 起動（Gemma 推論）
+# Step 3: Gemma 完了 callback 待機（最大24時間）
+# Step 4: tdnet-ai-finalize Cloud Run Job 呼出（Gemini受注+Embedding+BQ）
+#
+# 起動:
+#   手動:     gcloud workflows execute ai_processing_flow
+#   自動:     Cloud Scheduler（毎日）
+#
+# 入力（オプション）:
+#   date_from   — YYYYMMDD（省略時は BQ 最古 pending 月を自動選択）
+#   date_to     — YYYYMMDD（省略時は date_from と同月末）
+#   ticker_from — ticker下限（例 "1301"。省略時フィルタなし）
+#   ticker_to   — ticker上限（例 "1909"。省略時フィルタなし）
+#
+# 参照:
+#   docs/plans/20260417_091112_tdnet_load_ai_split.md
+#   docs/knowledges/tools/013-1_ai_cost_and_gemma_poc.md
+
+main:
+  params: [input]
+  steps:
+    # ──────────────────────────────────────────
+    - init:
+        assign:
+          - run_id: ${sys.get_env("GOOGLE_CLOUD_WORKFLOW_EXECUTION_ID")}
+          - project_id: "gmailpj-357912"
+          - cloudrun_region: "us-west1"
+          - tpu_zone: "us-central1-b"
+          - tpu_accelerator_type: "v6e-4"
+          - tpu_runtime_version: "v2-alpha-tpuv6e"
+          - bucket: "stock_data_1930932"
+          - date_from: ""
+          - date_to: ""
+          - ticker_from: ""
+          - ticker_to: ""
+          - empty_map: {}
+          - gemma_callback: {}
+          - gemma_runner_result: {}
+          - timeout_callback:
+              received:
+                status: "timeout"
+
+    - extract_input:
+        switch:
+          - condition: ${input != null and "date_from" in input}
+            assign:
+              - date_from: ${input.date_from}
+              - date_to: ${default(input.date_to, input.date_from)}
+
+    - extract_ticker_range:
+        switch:
+          - condition: ${input != null and "ticker_from" in input}
+            assign:
+              - ticker_from: ${input.ticker_from}
+              - ticker_to: ${default(input.ticker_to, input.ticker_from)}
+
+    # ──────────────────────────────────────────
+    # pending 最古月自動選択（date_from 未指定時）
+    - resolve_date_range:
+        switch:
+          - condition: ${date_from == ""}
+            steps:
+              - find_oldest_pending:
+                  call: googleapis.bigquery.v2.jobs.query
+                  args:
+                    projectId: ${project_id}
+                    body:
+                      useLegacySql: false
+                      query: |
+                        SELECT
+                          FORMAT_DATE('%Y%m%d', DATE_TRUNC(MIN(SUBMISSION_DATE), MONTH)) AS dfrom,
+                          FORMAT_DATE('%Y%m%d',
+                            LAST_DAY(DATE_TRUNC(MIN(SUBMISSION_DATE), MONTH))) AS dto
+                        FROM `gmailpj-357912.STOCK.TDNET_DOCUMENTS_ENHANCED`
+                        WHERE AI_STATUS = 'pending'
+                  result: pending_query
+              - check_rows:
+                  switch:
+                    - condition: ${len(default(pending_query.rows, [])) == 0}
+                      steps:
+                        - no_pending_exit:
+                            return:
+                              status: "no_pending"
+                              run_id: ${run_id}
+              - assign_dates:
+                  assign:
+                    - date_from: ${pending_query.rows[0].f[0].v}
+                    - date_to: ${pending_query.rows[0].f[1].v}
+
+    # ──────────────────────────────────────────
+    # Step 1: tdnet-ai-prepare Cloud Run Job 同期実行
+    - run_ai_prepare:
+        call: googleapis.run.v2.projects.locations.jobs.run
+        args:
+          name: ${"projects/" + project_id + "/locations/" + cloudrun_region + "/jobs/tdnet-ai-prepare"}
+          connector_params:
+            timeout: 21600  # Workflows 側 LRO polling timeout (6h)
+          body:
+            overrides:
+              timeout: "21600s"
+              containerOverrides:
+                - env:
+                    - name: RUN_ID
+                      value: ${run_id}
+                    - name: DATE_FROM
+                      value: ${date_from}
+                    - name: DATE_TO
+                      value: ${date_to}
+                    - name: TICKER_FROM
+                      value: ${ticker_from}
+                    - name: TICKER_TO
+                      value: ${ticker_to}
+        result: prepare_result
+
+    # ──────────────────────────────────────────
+    # Step 2: Callback endpoint 作成
+    - create_callback:
+        call: events.create_callback_endpoint
+        args:
+          http_callback_method: "POST"
+        result: callback_details
+
+    # ──────────────────────────────────────────
+    # Step 2b: tdnet-gemma-runner Cloud Run Job と Gemma完了callback待機を並列実行
+    #   - gemma_runner_branch: Cloud Run Job `tdnet-gemma-runner` を起動（同期）
+    #       その中で TPU作成→vLLM setup→worker実行→TPU削除 を行う
+    #       worker.py が完了時に CALLBACK_URL に POST
+    #   - callback_wait_branch: events.await_callback で Gemma 完了通知を待機
+    - run_gemma_and_wait:
+        parallel:
+          shared: [gemma_callback, gemma_runner_result]
+          branches:
+            - gemma_runner_branch:
+                steps:
+                  - run_gemma_runner:
+                      try:
+                        call: googleapis.run.v2.projects.locations.jobs.run
+                        args:
+                          name: ${"projects/" + project_id + "/locations/" + cloudrun_region + "/jobs/tdnet-gemma-runner"}
+                          connector_params:
+                            timeout: 14400  # Workflows 側 LRO polling timeout (4h)
+                          body:
+                            overrides:
+                              timeout: "14400s"
+                              containerOverrides:
+                                - env:
+                                    - name: RUN_ID
+                                      value: ${run_id}
+                                    - name: BUCKET
+                                      value: ${bucket}
+                                    - name: CALLBACK_URL
+                                      value: ${callback_details.url}
+                        result: local_runner_result
+                      retry:
+                        # TPU spot preemption / 一時的失敗 を 3回まで retry
+                        # worker.py は GCS gemma_CURRENT.jsonl から resume するので冪等
+                        max_retries: 3
+                        backoff:
+                          initial_delay: 60
+                          max_delay: 600
+                          multiplier: 2
+                  # parallel branch の `result:` は local scope のみ。
+                  # shared 変数に反映するには別途 assign step が必要（公式ドキュメント記載）。
+                  - assign_runner_shared:
+                      assign:
+                        - gemma_runner_result: ${local_runner_result}
+            - callback_wait_branch:
+                steps:
+                  - wait_for_gemma:
+                      try:
+                        call: events.await_callback
+                        args:
+                          callback: ${callback_details}
+                          timeout: 86400
+                        result: local_callback
+                      except:
+                        as: e
+                        steps:
+                          - set_empty_local_callback:
+                              assign:
+                                - local_callback: ${timeout_callback}
+                  - assign_callback_shared:
+                      assign:
+                        - gemma_callback: ${local_callback}
+
+    # ──────────────────────────────────────────
+    # Step 4: tdnet-ai-finalize Cloud Run Job 同期実行
+    - run_ai_finalize:
+        call: googleapis.run.v2.projects.locations.jobs.run
+        args:
+          name: ${"projects/" + project_id + "/locations/" + cloudrun_region + "/jobs/tdnet-ai-finalize"}
+          connector_params:
+            timeout: 21600  # Workflows 側 LRO polling timeout (6h)
+          body:
+            overrides:
+              timeout: "21600s"
+              containerOverrides:
+                - env:
+                    - name: RUN_ID
+                      value: ${run_id}
+        result: finalize_result
+
+    # ──────────────────────────────────────────
+    - done:
+        return:
+          status: "succeeded"
+          run_id: ${run_id}
+          date_from: ${date_from}
+          date_to: ${date_to}
+          gemma_summary: ${map.get(gemma_callback, "received")}

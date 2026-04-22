@@ -1,0 +1,30 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "extraction_method": "gemini",
+  "doc_title_pattern": "(\\\\d{4}年\\\\d{1,2}月月次に関するお知らせ)",
+  "year_from_title_regex": "(\\\\d{4})年",
+  "month_from_title_regex": "(\\\\d{1,2})月",
+  "fields": [
+    {
+      "key": "グループ合計",
+      "name": "グループ合計",
+      "description": "「◼ グループ店舗数」の表において、「2026年 1月」列にある「バイセル」の店舗数（150）と「タイムレス」の店舗数（40）を合計した数値。単位は店舗。",
+      "value_type": "integer"
+    },
+    {
+      "key": "出張訪問買取事業 出張訪問数 （前年同月比）",
+      "name": "出張訪問買取事業 出張訪問数 （前年同月比）",
+      "description": "「◼ グループ出張訪問買取事業」の月次概要説明文中の「2026年１月の出張訪問数は」に続く「前年同月比」のパーセント値。単位は%（パーセント）。",
+      "value_type": "percentage"
+    }
+  ],
+  "extraction_notes": "月次開示文書から、グループ店舗数と出張訪問買取事業の出張訪問数（前年同月比）を抽出。出張訪問買取事業の仕入高（円）、仕入高（前年同月比）、問合せ数（前年同月比）は文書中に明示的な数値が見当たらなかったため抽出対象外とした。",
+  "ticker": "7685",
+  "company_name": "7685",
+  "created_at": "2026-03-28T19:56:03.232070+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2026年１月月次に関するお知らせ",
+  "sample_submission_date": "2026-02-13",
+  "fields_count": 2
+}

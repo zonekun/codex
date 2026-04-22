@@ -1,0 +1,74 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "doc_title_pattern": "Databook",
+  "year_from_title_regex": "(\\d{4})年2月期",
+  "month_from_title_regex": "(\\d+)Q",
+  "fields": [
+    {
+      "key": "国内 全店 売上（前年同月比）",
+      "name": "国内 全店 売上（前年同月比）",
+      "row_label_regex": "Sales[\\s\\S]*?全店計\\s+([\\d.]+)",
+      "value_type": "percentage",
+      "use_last_number": true,
+      "notes": "単体営業の概況セクションの売上高テーブルより抽出"
+    },
+    {
+      "key": "国内 既存店 売上（前年同月比）",
+      "name": "国内 既存店 売上（前年同月比）",
+      "row_label_regex": "Sales[\\s\\S]*?既存店計\\s+([\\d.]+)",
+      "value_type": "percentage",
+      "use_last_number": true,
+      "notes": "単体営業の概況セクションの売上高テーブルより抽出"
+    },
+    {
+      "key": "国内 全店 客数（前年同月比）",
+      "name": "国内 全店 客数（前年同月比）",
+      "row_label_regex": "Customer\\s+number[\\s\\S]*?全店計\\s+([\\d.]+)",
+      "value_type": "percentage",
+      "use_last_number": true,
+      "notes": "単体営業の概況セクションの客数テーブルより抽出"
+    },
+    {
+      "key": "国内 既存店 客数（前年同月比）",
+      "name": "国内 既存店 客数（前年同月比）",
+      "row_label_regex": "Customer\\s+number[\\s\\S]*?既存店計\\s+([\\d.]+)",
+      "value_type": "percentage",
+      "use_last_number": true,
+      "notes": "単体営業の概況セクションの客数テーブルより抽出"
+    },
+    {
+      "key": "国内 全店 客単価（前年同月比）",
+      "name": "国内 全店 客単価（前年同月比）",
+      "row_label_regex": "Spending\\s+per\\s+customer[\\s\\S]*?全店計\\s+([\\d.]+)",
+      "value_type": "percentage",
+      "use_last_number": true,
+      "notes": "単体営業の概況セクションの客単価テーブルより抽出"
+    },
+    {
+      "key": "国内 既存店 客単価（前年同月比）",
+      "name": "国内 既存店 客単価（前年同月比）",
+      "row_label_regex": "Spending\\s+per\\s+customer[\\s\\S]*?既存店計\\s+([\\d.]+)",
+      "value_type": "percentage",
+      "use_last_number": true,
+      "notes": "単体営業の概況セクションの客単価テーブルより抽出"
+    },
+    {
+      "key": "国内 全店 店舗数",
+      "name": "国内 全店 店舗数",
+      "row_label_regex": "国内店舗数\\s+(\\d+)",
+      "value_type": "integer",
+      "use_last_number": true,
+      "notes": "店舗数推移テーブルの国内店舗数合計を取得"
+    }
+  ],
+  "extraction_notes": "バロックジャパンリミテッドのDatabook形式に対応。目次（CONTENTS）に基づき、Ⅱ.単体営業の概況セクションから国内（単体）の月次推移データを抽出します。売上・客数・客単価はそれぞれ同一のラベル（全店計・既存店計）を使用するため、セクションヘッダーを正規表現に含めて識別しています。",
+  "ticker": "3548",
+  "company_name": "(株)バロックジャパンリミテッド",
+  "created_at": "2026-04-11T22:37:02.393589+09:00",
+  "created_by": "gemini-3-flash-preview",
+  "sample_doc_title": "2024年2月期　3Q Databook",
+  "sample_submission_date": "2024-01-15",
+  "report_url": "TDNET文書",
+  "fields_count": 7
+}

@@ -1,0 +1,72 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "extraction_method": "gemini",
+  "doc_title_pattern": "月次速報(YYYY年M月度)",
+  "year_from_title_regex": "（(?P<year>\\d{4})年",
+  "month_from_title_regex": "(?P<month>\\d{1,2})月度",
+  "fields": [
+    {
+      "key": "串カツ田中グループ 直営全店 売上（前年同月比）",
+      "name": "串カツ田中グループ 直営全店 売上（前年同月比）",
+      "description": "「2． 2026年11月期 売上高 前年同月比（直営店）」の表において、「全店」の「売上高（％）」行の前年同月比のパーセント値。",
+      "value_type": "percentage",
+      "_manual_description": true
+    },
+    {
+      "key": "串カツ田中グループ 直営全店 客単価（前年同月比）",
+      "name": "串カツ田中グループ 直営全店 客単価（前年同月比）",
+      "description": "「2． 2026年11月期 売上高 前年同月比（直営店）」の表において、「全店」の「客数（％）」行の前年同月比のパーセント値。",
+      "value_type": "percentage",
+      "_manual_description": true
+    },
+    {
+      "key": "串カツ田中グループ 直営全店 客単価（前年同月比）",
+      "name": "串カツ田中グループ 直営全店 客単価（前年同月比）",
+      "description": "「2． 2026年11月期 売上高 前年同月比（直営店）」の表において、「全店」の「客単価（％）」行の前年同月比のパーセント値。",
+      "value_type": "percentage",
+      "_manual_description": true
+    },
+    {
+      "key": "串カツ田中グループ全店 店舗数",
+      "name": "串カツ田中グループ全店 店舗数",
+      "description": "「１． 2026年11月期 店舗数の状況」の表において、「合計」行の店舗数の整数値。",
+      "value_type": "integer",
+      "_manual_description": true
+    },
+    {
+      "key": "串カツ田中グループ 直営全店 売上（前年同月比）",
+      "name": "串カツ田中グループ 直営全店 売上（前年同月比）",
+      "description": "「2． 2026年11月期 売上高 前年同月比（直営店）」の表において、「既存店」の「売上高（％）」行の前年同月比のパーセント値。",
+      "value_type": "percentage",
+      "_manual_description": true
+    },
+    {
+      "key": "串カツ田中グループ 直営既存店 客数（前年同月比）",
+      "name": "串カツ田中グループ 直営既存店 客数（前年同月比）",
+      "description": "「2． 2026年11月期 売上高 前年同月比（直営店）」の表において、「既存店」の「客数（％）」行の前年同月比のパーセント値。",
+      "value_type": "percentage",
+      "_manual_description": true
+    },
+    {
+      "key": "串カツ田中グループ 直営既存店 客単価（前年同月比）",
+      "name": "串カツ田中グループ 直営既存店 客単価（前年同月比）",
+      "description": "「2． 2026年11月期 売上高 前年同月比（直営店）」の表において、「既存店」の「客単価（％）」行の前年同月比のパーセント値。",
+      "value_type": "percentage",
+      "_manual_description": true
+    }
+  ],
+  "extraction_notes": "「2． 2026年11月期 売上高 前年同月比（直営店）」の表は、直営店に関する全店および既存店の売上高、客数、客単価の前年同月比を示しています。店舗数は「１． 2026年11月期 店舗数の状況」の表から取得します。",
+  "ticker": "3547",
+  "company_name": "3547",
+  "created_at": "2026-03-29T18:33:59.617941+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "月次速報（2026年2月度）",
+  "sample_submission_date": "2026-03-06",
+  "fields_count": 7,
+  "manual_override": true,
+  "field_rename_at": "2026-04-17T22:28:27+09:00",
+  "desc_rewrite_at": "2026-04-17T23:15:49+09:00",
+  "_doc_title_pattern_fixed_at": "2026-04-18T23:24:06.348126+09:00",
+  "_doc_title_pattern_fixed_from": "月次速報（YYYY年M月度）"
+}

@@ -1,0 +1,65 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "extraction_method": "gemini",
+  "fields": [
+    {
+      "key": "全社 売上（前年同月比）",
+      "name": "全社 売上（前年同月比）",
+      "description": "「《下期》」表の「全 社 売上高」行、前年同月比の数値（%）。または「《概況》」セクションに記載されている「全社合計売上高前年比」の数値（%）。",
+      "value_type": "percentage",
+      "_manual_description": true
+    },
+    {
+      "key": "全社 客数（前年同月比）",
+      "name": "全社 客数（前年同月比）",
+      "description": "「《下期》」表の「全 社」セクションの「客 数」行、前年同月比の数値（%）。",
+      "value_type": "percentage",
+      "_manual_description": true
+    },
+    {
+      "key": "全社 客数（前年同月比）",
+      "name": "全社 客数（前年同月比）",
+      "description": "「《下期》」表の「全 社」セクションの「客単価」行、前年同月比の数値（%）。",
+      "value_type": "percentage",
+      "_manual_description": true
+    },
+    {
+      "key": "全店 店舗数",
+      "name": "全店 店舗数",
+      "description": "「・月度末店舗数」の項目に記載されている店舗数（店舗）。",
+      "value_type": "integer"
+    },
+    {
+      "key": "既存店 売上（前年同月比）",
+      "name": "既存店 売上（前年同月比）",
+      "description": "「《概況》」セクションに記載されている「既存店売上高は前年比」の数値（%）。",
+      "value_type": "percentage"
+    },
+    {
+      "key": "既存店 客数（前年同月比）",
+      "name": "既存店 客数（前年同月比）",
+      "description": "文書冒頭の表の「客 数」行（「既 存 店」の下）、一番右端にある前年同月比の数値（%）。",
+      "value_type": "percentage"
+    },
+    {
+      "key": "既存店 客単価（前年同月比）",
+      "name": "既存店 客単価（前年同月比）",
+      "description": "文書冒頭の表の「客単価」行（「既 存 店」の下）、一番右端にある前年同月比の数値（%）。",
+      "value_type": "percentage"
+    }
+  ],
+  "extraction_notes": "既存店売上（前年同月比）は、表の数値と概況の記述で異なるため、概況の記述を優先して抽出する。その他の既存店指標は、冒頭の表の右端の値を当月分として抽出する。",
+  "ticker": "2778",
+  "company_name": "2778",
+  "created_at": "2026-03-29T17:55:02.351849+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "(株)パレモの月次売上高前年比情報に関するお知らせ",
+  "sample_submission_date": "2026-02-26",
+  "fields_count": 7,
+  "custom_prompt": "店舗数は各月末時点の「期末店舗数」をそのまま取得してください。\n出退店数を加減算して店舗数を計算しないでください。\nデータが空欄の場合はnullを返してください。値を捏造しないでください。",
+  "manual_override": true,
+  "manual_override_note": "NG21調査に基づくcustom_prompt/yoy_offset/unit_scale/overwrite_past_months修正",
+  "manual_override_at": "2026-04-09T09:12:28.445893+09:00",
+  "desc_rewrite_at": "2026-04-17T23:15:49+09:00"
+}

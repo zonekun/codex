@@ -1,0 +1,18 @@
+# 2023 batch#1 ai-finalize リトライ（OOM失敗後、CPU=2 / mem=8Gi に増強して再投入）
+# state.json + gemma_CURRENT.jsonl を再利用、Gemma TPU は再起動しない
+# 参照: docs/knowledges/tools/013_tdnet_load.md「バックフィル監視ツール」
+
+name: 2023_batch01_finalize_retry
+
+loads:
+  - job: tdnet-ai-finalize
+    region: us-west1
+    env:
+      RUN_ID: "68eea86d-2446-4680-b9be-a01cc512847c"
+
+workflows: []
+
+options:
+  parallel_loads: 1
+  poll_interval_s: 180
+  notify_on_start: true

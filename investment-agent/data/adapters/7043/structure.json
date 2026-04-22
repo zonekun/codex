@@ -1,0 +1,17 @@
+{
+  "ticker": "7043",
+  "company_name": "7043",
+  "metrics": [
+    {
+      "name": "etudes ARPU（千円）"
+    },
+    {
+      "name": "etudes MRR（千円）"
+    },
+    {
+      "name": "etudes 利用企業数（社）"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

@@ -1,0 +1,20 @@
+{
+  "ticker": "4019",
+  "company_name": "4019",
+  "metrics": [
+    {
+      "name": "TUNAG 利用企業数"
+    },
+    {
+      "name": "TUNAG 平均MRR（円）"
+    },
+    {
+      "name": "TUNAG事業 ストック収益（円）"
+    },
+    {
+      "name": "TUNAG事業 フロー収益（円）"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

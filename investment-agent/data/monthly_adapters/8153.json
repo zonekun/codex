@@ -1,0 +1,17 @@
+{
+  "ticker": "8153",
+  "company_name": "モスフードサービス",
+  "ir_page_url": "https://www.mos.co.jp/company/ir/library/monthly_info/",
+  "updated_at": "2026-04-12T17:25:42.239361+09:00",
+  "last_checked": "2026-04-12",
+  "status": "active",
+  "type": "html_table",
+  "eir_company_code": null,
+  "note": "eIRウィジェットではなくページ内HTMLテーブルに月次データ直接表示。html_table型。2026-04-12 CDP調査",
+  "playwright_required": true,
+  "link_href_pattern": null,
+  "link_text_pattern": null,
+  "manual_override": true,
+  "manual_override_note": "2026-04-12 CDP調査。DL失敗原因: type/URL誤り",
+  "manual_override_at": "2026-04-12T17:25:42.239361+09:00"
+}

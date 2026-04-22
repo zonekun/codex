@@ -1,0 +1,11 @@
+{
+  "ticker": "6191",
+  "company_name": "6191",
+  "metrics": [
+    {
+      "name": "連結 取扱高（百万円）"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

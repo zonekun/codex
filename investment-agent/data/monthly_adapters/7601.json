@@ -1,0 +1,71 @@
+{
+  "source": "non-tdnet(pdf)",
+  "format": "pdf",
+  "extraction_method": "regex",
+  "doc_title_pattern": "^(\\d{6})_(\\d{4})_(\\d{4}年\\d{1,2}月度)_月次業績のご報告_([0-9a-f]{8})$",
+  "year_from_title_regex": "(\\d{4})年\\d{1,2}月度",
+  "month_from_title_regex": "(\\d{1,2})月度",
+  "fields": [
+    {
+      "key": "全店 売上（前年同月比）",
+      "bc_key": "全店 売上（前年同月比）",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "BC 側は 2016 年までのデータしかなく追跡不可。独自管理（2026-04-19）。",
+      "value_type": "percentage",
+      "row_label_regex": "全\\s*店\\s*売上高前年比\\s+([\\d\\.]+)"
+    },
+    {
+      "key": "全店 日商（前年同月比）",
+      "bc_key": "全店 日商（前年同月比）",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "BC 側データ古いため独自管理。",
+      "value_type": "percentage",
+      "row_label_regex": "全\\s*店\\s*日商（千円）\\s*前年比\\s+[\\d,]+\\s+([\\d\\.]+)"
+    },
+    {
+      "key": "全店 客数（前年同月比）",
+      "bc_key": "全店 客数（前年同月比）",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "BC 側データ古いため独自管理。",
+      "value_type": "percentage",
+      "row_label_regex": "全\\s*店\\s*客数（人）\\s*前年比\\s+[\\d,]+\\s+([\\d\\.]+)"
+    },
+    {
+      "key": "全店 客単価（前年同月比）",
+      "bc_key": "全店 客単価（前年同月比）",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "BC 側データ古いため独自管理。",
+      "value_type": "percentage",
+      "row_label_regex": "全\\s*店\\s*客単価（円）\\s*前年比\\s+[\\d,]+\\s+([\\d\\.]+)"
+    },
+    {
+      "key": "既存店 日商（前年同月比）",
+      "bc_key": "既存店 日商（前年同月比）",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "BC 側データ古いため独自管理。",
+      "value_type": "percentage",
+      "row_label_regex": "既\\s*存\\s*店[^\\n]{0,10}?日商（千円）\\s*前年比\\s+[\\d,]+\\s+([\\d\\.]+)"
+    },
+    {
+      "key": "既存店 客数（前年同月比）",
+      "bc_key": "既存店 客数（前年同月比）",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "BC 側データ古いため独自管理。",
+      "value_type": "percentage",
+      "row_label_regex": "既\\s*存\\s*店[^\\n]{0,10}?客数（人）\\s*前年比\\s+[\\d,]+\\s+([\\d\\.]+)"
+    },
+    {
+      "key": "既存店 客単価（前年同月比）",
+      "bc_key": "既存店 客単価（前年同月比）",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "BC 側データ古いため独自管理。",
+      "value_type": "percentage",
+      "row_label_regex": "既\\s*存\\s*店[^\\n]{0,10}?客単価（円）\\s*前年比\\s+[\\d,]+\\s+([\\d\\.]+)"
+    }
+  ],
+  "ticker": "7601",
+  "company_name": "7601",
+  "manual_override": true,
+  "regex_redesign_at": "2026-04-19T10:25:42.733722+09:00",
+  "regex_redesign_note": "gemini の adapter が全 field 同じ値にフォールバック → PDF 行ごとの regex 手動再設計。BC 側 2016 年まで古いため bc_ignore=true で独自管理。"
+}

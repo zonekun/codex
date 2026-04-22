@@ -1,0 +1,19 @@
+FROM python:3.12-slim
+
+WORKDIR /app
+
+RUN pip install --no-cache-dir \
+    jpholiday \
+    pandas>=2.0 \
+    pyarrow>=15.0 \
+    "google-cloud-bigquery[pandas]>=3.0" \
+    requests>=2.31 \
+    "yfinance>=0.2" \
+    python-dotenv>=1.0
+
+COPY scripts/index_price_load.py scripts/index_price_load.py
+
+ENV PYTHONUTF8=1
+ENV PYTHONUNBUFFERED=1
+
+ENTRYPOINT ["python", "scripts/index_price_load.py"]

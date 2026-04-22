@@ -1,0 +1,19 @@
+{
+  "company_hp_url": "",
+  "css_selector": null,
+  "link_text_pattern": null,
+  "link_href_pattern": null,
+  "table_selector": null,
+  "skip_reason": null,
+  "url_source": "investigate_needs_review",
+  "last_checked": "2026-03-16",
+  "last_success": null,
+  "updated_at": "2026-03-16",
+  "eir_code": "7616",
+  "ticker": "7612",
+  "company_name": "コロワイド",
+  "type": "eir_api",
+  "status": "active",
+  "ir_page_url": "https://www.colowide.co.jp/ir/sale/",
+  "note": "eIRシステム。コード=7616"
+}

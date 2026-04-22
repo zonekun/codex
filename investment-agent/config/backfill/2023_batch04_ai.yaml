@@ -1,0 +1,23 @@
+# batch#4 AI フェーズのみ（load 完了済み、workflows のみ実行）
+# numpy+stream 新コードの実地確認用、1 CPU / 4Gi で 6,359 doc を処理
+# RSS 線形外挿: 623MB × (6359/4709) ≈ 840 MB → 4Gi 余裕
+# OOM or 他異常時は monitor が即中断 + LINE 通知
+
+name: 2023_batch04_ai
+
+loads: []   # load 完了済み（tdnet-load-daily-pdmcx 等）
+
+workflows:
+  - name: ai_processing_flow
+    location: us-central1
+    data:
+      date_from: "20230101"
+      date_to: "20231231"
+      ticker_from: "3024"
+      ticker_to: "3690"
+
+options:
+  parallel_loads: 1
+  poll_interval_s: 180
+  notify_on_start: true
+  notify_each_load: false

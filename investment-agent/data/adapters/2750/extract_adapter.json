@@ -1,0 +1,31 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "doc_title_pattern": "\\d{4}年\\d{1,2}月度\\s+月次売上高（速報）に関するお知らせ",
+  "year_from_title_regex": "(\\d{4})年\\d{1,2}月度",
+  "month_from_title_regex": "\\d{4}年(\\d{1,2})月度",
+  "fields": [
+    {
+      "key": "連結 売上（百万円）",
+      "name": "連結 売上（百万円）",
+      "row_label_regex": "売上高\\s+[\\d,]+\\s+[\\d,]+\\s+([\\d,]+)",
+      "value_type": "integer",
+      "group": 1
+    },
+    {
+      "key": "連結 売上（前年同月比）",
+      "name": "連結 売上（前年同月比）",
+      "row_label_regex": "前年比\\s+[\\d.]+\\s+[\\d.]+\\s+([\\d.]+)",
+      "value_type": "percentage",
+      "group": 1
+    }
+  ],
+  "ticker": "2750",
+  "company_name": "2750",
+  "created_at": "2026-03-28T16:34:28.083587+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2026年１月度　月次売上高（速報）に関するお知らせ",
+  "sample_submission_date": "2026-02-13",
+  "fields_count": 2,
+  "overwrite_past_months": true
+}

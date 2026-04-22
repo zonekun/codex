@@ -1,0 +1,52 @@
+{
+  "source": "download",
+  "format": "xls",
+  "sheet_name": "成約家賃単価 Ave unit rent",
+  "label_col_index": 0,
+  "month_row_index": 2,
+  "data_start_row": 4,
+  "fields": [
+    {
+      "key": "セキュリティシステム設置戸数 純増（戸）",
+      "name": "セキュリティシステム設置戸数 純増（戸）",
+      "row_label_regex": "セキュリティシステム設置戸数 純増（戸）",
+      "value_type": "integer"
+    },
+    {
+      "key": "入居率（%）",
+      "name": "入居率（%）",
+      "row_label_regex": "入居率（%）",
+      "value_type": "percentage"
+    },
+    {
+      "key": "管理戸数 純増（戸）",
+      "name": "管理戸数 純増（戸）",
+      "row_label_regex": "管理戸数 純増（戸）",
+      "value_type": "integer"
+    },
+    {
+      "key": "賃貸WEB契約件数（戸）",
+      "name": "賃貸WEB契約件数（戸）",
+      "row_label_regex": "賃貸WEB契約件数（戸）",
+      "value_type": "integer"
+    },
+    {
+      "key": "賃貸店舗（店）",
+      "name": "賃貸店舗（店）",
+      "row_label_regex": "賃貸店舗（店）",
+      "value_type": "integer"
+    },
+    {
+      "key": "防犯カメラ設置棟数 純増（棟）",
+      "name": "防犯カメラ設置棟数 純増（棟）",
+      "row_label_regex": "防犯カメラ設置棟数 純増（棟）",
+      "value_type": "integer"
+    }
+  ],
+  "extraction_notes": "DataFrameプレビューに抽出対象のメトリクス行が含まれていないため、row_label_regexはメトリクス名と完全に一致すると仮定しています。",
+  "ticker": "8848",
+  "company_name": "8848",
+  "created_at": "2026-04-04T00:34:31.317585+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_file": "000000_8848_月次データ_dc87bacf.xls"
+}

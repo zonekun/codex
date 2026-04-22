@@ -1,0 +1,38 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "doc_title_pattern": "(\\\\d{4})年(\\\\d{1,2})月 月次の売上状況について",
+  "year_from_title_regex": "(\\\\d{4})年",
+  "month_from_title_regex": "(\\\\d{1,2})月",
+  "fields": [
+    {
+      "key": "国内直営 全店 売上（前年同月比）",
+      "name": "国内直営 全店 売上（前年同月比）",
+      "row_label_regex": "全店\\s+([\\d.]+%)\\s+([\\d.]+%)\\s+([\\d.]+%)\\s+([\\d.]+%)\\s+([\\d.]+%)\\s+([\\d.]+%)\\s+([\\d.]+%)\\s+([\\d.]+%)\\s+([\\d.]+)%",
+      "value_type": "percentage",
+      "group": 9
+    },
+    {
+      "key": "全店 店舗数",
+      "name": "全店 店舗数",
+      "row_label_regex": "チェーン合計\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)",
+      "value_type": "integer",
+      "group": 9
+    },
+    {
+      "key": "国内直営 既存店 売上（前年同月比）",
+      "name": "国内直営 既存店 売上（前年同月比）",
+      "row_label_regex": "既存店\\s+([\\d.]+%)\\s+([\\d.]+%)\\s+([\\d.]+%)\\s+([\\d.]+%)\\s+([\\d.]+%)\\s+([\\d.]+%)\\s+([\\d.]+%)\\s+([\\d.]+%)\\s+([\\d.]+)%",
+      "value_type": "percentage",
+      "group": 9
+    }
+  ],
+  "extraction_notes": "各メトリクスは、表形式のデータから最新月の値（右端の値）を抽出しています。",
+  "ticker": "9278",
+  "company_name": "9278",
+  "created_at": "2026-03-28T16:54:58.382057+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2026年2月 月次の売上状況について",
+  "sample_submission_date": "2026-03-05",
+  "fields_count": 3
+}

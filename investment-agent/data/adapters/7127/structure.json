@@ -1,0 +1,62 @@
+{
+  "ticker": "7127",
+  "company_name": "7127",
+  "metrics": [
+    {
+      "name": "屋台屋博多劇場 既存店 売上（前年同月比）"
+    },
+    {
+      "name": "屋台屋博多劇場 既存店 客単価（前年同月比）"
+    },
+    {
+      "name": "屋台屋博多劇場 既存店 客数（前年同月比）"
+    },
+    {
+      "name": "飲食事業部 全店 売上（前年同月比）"
+    },
+    {
+      "name": "飲食事業部 全店 客単価（前年同月比）"
+    },
+    {
+      "name": "飲食事業部 全店 客数（前年同月比）"
+    },
+    {
+      "name": "飲食事業部 全店 店舗数"
+    }
+  ],
+  "monthly_items": [
+    {
+      "name": "全店（全業態） 売上高前年比（%）",
+      "_manual_add": true,
+      "_bc_value_invalid": true,
+      "_note": "PDF直取得（飲食事業部 全業態 全店）。BC側に該当指標なしのため bc_ignore=true で運用。抽出値を正とする。"
+    },
+    {
+      "name": "全店（全業態） 客数前年比（%）",
+      "_manual_add": true,
+      "_bc_value_invalid": true,
+      "_note": "PDF直取得。BC不採用。"
+    },
+    {
+      "name": "全店（全業態） 客単価前年比（%）",
+      "_manual_add": true,
+      "_bc_value_invalid": true,
+      "_note": "PDF直取得。BC不採用。"
+    },
+    {
+      "name": "全店（全業態） 前年店舗数",
+      "_manual_add": true,
+      "_bc_value_invalid": true,
+      "_note": "PDF直取得。BC不採用。"
+    },
+    {
+      "name": "全店（全業態） 当年店舗数",
+      "_manual_add": true,
+      "_bc_value_invalid": true,
+      "_note": "PDF直取得。BC不採用。"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-18T19:55:00+09:00",
+  "monthly_items_updated_at": "2026-04-18T19:55:00+09:00"
+}

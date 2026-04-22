@@ -1,0 +1,52 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "extraction_method": "gemini",
+  "doc_title_pattern": "月次売上情報（前年比）のお知らせ",
+  "year_from_title_regex": "",
+  "month_from_title_regex": "",
+  "fields": [
+    {
+      "key": "直営全店 売上（前年同月比）",
+      "name": "直営全店 売上（前年同月比）",
+      "description": "2026年2月度の直営全店売上高の前年同月比（%）。「《2026年２月度 直営店売上（前年比）》」の表の「全 店」の「計」行、数値。",
+      "value_type": "percentage",
+      "_manual_description": true
+    },
+    {
+      "key": "直営既存店 売上（前年同月比）",
+      "name": "直営既存店 売上（前年同月比）",
+      "description": "2026年2月度の直営既存店売上高の前年同月比（%）。「《2026年２月度 直営店売上（前年比）》」の表の「既 存 店」の「計」行、数値。",
+      "value_type": "percentage",
+      "_manual_description": true
+    },
+    {
+      "key": "直営既存店 小売店売上（前年同月比）",
+      "name": "直営既存店 小売店売上（前年同月比）",
+      "description": "2026年2月度の直営既存店小売店売上高の前年同月比（%）。「《2026年２月度 直営店売上（前年比）》」の表の「既 存 店」の「小売店」行、数値。",
+      "value_type": "percentage",
+      "_manual_description": true
+    },
+    {
+      "key": "直営既存店 オンライン売上（前年同月比）",
+      "name": "直営既存店 オンライン売上（前年同月比）",
+      "description": "2026年2月度の直営既存店オンライン売上高の前年同月比（%）。「《2026年２月度 直営店売上（前年比）》」の表の「既 存 店」の「オンラインショップ」行、数値。",
+      "value_type": "percentage",
+      "_manual_description": true
+    }
+  ],
+  "extraction_notes": "文書タイトルには年月の情報が含まれていませんが、本文中に「2026年2月度」の記載があります。アパレル店舗数の情報は文書中に見当たりませんでした。",
+  "ticker": "3608",
+  "company_name": "3608",
+  "created_at": "2026-03-29T18:33:19.358871+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "月次売上情報（前年比）のお知らせ",
+  "sample_submission_date": "2026-03-06",
+  "fields_count": 4,
+  "overwrite_past_months": true,
+  "manual_override": true,
+  "manual_override_note": "NG21調査に基づくcustom_prompt/yoy_offset/unit_scale/overwrite_past_months修正",
+  "manual_override_at": "2026-04-09T09:12:27.163906+09:00",
+  "custom_prompt": "対象月のデータがPDF内に記載されていない（空欄やハイフン）場合は、必ずnullを返してください。\nテーブルは上段（3月-8月）と下段（9月-2月）に分かれている場合があります。対象月が含まれるテーブルから取得してください。\n「直営全店」「直営既存店」は別の行です。",
+  "desc_rewrite_at": "2026-04-17T23:15:49+09:00"
+}

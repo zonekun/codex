@@ -1,0 +1,35 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "fields": [
+    {
+      "key": "旅客運輸収入 定期（前年同月比）",
+      "name": "旅客運輸収入 定期（前年同月比）",
+      "row_label_regex": "8月.*?([+-]?\\d+\\.\\d+%)",
+      "value_type": "percentage",
+      "yoy_offset": 100
+    },
+    {
+      "key": "旅客運輸収入 定期外（前年同月比）",
+      "name": "旅客運輸収入 定期外（前年同月比）",
+      "row_label_regex": "8月.*?[+-]?\\d+\\.\\d+%.*?([+-]?\\d+\\.\\d+%)",
+      "value_type": "percentage",
+      "yoy_offset": 100
+    },
+    {
+      "key": "旅客運輸収入 合計（前年同月比）",
+      "name": "旅客運輸収入 合計（前年同月比）",
+      "row_label_regex": "8月.*?[+-]?\\d+\\.\\d+%.*?[+-]?\\d+\\.\\d+%.*?([+-]?\\d+\\.\\d+%)",
+      "value_type": "percentage",
+      "yoy_offset": 100
+    }
+  ],
+  "extraction_notes": "月次データは、提供されたテキスト内で最も新しい完全な月（8月）のデータを抽出します。各メトリクスは、8月の行におけるパーセンテージの出現順序に基づいて識別されます。",
+  "ticker": "9023",
+  "company_name": "9023",
+  "created_at": "2026-03-21T20:08:53.631602+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2026年３月期第３四半期決算説明会資料",
+  "sample_submission_date": "2026-01-30",
+  "fields_count": 3
+}

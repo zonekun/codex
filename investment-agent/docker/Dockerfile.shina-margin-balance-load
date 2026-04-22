@@ -1,0 +1,18 @@
+FROM python:3.12-slim
+
+WORKDIR /app
+
+RUN pip install --no-cache-dir \
+    requests>=2.31 \
+    jpholiday \
+    pandas>=2.0 \
+    "google-cloud-bigquery[pandas]>=3.0" \
+    dropbox>=11.36
+
+COPY scripts/shina_margin_balance_load.py scripts/shina_margin_balance_load.py
+COPY scripts/notify.py scripts/notify.py
+
+ENV PYTHONUTF8=1
+ENV PYTHONUNBUFFERED=1
+
+ENTRYPOINT ["python", "scripts/shina_margin_balance_load.py"]

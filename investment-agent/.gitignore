@@ -1,0 +1,56 @@
+# Environment
+.env
+.venv/
+.venv-codex/
+venv/
+env/
+.uv-cache/
+.uv-python/
+
+# Secrets / Credentials
+keys/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+
+# Data (large files / outputs)
+data/csv/
+data/cache/
+data/logs/
+
+# Data (master / reference — git tracked)
+!data/master/
+
+# Claude Code (端末固有設定)
+.claude/settings.local.json
+.claude/scheduled_tasks.lock
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test
+.pytest_cache/
+htmlcov/
+.coverage
+
+# mypy
+.mypy_cache/
+
+# ruff
+.ruff_cache/
+
+# Temporary bootstrap test workspace
+tmp_codex_bootstrap_test/
+tmp_codex_bootstrap_test_runner.ps1

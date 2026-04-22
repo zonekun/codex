@@ -1,0 +1,73 @@
+{
+  "source": "pdf",
+  "format": "pdf",
+  "doc_title_pattern": "20\\d{2}\\d{2}_\\d{4}_(\\d{4}年\\d{2}月度)_月次売上速報.*",
+  "year_from_title_regex": "(\\d{4})年\\d{2}月度",
+  "month_from_title_regex": "\\d{4}年(\\d{2})月度",
+  "fields": [
+    {
+      "key": "グループ 売上（前年同月比）",
+      "name": "グループ 売上（前年同月比）",
+      "row_label_regex": "グループ計前年比\\s+[\\d\\.#DIV/!%]+\\s+[\\d\\.#DIV/!%]+\\s+[\\d\\.#DIV/!%]+\\s+[\\d\\.#DIV/!%]+\\s+([\\d\\.#DIV/!%]+)",
+      "value_type": "percentage",
+      "group": 1
+    },
+    {
+      "key": "グループ 店舗数",
+      "name": "グループ 店舗数",
+      "row_label_regex": "月末店舗数\\s+([\\d]+)\\s+([\\d]+)\\s+([\\d]+)\\s+([\\d]+)",
+      "value_type": "integer",
+      "group": 4
+    },
+    {
+      "key": "売上 エアコン（前年同月比）",
+      "name": "売上 エアコン（前年同月比）",
+      "row_label_regex": "エアコン\\s+[\\d\\.#DIV/!%]+\\s+[\\d\\.#DIV/!%]+\\s+[\\d\\.#DIV/!%]+\\s+[\\d\\.#DIV/!%]+\\s+([\\d\\.#DIV/!%]+)",
+      "value_type": "percentage",
+      "group": 1
+    },
+    {
+      "key": "売上 テレビ（前年同月比）",
+      "name": "売上 テレビ（前年同月比）",
+      "row_label_regex": "テレビ\\s+[\\d\\.#DIV/!%]+\\s+[\\d\\.#DIV/!%]+\\s+[\\d\\.#DIV/!%]+\\s+[\\d\\.#DIV/!%]+\\s+([\\d\\.#DIV/!%]+)",
+      "value_type": "percentage",
+      "group": 1
+    },
+    {
+      "key": "売上 パソコン（前年同月比）",
+      "name": "売上 パソコン（前年同月比）",
+      "row_label_regex": "パソコン\\s+[\\d\\.#DIV/!%]+\\s+[\\d\\.#DIV/!%]+\\s+[\\d\\.#DIV/!%]+\\s+[\\d\\.#DIV/!%]+\\s+([\\d\\.#DIV/!%]+)",
+      "value_type": "percentage",
+      "group": 1
+    },
+    {
+      "key": "売上 冷蔵庫（前年同月比）",
+      "name": "売上 冷蔵庫（前年同月比）",
+      "row_label_regex": "冷蔵庫\\s+[\\d\\.#DIV/!%]+\\s+[\\d\\.#DIV/!%]+\\s+[\\d\\.#DIV/!%]+\\s+[\\d\\.#DIV/!%]+\\s+([\\d\\.#DIV/!%]+)",
+      "value_type": "percentage",
+      "group": 1
+    },
+    {
+      "key": "売上 携帯電話（前年同月比）",
+      "name": "売上 携帯電話（前年同月比）",
+      "row_label_regex": "携帯電話\\s+[\\d\\.#DIV/!%]+\\s+[\\d\\.#DIV/!%]+\\s+[\\d\\.#DIV/!%]+\\s+[\\d\\.#DIV/!%]+\\s+([\\d\\.#DIV/!%]+)",
+      "value_type": "percentage",
+      "group": 1
+    },
+    {
+      "key": "売上 洗濯機・クリーナー（前年同月比）",
+      "name": "売上 洗濯機・クリーナー（前年同月比）",
+      "row_label_regex": "洗濯機・クリーナー\\s+[\\d\\.#DIV/!%]+\\s+[\\d\\.#DIV/!%]+\\s+[\\d\\.#DIV/!%]+\\s+[\\d\\.#DIV/!%]+\\s+([\\d\\.#DIV/!%]+)",
+      "value_type": "percentage",
+      "group": 1
+    }
+  ],
+  "ticker": "8173",
+  "company_name": "8173",
+  "created_at": "2026-04-04T00:22:58.602876+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "202107_8173_2021年07月度_月次売上速報_f8220f57",
+  "sample_submission_date": "",
+  "report_url": "TDNET文書",
+  "sample_file": "202107_8173_2021年07月度_月次売上速報_f8220f57"
+}

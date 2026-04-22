@@ -1,0 +1,46 @@
+{
+  "source": "html_table",
+  "format": "html",
+  "sheet_name": "HTML table",
+  "label_col_index": 0,
+  "month_row_index": 0,
+  "data_start_row": 1,
+  "fields": [
+    {
+      "key": "EC・通販 売上（前年同月比）",
+      "name": "EC・通販 売上（前年同月比）",
+      "row_label_regex": "EC・通販",
+      "value_type": "percentage"
+    },
+    {
+      "key": "アウトレット 売上（前年同月比）",
+      "name": "アウトレット 売上（前年同月比）",
+      "row_label_regex": "アウトレット",
+      "value_type": "percentage"
+    },
+    {
+      "key": "全社 売上（前年同月比）",
+      "name": "全社 売上（前年同月比）",
+      "row_label_regex": "全社",
+      "value_type": "percentage"
+    },
+    {
+      "key": "百貨店 売上（前年同月比）",
+      "name": "百貨店 売上（前年同月比）",
+      "row_label_regex": "百貨店",
+      "value_type": "percentage"
+    },
+    {
+      "key": "直営店 売上（前年同月比）",
+      "name": "直営店 売上（前年同月比）",
+      "row_label_regex": "直営店",
+      "value_type": "percentage"
+    }
+  ],
+  "extraction_notes": "「実店舗数」はプレビューデータに見当たらなかったため、抽出ルールを定義していません。",
+  "ticker": "8011",
+  "company_name": "8011",
+  "created_at": "2026-04-04T00:56:07.537309+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_file": "000000_8011_monthly_table.html"
+}

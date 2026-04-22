@@ -1,0 +1,99 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "extraction_method": "gemini",
+  "doc_title_pattern": "月次|月度|月間|売上|速報|実績|業績|概況|KPI|ＫＰＩ|状況|報告|推移|月末",
+  "year_from_title_regex": "（(?P<year>\\d{4})年",
+  "month_from_title_regex": "年(?P<month>\\d{1,2})月度",
+  "fields": [
+    {
+      "key": "国内全店 売上（前年同月比）",
+      "name": "国内全店 売上（前年同月比）",
+      "description": "「国内全店」の項目にある「前年対比」行の「+12.1%」の値。または、「2月度の全店合計の売上高は前年同月比+12.1％」という記述から読み取れる、2月度の国内全店売上高の前年同月比（%）。",
+      "value_type": "percentage",
+      "yoy_offset": 100,
+      "bc_key": "国内全店 売上（前年同月比）"
+    },
+    {
+      "key": "国内 全店 店舗数",
+      "name": "国内 全店 店舗数",
+      "description": "「国内全店」の項目にある「月末店舗数」行の最初の「43」の値。これは2月度の国内全店月末店舗数（件）。",
+      "value_type": "integer"
+    },
+    {
+      "key": "国内 既存店 売上（前年同月比）",
+      "name": "国内 既存店 売上（前年同月比）",
+      "description": "「国内既存店」の項目にある「売上高」行の最初の「+9.7%」の値。または、「既存店は+9.7％となりました」という記述から読み取れる、2月度の国内既存店売上高の前年同月比（%）。",
+      "value_type": "percentage",
+      "bc_key": "国内 既存店 売上（前年同月比）",
+      "yoy_offset": 100
+    },
+    {
+      "key": "国内 既存店 客数（前年同月比）",
+      "name": "国内 既存店 客数（前年同月比）",
+      "description": "「国内既存店」の項目にある「客 数」行の最初の「+4.6%」の値。これは2月度の国内既存店客数の前年同月比（%）。",
+      "value_type": "percentage",
+      "bc_key": "国内 既存店 客数（前年同月比）",
+      "yoy_offset": 100
+    },
+    {
+      "key": "国内 既存店 客単価（前年同月比）",
+      "name": "国内 既存店 客単価（前年同月比）",
+      "description": "「国内既存店」の項目にある「客単価」行の最初の「+3.6%」の値。これは2月度の国内既存店客単価の前年同月比（%）。",
+      "value_type": "percentage",
+      "bc_key": "国内 既存店 客単価（前年同月比）",
+      "yoy_offset": 100
+    }
+  ],
+  "extraction_notes": "「国内 全店 売上（百万円）」の当月絶対値は、提供されたテキストからは明確に特定できませんでした。累計値や前年同月比は記載されていますが、当月の絶対売上高は確認できません。",
+  "ticker": "7625",
+  "company_name": "7625",
+  "created_at": "2026-03-29T18:34:58.029055+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "月次売上速報（2026年2月度）",
+  "sample_submission_date": "2026-03-03",
+  "fields_count": 5,
+  "month_direction": "row",
+  "manual_override": true,
+  "manual_override_note": "反省踏まえた再調査に基づく修正",
+  "manual_override_at": "2026-04-10T08:03:10.166100+09:00",
+  "custom_prompt": "「国内全店」テーブルと「国内既存店」テーブルを区別してください。店舗数は「月末店舗数」行から取得してください。注記にある閉店予定は含めないでください。",
+  "overwrite_past_months": true,
+  "_doc_title_pattern_fixed_at": "2026-04-18T23:24:13.024073+09:00",
+  "_doc_title_pattern_fixed_from": "月次売上速報（YYYY年M月度）",
+  "_reverse_mapping_applied_at": "2026-04-19T19:17:55.504683+09:00",
+  "_agent_patched_at": "2026-04-19T20:57:32.060937+09:00",
+  "_agent_patch_history": [
+    {
+      "ts": "2026-04-19T19:38:35.603308+09:00",
+      "applied": [
+        "field '国内全店 売上（前年同月比）': ['bc_key', 'yoy_offset']"
+      ]
+    },
+    {
+      "ts": "2026-04-19T19:38:38.624736+09:00",
+      "applied": [
+        "field '国内 既存店 売上（前年同月比）': ['bc_key', 'yoy_offset']"
+      ]
+    },
+    {
+      "ts": "2026-04-19T19:38:41.634291+09:00",
+      "applied": [
+        "field '国内 既存店 客数（前年同月比）': ['bc_key', 'yoy_offset']"
+      ]
+    },
+    {
+      "ts": "2026-04-19T19:38:44.449255+09:00",
+      "applied": [
+        "field '国内 既存店 客単価（前年同月比）': ['bc_key', 'yoy_offset']"
+      ]
+    },
+    {
+      "ts": "2026-04-19T20:57:32.060937+09:00",
+      "applied": [
+        "top-level: ['doc_title_pattern', '_agent_loosened_from']"
+      ]
+    }
+  ],
+  "_agent_loosened_from": "月次売上速報(YYYY年M月度)"
+}

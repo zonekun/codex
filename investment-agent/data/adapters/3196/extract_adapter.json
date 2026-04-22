@@ -1,0 +1,17 @@
+{
+  "source": "pdf",
+  "format": "pdf",
+  "doc_title_pattern": ".*IR資料.*中期経営計画.*",
+  "year_from_title_regex": "(\\d{4})_\\d{1,2}_\\d{1,2}",
+  "month_from_title_regex": "\\d{4}_(\\d{1,2})_\\d{1,2}",
+  "fields": [],
+  "extraction_notes": "提供されたテキストは月次開示文書ではなく、中期経営計画に関するIR資料です。そのため、要求された月次売上（前年同月比）などのメトリクスはテキスト内に存在しませんでした。",
+  "ticker": "3196",
+  "company_name": "3196",
+  "created_at": "2026-04-04T01:17:58.720010+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "000000_3196_2026_2_27IR資料2026年～2030年_中期経営計画PDF（14,39_5286417b",
+  "sample_submission_date": "",
+  "report_url": "TDNET文書",
+  "sample_file": "000000_3196_2026_2_27IR資料2026年～2030年_中期経営計画PDF（14,39_5286417b"
+}

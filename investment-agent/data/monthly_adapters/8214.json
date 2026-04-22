@@ -1,0 +1,20 @@
+{
+  "ticker": "8214",
+  "company_name": "ＡＯＫＩホールディングス",
+  "updated_at": "2026-03-24",
+  "company_hp_url": "http://www.aoki-hd.co.jp/",
+  "ir_page_url": "https://ir.aoki-hd.co.jp/ja/ir/finance/monthlyreport.html",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": null,
+  "link_href_pattern": ".*\\.(pdf|xlsx|xls)",
+  "table_selector": null,
+  "status": "active",
+  "skip_reason": null,
+  "note": "AOKIホールディングス月次。fl=False（PDF-lhpミス修正）",
+  "url_source": "migrated",
+  "last_checked": "2026-03-16",
+  "last_success": "2026-03-16",
+  "follow_links": false,
+  "playwright_required": true
+}

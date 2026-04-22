@@ -1,0 +1,14 @@
+{
+  "ticker": "5589",
+  "company_name": "5589",
+  "metrics": [
+    {
+      "name": "ASNET 取引台数実績（前年同月比）"
+    },
+    {
+      "name": "ASNET 取引台数実績（台）"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

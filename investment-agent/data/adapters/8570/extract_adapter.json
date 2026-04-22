@@ -1,0 +1,14 @@
+{
+  "source": "pdf",
+  "format": "pdf",
+  "fields": [],
+  "extraction_notes": "The provided document is a press release announcing a new app and does not contain the requested financial performance metrics (カードキャッシング 取扱高（前年同月比）, カードショッピング 取扱高（前年同月比）). Therefore, the 'fields' array is empty.",
+  "ticker": "8570",
+  "company_name": "8570",
+  "created_at": "2026-04-04T01:18:54.469548+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "000000_8570_もっと使いやすく、もっと便利に。「AEON_Pay」アプリ提供開始！(236KB_64a9db6a",
+  "sample_submission_date": "",
+  "report_url": "TDNET文書",
+  "sample_file": "000000_8570_もっと使いやすく、もっと便利に。「AEON_Pay」アプリ提供開始！(236KB_64a9db6a"
+}

@@ -1,0 +1,60 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "extraction_method": "gemini",
+  "doc_title_pattern": "(\\d{4})年(\\d{1,2})月度 月次概況(速報)のお知らせ",
+  "year_from_title_regex": "(\\d{4})",
+  "month_from_title_regex": "(\\d{1,2})",
+  "fields": [
+    {
+      "key": "単体 売上（百万円）",
+      "name": "単体 売上（百万円）",
+      "description": "月次実績の表の「売上高（百万円）」行のにある数値（百万円）。",
+      "value_type": "integer",
+      "_manual_description": true
+    },
+    {
+      "key": "単体 売上（前年同月比）",
+      "name": "単体 売上（前年同月比）",
+      "description": "月次実績 前年同月比の表の「売上高（%）」行のにある前年同月比（%）。",
+      "value_type": "percentage",
+      "_manual_description": true
+    },
+    {
+      "key": "総プレイ回数（回）",
+      "name": "総プレイ回数（回）",
+      "description": "月次実績の表の「KPI 総プレイ回数（万回）」行のにある数値（万回）。これを回に変換するため10000を掛ける。",
+      "value_type": "integer",
+      "_manual_description": true
+    },
+    {
+      "key": "ピクトリンク月末有料会員数（人）",
+      "name": "ピクトリンク月末有料会員数（人）",
+      "description": "月次実績の表の「ピクトリンク月末有料会員数（万人）」行のにある数値（万人）。総プレイ回数の行ではなく、その下の会員数の行を取得すること。これを人に変換するため10000を掛ける。",
+      "value_type": "integer",
+      "_manual_description": true
+    },
+    {
+      "key": "総プレイ回数（前年同月比）",
+      "name": "総プレイ回数（前年同月比）",
+      "description": "月次実績 前年同月比の表の「KPI 総プレイ回数（%）」行のにある前年同月比（%）。",
+      "value_type": "percentage",
+      "_manual_description": true
+    }
+  ],
+  "extraction_notes": "文書タイトルから対象月を特定し、月次実績表と前年同月比表から各KPIを抽出。総プレイ回数とピクトリンク会員数は異なる行であることに注意。",
+  "ticker": "6238",
+  "company_name": "6238",
+  "created_at": "2026-03-28T19:55:24.538829+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2025年12月度 月次概況（速報）のお知らせ",
+  "sample_submission_date": "2026-01-23",
+  "fields_count": 5,
+  "manual_override": true,
+  "manual_override_note": "auto-detection誤り修正: 誤yoy_offset/unit_scale削除",
+  "manual_override_at": "2026-04-09T15:50:12.657670+09:00",
+  "custom_prompt": "このPDFには「総プレイ回数」「ピクトリンク月末有料会員数」等のKPIがあります。\n単位に注意: 「万回」は万単位、「万人」は万単位です。\nPDFに記載されている数値をそのまま返してください（例: 175.3万回 → 175.3）。\n前年同月比はパーセンテージ表記です。そのまま返してください。",
+  "desc_rewrite_at": "2026-04-17T23:15:49+09:00",
+  "_doc_title_pattern_fixed_at": "2026-04-18T23:24:09.149093+09:00",
+  "_doc_title_pattern_fixed_from": "(\\d{4})年(\\d{1,2})月度 月次概況（速報）のお知らせ"
+}

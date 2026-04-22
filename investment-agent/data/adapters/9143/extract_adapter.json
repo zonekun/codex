@@ -1,0 +1,38 @@
+{
+  "source": "pdf",
+  "format": "pdf",
+  "fields": [
+    {
+      "key": "その他 取扱個数（前年同月比）",
+      "name": "その他 取扱個数（前年同月比）",
+      "row_label_regex": "その他\\s+\\d+百万個\\s+([△\\d.]+)％",
+      "value_type": "percentage",
+      "group": 1,
+      "use_last_number": true
+    },
+    {
+      "key": "取扱個数 合計（前年同月比）",
+      "name": "取扱個数 合計（前年同月比）",
+      "row_label_regex": "取扱個数\\s+\\d+百万個\\s+([△\\d.]+)％",
+      "value_type": "percentage",
+      "group": 1,
+      "use_last_number": true
+    },
+    {
+      "key": "飛脚宅配便 取扱個数（前年同月比）",
+      "name": "飛脚宅配便 取扱個数（前年同月比）",
+      "row_label_regex": "飛脚宅配便\\s+\\d+百万個\\s+([△\\d.]+)％",
+      "value_type": "percentage",
+      "group": 1,
+      "use_last_number": true
+    }
+  ],
+  "ticker": "9143",
+  "company_name": "9143",
+  "created_at": "2026-04-04T01:26:25.076793+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "201808_9143_2018年第1四半期デリバリー事業の月別取扱個数実績_cafda1b3",
+  "sample_submission_date": "",
+  "report_url": "TDNET文書",
+  "sample_file": "201808_9143_2018年第1四半期デリバリー事業の月別取扱個数実績_cafda1b3"
+}

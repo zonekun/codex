@@ -1,0 +1,61 @@
+{
+  "source": "pdf",
+  "format": "pdf",
+  "doc_title_pattern": "(\\d{4})年(\\d{1,2})月度_マンスリーレポート",
+  "year_from_title_regex": "(\\d{4})年",
+  "month_from_title_regex": "(\\d{1,2})月度",
+  "fields": [
+    {
+      "key": "国内総売上（前年同月比）",
+      "name": "国内総売上（前年同月比）",
+      "row_label_regex": "国内総売上高（百万円）\\s+\\d+\\s+([\\d.]+)",
+      "value_type": "percentage",
+      "group": 1,
+      "use_last_number": false
+    },
+    {
+      "key": "国内総売上（百万円）",
+      "name": "国内総売上（百万円）",
+      "row_label_regex": "国内総売上高（百万円）\\s+(\\d+)",
+      "value_type": "integer",
+      "group": 1,
+      "use_last_number": false
+    },
+    {
+      "key": "拠点数 合計",
+      "name": "拠点数 合計",
+      "row_label_regex": "合計（拠点）\\s+(\\d+)",
+      "value_type": "integer",
+      "group": 1,
+      "use_last_number": false
+    },
+    {
+      "key": "足場レンタル 国内売上（前年同月比）",
+      "name": "足場レンタル 国内売上（前年同月比）",
+      "row_label_regex": "レンタル関連事業\\s+\\d+\\s+([\\d.]+)",
+      "value_type": "percentage",
+      "group": 1,
+      "use_last_number": false,
+      "notes": "「レンタル関連事業」を「足場レンタル」として抽出"
+    },
+    {
+      "key": "顧客数（社）",
+      "name": "顧客数（社）",
+      "row_label_regex": "顧客数（社）\\s+([\\d,]+)",
+      "value_type": "integer",
+      "group": 1,
+      "use_last_number": false
+    }
+  ],
+  "extraction_notes": "「レンタル関連事業」を「足場レンタル」として抽出しています。",
+  "ticker": "9223",
+  "company_name": "9223",
+  "created_at": "2026-04-04T00:19:25.809576+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "202404_9223_2024年4月度_マンスリーレポート_6d28c385",
+  "sample_submission_date": "",
+  "report_url": "TDNET文書",
+  "sample_file": "202404_9223_2024年4月度_マンスリーレポート_6d28c385",
+  "inactive": true,
+  "inactive_reason": "月次開示終了"
+}

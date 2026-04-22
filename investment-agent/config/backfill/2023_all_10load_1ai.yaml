@@ -1,0 +1,53 @@
+# 2023 バックフィル 全ticker範囲 まとめて (load 10ショット → AI 1本) パターン例
+# - load 10並列(or 直列) → 全 BQ pending 投入
+# - その後 workflows 1本で AI 処理 (2023全年、ticker 指定なし=全件)
+# 注意: TPU 1起動で 2023全 ~33,000 doc を一気に処理 → preempt 長距離リスク↑、ただしTPU O/H $11→$1 圧縮
+# 参照: docs/plans/20260417_091112_tdnet_load_ai_split.md「2023 バックフィル ticker 11分割」
+
+name: 2023_all_10load_1ai
+
+loads:
+  - job: tdnet-load-daily
+    region: us-west1
+    env: {DATE_FROM: "20230101", DATE_TO: "20231231", TICKER_FROM: "1301", TICKER_TO: "1909"}
+  - job: tdnet-load-daily
+    region: us-west1
+    env: {DATE_FROM: "20230101", DATE_TO: "20231231", TICKER_FROM: "190A", TICKER_TO: "232A"}
+  - job: tdnet-load-daily
+    region: us-west1
+    env: {DATE_FROM: "20230101", DATE_TO: "20231231", TICKER_FROM: "2330", TICKER_TO: "3023"}
+  - job: tdnet-load-daily
+    region: us-west1
+    env: {DATE_FROM: "20230101", DATE_TO: "20231231", TICKER_FROM: "3024", TICKER_TO: "3690"}
+  - job: tdnet-load-daily
+    region: us-west1
+    env: {DATE_FROM: "20230101", DATE_TO: "20231231", TICKER_FROM: "3691", TICKER_TO: "4410"}
+  - job: tdnet-load-daily
+    region: us-west1
+    env: {DATE_FROM: "20230101", DATE_TO: "20231231", TICKER_FROM: "4412", TICKER_TO: "5288"}
+  - job: tdnet-load-daily
+    region: us-west1
+    env: {DATE_FROM: "20230101", DATE_TO: "20231231", TICKER_FROM: "5290", TICKER_TO: "6366"}
+  - job: tdnet-load-daily
+    region: us-west1
+    env: {DATE_FROM: "20230101", DATE_TO: "20231231", TICKER_FROM: "6367", TICKER_TO: "7130"}
+  - job: tdnet-load-daily
+    region: us-west1
+    env: {DATE_FROM: "20230101", DATE_TO: "20231231", TICKER_FROM: "7131", TICKER_TO: "7902"}
+  - job: tdnet-load-daily
+    region: us-west1
+    env: {DATE_FROM: "20230101", DATE_TO: "20231231", TICKER_FROM: "7906", TICKER_TO: "9997"}  # #10+#11 を1 shotに併合
+
+workflows:
+  - name: ai_processing_flow
+    location: us-central1
+    data:
+      date_from: "20230101"
+      date_to: "20231231"
+      # ticker_from/ticker_to 省略 → 2023年全pending を一気に処理
+
+options:
+  parallel_loads: 3        # 3並列で load 負荷分散
+  poll_interval_s: 120
+  notify_on_start: true
+  notify_each_load: false  # 10件あるので1件ごとの通知はオフ

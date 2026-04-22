@@ -1,0 +1,16 @@
+# 証券会社接続設定
+active_broker: "demo"   # demo / sbi / kabu_station
+
+demo:
+  description: "デモモード（実発注なし）"
+  initial_balance: 10000000
+
+sbi:
+  base_url: "https://api.sbisec.co.jp"
+  timeout_sec: 30
+  retry_max: 3
+
+kabu_station:
+  base_url: "http://localhost:18080/kabusapi"
+  timeout_sec: 30
+  retry_max: 3

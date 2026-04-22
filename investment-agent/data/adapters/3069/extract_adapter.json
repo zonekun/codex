@@ -1,0 +1,17 @@
+{
+  "source": "pdf",
+  "format": "pdf",
+  "doc_title_pattern": "月次前年比データ（速報値）公表の一時中止に関するお知らせ",
+  "year_from_title_regex": "2020",
+  "month_from_title_regex": "５",
+  "fields": [],
+  "extraction_notes": "提供されたサンプルテキストは月次データの公表一時中止に関するお知らせであり、抽出対象の月次データ（売上、客単価、客数など）は含まれていませんでした。そのため、fieldsは空です。",
+  "ticker": "3069",
+  "company_name": "3069",
+  "created_at": "2026-04-04T00:38:40.837241+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "000000_3069_月次前年比データ（速報値）公表の一時中止に関するお知らせ_f830e999",
+  "sample_submission_date": "",
+  "report_url": "TDNET文書",
+  "sample_file": "000000_3069_月次前年比データ（速報値）公表の一時中止に関するお知らせ_f830e999"
+}

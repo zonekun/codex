@@ -1,0 +1,18 @@
+FROM python:3.12-slim
+
+WORKDIR /app
+
+RUN pip install --no-cache-dir \
+    PyPDF2>=3.0 \
+    pdfminer.six>=20221105 \
+    google-cloud-storage>=2.16 \
+    google-cloud-bigquery>=3.0 \
+    google-cloud-aiplatform>=1.38 \
+    langchain-text-splitters>=0.2
+
+COPY scripts/tdnet_load_recovery.py scripts/tdnet_load_recovery.py
+
+ENV PYTHONUTF8=1
+ENV PYTHONUNBUFFERED=1
+
+ENTRYPOINT ["python", "scripts/tdnet_load_recovery.py"]

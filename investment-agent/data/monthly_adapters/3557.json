@@ -1,0 +1,73 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "doc_title_pattern": "月次|月度|月間|売上|速報|実績|業績|概況|KPI|ＫＰＩ|状況|報告|推移|月末",
+  "year_from_title_regex": "(\\d{4})年",
+  "month_from_title_regex": "(\\d{1,2})月",
+  "fields": [
+    {
+      "key": "全店 店舗数",
+      "name": "全店 店舗数",
+      "row_label_regex": "合計\\s+(\\d+)",
+      "value_type": "integer",
+      "group": 1
+    },
+    {
+      "key": "全業態 既存店 売上（前年同月比）",
+      "name": "全業態 既存店 売上（前年同月比）",
+      "row_label_regex": "（1）全業態.*?売上高",
+      "value_type": "percentage"
+    },
+    {
+      "key": "既存店 客数（前年同月比）",
+      "name": "既存店 客数（前年同月比）",
+      "row_label_regex": "2．既存店 前年同月比推移.*?（1）全業態.*?客数",
+      "value_type": "percentage",
+      "bc_floor": true
+    },
+    {
+      "key": "全業態 既存店 客単価（前年同月比）",
+      "name": "全業態 既存店 客単価（前年同月比）",
+      "row_label_regex": "（1）全業態.*?客単価",
+      "value_type": "percentage"
+    },
+    {
+      "key": "てけてけ業態 既存店 売上（前年同月比）",
+      "name": "てけてけ業態 既存店 売上（前年同月比）",
+      "row_label_regex": "（2）てけてけ業態.*?売上高",
+      "value_type": "percentage"
+    },
+    {
+      "key": "the 3rd Burger業態 既存店 売上（前年同月比）",
+      "name": "the 3rd Burger業態 既存店 売上（前年同月比）",
+      "row_label_regex": "（3）the 3rd Burger業態.*?売上高",
+      "value_type": "percentage"
+    }
+  ],
+  "extraction_notes": "各メトリクスは、対応するセクション見出しと行ラベルを組み合わせて特定し、月次報告の最終月（2月）の値を抽出します。",
+  "ticker": "3557",
+  "company_name": "3557",
+  "created_at": "2026-03-24T08:26:48.451435+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2026年２月度　月次報告",
+  "sample_submission_date": "2026-03-02",
+  "fields_count": 6,
+  "manual_override": true,
+  "manual_override_note": "NG62調査に基づくcustom_prompt/yoy_offset/overwrite_past_months修正",
+  "manual_override_at": "2026-04-09T12:22:21.269687+09:00",
+  "custom_prompt": "あなたは ticker 3557 の月次開示 PDF から KPI を抽出するアシスタントです.\n\n抽出対象月: {year}年{month}月度\n\n重要ルール:\n  - 当月 (指定月) の値のみ採用\n  - 四半期累計・上期累計・通期・前年同期実績 等の集計値は絶対に拾わない\n  - サブブランド行ではなく「全店」「既存店」「合計」等の集約行を採用\n  - 前年同月比 field には 「+X.X%増」「−X.X%減」の narrative が該当する場合は\n    100 を加算した値 (例: +5.2% → 105.2, -4.9% → 95.1) を返す\n  - 見つからない field は null\n\n出力形式: JSON\n{\n  - \"全店 店舗数\": 整数\n  - \"全業態 既存店 売上（前年同月比）\": 前年同月比 (例 105.2)\n  - \"既存店 客数（前年同月比）\": 前年同月比 (例 105.2)\n  - \"全業態 既存店 客単価（前年同月比）\": 前年同月比 (例 105.2)\n  - \"てけてけ業態 既存店 売上（前年同月比）\": 前年同月比 (例 105.2)\n  - \"the 3rd Burger業態 既存店 売上（前年同月比）\": 前年同月比 (例 105.2)\n}\n",
+  "_agent_loosened_from": "(\\d{4})年(\\d{1,2})月度\\s*月次報告",
+  "_agent_patched_at": "2026-04-19T20:29:24.837927+09:00",
+  "_agent_patch_history": [
+    {
+      "ts": "2026-04-19T20:29:24.837927+09:00",
+      "applied": [
+        "top-level: ['doc_title_pattern', '_agent_loosened_from']"
+      ]
+    }
+  ],
+  "extraction_method": "gemini",
+  "overwrite_past_months": true,
+  "regex_redesign_at": "2026-04-19T22:21:54.510353+09:00",
+  "regex_redesign_note": "Gemini 切替 (regex 限界 or 誤マッチのため)."
+}

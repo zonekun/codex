@@ -1,0 +1,53 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "doc_title_pattern": "(\\d{4}年\\d{1,2}月度)の月次料飲売上状況について",
+  "year_from_title_regex": "(\\d{4})年\\d{1,2}月度",
+  "month_from_title_regex": "\\d{4}年(\\d{1,2})月度",
+  "fields": [
+    {
+      "key": "全店 売上（前年同月比）",
+      "name": "全店 売上（前年同月比）",
+      "row_label_regex": "単月前年比\\s*(\\d+\\.\\d+%)",
+      "value_type": "percentage"
+    },
+    {
+      "key": "全店 客数（前年同月比）",
+      "name": "全店 客数（前年同月比）",
+      "row_label_regex": "単月前年比(?:\\s*\\d+\\.\\d+%){5}\\s*(\\d+\\.\\d+%)",
+      "value_type": "percentage"
+    },
+    {
+      "key": "全店 客単価（前年同月比）",
+      "name": "全店 客単価（前年同月比）",
+      "row_label_regex": "単月前年比(?:\\s*\\d+\\.\\d+%){6}\\s*(\\d+\\.\\d+%)",
+      "value_type": "percentage"
+    },
+    {
+      "key": "既存店 売上（前年同月比）",
+      "name": "既存店 売上（前年同月比）",
+      "row_label_regex": "既存店実績（全業態）[\\s\\S]*?(\\d+\\.\\d+%)",
+      "value_type": "percentage"
+    },
+    {
+      "key": "既存店 客数（前年同月比）",
+      "name": "既存店 客数（前年同月比）",
+      "row_label_regex": "既存店実績（全業態）[\\s\\S]*?\\d+\\.\\d+%\\s*(\\d+\\.\\d+%)",
+      "value_type": "percentage"
+    },
+    {
+      "key": "既存店 客単価（前年同月比）",
+      "name": "既存店 客単価（前年同月比）",
+      "row_label_regex": "既存店実績（全業態）[\\s\\S]*?\\d+\\.\\d+%\\s*\\d+\\.\\d+%\\s*(\\d+\\.\\d+%)",
+      "value_type": "percentage"
+    }
+  ],
+  "extraction_notes": "OCRの品質が低く、テーブル構造が失われているため、値の抽出は特定の文字列パターンと相対的な位置に強く依存しています。特に「全店 客数」と「全店 客単価」は、'単月前年比'の行内のN番目のパーセンテージとして抽出しています。'既存店'の各値は'既存店実績'の後に続く最初の3つのパーセンテージとして抽出しています。このため、文書のレイアウトが少しでも変更されると抽出に失敗する可能性があります。",
+  "ticker": "7524",
+  "company_name": "7524",
+  "created_at": "2026-03-21T20:32:26.923469+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2026年1月度の月次料飲売上状況について",
+  "sample_submission_date": "2026-02-16",
+  "fields_count": 6
+}

@@ -1,0 +1,32 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "extraction_method": "gemini",
+  "fields": [
+    {
+      "key": "直営 全店 売上（前年同月比）",
+      "name": "直営 全店 売上（前年同月比）",
+      "description": "「２．２０２７年１月期 売上高前年同月比 の状況」という見出しの表内、「全店 売上高」行の「２月」列にある数値（パーセント）。",
+      "value_type": "percentage"
+    },
+    {
+      "key": "直営 全店 店舗数",
+      "name": "直営 全店 店舗数",
+      "description": "「１．店舗数の状況」という見出しの表内、「全店」行の「２月」列にある数値（店）。",
+      "value_type": "integer"
+    },
+    {
+      "key": "直営 既存店 売上（前年同月比）",
+      "name": "直営 既存店 売上（前年同月比）",
+      "description": "「２．２０２７年１月期 売上高前年同月比 の状況」という見出しの表内、「既存店 売上高」行の「２月」列にある数値（パーセント）。",
+      "value_type": "percentage"
+    }
+  ],
+  "ticker": "7678",
+  "company_name": "あさくま",
+  "created_at": "2026-03-29T18:41:52.976902+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2027年１月期２月度売上高前年対比等のお知らせ",
+  "sample_submission_date": "2026-03-06",
+  "fields_count": 3
+}

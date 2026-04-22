@@ -1,0 +1,42 @@
+# 監視対象ソース定義
+twitter:
+  enabled: true
+  accounts:
+    - username: "example_trader1"
+      label: "有名トレーダーA"
+    - username: "example_analyst1"
+      label: "アナリストB"
+  keywords:
+    - "逆日歩"
+    - "空売り"
+    - "決算プレイ"
+  monitor_interval_min: 30
+
+youtube:
+  enabled: true
+  channels:
+    - channel_id: "UCxxxxxxxxxxxxxxxx"
+      label: "株式投資チャンネルA"
+    - channel_id: "UCyyyyyyyyyyyyyyyyyy"
+      label: "株式投資チャンネルB"
+  live_channels:                    # ライブ配信監視対象（チャット取得）
+    - channel_id: "UCzzzzzzzzzzzzzzzz"
+      label: "株式ライブ配信チャンネル"
+      note: "市場時間中のライブ配信。チャットコメントに投資アイディアが含まれる"
+  keywords:
+    - "株式投資"
+    - "トレード手法"
+    - "逆日歩"
+  monitor_interval_min: 60
+
+arxiv:
+  enabled: true
+  categories:
+    - "q-fin.ST"     # Statistical Finance
+    - "q-fin.PM"     # Portfolio Management
+    - "q-fin.TR"     # Trading and Market Microstructure
+  keywords:
+    - "Japanese stock market"
+    - "momentum"
+    - "factor investing"
+  monitor_interval_min: 360  # 6時間ごと

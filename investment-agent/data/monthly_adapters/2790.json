@@ -1,0 +1,48 @@
+{
+  "source": "non-tdnet(html_table)",
+  "format": "html",
+  "fields": [
+    {
+      "key": "全店 売上（前年同月比）",
+      "name": "全店 売上（前年同月比）",
+      "row_label_regex": "全店.*売上|売上.*全店",
+      "value_type": "percentage"
+    },
+    {
+      "key": "既存店 売上（前年同月比）",
+      "name": "既存店 売上（前年同月比）",
+      "row_label_regex": "既存店.*売上|売上.*既存店",
+      "value_type": "percentage"
+    },
+    {
+      "key": "全店 客数（前年同月比）",
+      "name": "全店 客数（前年同月比）",
+      "row_label_regex": "全店.*客数|客数.*全店",
+      "value_type": "percentage"
+    },
+    {
+      "key": "既存店 客数（前年同月比）",
+      "name": "既存店 客数（前年同月比）",
+      "row_label_regex": "既存店.*客数|客数.*既存店",
+      "value_type": "percentage"
+    },
+    {
+      "key": "全店 客単価（前年同月比）",
+      "name": "全店 客単価（前年同月比）",
+      "row_label_regex": "全店.*客単価|客単価.*全店",
+      "value_type": "percentage"
+    },
+    {
+      "key": "既存店 客単価（前年同月比）",
+      "name": "既存店 客単価（前年同月比）",
+      "row_label_regex": "既存店.*客単価|客単価.*既存店",
+      "value_type": "percentage"
+    }
+  ],
+  "ticker": "2790",
+  "company_name": "ナフコ",
+  "updated_at": "2026-04-20T15:09:17.855060+09:00",
+  "created_by": "manual-investigation",
+  "fields_count": 6,
+  "manual_override": true
+}

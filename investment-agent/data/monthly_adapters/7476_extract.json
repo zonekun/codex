@@ -1,0 +1,55 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "doc_title_pattern": "(\\d{4})年(\\d{1,2})月度単体月次業績(速報)のお知らせ",
+  "year_from_title_regex": "(\\d{4})年",
+  "month_from_title_regex": "(\\d{1,2})月",
+  "fields": [
+    {
+      "key": "ラボラトリー 売上（円）",
+      "name": "ラボラトリー 売上（円）",
+      "row_label_regex": "(?<=ラボラトリー.*?)\\s*当 期",
+      "value_type": "integer"
+    },
+    {
+      "key": "ラボラトリー 売上（前年同月比）",
+      "name": "ラボラトリー 売上（前年同月比）",
+      "row_label_regex": "(?<=ラボラトリー.*?)\\s*2025年度 前年同月比",
+      "value_type": "percentage"
+    },
+    {
+      "key": "インダストリー売上（円）",
+      "name": "インダストリー売上（円）",
+      "row_label_regex": "(?<=インダストリー.*?)\\s*当 期",
+      "value_type": "integer"
+    },
+    {
+      "key": "インダストリー 売上（前年同月比）",
+      "name": "インダストリー 売上（前年同月比）",
+      "row_label_regex": "(?<=インダストリー.*?)\\s*2025年度 前年同月比",
+      "value_type": "percentage",
+      "bc_key": "メディカル 売上（前年同月比）",
+      "yoy_offset": 100.0
+    },
+    {
+      "key": "メディカル 売上（前年同月比）",
+      "name": "メディカル 売上（前年同月比）",
+      "row_label_regex": "メディカルは、.*?(\\d+\\.\\d+)％減となりました",
+      "value_type": "percentage",
+      "notes": "The value is captured directly from the sentence. '減' indicates a negative percentage.",
+      "bc_key": "メディカル 売上（前年同月比）",
+      "yoy_offset": 100.0
+    }
+  ],
+  "extraction_notes": "For fields extracted from tables (ラボラトリー, インダストリー), the 'row_label_regex' identifies the relevant row. The system should then use the month extracted from the document title (e.g., '1月' for January) to locate and extract the corresponding value from the correct column within that row. For 'メディカル 売上（前年同月比）', the value is directly captured from a descriptive sentence, and '減' implies a negative percentage.",
+  "ticker": "7476",
+  "company_name": "7476",
+  "created_at": "2026-03-17T18:32:55.167352+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2026年１月度単体月次業績（速報）のお知らせ",
+  "sample_submission_date": "2026-02-12",
+  "fields_count": 5,
+  "_doc_title_pattern_fixed_at": "2026-04-18T23:24:11.495520+09:00",
+  "_doc_title_pattern_fixed_from": "(\\d{4})年(\\d{1,2})月度単体月次業績（速報）のお知らせ",
+  "_reverse_mapping_applied_at": "2026-04-19T15:16:57.597405+09:00"
+}

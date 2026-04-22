@@ -1,0 +1,18 @@
+FROM python:3.12-slim
+
+WORKDIR /app
+
+# 依存インストール（tdnet_download.py が必要とするパッケージのみ）
+RUN pip install --no-cache-dir \
+    curl-cffi>=0.6 \
+    beautifulsoup4>=4.12 \
+    lxml>=4.9 \
+    google-cloud-storage>=2.16
+
+COPY scripts/tdnet_download.py scripts/tdnet_download.py
+COPY scripts/notify.py scripts/notify.py
+
+ENV PYTHONUTF8=1
+ENV PYTHONUNBUFFERED=1
+
+ENTRYPOINT ["python", "scripts/tdnet_download.py"]

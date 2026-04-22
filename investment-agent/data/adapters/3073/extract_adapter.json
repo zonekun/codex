@@ -1,0 +1,77 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "doc_title_pattern": "\\d{4}年\\d{1,2}月度 月次売上高等前年同月比及び店舗の状況についてのお知らせ",
+  "year_from_title_regex": "(\\d{4})年\\d{1,2}月度",
+  "month_from_title_regex": "\\d{4}年(\\d{1,2})月度",
+  "fields": [
+    {
+      "key": "全店 売上（前年同月比）",
+      "name": "全店 売上（前年同月比）",
+      "row_label_regex": "^売上高（%）",
+      "value_type": "percentage"
+    },
+    {
+      "key": "全店 客数（前年同月比）",
+      "name": "全店 客数（前年同月比）",
+      "row_label_regex": "^客数（%）",
+      "value_type": "percentage"
+    },
+    {
+      "key": "全店 客単価（前年同月比）",
+      "name": "全店 客単価（前年同月比）",
+      "row_label_regex": "^客単価（%）",
+      "value_type": "percentage"
+    },
+    {
+      "key": "国内直営全店 店舗数",
+      "name": "国内直営全店 店舗数",
+      "row_label_regex": "^当年月末店舗数",
+      "value_type": "integer"
+    },
+    {
+      "key": "全店 売上（前年同月比）",
+      "name": "全店 売上（前年同月比）",
+      "row_label_regex": "^売上高（%）",
+      "value_type": "percentage"
+    },
+    {
+      "key": "全店 客数（前年同月比）",
+      "name": "全店 客数（前年同月比）",
+      "row_label_regex": "^客数（%）",
+      "value_type": "percentage"
+    },
+    {
+      "key": "既存店 客単価（前年同月比）",
+      "name": "既存店 客単価（前年同月比）",
+      "row_label_regex": "^客単価（%）",
+      "value_type": "percentage"
+    },
+    {
+      "key": "全店 売上（前年同月比）",
+      "name": "全店 売上（前年同月比）",
+      "row_label_regex": "^売上高（%）",
+      "value_type": "percentage"
+    },
+    {
+      "key": "全店 客数（前年同月比）",
+      "name": "全店 客数（前年同月比）",
+      "row_label_regex": "^客数（%）",
+      "value_type": "percentage"
+    },
+    {
+      "key": "飲食事業 客単価（前年同月比）",
+      "name": "飲食事業 客単価（前年同月比）",
+      "row_label_regex": "^客単価（%）",
+      "value_type": "percentage"
+    }
+  ],
+  "extraction_notes": "複数の項目で同じ行ラベル（例: 売上高（%））が使用されているため、fields配列の定義順にテキストを走査し、最初に見つかった該当行を抽出対象とします。",
+  "ticker": "3073",
+  "company_name": "3073",
+  "created_at": "2026-03-17T17:17:42.033609+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2025年８月度 月次売上高等前年同月比及び店舗の状況についてのお知らせ",
+  "sample_submission_date": "2025-09-12",
+  "fields_count": 10
+}

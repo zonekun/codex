@@ -1,0 +1,9 @@
+{
+  "ticker": "8028",
+  "company_name": "ファミリーマート",
+  "type": "scrape_links",
+  "url": "https://www.family.co.jp/company/ir/monthly.html",
+  "manual_add": true,
+  "created_at": "2026-04-04T22:17:25.426635+09:00",
+  "created_by": "gemini_search"
+}

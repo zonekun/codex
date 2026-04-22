@@ -1,0 +1,12 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "fields": [],
+  "ticker": "7561",
+  "company_name": "ハークスレイ",
+  "created_at": "2026-03-25T11:19:40.050776+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2025年３月期 第３四半期決算短信〔日本基準〕（連結）",
+  "sample_submission_date": "2025-02-12",
+  "fields_count": 0
+}

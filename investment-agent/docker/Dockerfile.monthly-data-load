@@ -1,0 +1,17 @@
+FROM python:3.12-slim
+
+WORKDIR /app
+
+RUN pip install --no-cache-dir \
+    google-cloud-storage>=2.16 \
+    google-cloud-bigquery>=3.0 \
+    google-cloud-aiplatform>=1.38 \
+    pdfplumber>=0.10 \
+    db-dtypes>=1.2
+
+COPY scripts/monthly_data_load.py scripts/monthly_data_load.py
+
+ENV PYTHONUTF8=1
+ENV PYTHONUNBUFFERED=1
+
+ENTRYPOINT ["python", "scripts/monthly_data_load.py"]

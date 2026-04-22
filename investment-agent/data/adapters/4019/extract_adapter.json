@@ -1,0 +1,34 @@
+{
+  "source": "pdf",
+  "format": "pdf",
+  "doc_title_pattern": "^(\\d{4})(\\d{2})_(\\d{4})_(\\d{4})年(\\d{2})月期_月次業績指標（(\\d{1,2})月度）のお知らせ_.*",
+  "year_from_title_regex": "^(\\d{4})\\d{2}_.*",
+  "month_from_title_regex": "^.*月次業績指標（(\\d{1,2})月度）のお知らせ.*",
+  "fields": [
+    {
+      "key": "TUNAG 利用企業数",
+      "name": "TUNAG 利用企業数",
+      "row_label_regex": "当期\\s+([\\d-]+)\\s+([\\d-]+)\\s+([\\d-]+)\\s+([\\d-]+)\\s+([\\d-]+)\\s+([\\d-]+)\\s+([\\d-]+)\\s+([\\d-]+)\\s+([\\d-]+)\\s+([\\d-]+).*",
+      "value_type": "integer",
+      "group": 10,
+      "use_last_number": false
+    },
+    {
+      "key": "TUNAG 平均MRR（円）",
+      "name": "TUNAG 平均MRR（円）",
+      "row_label_regex": "当期\\s+([\\d-]+)\\s+([\\d-]+)\\s+([\\d-]+)\\s+([\\d-]+)\\s+([\\d-]+)\\s+([\\d-]+)\\s+([\\d-]+)\\s+([\\d-]+)\\s+([\\d-]+)\\s+([\\d-]+).*",
+      "value_type": "integer",
+      "group": 10,
+      "use_last_number": false
+    }
+  ],
+  "extraction_notes": "「TUNAG事業 ストック収益（円）」と「TUNAG事業 フロー収益（円）」は、提供されたテキスト内に該当する情報が見つからなかったため、抽出対象外としました。",
+  "ticker": "4019",
+  "company_name": "4019",
+  "created_at": "2026-04-04T01:13:49.801441+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "202112_4019_2021年12月期_月次業績指標（10月度）のお知らせ_73811d15",
+  "sample_submission_date": "",
+  "report_url": "TDNET文書",
+  "sample_file": "202112_4019_2021年12月期_月次業績指標（10月度）のお知らせ_73811d15"
+}

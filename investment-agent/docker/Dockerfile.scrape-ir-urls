@@ -1,0 +1,17 @@
+FROM python:3.12-slim
+
+WORKDIR /app
+
+RUN pip install --no-cache-dir \
+    requests>=2.31 \
+    beautifulsoup4>=4.12 \
+    lxml>=5.0 \
+    google-cloud-storage>=2.16 \
+    google-auth>=2.0
+
+COPY scripts/scrape_ir_urls.py scripts/scrape_ir_urls.py
+
+ENV PYTHONUTF8=1
+ENV PYTHONUNBUFFERED=1
+
+ENTRYPOINT ["python", "scripts/scrape_ir_urls.py"]

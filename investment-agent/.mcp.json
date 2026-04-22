@@ -1,0 +1,23 @@
+{
+  "mcpServers": {
+    "jquants-doc": {
+      "command": "j-quants-doc-mcp"
+    },
+    "fred": {
+      "command": "C:\\Program Files\\Git\\bin\\bash.exe",
+      "args": [
+        "-c",
+        "TOKEN=$(gcloud auth print-identity-token 2>/dev/null); exec uvx mcp-remote https://fred-mcp-480182964684.us-west1.run.app/sse --header \"Authorization: Bearer ${TOKEN}\""
+      ]
+    },
+    "gcp": {
+      "command": "C:\\Users\\zonekun\\Documents\\codex\\investment-agent\\.venv-codex\\Scripts\\python.exe",
+      "args": [
+        "C:\\Users\\zonekun\\Documents\\codex\\investment-agent\\scripts\\gcp_mcp_server.py"
+      ],
+      "env": {
+        "PYTHONUTF8": "1"
+      }
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "ticker": "8316",
+  "company_name": "8316",
+  "metrics": [
+    {
+      "name": "SMBC C.F. 一顧客当たり残高（千円）"
+    },
+    {
+      "name": "SMBC C.F. 営業貸付金残高 （百万円）"
+    },
+    {
+      "name": "SMBC C.F. 店舗数（店）"
+    },
+    {
+      "name": "SMBC C.F. 無担保ローン成約率（%）"
+    },
+    {
+      "name": "SMBC C.F. 無担保ローン新規申込数（件）"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

@@ -1,0 +1,12 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - build
+      - -f
+      - docker/Dockerfile.edinet-xbrl-extractor
+      - -t
+      - us-west1-docker.pkg.dev/gmailpj-357912/edinet/edinet-xbrl-extractor:latest
+      - .
+
+images:
+  - us-west1-docker.pkg.dev/gmailpj-357912/edinet/edinet-xbrl-extractor:latest

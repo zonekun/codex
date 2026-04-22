@@ -1,0 +1,30 @@
+{
+  "source": "non-tdnet(pdf)",
+  "format": "pdf",
+  "doc_title_pattern": ".*(\\d{4})年(\\d{2})月度売上速報.*",
+  "year_from_title_regex": "(\\d{4})年",
+  "month_from_title_regex": "(\\d{2})月",
+  "fields": [
+    {
+      "key": "全店 売上（前年同月比）",
+      "name": "全店 売上（前年同月比）",
+      "row_label_regex": "全店計\\s+([\\d.]+)",
+      "value_type": "percentage",
+      "group": 1,
+      "notes": "「■売上高前年比」セクションの「全店計」行から、最初の数値（当月売上高前年同月比）を抽出。"
+    }
+  ],
+  "extraction_notes": "「■売上高前年比」セクションの表から、全店計の当月売上高前年同月比を抽出します。これは「全店計」に続く最初の数値です。",
+  "ticker": "8260",
+  "company_name": "8260",
+  "created_at": "2026-04-05T10:18:00.768272+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "202210_8260_2022年10月度売上速報_3077ec80",
+  "sample_submission_date": "",
+  "report_url": "TDNET文書",
+  "sample_file": "202210_8260_2022年10月度売上速報_3077ec80",
+  "month_direction": "row",
+  "_source_renamed_at": "2026-04-18T16:36:34+09:00",
+  "_source_renamed_from": "pdf",
+  "manual_override": true
+}

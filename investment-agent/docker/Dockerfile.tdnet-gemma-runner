@@ -1,0 +1,17 @@
+FROM google/cloud-sdk:slim
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    bash curl openssh-client coreutils \
+  && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+COPY scripts/gemma_tpu_runner.sh /app/gemma_tpu_runner.sh
+COPY scripts/gemma_tpu_worker.py /app/gemma_tpu_worker.py
+
+RUN chmod +x /app/gemma_tpu_runner.sh
+
+ENV PYTHONUTF8=1
+ENV PYTHONUNBUFFERED=1
+
+ENTRYPOINT ["/app/gemma_tpu_runner.sh"]

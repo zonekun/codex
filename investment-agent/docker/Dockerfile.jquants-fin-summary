@@ -1,0 +1,19 @@
+FROM python:3.12-slim
+
+WORKDIR /app
+
+RUN pip install --no-cache-dir \
+    requests>=2.31 \
+    pandas>=2.0 \
+    pyarrow>=14.0 \
+    pandas-gbq>=0.26 \
+    google-cloud-bigquery>=3.17
+
+COPY scripts/jquants_get_fin_summary.py scripts/jquants_get_fin_summary.py
+COPY scripts/jquants_common.py scripts/jquants_common.py
+COPY scripts/notify.py scripts/notify.py
+
+ENV PYTHONUTF8=1
+ENV PYTHONUNBUFFERED=1
+
+ENTRYPOINT ["python", "scripts/jquants_get_fin_summary.py"]

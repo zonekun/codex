@@ -1,0 +1,62 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "doc_title_pattern": "月次|月度|月間|売上|速報|実績|業績|概況|KPI|ＫＰＩ|状況|報告|推移|月末",
+  "year_from_title_regex": "(\\d{4})年",
+  "month_from_title_regex": "(\\d{1,2})月",
+  "fields": [
+    {
+      "key": "不動産売買 取引件数（件）",
+      "name": "不動産売買 取引件数（件）",
+      "row_label_regex": "取引件数は\\s*([\\d,]+)件",
+      "value_type": "integer",
+      "bc_key": "不動産売買 売上（億円）"
+    },
+    {
+      "key": "不動産売買 売上（億円）",
+      "name": "不動産売買 売上（億円）",
+      "row_label_regex": "業績は\\s*([\\d,]+)億円",
+      "value_type": "integer"
+    },
+    {
+      "key": "不動産売買 売上（前年同月比）",
+      "name": "不動産売買 売上（前年同月比）",
+      "row_label_regex": "前年同月\\s*比で\\s*[+＋]?([\\d\\uff10-\\uff19.]+)[%\\uff05]",
+      "value_type": "percentage",
+      "_note": "全角数字(７等)が返る場合あり→数値化プログラム側で全角→半角変換が必要",
+      "yoy_offset": 100
+    },
+    {
+      "key": "不動産賃貸管理 管理戸数（戸）",
+      "name": "不動産賃貸管理 管理戸数（戸）",
+      "row_label_regex": "管理戸数.*?は\\s*([\\d,]+)戸",
+      "value_type": "integer"
+    },
+    {
+      "key": "不動産賃貸管理 入居率（%）",
+      "name": "不動産賃貸管理 入居率（%）",
+      "row_label_regex": "入居率.*?は\\s*([\\d.]+)[%\\uff05]",
+      "value_type": "percentage",
+      "bc_floor": true
+    }
+  ],
+  "extraction_notes": "不動産売買事業と不動産賃貸管理事業の各指標が、それぞれの事業セクション内で記述されている。取引件数と売上は同じ文中に連続して記載されている。",
+  "ticker": "2991",
+  "company_name": "2991",
+  "created_at": "2026-03-24T08:22:58.732338+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2026年１月度　月次業績速報",
+  "sample_submission_date": "2026-02-16",
+  "fields_count": 5,
+  "_reverse_mapping_applied_at": "2026-04-19T00:14:32.225909+09:00",
+  "_agent_loosened_from": "月次業績速報",
+  "_agent_patched_at": "2026-04-19T20:03:24.800262+09:00",
+  "_agent_patch_history": [
+    {
+      "ts": "2026-04-19T20:03:24.800262+09:00",
+      "applied": [
+        "top-level: ['doc_title_pattern', '_agent_loosened_from']"
+      ]
+    }
+  ]
+}

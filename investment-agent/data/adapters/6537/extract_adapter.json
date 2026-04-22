@@ -1,0 +1,28 @@
+{
+  "source": "html_table",
+  "format": "html",
+  "sheet_name": "HTML table",
+  "label_col_index": 0,
+  "month_row_index": 2,
+  "data_start_row": 2,
+  "fields": [
+    {
+      "key": "全店 売上（前年同月比）",
+      "name": "全店 売上（前年同月比）",
+      "row_label_regex": "売上高前年同月比（％）\\s*全店",
+      "value_type": "percentage"
+    },
+    {
+      "key": "既存店 売上（前年同月比）",
+      "name": "既存店 売上（前年同月比）",
+      "row_label_regex": "売上高前年同月比（％）\\s*既存店",
+      "value_type": "percentage"
+    }
+  ],
+  "extraction_notes": "DataFrameプレビューに基づき、`row_label_regex`は複数行にわたる列ヘッダー（例: '売上高前年同月比（％）'と'全店'）を結合した文字列（例: '売上高前年同月比（％） 全店'）にマッチするものとして定義しています。また、プレビューに存在しない『全店 店舗数』は抽出対象から除外しています。",
+  "ticker": "6537",
+  "company_name": "6537",
+  "created_at": "2026-04-04T01:27:49.988915+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_file": "000000_6537_monthly_table.html"
+}

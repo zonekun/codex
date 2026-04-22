@@ -1,0 +1,54 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "doc_title_pattern": "(\\\\d{4})年(\\\\d{1,2})月度\\s*月次実績",
+  "year_from_title_regex": "(\\\\d{4})年",
+  "month_from_title_regex": "(?P<month>\\d{1,2})月度",
+  "fields": [
+    {
+      "key": "総室数",
+      "name": "総室数",
+      "row_label_regex": "総室数:([\\d,]+)室",
+      "value_type": "integer",
+      "notes": "ハローストレージ総室数 (round9)"
+    },
+    {
+      "key": "稼働室数",
+      "name": "稼働室数",
+      "row_label_regex": "稼働室数:([\\d,]+)室",
+      "value_type": "integer",
+      "notes": "ハローストレージ稼働室数 (round9)"
+    },
+    {
+      "key": "稼働率(%)",
+      "name": "稼働率(%)",
+      "row_label_regex": "稼働率:([\\d.]+)%",
+      "value_type": "float",
+      "notes": "ハローストレージ全体稼働率(%) (round9)"
+    },
+    {
+      "key": "既存稼働率(%)",
+      "name": "既存稼働率(%)",
+      "row_label_regex": "既存稼働率:([\\d.]+)%",
+      "value_type": "float",
+      "notes": "ハローストレージ既存物件稼働率(%) (round9)"
+    },
+    {
+      "key": "新規稼働率(%)",
+      "name": "新規稼働率(%)",
+      "row_label_regex": "新規稼働率:([\\d.]+)%",
+      "value_type": "float",
+      "notes": "ハローストレージ新規物件稼働率(%) (round9)"
+    }
+  ],
+  "extraction_notes": "The requested metrics 'ハローストレージ総室数（前年同月比）' and 'ハローストレージ稼働率（前年同月比）' were not found as explicit year-on-year percentage values in the provided text. The text contains current month values and messy time-series data, but no clear, directly extractable year-on-year comparison percentages for these metrics.",
+  "ticker": "8914",
+  "company_name": "エリアリンク株式会社",
+  "created_at": "2026-03-24T16:08:08.168567+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2026年2月度　月次実績",
+  "sample_submission_date": "2026-03-05",
+  "fields_count": 0,
+  "updated_at": "2026-03-24",
+  "updated_by": "round9_batch_fix"
+}

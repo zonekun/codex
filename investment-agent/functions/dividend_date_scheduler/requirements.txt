@@ -1,0 +1,4 @@
+functions-framework>=3.0
+jpholiday>=0.1
+google-auth>=2.0
+requests>=2.31

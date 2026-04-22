@@ -1,0 +1,40 @@
+# 2023 バックフィル #4〜#11（load のみ全実行、AI処理は後回し）
+# 8 batches × ~3,000 doc = ~24,000 doc を BQ pending で投入
+# AI処理（ai_processing_flow）は別途 config で実行する
+# 参照: docs/plans/20260417_091112_tdnet_load_ai_split.md
+
+name: 2023_batch04_11_load_only
+
+loads:
+  - job: tdnet-load-daily
+    region: us-west1
+    env: {DATE_FROM: "20230101", DATE_TO: "20231231", TICKER_FROM: "3024", TICKER_TO: "3690"}
+  - job: tdnet-load-daily
+    region: us-west1
+    env: {DATE_FROM: "20230101", DATE_TO: "20231231", TICKER_FROM: "3691", TICKER_TO: "4410"}
+  - job: tdnet-load-daily
+    region: us-west1
+    env: {DATE_FROM: "20230101", DATE_TO: "20231231", TICKER_FROM: "4412", TICKER_TO: "5288"}
+  - job: tdnet-load-daily
+    region: us-west1
+    env: {DATE_FROM: "20230101", DATE_TO: "20231231", TICKER_FROM: "5290", TICKER_TO: "6366"}
+  - job: tdnet-load-daily
+    region: us-west1
+    env: {DATE_FROM: "20230101", DATE_TO: "20231231", TICKER_FROM: "6367", TICKER_TO: "7130"}
+  - job: tdnet-load-daily
+    region: us-west1
+    env: {DATE_FROM: "20230101", DATE_TO: "20231231", TICKER_FROM: "7131", TICKER_TO: "7902"}
+  - job: tdnet-load-daily
+    region: us-west1
+    env: {DATE_FROM: "20230101", DATE_TO: "20231231", TICKER_FROM: "7906", TICKER_TO: "9063"}
+  - job: tdnet-load-daily
+    region: us-west1
+    env: {DATE_FROM: "20230101", DATE_TO: "20231231", TICKER_FROM: "9064", TICKER_TO: "9997"}
+
+workflows: []   # LOADのみ、AIフェーズは別途
+
+options:
+  parallel_loads: 4        # 4並列で実行（~1.5h見込み）
+  poll_interval_s: 120
+  notify_on_start: true
+  notify_each_load: true   # 各load完了ごとにLINE通知（進捗把握用）

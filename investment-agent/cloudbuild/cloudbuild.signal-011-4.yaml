@@ -1,0 +1,17 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '-t'
+      - 'us-west1-docker.pkg.dev/gmailpj-357912/stock/signal-011-4:latest'
+      - '-f'
+      - 'docker/Dockerfile.signal-011-4'
+      - '.'
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'push'
+      - 'us-west1-docker.pkg.dev/gmailpj-357912/stock/signal-011-4:latest'
+images:
+  - 'us-west1-docker.pkg.dev/gmailpj-357912/stock/signal-011-4:latest'
+options:
+  logging: CLOUD_LOGGING_ONLY

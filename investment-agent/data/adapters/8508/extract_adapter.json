@@ -1,0 +1,22 @@
+{
+  "source": "download",
+  "format": "xls",
+  "sheet_name": "月次データ",
+  "label_col_index": 2,
+  "month_row_index": 4,
+  "data_start_row": 5,
+  "fields": [
+    {
+      "key": "日本 アパートローン債務保証残高（億円）",
+      "name": "日本 アパートローン債務保証残高（億円）",
+      "row_label_regex": "うちアパートローン残高",
+      "value_type": "float"
+    }
+  ],
+  "extraction_notes": "「日本 その他の債務保証残高（億円）」は、DataFrameに直接対応する行がないため、抽出ルールを定義できません。この値は、「債務保証残高」の行から「うちアパートローン残高」の行の値を差し引くことで算出可能です。",
+  "ticker": "8508",
+  "company_name": "8508",
+  "created_at": "2026-04-04T01:08:14.556508+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_file": "201906_8508_xls(33KB)_811d1482.xls"
+}

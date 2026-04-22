@@ -1,0 +1,83 @@
+{
+  "source": "download",
+  "format": "xls",
+  "sheet_name": "Sheet1",
+  "label_col_index": 2,
+  "month_row_index": 4,
+  "data_start_row": 5,
+  "fields": [
+    {
+      "key": "1人当たり受注高（万円/人・月）",
+      "name": "1人当たり受注高（万円/人・月）",
+      "row_label_regex": "^1人当たり受注高.*（万円/人・月）$",
+      "value_type": "float"
+    },
+    {
+      "key": "入居者斡旋（件）",
+      "name": "入居者斡旋（件）",
+      "row_label_regex": "^入居者斡旋件数.*（件）$",
+      "value_type": "integer"
+    },
+    {
+      "key": "入居者斡旋（前年同月比）",
+      "name": "入居者斡旋（前年同月比）",
+      "row_label_regex": "^入居者斡旋.*前年同月比$",
+      "value_type": "percentage"
+    },
+    {
+      "key": "受注トレンド 6ヶ月移動平均（百万円）",
+      "name": "受注トレンド 6ヶ月移動平均（百万円）",
+      "row_label_regex": "^受注トレンド.*6ヶ月移動平均.*（百万円）$",
+      "value_type": "integer"
+    },
+    {
+      "key": "家賃ベース入居率（前年差）",
+      "name": "家賃ベース入居率（前年差）",
+      "row_label_regex": "^家賃ベース入居率.*前年差$",
+      "value_type": "float"
+    },
+    {
+      "key": "建設事業 受注高（前年同月比）",
+      "name": "建設事業 受注高（前年同月比）",
+      "row_label_regex": "^建設事業.*受注高.*前年同月比$",
+      "value_type": "percentage"
+    },
+    {
+      "key": "建設事業 受注高（百万円）",
+      "name": "建設事業 受注高（百万円）",
+      "row_label_regex": "^建設事業.*受注高.*（百万円）$",
+      "value_type": "integer"
+    },
+    {
+      "key": "建設営業人員（人）",
+      "name": "建設営業人員（人）",
+      "row_label_regex": "^営業人員数.*（人）$",
+      "value_type": "integer"
+    },
+    {
+      "key": "空室在庫（ヶ月）",
+      "name": "空室在庫（ヶ月）",
+      "row_label_regex": "^空室在庫.*（カ月）$",
+      "value_type": "float"
+    },
+    {
+      "key": "空室数（戸）",
+      "name": "空室数（戸）",
+      "row_label_regex": "^空室数.*（戸）$",
+      "value_type": "integer"
+    },
+    {
+      "key": "管理戸数（戸）",
+      "name": "管理戸数（戸）",
+      "row_label_regex": "^管理戸数.*（戸）$",
+      "value_type": "integer"
+    }
+  ],
+  "extraction_notes": "DataFrameプレビューは列ヘッダーを示していますが、スキーマのrow_label_regexの要件を満たすため、実際のデータテーブルはメトリクスが各行のラベルとして配置され、月が列ヘッダーとして配置されていると仮定しました。label_col_indexはメトリクス名が記載されている列、month_row_indexは月が記載されている行、data_start_rowはデータが始まる行を指します。row_label_regexは、要求されたメトリクス名とプレビューの単位情報を組み合わせて作成しました。",
+  "ticker": "1878",
+  "company_name": "1878",
+  "created_at": "2026-04-05T09:36:54.592573+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_file": "202603_1878_エクセル形式による過去データのダウンロードはこちらから_a4b6a594.xls",
+  "month_direction": "row"
+}

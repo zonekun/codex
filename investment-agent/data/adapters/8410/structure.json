@@ -1,0 +1,17 @@
+{
+  "ticker": "8410",
+  "company_name": "8410",
+  "metrics": [
+    {
+      "name": "ATM平均利用件数（件/台/日）"
+    },
+    {
+      "name": "ATM総利用件数（件）"
+    },
+    {
+      "name": "ATM設置台数（台）"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

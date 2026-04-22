@@ -1,0 +1,11 @@
+{
+  "ticker": "3083",
+  "company_name": "スターシーズ",
+  "ir_page_url": "https://starseeds.co.jp/ir",
+  "updated_at": "2026-04-12T10:19:06.855698+09:00",
+  "last_checked": "2026-04-12",
+  "status": "active",
+  "type": "eir_api",
+  "eir_company_code": "3083",
+  "note": "eIRシステム検出。コード=3083"
+}

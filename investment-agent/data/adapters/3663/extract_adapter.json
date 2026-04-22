@@ -1,0 +1,21 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "extraction_method": "gemini",
+  "fields": [
+    {
+      "key": "「CLIP STUDIO PAINT」サブスクリプション売上（百万円）",
+      "name": "「CLIP STUDIO PAINT」サブスクリプション売上（百万円）",
+      "description": "CLIP STUDIO PAINT サブスクリプション売上の3か月移動平均ARR。ARRテーブルから当月の値を取得。月次内訳テーブルのサブスクリプション行ではなくARRテーブルの値を使うこと。",
+      "value_type": "integer",
+      "_manual_description": true
+    }
+  ],
+  "ticker": "3663",
+  "company_name": "3663",
+  "created_at": "2026-03-29T18:40:05.413489+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2026年２月度月次事業進捗レポートのお知らせ",
+  "sample_submission_date": "2026-03-06",
+  "fields_count": 1
+}

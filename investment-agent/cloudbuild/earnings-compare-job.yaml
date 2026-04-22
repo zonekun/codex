@@ -1,0 +1,31 @@
+apiVersion: run.googleapis.com/v1
+kind: Job
+metadata:
+  name: earnings-compare
+  labels:
+    cloud.googleapis.com/location: us-west1
+spec:
+  template:
+    spec:
+      template:
+        spec:
+          serviceAccountName: bq-loader@gmailpj-357912.iam.gserviceaccount.com
+          timeoutSeconds: 3600
+          containers:
+            - image: us-west1-docker.pkg.dev/gmailpj-357912/stock/earnings-compare:latest
+              resources:
+                limits:
+                  cpu: "4"
+                  memory: 8Gi
+              env:
+                - name: OLLAMA_MODELS
+                  value: /mnt/ollama/test/ollama-models/models
+              volumeMounts:
+                - name: ollama-models
+                  mountPath: /mnt/ollama
+          volumes:
+            - name: ollama-models
+              csi:
+                driver: gcsfuse.run.googleapis.com
+                volumeAttributes:
+                  bucketName: stock_data_1930932

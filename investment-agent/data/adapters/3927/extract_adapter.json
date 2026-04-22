@@ -1,0 +1,32 @@
+{
+  "source": "pdf",
+  "format": "pdf",
+  "doc_title_pattern": "202003_3927_2020年３月期_10月度月次売上高速報に関するお知らせ_cddd3fab",
+  "year_from_title_regex": "(\\d{4})年３月期",
+  "month_from_title_regex": "(\\d{1,2})月度",
+  "fields": [
+    {
+      "key": "全社 売上（前年同月比）",
+      "name": "全社 売上（前年同月比）",
+      "row_label_regex": "前期同月比\\s+([\\d.]+)\\%",
+      "value_type": "percentage",
+      "group": 1
+    },
+    {
+      "key": "全社 売上（百万円）",
+      "name": "全社 売上（百万円）",
+      "row_label_regex": "^(\\d{4})年３月期\\s+(\\d+)\\s+\\d+",
+      "value_type": "integer",
+      "group": 2
+    }
+  ],
+  "extraction_notes": "月次売上高の表から、当期（最新年度）の月次売上高と前期同月比を抽出する。",
+  "ticker": "3927",
+  "company_name": "3927",
+  "created_at": "2026-04-04T00:23:37.678733+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "202003_3927_2020年３月期_10月度月次売上高速報に関するお知らせ_cddd3fab",
+  "sample_submission_date": "",
+  "report_url": "TDNET文書",
+  "sample_file": "202003_3927_2020年３月期_10月度月次売上高速報に関するお知らせ_cddd3fab"
+}

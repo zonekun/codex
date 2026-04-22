@@ -1,0 +1,43 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "doc_title_pattern": "加入件数について",
+  "year_from_title_regex": "(\\d{4})年",
+  "month_from_title_regex": "(\\d{1,2})月末",
+  "fields": [
+    {
+      "key": "スカパー 解約率（IC数）",
+      "name": "スカパー 解約率（IC数）",
+      "row_label_regex": "スカパー!\\s+\\*4\\s*\\|\\s*[\\d,]+\\s*\\|\\s*[\\d,]+\\s*\\|\\s*([\\d.]+)\\%\\s*\\|\\s*[\\d,-]+\\s*\\|\\s*[\\d,]+",
+      "value_type": "percentage",
+      "group": 1
+    },
+    {
+      "key": "スカパー 加入件数（IC数）純増",
+      "name": "スカパー 加入件数（IC数）純増",
+      "row_label_regex": "スカパー!\\s+\\*4\\s*\\|\\s*[\\d,]+\\s*\\|\\s*[\\d,]+\\s*\\|\\s*[\\d.]+\\%\\s*\\|\\s*([\\d,-]+)\\s*\\|\\s*[\\d,]+",
+      "value_type": "integer",
+      "group": 1
+    },
+    {
+      "key": "光再送信サービス 接続世帯数 純増",
+      "name": "光再送信サービス 接続世帯数 純増",
+      "row_label_regex": "光再送信サービス\\s*\\|\\s*[\\d,]+\\s*\\|\\s*[\\d,]+\\s*\\|\\s*[\\d.]+\\%\\s*\\|\\s*([\\d,-]+)\\s*\\|\\s*[\\d,]+",
+      "value_type": "integer",
+      "group": 1
+    }
+  ],
+  "extraction_notes": "月次開示の加入件数に関するテーブルから、スカパー!*4行と光再送信サービス行の解約率および純増数を抽出。",
+  "ticker": "9412",
+  "company_name": "(株)スカパーＪＳＡＴホールディングス",
+  "created_at": "2026-03-28T16:55:52.777162+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2025年4月末現在 加入件数について",
+  "sample_submission_date": "2025-05-07",
+  "fields_count": 3,
+  "custom_prompt": "テーブルには「スカパー！合計」行と個別サービス行（「スカパー！」「プレミアムサービス」等）があります。\nフィールドには「スカパー！合計」行の値を返してください。個別サービス行の値ではありません。\n「解約率」は小数（例: 1.0%）で記載されています。",
+  "manual_override": true,
+  "manual_override_note": "反省踏まえた再調査に基づく修正",
+  "manual_override_at": "2026-04-10T08:03:09.507294+09:00",
+  "overwrite_past_months": true
+}

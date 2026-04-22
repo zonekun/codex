@@ -1,0 +1,92 @@
+{
+  "source": "non-tdnet(pdf)",
+  "format": "pdf",
+  "year_from_title_regex": "(?P<year>\\d{4})年",
+  "month_from_title_regex": "(?P<month>\\d{2})月",
+  "fields": [
+    {
+      "key": "グループ 売上（前年同月比）",
+      "name": "グループ 売上（前年同月比）",
+      "row_label_regex": "(グループ計前年比|All Groups)\\s+([\\d\\.#%]+)\\s+([\\d\\.#%]+)\\s+([\\d\\.#%]+)\\s+([\\d\\.#%]+)\\s+([\\d\\.#%]+)",
+      "value_type": "percentage",
+      "group": 6,
+      "bc_key": "グループ 売上（前年同月比）",
+      "yoy_offset": 100
+    },
+    {
+      "key": "グループ 店舗数",
+      "name": "グループ 店舗数",
+      "row_label_regex": "(月末店舗数|No. of stores at month end)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)",
+      "value_type": "integer",
+      "group": 5
+    },
+    {
+      "key": "売上 エアコン（前年同月比）",
+      "name": "売上 エアコン（前年同月比）",
+      "row_label_regex": "(エアコン|Air conditioners)\\s+([\\d\\.#%]+)\\s+([\\d\\.#%]+)\\s+([\\d\\.#%]+)\\s+([\\d\\.#%]+)\\s+([\\d\\.#%]+)",
+      "value_type": "percentage",
+      "group": 6
+    },
+    {
+      "key": "売上 テレビ（前年同月比）",
+      "name": "売上 テレビ（前年同月比）",
+      "row_label_regex": "(テレビ|Televisions)\\s+([\\d\\.#%]+)\\s+([\\d\\.#%]+)\\s+([\\d\\.#%]+)\\s+([\\d\\.#%]+)\\s+([\\d\\.#%]+)",
+      "value_type": "percentage",
+      "group": 6
+    },
+    {
+      "key": "売上 パソコン（前年同月比）",
+      "name": "売上 パソコン（前年同月比）",
+      "row_label_regex": "(パソコン|PCs)\\s+([\\d\\.#%]+)\\s+([\\d\\.#%]+)\\s+([\\d\\.#%]+)\\s+([\\d\\.#%]+)\\s+([\\d\\.#%]+)",
+      "value_type": "percentage",
+      "group": 6
+    },
+    {
+      "key": "売上 冷蔵庫（前年同月比）",
+      "name": "売上 冷蔵庫（前年同月比）",
+      "row_label_regex": "(冷蔵庫|Refrigerators)\\s+([\\d\\.#%]+)\\s+([\\d\\.#%]+)\\s+([\\d\\.#%]+)\\s+([\\d\\.#%]+)\\s+([\\d\\.#%]+)",
+      "value_type": "percentage",
+      "group": 6
+    },
+    {
+      "key": "売上 携帯電話（前年同月比）",
+      "name": "売上 携帯電話（前年同月比）",
+      "row_label_regex": "(携帯電話|Mobile phones)\\s+([\\d\\.#%]+)\\s+([\\d\\.#%]+)\\s+([\\d\\.#%]+)\\s+([\\d\\.#%]+)\\s+([\\d\\.#%]+)",
+      "value_type": "percentage",
+      "group": 6
+    },
+    {
+      "key": "売上 洗濯機・クリーナー（前年同月比）",
+      "name": "売上 洗濯機・クリーナー（前年同月比）",
+      "row_label_regex": "(洗濯機・クリーナー|Washing machines/vacuum)\\s+([\\d\\.#%]+)\\s+([\\d\\.#%]+)\\s+([\\d\\.#%]+)\\s+([\\d\\.#%]+)\\s+([\\d\\.#%]+)",
+      "value_type": "percentage",
+      "group": 6
+    }
+  ],
+  "ticker": "8173",
+  "company_name": "8173",
+  "created_at": "2026-04-05T10:14:31.768987+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "202107_8173_2021年07月度_月次売上速報_f8220f57",
+  "sample_submission_date": "",
+  "report_url": "TDNET文書",
+  "sample_file": "202107_8173_2021年07月度_月次売上速報_f8220f57",
+  "month_direction": "row",
+  "_source_renamed_at": "2026-04-18T16:36:34+09:00",
+  "_source_renamed_from": "pdf",
+  "manual_override": true,
+  "_agent_patched_at": "2026-04-19T19:25:32.900803+09:00",
+  "_agent_patch_history": [
+    {
+      "ts": "2026-04-19T19:25:32.900803+09:00",
+      "applied": [
+        "field 'グループ 売上（前年同月比）': ['bc_key', 'yoy_offset']"
+      ]
+    }
+  ],
+  "extraction_method": "gemini",
+  "overwrite_past_months": true,
+  "custom_prompt": "あなたは ticker 8173 の月次開示 PDF から KPI を抽出するアシスタントです.\n\n抽出対象月: {year}年{month}月度\n\n重要ルール:\n  - 当月 (指定月) の値のみ採用\n  - 四半期累計・上期累計・通期・前年同期実績 等の集計値は絶対に拾わない\n  - サブブランド行ではなく「全店」「既存店」「合計」等の集約行を採用\n  - 前年同月比 field には 「+X.X%増」「−X.X%減」の narrative が該当する場合は\n    100 を加算した値 (例: +5.2% → 105.2, -4.9% → 95.1) を返す\n  - 見つからない field は null\n\n出力形式: JSON\n{\n  - \"グループ 売上（前年同月比）\": 前年同月比 (例 105.2)\n  - \"グループ 店舗数\": 整数\n  - \"売上 エアコン（前年同月比）\": 前年同月比 (例 105.2)\n  - \"売上 テレビ（前年同月比）\": 前年同月比 (例 105.2)\n  - \"売上 パソコン（前年同月比）\": 前年同月比 (例 105.2)\n  - \"売上 冷蔵庫（前年同月比）\": 前年同月比 (例 105.2)\n  - \"売上 携帯電話（前年同月比）\": 前年同月比 (例 105.2)\n  - \"売上 洗濯機・クリーナー（前年同月比）\": 前年同月比 (例 105.2)\n}\n",
+  "regex_redesign_at": "2026-04-19T22:45:11.448840+09:00",
+  "regex_redesign_note": "Gemini 切替 (regex 限界 or 誤マッチのため)."
+}

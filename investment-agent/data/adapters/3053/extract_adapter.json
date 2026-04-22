@@ -1,0 +1,75 @@
+{
+  "source": "pdf",
+  "format": "pdf",
+  "doc_title_pattern": ".*(\\d{4})年(\\d{1,2})月期(\\d{1,2})月度実績のお知らせ.*",
+  "year_from_title_regex": "(\\d{4})年",
+  "month_from_title_regex": "(\\d{1,2})月度",
+  "fields": [
+    {
+      "key": "いきなり！ステーキ 全店 売上（前年同月比）",
+      "name": "いきなり！ステーキ 全店 売上（前年同月比）",
+      "row_label_regex": "^売上\\s+([\\d.]+)$",
+      "value_type": "percentage",
+      "group": 1,
+      "use_last_number": false,
+      "notes": "「１．いきなり！ステーキ：上期」セクション内の最初の「売上」を全店売上と判断します。"
+    },
+    {
+      "key": "いきなり！ステーキ 全店 客単価（前年同月比）",
+      "name": "いきなり！ステーキ 全店 客単価（前年同月比）",
+      "row_label_regex": "^客単価\\s+([\\d.]+)$",
+      "value_type": "percentage",
+      "group": 1,
+      "use_last_number": false,
+      "notes": "「１．いきなり！ステーキ：上期」セクション内の最初の「客単価」を全店客単価と判断します。"
+    },
+    {
+      "key": "いきなり！ステーキ 全店 客数（前年同月比）",
+      "name": "いきなり！ステーキ 全店 客数（前年同月比）",
+      "row_label_regex": "^全店\\s+客数\\s+([\\d.]+)$",
+      "value_type": "percentage",
+      "group": 1
+    },
+    {
+      "key": "いきなり！ステーキ 国内店舗数",
+      "name": "いきなり！ステーキ 国内店舗数",
+      "row_label_regex": "^国内店舗数\\s+(\\d+)$",
+      "value_type": "integer",
+      "group": 1
+    },
+    {
+      "key": "いきなり！ステーキ 既存店 売上（前年同月比）",
+      "name": "いきなり！ステーキ 既存店 売上（前年同月比）",
+      "row_label_regex": "^売上\\s+([\\d.]+)$",
+      "value_type": "percentage",
+      "group": 1,
+      "use_last_number": true,
+      "notes": "「１．いきなり！ステーキ：上期」セクション内の2番目の「売上」を既存店売上と判断します。"
+    },
+    {
+      "key": "いきなり！ステーキ 既存店 客単価（前年同月比）",
+      "name": "いきなり！ステーキ 既存店 客単価（前年同月比）",
+      "row_label_regex": "^客単価\\s+([\\d.]+)$",
+      "value_type": "percentage",
+      "group": 1,
+      "use_last_number": true,
+      "notes": "「１．いきなり！ステーキ：上期」セクション内の2番目の「客単価」を既存店客単価と判断します。"
+    },
+    {
+      "key": "いきなり！ステーキ 既存店 客数（前年同月比）",
+      "name": "いきなり！ステーキ 既存店 客数（前年同月比）",
+      "row_label_regex": "^既存店\\s+客数\\s+([\\d.]+)$",
+      "value_type": "percentage",
+      "group": 1
+    }
+  ],
+  "extraction_notes": "「いきなり！ステーキ」セクションにおいて、「売上」と「客単価」は全店と既存店で同じ行ラベルを持つため、use_last_numberフラグで区別しています。use_last_number=false（デフォルト）は最初の出現、use_last_number=trueは最後の出現を抽出します。ペッパーランチ関連のメトリクスは、このサンプルテキストには明示的な記載がないため抽出対象外としました。",
+  "ticker": "3053",
+  "company_name": "3053",
+  "created_at": "2026-04-04T01:22:19.883771+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "202612_3053_2026年12月期1月度実績のお知らせ_0eed341e",
+  "sample_submission_date": "",
+  "report_url": "TDNET文書",
+  "sample_file": "202612_3053_2026年12月期1月度実績のお知らせ_0eed341e"
+}

@@ -1,0 +1,385 @@
+﻿ticker,company_name,skip,category,monthly_page_url,adapter_note,updated_at,css_selector,link_text_pattern,link_href_pattern,type,format
+1379,ホクト,True,excluded,https://www.hokto-kinoko.co.jp/corporate/ir/gyouseki/,物理削除済み・論理削除扱い（BC突合保持）,2026-04-11,,,,,v2
+1417,ミライト・ワン,False,active,https://www.mirait-one.com/ir/monthly/,月次ページ発見（サブページ）: https://www.mirait-one.com/,2026-04-12,,,\.pdf,scrape_links,v2
+1419,タマホーム,False,active,http://www.tamahome.jp/ir/monthly/,月次PDFリンク2件検出 best=http://www.tamahome.jp/qkeioebqx4/wp-content/uploads/2026/03/20260327.pdf,2026-04-21,,\d{4},/qkeioebqx4/wp\-content/uploads.*\.(pdf),scrape_links,v2
+1420,サンヨーホームズ,False,active,https://shikiho.toyokeizai.net/news/0/935429,月次PDFリンク1件検出 best=https://www.rentracks.co.jp/ir/library/pdf/21th/2026_03_03_monthly.pdf,2026-04-21,,,.*\.(pdf|xlsx|xls),scrape_links,v2
+1430,ファーストコーポレーション,False,active,https://www.1st-corp.com/index.html,自動生成。ページ: https://www.1st-corp.com/index.html / リンク3件検出,2026-03-16,,,/xcontents/AS80280.*\.(pdf),scrape_links,v2
+1439,,True,excluded,,物理削除済み・論理削除扱い（BC突合保持）,2026-04-11,,,,,v2
+1721,コムシスホールディングス,False,active,http://www.comsys-hd.co.jp/ir/library/monthly/,eIRシステム（動的ロード）。URL: http://www.comsys-hd.co.jp/ir/library/monthly/,2026-03-16T19:13:46+09:00,,,,eir_api,v2
+1840,土屋ホールディングス,False,active,http://www.tsuchiya.co.jp/ir/order_report/,http://www.tsuchiya.co.jp/ir/order_report/ にWordPressベースで月次受注速報PDFリンクあり (例: wp-content/uploads/...pdf),2026-03-16,,受注速報|月次,\.pdf,scrape_links,v2
+1873,日本ハウスホールディングス,False,active,https://shikiho.toyokeizai.net/news/0/888582,月次PDFリンク1件検出 best=https://www.rentracks.co.jp/ir/library/pdf/21th/2026_03_03_monthly.pdf,2026-04-21,,,.*\.(pdf|xlsx|xls),scrape_links,v2
+1878,大東建託,False,active,https://www.kentaku.co.jp/corporate/ir/getuji.html,月次PDFリンク2件検出 best=https://www.kentaku.co.jp/ir/library/monthly-report/__icsFiles/afieldfile/2026/04/02/202603.pdf,2026-04-21,,,\.pdf|\.xls,scrape_links,v2
+1911,住友林業,False,active,https://sfc.jp/information/ir/zaimu,月次ページ発見（サブページ）: https://sfc.jp/information/ir/zaimu/order/,2026-04-12,,,.*\.(pdf|xlsx|xls),scrape_links,v2
+1925,大和ハウス工業,False,active,http://www.daiwahouse.co.jp/ir/juchu/?page=from_header,月次受注実績ページ,2026-03-16,,,,scrape_links,v2
+1928,積水ハウス,False,active,https://www.sekisuihouse.co.jp/company/financial/order/orders_2025/,HTML表に月次データ検出。table_selector要調整,2026-04-21,,,/company/financial/library/ir_document/2024/2024_kessan/FY2024_Engagement\.pdf,html_table,v2
+1951,エクシオグループ,False,active,https://www.exeo.co.jp/ir/ir.html,https://www.exeo.co.jp/ir/ir.html に月次受注状況PDF直リンクあり。毎月翌月8営業日に公表,2026-03-16,,月次受注,\.pdf,scrape_links,v2
+2124,,True,excluded,,物理削除済み・論理削除扱い（BC突合保持）,2026-04-11,,,,,v2
+2163,アルトナー,False,active,https://www.artner.co.jp/ir/financial/monthly/,月次PDFリンク1件検出 best=https://www.artner.co.jp/asset-ir/download_file/JP_2163.xlsx,2026-04-21,,,.*\.(pdf|xlsx|xls),scrape_links,v2
+2267,ヤクルト本社,False,active,https://www.yakult.co.jp/company/ir/library/milkproducts.html,自動生成。ページ: https://www.yakult.co.jp/company/ir/library/milkproducts.html / リンク64件検出,2026-03-16,,,/company/ir.*\.(pdf),scrape_links,v2
+2294,柿安本店,False,active,https://www.kakiyasuhonten.co.jp/ir/financial/month.php,eIRシステム（動的ロード）。URL: https://www.kakiyasuhonten.co.jp/ir/financial/month.php,2026-03-16T19:13:46+09:00,,,,eir_api,v2
+2317,システナ,True,excluded,https://www.systena.co.jp/ir/,物理削除済み・論理削除扱い（BC突合保持）,2026-04-11,,,,,v2
+2429,ワールドホールディングス,False,active,https://corp.world.co.jp/ir/,eIRシステム検出。コード=3612,2026-04-21,,,.*\.(pdf),eir_api,v2
+2433,博報堂ＤＹホールディングス,False,active,https://www.hakuhodody-holdings.co.jp/ir/,eIRシステム（動的ロード）。URL: https://www.hakuhodody-holdings.co.jp/ir/,2026-03-16T19:13:46+09:00,,,,eir_api,v2
+2501,サッポロホールディングス,False,active,https://www.sapporoholdings.jp/ir/,自動生成。ページ: https://www.sapporoholdings.jp/ir/ / リンク11件検出,2026-03-16,,,/ir.*\.(pdf),scrape_links,v2
+2502,アサヒグループホールディングス,False,active,http://www.asahigroup-holdings.com/ir/financial_data/monthly_data/,自動生成。ページ: http://www.asahigroup-holdings.com/ir/financial_data/monthly_data/ / リンク81件検出,2026-03-16,,,.*\.(pdf),scrape_links,v2
+2503,キリンホールディングス,False,active,https://www.kirinholdings.com/jp/investors/finance/databook/reports/,ダウンロードリンクなし(no_links)。URL: https://support.google.com/websearch,2026-03-16,,月次,.*\.(pdf|xlsx|xls),scrape_links,v2
+2587,サントリー食品インターナショナル,False,active,https://www.suntory.co.jp/softdrink/ir/library/monthly.html,URL自体が月次ページだがコンテンツ未検出（JS遅延/SPA疑い）。要手動確認,2026-04-12,,,.*\.(pdf|xlsx|xls),html_table,v2
+2590,ダイドーグループホールディングス,False,active,https://www.dydo-ghd.co.jp/ir/data/monthly_report/,eIRシステム（動的ロード）。URL: https://www.dydo-ghd.co.jp/ir/data/monthly_report/,2026-03-16T19:13:46+09:00,,,,eir_api,v2
+2593,伊藤園,False,active,http://www.itoen.co.jp/ir/library/monthly_sales_backnumber/,eIRシステム（動的ロード）。URL: http://www.itoen.co.jp/ir/library/monthly_sales_backnumber/,2026-03-16T19:13:46+09:00,,,,eir_api,v2
+2651,ローソン,False,active,https://www.lawson.co.jp/company/ir/financial/monthly/index.html,月次PDFリンク1件検出 best=https://www.lawson.co.jp/company/ir/financial/monthly/2026/__icsFiles/afieldfile/2026/04/10/2026_03.pdf,2026-04-21,,,,scrape_links,v2
+2652,まんだらけ,False,active,https://www.mandarake.co.jp/dir/company/ir/,自動生成。ページ: https://www.mandarake.co.jp/dir/company/ir/ / リンク369件検出,2026-03-16,,,/dir/company/ir/up.*\.(pdf),scrape_links,v2
+2653,イオン九州,False,active,https://www.aeon-kyushu.info/ir/,eIRシステム（動的ロード）。URL: https://www.aeon-kyushu.info/ir/,2026-03-16T19:13:46+09:00,,,,eir_api,v2
+2659,サンエー,False,active,http://www.san-a.co.jp/company/ir/gaiyou/monthly_data.html,月次PDFリンク2件検出 best=http://www.san-a.co.jp/common/uploads/2025/12/20251212.pdf,2026-04-21,,,.*\.(pdf|xlsx|xls),scrape_links,v2
+2664,カワチ薬品,False,active,https://www.cawachi.co.jp/ir/monthly/,HTML表に月次データ検出。table_selector要調整,2026-04-21,,,.*\.(pdf|xlsx|xls),html_table,v2
+2668,タビオ,False,active,https://tabio.com/jp/corporate/ir/monthly/,自動生成。ページ: https://tabio.com/jp/corporate/ir/monthly/ / リンク192件検出,2026-03-16,,\d{4},/jp/corporate/ir/wp\-content/uploads/sites/2.*\.(pdf),scrape_links,v2
+2669,カネ美食品,False,active,http://www.kanemi-foods.co.jp/ir/monthly.html,ダウンロードリンクなし(no_links)。URL: http://www.kanemi-foods.co.jp/ir/monthly.html,2026-03-16,,月次,.*\.(pdf|xlsx|xls),scrape_links,v2
+2670,エービーシー・マート,False,active,https://www.abc-mart.co.jp/ir/getsujijoho.html,自動生成。ページ: https://www.abc-mart.co.jp/ir/getsujijoho.html / リンク53件検出,2026-03-16,,,.*\.(pdf|xlsx|xls),scrape_links,v2
+2674,ハードオフコーポレーション,False,active,http://www.hardoff.co.jp/ir/library/sales/,ハードオフ月次。fl=False（PDF-lhpミス修正）,2026-03-24,,,.*\.(pdf|xlsx|xls),scrape_links,v2
+2678,アスクル,True,error,https://pdf.irpocket.com/C2678/hvir/NJ5w/UOYs.pdf,"error: Page.goto: Download is starting
+Call log:
+  - navigating to ""https://pdf.irpocket.com/C2678/hvir/NJ5w/UOYs.pdf"", waiting until ""load""
+",2026-04-21,,,irpocket\.com/2678/chart/data\.(pdf|xlsx),,v2
+2686,ジーフット,False,active,https://ir.g-foot.co.jp/ja/finance/monthly.html,自動生成。ページ: http://www.g-foot.co.jp/ir/monthly/ / リンク192件検出,2026-03-16,,月次|売上,/ja/finance/monthly.*\.(pdf),scrape_links,v2
+2687,(株)シー・ヴイ・エス・ベイエリア,True,excluded,http://www.cvs-bayarea.co.jp/ir/monthly/,物理削除済み・論理削除扱い（BC突合保持）,2026-04-11,,,,,v2
+2695,くら寿司,False,active,https://www.kurasushi.co.jp/company/ir/library/monthly_reports.html,自動生成。ページ: https://www.kurasushi.co.jp/company/ir/library/monthly_reports.html / リンク8件検出,2026-03-16,,月次,.*\.(pdf|xlsx|xls),scrape_links,v2
+2698,キャンドゥ,False,active,http://www.cando-web.co.jp/ir/monthly_report/,HTML表に月次データ検出。table_selector要調整,2026-04-21,,,.*\.(pdf),html_table,v2
+2702,日本マクドナルドホールディングス,False,active,https://www.mcd-holdings.co.jp/ir/,月次PDFリンク1件検出 best=https://ircms.irstreet.com/contents/data_file.php?template=2129&brand=74&data=484082&filename=pdf_file.pdf,2026-04-21,,月次,.*\.(pdf|xlsx|xls),scrape_links,v2
+2726,パルグループホールディングス,True,error,https://finance-frontend-pc-dist.west.edge.storage-yahoo.jp/disclosure/20251222/20251222523689.pdf,"error: Page.goto: Download is starting
+Call log:
+  - navigating to ""https://finance-frontend-pc-dist.west.edge.storage-yahoo.jp/disclosure/20251222/20251222523689.pdf"", waiting until ""load""
+",2026-04-21,,月次,,,v2
+2730,エディオン,False,active,http://www.edion.co.jp/ir/library/monthly/,月次PDFリンク5件検出 best=http://www.edion.co.jp/system/files/ir-news/pdf/ja/2025-11/EDION%20211125_Coverage%E3%83%BBReport_Storm%20CORPORATE%20RESEARCH_0.pdf,2026-04-21,,"\d{4}年\s*\d{1,2}月度\s*月次開示情報",/system/files/ir-library/pdf/ja/\d{4}-\d{2}/.*monthly_sales_report\.pdf,scrape_links,v2
+2742,ハローズ,False,active,http://www.halows.com/ir/finance_monthly/,月次PDFリンク2件検出 best=http://www.halows.com/files/pdf/app/app_kiyaku.pdf,2026-04-21,,,/files/pdf/app/app_kiyaku\.pdf,scrape_links,v2
+2751,(株)テンポスホールディングス,False,active,https://tenpos.co.jp/ir/,自動生成。ページ: https://tenpos.co.jp/ir/ / リンク57件検出,2026-03-16,,,.*\.(pdf),scrape_links,v2
+2752,フジオフードグループ本社,False,active,https://www.fujiofood.com/ir/library/report.php,eIRシステム（動的ロード）。URL: https://www.fujiofood.com/ir/library/report.php,2026-03-16T19:13:46+09:00,,,,eir_api,v2
+2753,あみやき亭,False,active,https://amiyakitei.co.jp/ir/ir_monthly/,月次売上前年比較推移表PDF。ir/ir_monthly/ページから直接リンク。,2026-03-17,,月次売上,,scrape_links,v2
+2769,(株)ヴィレッジヴァンガードコーポレーション,False,active,https://www.village-v.co.jp/company/ir/sales_trend/,HTML表に月次データ検出。table_selector要調整,2026-04-21,,,.*\.(pdf|xlsx|xls),html_table,v2
+2789,カルラ,False,active,http://www.re-marumatu.co.jp/tousikajyouhou/sokuhou.html,自動生成。ページ: http://www.re-marumatu.co.jp/tousikajyouhou/sokuhou.html / リンク157件検出,2026-03-16,,\d{4},/tousikajyouhou/library.*\.(pdf),scrape_links,v2
+2790,ナフコ,False,active,https://www.nafco.tv/ir/financial/monthly.html,HTML表に月次データ検出。table_selector要調整,2026-04-21,,,.*\.(pdf|xlsx|xls),html_table,v2
+2791,大黒天物産,False,active,https://www.e-dkt.co.jp/ir/,自動生成。ページ: https://www.e-dkt.co.jp/ir/ / リンク35件検出,2026-03-16,,,.*\.(pdf),scrape_links,v2
+2792,ハニーズホールディングス,True,no_links_confirmed,http://www.honeys.co.jp/ir/monthly/,月次ページリンク 4 件検出、サブページ踏み込み後にDLリンク無し（best=https://shikiho.toyokeizai.net/news/search/category?query=%E6%9C%88%E6%AC%A1%E5%A0%B1%E5%91%8A%E6%9B%B8%E9%80%9F%E5%A0%B1）,2026-04-21,,,.*\.(pdf|xlsx|xls),,v2
+2818,ピエトロ,False,active,http://www.pietro.co.jp/ir/monthly/,月次PDFリンク8件検出 best=http://www.pietro.co.jp/assets/upload/newsrelease/newsrelease_20260331.pdf,2026-04-21,,PDF,/assets/upload.*\.(pdf),scrape_links,v2
+2910,ロック・フィールド,False,active,http://www.rockfield.co.jp/ir/library/monthly/,HTML表に月次データ検出。table_selector要調整,2026-04-21,,,/ir/pdf/mt\-managementplan\.pdf,html_table,v2
+2914,ＪＴ,False,active,https://www.jti.co.jp/investors/index.html,自動生成。ページ: https://www.jti.co.jp/investors/index.html / リンク5件検出,2026-03-16,,PDF,/investors/library.*\.(pdf),scrape_links,v2
+2998,クリアル,True,no_links_confirmed,https://corp.creal.jp/ir/,月次ページリンク 3 件検出、サブページ踏み込み後にDLリンク無し（best=https://shikiho.toyokeizai.net/news/search/category?query=%E6%9C%88%E6%AC%A1%E5%A0%B1%E5%91%8A%E6%9B%B8%E9%80%9F%E5%A0%B1）,2026-04-21,,,,,v2
+3010,ポラリス・ホールディングス,False,active,https://www.pictet.co.jp/fund/polaris.html,月次PDFリンク1件検出 best=https://www.pictet.co.jp/content/dam/pamweb/jp/ja/fund/polaris/fund-detail-document/polaris-Monthly-Report-20260331.pdf,2026-04-21,,,,scrape_links,v2
+3028,アルペン,False,active,"https://shikiho.toyokeizai.net/news/0/466904#:~:text=%E5%A3%B2%E4%B8%8A%E9%AB%98%E3%81%AF525%E5%84%84,%E5%85%A8%E8%88%AC%E7%9A%84%E3%81%AB%E4%BD%8E%E8%BF%B7%E3%81%97%E3%81%9F%E3%80%82",月次PDFリンク1件検出 best=https://www.rentracks.co.jp/ir/library/pdf/21th/2026_03_03_monthly.pdf,2026-04-21,,,.*\.(pdf|xlsx|xls),scrape_links,v2
+3030,(株)ハブ,False,active,https://www.pub-hub.co.jp/ir/month.html,IRサイトはpub-hub.co.jp（.comとは別ドメイン）。月次データは irstreet CMS（JS描画）。PDF URL: ircms.irstreet.com/contents/data_file.php?template=1565&brand=87&data=XXXXXX。Playwright必須。,2026-03-16,,,ircms\.irstreet\.com/contents/data_file\.php,playwright_required,v2
+3034,クオールホールディングス,False,active,https://www.qolhd.co.jp/ir/finance.html,eIRシステム検出。コード=3034,2026-04-21,,,.*\.(pdf|xlsx|xls),eir_api,v2
+3041,ビューティカダンホールディングス,True,excluded,https://www.beauty-kadan.co.jp/ir/,物理削除済み・論理削除扱い（BC突合保持）,2026-04-11,,,,,v2
+3045,(株)カワサキ,True,excluded,https://kawasaki-corp.co.jp/ir/,物理削除済み・論理削除扱い（BC突合保持）,2026-04-11,,,,,v2
+3048,ビックカメラ,False,active,https://www.biccamera.co.jp/ir/library/index5.html,HTML表に月次データ検出。table_selector要調整,2026-04-21,,月次|速報|20\d\d年\d+月,.*\.(pdf|xlsx|xls),html_table,v2
+3050,ＤＣＭホールディングス,False,active,https://www.dcm-hldgs.co.jp/grp/ir/performance/monthly-report.html,自動生成。ページ: https://www.dcm-hldgs.co.jp/grp/ir/performance/monthly-report.html / リンク18件検出,2026-03-16,,,/grp/pdf/grp/ir/performance/monthly\-report.*\.(pdf),scrape_links,v2
+3053,ペッパーフードサービス,False,active,http://www.pepper-fs.co.jp/ir/monthly_report/library.php,月次PDFリンク3件検出 best=http://www.pepper-fs.co.jp/_img/ir/monthly_report/2026/PFS20260414.pdf,2026-04-21,,\d{4},/_img/ir/monthly_report/2026.*\.(pdf),scrape_links,v2
+3068,ＷＤＩ,False,active,http://www.wdi.co.jp/ir/monthly.html,eIRシステム（動的ロード）。URL: http://www.wdi.co.jp/ir/monthly.html,2026-03-16T19:13:46+09:00,,,,eir_api,v2
+3069,ＪＦＬＡホールディングス,True,excluded,http://j-fla.com/ir/monthly/,物理削除済み・論理削除扱い（BC突合保持）,2026-04-11,,,,,v2
+3070,ジェリービーンズグループ,False,active,https://www.jelly-beans-group.co.jp/ir/,eIRシステム（動的ロード）。URL: https://www.jelly-beans-group.co.jp/ir/,2026-03-16T19:13:46+09:00,,,,eir_api,v2
+3080,ジェーソン,True,no_links_confirmed,http://www.jason.co.jp/ir/monthly/,月次ページリンク 2 件検出、サブページ踏み込み後にDLリンク無し（best=N/A）,2026-04-21,,,.*\.(pdf|xlsx|xls),,v2
+3083,スターシーズ,False,active,https://starseeds.co.jp/ir,eIRシステム検出。コード=3083,2026-04-12,,月次|速報,,eir_api,v2
+3085,,True,excluded,,物理削除済み・論理削除扱い（BC突合保持）,2026-04-11,,,,,v2
+3086,Ｊ．フロント　リテイリング,False,active,http://www.j-front-retailing.com/ir/finance/monthly.html,自動生成。ページ: http://www.j-front-retailing.com/ir/finance/monthly.html / リンク138件検出,2026-03-16,,PDF,.*\.(pdf),scrape_links,v2
+3087,(株)ドトール・日レスホールディングス,False,active,https://www.dnh.co.jp/ir/monthly/,自動生成。ページ: https://www.dnh.co.jp/html/ir03.html / リンク1件検出,2026-03-16,,月次,.*\.(pdf|xlsx|xls),scrape_links,v2
+3088,マツキヨココカラ＆カンパニー,False,active,https://www.matsukiyococokara.com/ir/finance/proceeds/,自動生成。ページ: https://www.matsukiyococokara.com/ir/finance/proceeds/ / リンク5件検出,2026-03-16,,\d{4},/ir/pdf\-cms.*\.(pdf),scrape_links,v2
+3094,スーパーバリュー,True,excluded,https://www.supervalue.jp/ir/monthlydata.html,[excluded] 上場廃止 2026-01-05 (TOB) (2026-04-17) | 旧note: 月次ページ発見（サブページ）: https://www.supervalue.jp/,2026-04-20,,,.*\.(pdf|xlsx|xls),scrape_links,v2
+3098,,True,excluded,,物理削除済み・論理削除扱い（BC突合保持）,2026-04-11,,,,,v2
+3136,,True,eir_spa,https://duckduckgo.com/ir/monthly.html,SPA/JavaScriptレンダリング。静的HTMLにコンテンツなし。URL: https://duckduckgo.com/ir/monthly.html,2026-03-15,,,,,v1
+3148,(株)クリエイトＳＤホールディングス,False,active,http://www.createsdhd.co.jp/ir/monthly/,HTML表に月次データ検出。table_selector要調整,2026-04-21,,,.*\.(pdf|xlsx|xls),html_table,v2
+3169,ミサワホーム,False,active,https://www.misawa.co.jp/corporate/irinfo/,受注速報PDF。最新年度は月別(2026/MM.pdf)、過去年度は年間1ファイル(YYYY.pdf)。URL: /corporate/irinfo/pdf/sokuhou/YYYY[/MM].pdf,2026-03-16,,,/corporate/irinfo/pdf/sokuhou/,scrape_links,v2
+3196,ホットランドホールディングス,False,active,https://hotland.co.jp/ir/,eIRシステム検出。コード=3196,2026-04-21,,月次|売上|チェーン|来店|客数,.*\.(pdf|xlsx|xls),eir_api,v2
+3197,すかいらーくホールディングス,False,active,https://corp.skylark.co.jp/ir/financial/performance/,eIRシステム（動的ロード）。URL: https://corp.skylark.co.jp/ir/financial/performance/,2026-03-16T19:13:46+09:00,,,,eir_api,v2
+3222,ユナイテッド・スーパーマーケット・ホールディングス,False,active,https://www.usmh.co.jp/ir/monthly_reports,月次ページ発見（サブページ）: https://www.usmh.co.jp/,2026-04-12,,,/ir.*\.(pdf|xlsx|xls),scrape_links,v2
+3224,ゼネラル・オイスター,True,skip,https://oysterbar.co.jp/,no_links_confirmed,2026-03-25T03:47:59.509505+09:00,,,,,v2
+3266,(株)ファンドクリエーショングループ,False,active,https://www.fcg-r.co.jp/ir/financial/monthly/,旧 fc-group.co.jp が 404 → fcg-r.co.jp に変更 (2026-03-24 Round8),2026-03-24,,,.*\.(pdf|xlsx|xls),scrape_links,v2
+3329,東和フードサービス,False,active,http://www.towafood-net.co.jp/ir/monthly/,自動生成。ページ: http://www.towafood-net.co.jp/ir/monthly/ / リンク10件検出,2026-03-16,,売上,/wp\-content/uploads.*\.(pdf),scrape_links,v2
+3349,コスモス薬品,True,error,https://www.cosmospc.co.jp/ir_monthly.php,error: timeout,2026-04-12,,,.*\.(pdf|xlsx|xls),,v2
+3359,ｃｏｔｔａ,True,skip,https://www.cotta.jp/business.php,ddg_search: [PDF] 2021 年9月の月次業績に関するお知らせ,2026-04-05T14:21:38.743512+09:00,,,,,v2
+3370,フジタコーポレーション,False,active,https://www.fujitacorp.co.jp/main/irinfo/irp07,JS動的ページ。Playwright必須。月次売上速報PDFを/files/YYYYMMDATAで提供,2026-03-17,,,/files/.*DATA.pdf,scrape_links,v2
+3382,セブン＆アイ・ホールディングス,False,active,http://www.7andi.com/ir/financial/monthly_highlight.html,自動生成。ページ: http://www.7andi.com/ir/financial/monthly_highlight.html / リンク11件検出,2026-03-16,,\d{4},/ir/file/financial/mh.*\.(xlsx),scrape_links,v2
+3395,サンマルクホールディングス,False,active,https://www.saint-marc-hd.com/hd/ir/topics/,月次PDFリンク1件検出 best=https://static.saint-marc-hd.com/upload/irnews/358/20260413.pdf,2026-04-21,,\d{4},/upload/irnews.*\.(pdf),scrape_links,v2
+3397,トリドールホールディングス,False,active,https://www.toridoll.com/ir/finance/report/,月次PDFリンク1件検出 best=https://files.microcms-assets.io/assets/f30f9e21e8d64c57996ea55a4f9dc3dc/84c83ac6f18f4908a61769d1c0408870/monthly-sales-report_2603.xlsx,2026-04-21,,,/assets/f30f9e21e8d64c57996ea55a4f9dc3dc/a6d772a9baad48beab8ed0d140369fcb/monthly\-sales\-report_2602\.xlsx,scrape_links,v2
+3399,丸千代山岡家,False,active,http://www.yamaokaya.com/ir/monthly/,月次PDFリンク1件検出 best=http://www.yamaokaya.com/data/allergies.pdf,2026-04-21,,,/data/allergies\.pdf,scrape_links,v2
+3407,旭化成,False,active,https://www.asahi-kasei.com/jp/ir/library/finance/index.html,IRライブラリ財務情報,2026-03-16,,,,scrape_links,v2
+3457,Ａｎｄ　Ｄｏホールディングス,False,active,https://www.housedo.co.jp/and-do/ir/,eIRシステム検出。コード=3457,2026-03-16,,,,eir_api,v2
+3543,(株)コメダホールディングス,False,active,http://www.komeda-holdings.co.jp/ir/monthly.html,eIRシステム（動的ロード）。URL: http://www.komeda-holdings.co.jp/ir/monthly.html,2026-03-16T20:26:36+09:00,,月次,.*\.(pdf|xlsx|xls),scrape_links,v2
+3544,サツドラホールディングス,False,active,http://www.satudora-hd.co.jp/ir/monthly/,eIRシステム（動的ロード）。URL: http://www.satudora-hd.co.jp/ir/monthly/,2026-03-16T19:13:46+09:00,,,,eir_api,v2
+3548,(株)バロックジャパンリミテッド,True,no_links_confirmed,https://irpocket.com/3548/chart/data3.pdf,月次ページリンク 45 件検出、サブページ踏み込み後にDLリンク無し（best=https://www.baroque-global.com/jp/ir/monthly#pagetop）,2026-04-21,,,.*\.(pdf|xlsx|xls),,v2
+3561,力の源ホールディングス,False,active,http://www.chikaranomoto.com/ir/library/monthly/,月次ページ発見（サブページ）: http://www.chikaranomoto.com/,2026-04-12,,,.*\.(pdf|xlsx|xls),scrape_links,v2
+3563,ＦＯＯＤ　＆　ＬＩＦＥ　ＣＯＭＰＡＮＩＥＳ,False,active,https://food-and-life.co.jp/ir/monthly/,月次PDFリンク5件検出 best=https://food-and-life.co.jp/wp-content/uploads/2024/12/medium_term_plan_2024.pdf,2026-04-21,,,/wp\-content/uploads.*\.(pdf),scrape_links,v2
+3591,ワコールホールディングス,False,active,http://www.wacoalholdings.jp/ir/financial/monthly.html,月次PDFリンク4件検出 best=http://www.wacoalholdings.jp/ir/files/ESG_DATABOOK.pdf,2026-04-21,,,.*\.(pdf|xlsx),scrape_links,v2
+3624,,True,excluded,,物理削除済み・論理削除扱い（BC突合保持）,2026-04-11,,,,,v2
+3649,ファインデックス,True,error,https://finance-frontend-pc-dist.west.edge.storage-yahoo.jp/disclosure/20251113/20251113500151.pdf,"error: Page.goto: Download is starting
+Call log:
+  - navigating to ""https://finance-frontend-pc-dist.west.edge.storage-yahoo.jp/disclosure/20251113/20251113500151.pdf"", waiting until ""load""
+",2026-04-21,,,/ir/pdf.*\.(pdf),,v2
+3674,オークファン,True,excluded,https://aucfan.co.jp/ir/,物理削除済み・論理削除扱い（BC突合保持）,2026-04-11,,,,,v2
+3678,メディアドゥ,True,excluded,https://mediado.jp/ir/,[excluded] BC月次データ 2024-03 以降停止（管理対象外判断 2026-04-17） (2026-04-17) | 旧note: ddg_gemini: 株式会社メディアドゥの公式サイトに掲載されている「2024年3月次 電子書籍流通額成長率レポート」であり、月次での主要KPI開示に該当す,2026-04-20,,,,scrape_links,v2
+3691,,True,excluded,,物理削除済み・論理削除扱い（BC突合保持）,2026-04-11,,,,,v2
+3834,朝日ネット,False,active,https://asahi-net.jp/,eIRシステム検出。コード=3834,2026-04-21,,\d{4},/doc/3834/tdnet/2745429/00\.pdf,eir_api,v2
+3901,マークラインズ,True,skip,https://www.marklines.com/ja/ir/,ddg_search: 米国の自動車販売台数（月別・モデル別）最新データ｜2025年12月,2026-04-05T14:21:38.976386+09:00,,,,,v2
+3902,メディカル・データ・ビジョン,False,active,https://www.mdv.co.jp/ir/library/,eIRシステム検出。コード=3902,2026-04-21,,,,eir_api,v2
+3910,エムケイシステム,True,no_links_confirmed,http://www.mks.jp/company/ir-information/ir-library/,no_links_confirmed,2026-04-21,,,/xcontents/AS97180.*\.(pdf),,v2
+3927,フーバーブレイン,False,active,https://www.fuva-brain.co.jp/ir/,eIRシステム（動的ロード）。URL: https://www.fuva-brain.co.jp/ir/,2026-03-16T19:13:46+09:00,,,,eir_api,v2
+3931,バリューゴルフ,False,active,https://corp.valuegolf.co.jp/,eIRシステム（動的ロード）。URL: https://corp.valuegolf.co.jp/,2026-03-16T19:13:46+09:00,,,,eir_api,v2
+4014,(株)カラダノート,True,excluded,https://corp.karadanote.jp/ir,物理削除済み・論理削除扱い（BC突合保持）,2026-04-11,,,,,v2
+4019,スタメン,True,excluded,https://stmn.co.jp/ir/library,物理削除済み・論理削除扱い（BC突合保持）,2026-04-11,,,,,v2
+4177,i-plug,False,active,https://note.com/iplug_ir/n/n607c03ab8c9c,eIRシステム検出。コード=4177,2026-04-21,,,/doc/4177/tdnet/.*\.pdf,eir_api,v2
+417A,ブルーゾーンホールディングス,False,active,https://www.bluezonesholdings.co.jp/ir/finance/monthly.html,月次PDFリンク15件検出 best=https://contents.xj-storage.jp/xcontents/82790/cd308bef/1891/48b6/a10d/20a72b3f1207/20250502172957438s.pdf,2026-04-21,,,,scrape_links,v2
+4199,ワンダープラネット,True,excluded,https://wonderpla.net/ir/monthly/,物理削除済み・論理削除扱い（BC突合保持）,2026-04-11,,,,,v2
+4204,積水化学工業,False,active,https://www.sekisui.co.jp/ir/,自動生成。ページ: https://www.sekisui.co.jp/ir/ / リンク5件検出,2026-03-16,,,.*\.(pdf),scrape_links,v2
+4245,ダイキアクシス,True,excluded,http://www.daiki-axis.com/ir/monthly/,物理削除済み・論理削除扱い（BC突合保持）,2026-04-11,,,,,v2
+4343,イオンファンタジー,False,active,https://www.fantasy.co.jp/company/ircontent/library/library_09.html,自動生成。ページ: https://www.fantasy.co.jp/company/ircontent/library/library_09.html / リンク83件検出,2026-03-16,,\d{4},/company.*\.(pdf),scrape_links,v2
+4350,メディカルシステムネットワーク,False,active,https://job.career-tasu.jp/corp/00107136/,HTML表に月次データ検出。table_selector要調整,2026-04-21,,,,html_table,v2
+4393,バンク・オブ・イノベーション,True,excluded,https://boi.jp/ir/,物理削除済み・論理削除扱い（BC突合保持）,2026-04-11,,,,,v2
+4431,スマレジ,False,active,https://corp.smaregi.jp/ir/,eIRシステム（動的ロード）。URL: https://corp.smaregi.jp/ir/,2026-03-16T19:13:46+09:00,,,,eir_api,v2
+4523,エーザイ,True,skip,,エーザイ,2026-03-16T19:20:37+09:00,,,,skip,v2
+4641,アルプス技研,False,active,https://www.alpsgiken.co.jp/ir/financial/kado.html,HTML表に月次データ検出。table_selector要調整,2026-04-21,,,,html_table,v2
+4659,エイジス,False,active,http://www.ajis-group.co.jp/ir/monthly/,eIRシステム（動的ロード）。URL: http://www.ajis-group.co.jp/ir/monthly/,2026-03-16T20:26:36+09:00,,,,eir_api,v2
+4666,パーク24,False,active,http://www.park24.co.jp/ir/financial/monthly.html,eIRシステム（動的ロード）。URL: http://www.park24.co.jp/ir/financial/monthly.html,2026-03-16T20:26:36+09:00,,月次,.*\.(pdf|xlsx|xls),scrape_links,v2
+4679,田谷,False,active,https://www.taya.co.jp/ir/library/monthly.html,月次PDFリンク1件検出 best=https://contents.xj-storage.jp/xcontents/AS03932/d5e28261/6407/4c7e/85b8/b81fc2362cc7/20260408161554819s.pdf,2026-04-21,,,.*\.(pdf|xlsx|xls),scrape_links,v2
+4680,ラウンドワン,True,no_links_confirmed,https://www.round1.co.jp/ir/monthly/,no_links_confirmed,2026-04-21,,,.*\.(pdf|xlsx|xls),,v2
+4732,ユー・エス・エス,False,active,http://www.ussnet.co.jp/ir/library/monthly/,自動生成。ページ: http://www.ussnet.co.jp/ir/library/monthly/ / リンク11件検出,2026-03-16,,,/ir/item.*\.(pdf),scrape_links,v2
+4755,楽天グループ,True,error,https://www.rakuten-bank.co.jp/corp/pdf/QA-260209_JP.pdf,"error: Page.goto: Download is starting
+Call log:
+  - navigating to ""https://www.rakuten-bank.co.jp/corp/pdf/QA-260209_JP.pdf"", waiting until ""load""
+",2026-04-21,,,/investors/assets/doc/documents.*\.(pdf|xlsx),,v2
+4839,ＷＯＷＯＷ,False,active,https://corporate.wowow.co.jp/ir/finance/subscriptions/,HTML表に月次データ検出。table_selector要調整,2026-04-21,,,,html_table,v2
+4889,,True,excluded,,物理削除済み・論理削除扱い（BC突合保持）,2026-04-11,,,,,v2
+4890,,True,excluded,,物理削除済み・論理削除扱い（BC突合保持）,2026-04-11,,,,,v2
+5025,マーキュリー,True,no_links_confirmed,https://mcury.jp/ir/,月次ページリンク 2 件検出、サブページ踏み込み後にDLリンク無し（best=https://shikiho.toyokeizai.net/news/search/category?query=%E6%9C%88%E6%AC%A1%E5%A0%B1%E5%91%8A%E6%9B%B8%E9%80%9F%E5%A0%B1）,2026-04-21,,,,,v2
+5259,ＢＢＤイニシアティブ,True,skip,https://www.bbdi.co.jp/ir/library.html,ddg_search: 2023 年 3 月度グループ SaaS 主要 KPI 月次進捗のお知らせ - 東証,2026-04-05T14:21:39.316244+09:00,,,,,v2
+5580,(株)プロディライト,True,skip,https://note.prodelight.co.jp/n/n346347b5e89f,ddg_search: プロディライト---2026年2月度主要KPI、INNOVERA・IP-Line ...,2026-04-05T14:21:39.418643+09:00,,,,,v2
+5589,オートサーバー,True,skip,https://www.autoserver.co.jp/ir/,no_links_confirmed,2026-03-17T19:48:07.020634+09:00,,,,,v2
+5888,DAIWA CYCLE,False,active,https://www.daiwa-cycle.co.jp/ir/,eIRシステム（動的ロード）。URL: https://www.daiwa-cycle.co.jp/ir/,2026-03-16T19:13:46+09:00,,,,eir_api,v2
+5891,(株)魁力屋,False,active,https://corp.kairikiya.co.jp/ir/monthly/,eIRシステム（動的ロード）。URL: https://corp.kairikiya.co.jp/ir/monthly/,2026-03-16T19:13:46+09:00,,,,eir_api,v2
+5938,ＬＩＸＩＬ,False,active,https://www.lixil.com/jp/investor/financial/monthly.html,eIRシステム（動的ロード）。URL: https://www.lixil.com/jp/investor/financial/monthly.html,2026-03-16T20:26:36+09:00,,,,eir_api,v2
+6030,アドベンチャー,True,skip,https://jp.adventurekk.com/ir/,no_links_confirmed,2026-03-25T04:35:03.722284+09:00,,,,,v2
+6071,IBJ,False,active,http://www.ibjapan.jp/,月次ページ発見（サブページ）: http://www.ibjapan.jp/,2026-03-17T19:48:41.149318+09:00,,,,scrape_links,v2
+6073,アサンテ,False,active,https://www.asante.co.jp/ir/,月次PDFリンク3件検出 best=https://contents.xj-storage.jp/xcontents/60730/24b60b42/93f4/450d/9d20/450a149c235b/140120260403598417.pdf,2026-04-21,,月次売上高,xj-storage\.jp.*\.pdf,scrape_links,v2
+6083,ＥＲＩホールディングス,False,active,https://www.h-eri.co.jp/ir/finance/genjyo.html,月次PDFリンク2件検出 best=https://www.h-eri.co.jp/ir/data/getuji_2025K.pdf,2026-04-21,,,.*\.(pdf),scrape_links,v2
+6146,ディスコ,False,active,https://www.disco.co.jp/jp/ir/news/topics/index.html,四半期開示（売上高・出荷額速報値）を月次として収集。3/6/9/12月末。ニュース一覧→各ページのpdfjs viewer URLからPDF取得。,2026-03-16T19:31:09+09:00,,速報,,disco_quarterly,v2
+6181,タメニー,True,excluded,https://tameny.jp/ir/,物理削除済み・論理削除扱い（BC突合保持）,2026-04-11,,,,,v2
+6191,(株)エアトリ,False,active,https://www.airtrip.co.jp/en,月次ページ発見（サブページ）: https://www.airtrip.co.jp/en,2026-03-17T19:49:13.891696+09:00,,,,scrape_links,v2
+6195,ホープ,True,excluded,https://www.zaigenkakuho.com/ir/,物理削除済み・論理削除扱い（BC突合保持）,2026-04-11,,,,,v2
+6197,ソラスト,True,excluded,http://www.solasto.co.jp/ir/library/kpi/,物理削除済み・論理削除扱い（BC突合保持）,2026-04-11,,,,,v2
+6200,インソース,False,active,http://www.insource.co.jp/ir/insmthdata.html,月次PDFリンク1件検出 best=http://www.insource.co.jp/resource/pdf/ir/26040101.pdf,2026-04-21,,,/resource.*\.(pdf|xlsx),scrape_links,v2
+6264,マルマエ,False,active,https://www.marumae.com/ir.html,eIRシステム（動的ロード）。URL: https://www.marumae.com/ir.html,2026-03-16T19:13:46+09:00,,,,eir_api,v2
+6301,コマツ,True,no_links_confirmed,https://www.komatsu.jp/ja,no_links_confirmed,2026-04-21,,,,,v2
+6412,平和,True,no_links_confirmed,http://www.heiwanet.co.jp/ir/sales/,月次ページリンク 2 件検出、サブページ踏み込み後にDLリンク無し（best=https://shikiho.toyokeizai.net/news/search/category?query=%E6%9C%88%E6%AC%A1%E5%A0%B1%E5%91%8A%E6%9B%B8%E9%80%9F%E5%A0%B1）,2026-04-21,,,,,v2
+6425,ユニバーサルエンターテインメント,False,active,https://www.universal-777.co.jp/ir/,eIRシステム検出。コード=6425,2026-03-16,,,,eir_api,v2
+6522,(株)アスタリスク,False,active,https://www.asx.co.jp/ir/monthly/,自動生成。ページ: https://www.asx.co.jp/ir/monthly/ / リンク14件検出,2026-03-16,,月次,/contents/ircontents/monthly/pdf.*\.(pdf),scrape_links,v2
+6535,アイモバイル,True,skip,,アイモバイル,2026-03-16T19:20:37+09:00,,,,skip,v2
+6537,ＷＡＳＨハウス,False,active,https://corporate.wash-house.jp/ir/achievement.php,HTML表に月次データ検出。table_selector要調整,2026-04-21,,,,html_table,v2
+6547,(株)グリーンズ,False,active,https://kk-greens.jp/ir/,eIRシステム（動的ロード）。URL: https://kk-greens.jp/ir/,2026-03-16T19:13:46+09:00,,,,eir_api,v2
+6571,キュービーネットホールディングス,False,active,https://www.qbnet.jp/ir/library/monthly/,ダウンロードリンクなし(no_links)。URL: http://www.qbnet.jp/ir/library/monthly/,2026-03-24,,,.*\.(pdf|xlsx|xls),scrape_links,v2
+6580,(株)ライトアップ,True,excluded,https://www.writeup.jp/ir/monthly/,管理対象外: 月次開示停止中（2024-04 以降 2 年以上更新なし）。論理削除（2026-04-19）,2026-04-19,,月次|売上|契約|ユーザー,.*\.(pdf|xlsx|xls),scrape_links,v2
+6627,テラプローブ,False,active,http://www.teraprobe.com/ir/monthly/,月次PDFリンク12件検出 best=https://www.teraprobe.com/cwp/wp-content/uploads/20260415_monthlysales2603.pdf,2026-04-21,,\d{4},/cwp/wp\-content/uploads.*\.(pdf),scrape_links,v2
+6752,パナソニック ホールディングス,True,excluded,https://holdings.panasonic/jp/corporate/ir/data/monthly.html,管理対象外: ホームズ受注速報のみで超大企業事業の一部。追跡意義なし（2026-04-18 論理削除）,2026-04-18,,,.*\.(pdf|xlsx|xls),,v2
+6844,新電元工業,True,no_links_confirmed,https://www.shindengen.co.jp/ir/,月次ページリンク 3 件検出、サブページ踏み込み後にDLリンク無し（best=https://shikiho.toyokeizai.net/news/search/category?query=%E6%9C%88%E6%AC%A1%E5%A0%B1%E5%91%8A%E6%9B%B8%E9%80%9F%E5%A0%B1）,2026-04-21,,,.*\.(pdf),,v2
+7066,ピアズ,True,excluded,https://peers.jp/ir,物理削除済み・論理削除扱い（BC突合保持）,2026-04-11,,,,,v2
+7088,フォーラムエンジニアリング,False,active,https://tenshoku.mynavi.jp/jobinfo-98383-1-672-1/,HTML表に月次データ検出。table_selector要調整,2026-04-21,,,.*\.(pdf|xlsx|xls),html_table,v2
+7091,リビングプラットフォーム,False,active,http://www.living-platform.com/ir/library/,リビングプラットフォーム月次。ltp=None,2026-03-24,,,/xcontents/AS08887.*\.pdf|.*monthly.*\.pdf,scrape_links,v2
+7157,ライフネット生命保険,False,active,https://ir.lifenet-seimei.co.jp/ja/ir/financial/monthly.html,自動生成。ページ: https://ir.lifenet-seimei.co.jp/ja/ir/financial/monthly.html / リンク24件検出,2026-03-16,,,/ja.*\.(pdf),scrape_links,v2
+7162,アストマックス,True,no_links_confirmed,https://www.astmax.co.jp/ir/,月次ページリンク 3 件検出、サブページ踏み込み後にDLリンク無し（best=https://shikiho.toyokeizai.net/news/search/category?query=%E6%9C%88%E6%AC%A1%E5%A0%B1%E5%91%8A%E6%9B%B8%E9%80%9F%E5%A0%B1）,2026-04-21,,発電状況,xj-storage\.jp.*\.pdf|eir-parts\.net.*\.pdf,,v2
+7175,今村証券,True,skip,,今村証券,2026-03-16T19:20:37+09:00,,,,skip,v2
+7177,GMOフィナンシャルホールディングス,False,active,https://www.gmofh.com/ir/monthly_report.html,月次PDFリンク2件検出 best=https://www.gmofh.com/ir/monthlyreport/monthlyreport.xlsx,2026-04-21,,,/ir/monthlyreport/monthlyreport\.xlsx,scrape_links,v2
+7198,,True,excluded,,物理削除済み・論理削除扱い（BC突合保持）,2026-04-11,,,,,v2
+7201,日産自動車,True,url_not_found,,ダウンロードリンクなし(no_links)。URL: https://support.google.com/websearch,2026-03-16,,,,unknown,v2
+7202,いすゞ自動車,True,no_links_confirmed,"https://www.tax.metro.tokyo.lg.jp/documents/d/tax/02_63#:~:text=%E4%B9%97%E7%94%A8%E8%BB%8A%E3%81%AE%E4%BF%9D%E6%9C%89%E5%8F%B0%E6%95%B0%E3%81%AF,21.1%EF%BC%85%EF%BC%89%E3%81%99%E3%82%8B%E3%81%A8%E4%BA%88%E6%B8%AC%E3%81%99%E3%82%8B%E3%80%82",no_links_confirmed,2026-04-21,,,,,v2
+7203,トヨタ自動車,True,no_links_confirmed,https://global.toyota/jp/ir/library/monthly-sales/,月次ページリンク 2 件検出、サブページ踏み込み後にDLリンク無し（best=https://mainichi.jp/wsj-monthly/）,2026-04-21,,,.*\.(pdf|xlsx|xls),,v2
+7205,日野自動車,False,active,https://www.hino.co.jp/corp/for_investors/,自動生成。ページ: https://www.hino.co.jp/corp/for_investors/ / リンク5件検出,2026-03-16,,,/corp/for_investors.*\.(pdf),scrape_links,v2
+7211,三菱自動車工業,False,active,https://www.mitsubishi-motors.com/jp/investors/finance_result/result.html,HTML表に月次データ検出。table_selector要調整,2026-04-21,,,/jp.*\.(pdf|xlsx),html_table,v2
+7261,マツダ,True,skip,https://www.mazda.co.jp/,ddg_search: 2026年月期12月度月次売上状況単体のお知らせ,2026-04-05T14:21:39.617629+09:00,,,,,v2
+7267,ホンダ,False,active,https://www.joyfulhonda.co.jp/ja/ir/finance/monthly.html,月次ページ発見（サブページ）: https://www.joyfulhonda.co.jp/ja/ir/finance/monthly.html,2026-03-16,,,,scrape_links,v2
+7269,スズキ,True,no_links_confirmed,http://www.suzuki.co.jp/,月次ページリンク 1 件検出、サブページ踏み込み後にDLリンク無し（best=https://www.konami.com/sportsclub/riyo/monthly_plan.html）,2026-04-21,,,,,v2
+7270,ＳＵＢＡＲＵ,False,active,https://www.subaru.co.jp/ir/finance/performance.html,自動生成。ページ: https://www.subaru.co.jp/ir/finance/performance.html / リンク14件検出,2026-03-16,,,/ir/finance/pdf/performance.*\.(pdf|xls),scrape_links,v2
+7326,SBIインシュアランスグループ,True,eir_spa,,保険持株会社。eIRシステム使用。月次速報開示なし。四半期・年次開示のみ。ir_url.jsonにmonthly_page_urlなし（source=no_hp_url）。,2026-03-15,,,,,v1
+7345,アイ・パートナーズフィナンシャル,True,tdnet_migrated,https://www.aipf.co.jp/,TDnet 経由に移行 (2026-04-20): monthly/docs のスクレイプ結果は TDnet 書式だったため、non-tdnet 登録を解除,2026-04-20,,,,scrape_links,v2
+7359,東京通信グループ,True,skip,https://www.tokyo-tsushin.com/ir/library/,ddg_search: 東京通信グループ、24年10月月次業績は売上高16.3％増の5億3700万円,2026-04-05T14:21:39.753040+09:00,,,,,v2
+7372,デコルテ・ホールディングス,True,excluded,https://ir.decollte.co.jp/,物理削除済み・論理削除扱い（BC突合保持）,2026-04-11,,,,,v2
+7378,アシロ,True,excluded,https://asiro.co.jp/investor/monthly/#top,[excluded] BC月次データ 2024-05 以降停止（管理対象外判断 2026-04-17） (2026-04-17) | 旧note: アシロ月次。fl=False（PDF-lhpミス修正）,2026-04-20,,,.*\.(pdf|xlsx|xls),scrape_links,v2
+7412,アトム,False,active,http://www.atom-corp.co.jp/ir/monthlysale.php,月次ページ発見（サブページ）: http://www.atom-corp.co.jp/,2026-04-12,,,/ir.*\.(pdf),scrape_links,v2
+7416,はるやまホールディングス,False,active,http://www.haruyama.co.jp/ir/ir_monthly_data.php,月次ページ発見（サブページ）: http://www.haruyama.co.jp/,2026-04-12,,,.*\.(pdf|xlsx|xls),scrape_links,v2
+7421,カッパ・クリエイト,False,active,http://www.kappa-create.co.jp/ir/monthly/,月次PDFリンク1件検出 best=http://www.kappa-create.co.jp/company/governance.pdf,2026-04-21,,,/company/governance\.pdf,scrape_links,v2
+7453,良品計画,False,active,https://ryohin-keikaku.jp/ir/,eIRシステム検出。コード=7453,2026-04-21,,,.*\.(pdf|xlsx|xls),eir_api,v2
+7455,パリミキホールディングス,False,active,https://www.paris-miki.com/hd/investor/finance_and_performance/monthly_sales_index.html,HTML表型。table_selector要調整,2026-04-21,,月次,.*\.(pdf|xlsx|xls),html_table,v2
+7475,アルビス,False,active,http://www.albis.co.jp/ir/monthly.html,アルビス月次。ltp=None,2026-03-24,,,/ir/img/monthly.*\.(pdf),scrape_links,v2
+7494,コナカ,False,active,https://shikiho.toyokeizai.net/news/0/940762,月次PDFリンク1件検出 best=https://www.rentracks.co.jp/ir/library/pdf/21th/2026_03_03_monthly.pdf,2026-04-21,,,/ir/assets/2026/02.*\.(pdf),scrape_links,v2
+7502,プラザホールディングス,True,excluded,https://www.plazacreate.co.jp/ir/,物理削除済み・論理削除扱い（BC突合保持）,2026-04-11,,,,,v2
+7506,ハウス　オブ　ローゼ,False,active,https://www.houseofrose.jp/ir/data/irshiryo/,eIRシステム（動的ロード）。URL: https://www.houseofrose.jp/ir/data/irshiryo/,2026-03-16T20:26:36+09:00,,月次|売上,.*\.(pdf|xlsx|xls),scrape_links,v2
+7512,イオン北海道,False,active,https://www.aeon-hokkaido.jp/corporation/month/,HTML表に月次データ検出。table_selector要調整,2026-04-21,,,corporation/month/.*\.(pdf)|.*aeon-hokkaido.*\.(pdf),html_table,v2
+7513,(株)コジマ,False,active,https://www.kojima.net/corporation/ir/bulletin.html,自動生成。ページ: https://www.kojima.net/corporation/ir/bulletin.html / リンク15件検出,2026-03-16,,,/corporation/ir/pdf.*\.(pdf),scrape_links,v2
+7514,ヒマラヤ,False,active,https://www.hmry.jp/ir/library/monthly/,月次PDFリンク2件検出 best=https://www.hmry.jp/wp-content/uploads/2025/05/カスタマーハラスメントに対する基本方針.pdf,2026-04-21,,,,scrape_links,v2
+7516,コーナン商事,False,active,http://www.hc-kohnan.com/ir/monthly/,自動生成。ページ: http://www.hc-kohnan.com/ir/monthly/ / リンク5件検出,2026-03-16,,\d{4},/files/corporate/ir/monthly\-report.*\.(pdf),scrape_links,v2
+7522,ワタミ,False,active,http://www.watami.co.jp/ir/monthly.html,月次PDFリンク1件検出 best=http://www.watami.co.jp/csr/report/pdf/2024/environmental_report_2024.pdf,2026-04-21,,,/csr/report/pdf/2024/environmental_report_2024\.pdf,scrape_links,v2
+7544,スリーエフ,True,no_links_confirmed,"https://www.kanaloco.jp/news/economy/entry-11268.html#:~:text=%E3%82%B3%E3%83%B3%E3%83%93%E3%83%8B%E3%82%A8%E3%83%B3%E3%82%B9%E3%82%B9%E3%83%88%E3%82%A2%E4%B8%AD%E5%A0%85%E3%81%AE%E3%82%B9%E3%83%AA%E3%83%BC%E3%82%A8%E3%83%95,%E3%83%AD%E3%83%BC%E3%82%BD%E3%83%B3%E3%81%A8%E5%85%B1%E5%90%8C%E9%81%8B%E5%96%B6%E3%81%99%E3%82%8B%E3%80%82",no_links_confirmed,2026-04-21,,,,,v2
+7545,西松屋チェーン,False,active,http://www.24028.jp/ir/library/,自動生成。ページ: http://www.24028.jp/ir/library/ / リンク144件検出,2026-03-16,,\d{4},/ir/wp\-content/uploads/sites/3.*\.(pdf),scrape_links,v2
+7550,ゼンショーホールディングス,False,active,https://www.zensho.co.jp/jp/ir/finance/monthly/,月次PDFリンク2件検出 best=http://www.zensho.co.jp/jp/company/news/resource/pdf/20260407news.pdf,2026-04-21,,売上,/jp/ir/resource/csv/J\.Monthly\.26\.2\.csv,scrape_links,v2
+7554,幸楽苑,False,active,https://hd.kourakuen.co.jp/ir/,自動生成。ページ: https://hd.kourakuen.co.jp/ir/ / リンク20件検出,2026-03-16,,,/storage.*\.(pdf),scrape_links,v2
+7561,ハークスレイ,False,active,https://www.hurxley.co.jp/ir_information/month/,HTML表に月次データ検出。table_selector要調整,2026-04-21,,,.*\.(pdf|xlsx|xls),html_table,v2
+7562,安楽亭,False,active,https://www.anrakutei.co.jp/ir.html,自動生成。ページ: https://www.anrakutei.co.jp/ir.html / リンク197件検出,2026-03-16,,,/ir.*\.(pdf),scrape_links,v2
+7581,サイゼリヤ,False,active,https://www.saizeriya.co.jp/corporate/investor/ir/monthly-sales-report/,自動生成。ページ: https://www.saizeriya.co.jp/corporate/investor/ir/monthly-sales-report/ / リンク20件検出,2026-03-16,,,/files.*\.(pdf),scrape_links,v2
+7596,魚力,False,active,http://www.uoriki.co.jp/ir/library/monthly.html,eIRシステム（動的ロード）。URL: http://www.uoriki.co.jp/ir/library/monthly.html,2026-03-16T20:32:34+09:00,,,,eir_api,v2
+7599,ＩＤＯＭ,True,excluded,https://idom-inc.com/ir/,物理削除済み・論理削除扱い（BC突合保持）,2026-04-11,,,,,v2
+7601,ポプラ,False,active,http://www.poplar-cvs.co.jp/ir/monthly/,月次PDFリンク8件検出 best=http://www.poplar-cvs.co.jp/ir/pdf/index/2026/51-tanshin.pdf,2026-04-21,,"\d{4}年\d{1,2}月度\s*月次業績のご報告",/ir/pdf/index/\d{4}/.*\.pdf,scrape_links,v2
+7603,ジーイエット,False,active,https://gyet.co.jp/ir/ir-news/,自動生成。ページ: https://gyet.co.jp/ir/ir-news/ / リンク10件検出,2026-03-16,,,/wp/wp\-content/uploads/2026.*\.(pdf),scrape_links,v2
+7604,梅の花グループ,False,active,https://www.umenohana.co.jp/ir/monthly/,月次PDFリンク1件検出 best=https://d2t9fdkhmis4do.cloudfront.net/images/app/public/group-information-pdfs/01KN3MWVSBZWJSW9NV23CBHS0A.pdf,2026-04-21,,月次,.*\.(pdf|xlsx|xls),scrape_links,v2
+7611,ハイデイ日高,True,no_links_confirmed,https://www.hiday.co.jp/investor/monthly/index.html,no_links_confirmed,2026-04-21,,,.*\.(pdf|xlsx|xls),,v2
+7612,コロワイド,False,active,https://www.colowide.co.jp/ir/sale/,eIRシステム。コード=7616,2026-03-16,,,,eir_api,v2
+7615,京都きもの友禅ホールディングス,True,excluded,https://www.kyotokimonoyuzenholdings.co.jp/ir/,物理削除済み・論理削除扱い（BC突合保持）,2026-04-11,,,,,v2
+7616,コロワイド,False,active,https://www.colowide.co.jp/ir/sale/,eIRシステム（動的ロード）。URL: https://www.colowide.co.jp/ir/sale/,2026-03-16T19:13:46+09:00,,,,eir_api,v2
+7618,,True,excluded,,物理削除済み・論理削除扱い（BC突合保持）,2026-04-11,,,,,v2
+7621,うかい,False,active,http://www.ukai.co.jp/ir/monthly/,月次ページ発見（サブページ）: http://www.ukai.co.jp/,2026-04-12,,,.*\.(pdf|xlsx|xls),scrape_links,v2
+7630,(株)壱番屋,False,active,https://www.ichibanya.co.jp/comp/ir/finance/monthly/,eIRシステム（動的ロード）。URL: https://www.ichibanya.co.jp/comp/ir/finance/monthly/,2026-03-16T19:13:46+09:00,,月次,.*\.(pdf|xlsx|xls),scrape_links,v2
+7636,ハンズマン,False,active,http://www.handsman.co.jp/ir/sales/,自動生成。ページ: http://www.handsman.co.jp/ir/sales/ / リンク62件検出,2026-03-16,,売上,/wp\-content/uploads.*\.(pdf),scrape_links,v2
+7643,ダイイチ,False,active,http://www.daiichi-d.co.jp/ir/monthly/,月次PDFリンク1件検出 best=https://www.daiichi-d.co.jp/sys/wp-content/uploads/7643_getuji-7.pdf,2026-04-21,,PDFファイル\(\d+KB\),/sys/wp-content/uploads/7643_getuji-\d+\.pdf,scrape_links,v2
+7646,ＰＬＡＮＴ,False,active,http://www.plant-co.jp/ir/monthly/,自動生成。ページ: http://www.plant-co.jp/ir/monthly/ / リンク20件検出,2026-03-16,,\d{4},/corp/pdf.*\.(pdf),scrape_links,v2
+7678,あさくま,False,active,"https://diamond.jp/zai/articles/-/1066028#:~:text=%E3%81%82%E3%81%95%E3%81%8F%E3%81%BE%E3%81%AE%E6%A0%AA%E4%B8%BB%E5%84%AA%E5%BE%85%E3%81%AF,%E3%82%92%E8%B4%88%E5%91%88%EF%BC%89%E3%80%8D%E3%81%A8%E3%81%84%E3%81%86%E3%82%82%E3%81%AE%E3%80%82",HTML表に月次データ検出。table_selector要調整,2026-04-21,,,,html_table,v2
+7682,浜木綿,False,active,https://ir.hamayuu.co.jp/ja/ir.html,月次PDFリンク4件検出 best=https://ir.hamayuu.co.jp/ja/ir/news/news6871234924145421985/main/0/link/pdffile.pdf,2026-04-21,,,.*\.(pdf),scrape_links,v2
+7805,プリントネット,True,excluded,https://odahara.jp/,物理削除済み・論理削除扱い（BC突合保持）,2026-04-11,,,,,v2
+8008,４℃ホールディングス,False,active,https://yondoshi.co.jp/ir/library#月次情報,自動生成。ページ: https://yondoshi.co.jp/ir/library#月次情報 / リンク173件検出,2026-03-16,,,/tenants/2641/item_files/assets/000.*\.(pdf),scrape_links,v2
+8011,三陽商会,False,active,http://www.sanyo-shokai.co.jp/ir/library/monthly/,HTML表に月次データ検出。table_selector要調整,2026-04-21,,,.*\.(pdf),html_table,v2
+8028,ファミリーマート,False,active,https://www.family.co.jp/company/familymart/monthly_sales/flash.html,月次PDFリンク1件検出 best=https://www.family.co.jp/content/dam/family/company/familymart/monthly_sales/getsuji_202603_japanese.pdf,2026-04-21,,,,scrape_links,v2
+8029,ルックホールディングス,False,active,http://www.look-holdings.jp/irinfo/monthly/,自動生成。ページ: http://www.look-holdings.jp/irinfo/monthly/ / リンク26件検出,2026-03-16,,,/irinfo/monthly/pdf.*\.(pdf),scrape_links,v2
+8040,東京ソワール,False,active,http://www.soir.co.jp/ir/monthly/,HTML表に月次データ検出。table_selector要調整,2026-04-21,,,/ir/monthly.*\.(pdf),html_table,v2
+8153,モスフードサービス,False,active,https://www.mos.co.jp/company/ir/library/monthly_info/,eIRシステム検出。コード=8153,2026-04-12,,,.*\.(pdf|xlsx|xls),eir_api,v2
+8160,木曽路,False,active,http://www.kisoji.co.jp/ir/monthly.html,月次PDFリンク2件検出 best=https://www.kisoji.co.jp/themes/kisoji/assets/doc/policy_multistakeholder.pdf,2026-04-21,,,.*\.(pdf|xlsx|xls),scrape_links,v2
+8163,ＳＲＳホールディングス,False,active,https://srs-holdings.co.jp/ir/library/monthly/,月次ページ発見（サブページ）: https://srs-holdings.co.jp/,2026-04-12,,,.*\.(pdf|xlsx|xls),scrape_links,v2
+8165,千趣会,False,active,http://www.senshukai.co.jp/ir/monthly.html,URL自体が月次ページだがコンテンツ未検出（JS遅延/SPA疑い）。要手動確認,2026-04-21,,,,html_table,v2
+8167,(株)リテールパートナーズ,False,active,http://www.retailpartners.co.jp/ir/monthly.html,eIRシステム（動的ロード）。URL: http://www.retailpartners.co.jp/ir/monthly.html,2026-03-16T20:26:36+09:00,,月次,.*\.(pdf|xlsx|xls),scrape_links,v2
+8173,上新電機,False,active,http://www.joshin.co.jp/ja/ir/library/sales_report.html,月次売上速報PDF。JSレンダリング必要。link text=月次売上速報、href=Joshin Monthly。,2026-03-17,,月次売上速報,/ir/library/sales_report/.*|Joshin_Monthly.*\.pdf,scrape_links,v2
+8174,日本瓦斯,False,active,http://www.nichigas.co.jp/ir/library/monthly/,eIRシステム検出。コード=8174,2026-04-21,,,.*\.(pdf),eir_api,v2
+8179,ロイヤルホールディングス,False,active,http://www.royal-holdings.co.jp/ir/finance/sales/,HTML表に月次データ検出。table_selector要調整,2026-04-21,,\d{4},/assets/pdf/ir/stockholder/mtmplan_2025\.pdf,html_table,v2
+8182,,True,excluded,,物理削除済み・論理削除扱い（BC突合保持）,2026-04-11,,,,,v2
+8185,チヨダ,False,active,https://www.chiyodagrp.co.jp/ir/sales.html,Static PDF links found at https://www.chiyodagrp.co.jp/ir/sales.html (original URL /ir/monthly/ returns 404; correct page is /ir/sales.html). Pattern: /ir/data/YYYYMM_getsuji_soku.pdf (速報) and /ir/data/YYYYMM_getsuji_kaku.pdf (確報). Base URL: https://www.chiyodagrp.co.jp,2026-03-16,,"\d{4}年\d{1,2}月度",/ir/data/\d{6}_getsuji_(soku|kaku)\.pdf,scrape_links,v2
+8194,(株)ライフコーポレーション,False,active,"https://www.ryutsuu.biz/sales/s021312.html#:~:text=%E3%83%A9%E3%82%A4%E3%83%95%E3%82%B3%E3%83%BC%E3%83%9D%E3%83%AC%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%EF%BC%882025%E5%B9%B42,3.6%EF%BC%85%E5%A2%97%EF%BC%89%E3%81%A0%E3%81%A3%E3%81%9F%E3%80%82&text=%E6%97%A2%E5%AD%98%E5%BA%97%E5%A3%B2%E4%B8%8A%E9%AB%98%E3%81%AF,%E5%A2%97%E3%81%A8%E3%81%AA%E3%81%A3%E3%81%A6%E3%81%84%E3%82%8B%E3%80%82",月次ページ発見（サブページ）: https://www.ryutsuu.biz/sales,2026-04-12,,,.*\.pdf,scrape_links,v2
+8198,マックスバリュ東海,False,active,https://www.mv-tokai.co.jp/ir/,eIRシステム検出。コード=8198,2026-04-21,,月次,,eir_api,v2
+8207,テンアライド,False,active,http://www.teng.co.jp/ir/ir.html,自動生成。ページ: http://www.teng.co.jp/ir/ir.html / リンク10件検出,2026-03-16,,PDF,/ir.*\.(pdf),scrape_links,v2
+8209,フレンドリー,False,active,https://www.friendly-co.com/ir/monthly_data.html,HTML表に月次データ検出。table_selector要調整,2026-04-21,,,,html_table,v2
+8214,ＡＯＫＩホールディングス,False,active,https://ir.aoki-hd.co.jp/ja/ir/finance/monthlyreport.html,サブページ踏み込み28件検出 best=https://ir.aoki-hd.co.jp/ja/ir/finance/monthlyreport/fashion/main/02/teaserItems1/0/linkList/010/link/2403_Fashion_uriage_jp.pdf,2026-04-21,,,.*\.(pdf|xlsx|xls),scrape_links,v2
+8217,(株)オークワ,False,active,https://www.okuwa.net/ir/monthly/,HTML表に月次データ検出。table_selector要調整,2026-04-21,,,/ir/monthly/.*\.(pdf),html_table,v2
+8218,(株)コメリ,False,active,http://www.komeri.bit.or.jp/ir/monthlytrend/,コメリ月次。ltp=None,2026-03-24,,,/ir/monthlytrend.*\.(pdf),scrape_links,v2
+8227,しまむら,False,active,https://www.shimamura.gr.jp/ir/sales/,"自動生成。ページ: https://www.shimamura.gr.jp/ir/sales/ / リンク13件検出 / text=月度, href=getsuzi手動補正",2026-03-16,,\d+月度,getsuzi\d+\.pdf,scrape_links,v2
+8230,はせがわ,False,active,https://corp.hasegawa.jp/ir/,eIRシステム（動的ロード）。URL: https://corp.hasegawa.jp/ir/,2026-03-16T20:26:36+09:00,,,,eir_api,v2
+8233,高島屋,False,active,https://www.takashimaya.co.jp/corp/ir/eigyou/index.html,自動生成。ページ: https://www.takashimaya.co.jp/corp/ir/eigyou/index.html / リンク303件検出,2026-03-16,,,/base/corp.*\.(pdf),scrape_links,v2
+8237,松屋,False,active,https://www.matsuya.com/corp/ir/monthly-highlight/,月次PDFリンク1件検出 best=https://contents.xj-storage.jp/xcontents/82370/fc737a2f/f5bb/4fc6/93ae/a28b774b0631/140120260404598487.pdf,2026-04-21,,,/corp/ir/monthly\-highlight/.*\.(pdf),scrape_links,v2
+8242,エイチ・ツー・オー　リテイリング,False,active,https://www.h2o-retailing.co.jp/ja/ir/library/monthly.html,月次売上速報PDF。月次一覧ページ。link_href_pattern=monthly/main。,2026-03-17,,,monthly/main,scrape_links,v2
+8244,近鉄百貨店,False,active,https://www.d-kintetsu.co.jp/corporate/ir/finance/recent_results.html,近鉄百貨店月次。ltp=None,2026-03-24,,,.*\.(pdf|xlsx|xls),scrape_links,v2
+8252,丸井グループ,False,active,https://www.0101maruigroup.co.jp/ir/lib/monthly.html,自動生成。ページ: https://www.0101maruigroup.co.jp/ir/lib/monthly.html / リンク118件検出,2026-03-16,,,.*\.(pdf),scrape_links,v2
+8253,クレディセゾン,False,active,https://corporate.saisoncard.co.jp/ir/monthly_report/,SPA/JavaScriptレンダリング。静的HTMLにコンテンツなし。URL: https://corporate.saisoncard.co.jp/ir/monthly_report/,2026-03-16,,,/ir/monthly_report/.*\.(pdf),scrape_links,v2
+8254,さいか屋,True,skip,https://www.saikaya.co.jp/company/news_release,ddg_search: さいか屋 月足チャート | みずほ証券,2026-04-05T14:21:39.966406+09:00,,,,,v2
+8255,アクシアル リテイリング,True,error,http://www.axial-r.com/ir/monthly/,"error: Page.goto: net::ERR_NAME_NOT_RESOLVED at http://www.axial-r.com/ir/monthly/
+Call log:
+  - navigating to ""http://www.axial-r.com/ir/monthly/"", waiting until ""load""
+",2026-04-21,,,.*\.(pdf|xlsx|xls),,v2
+8260,(株)井筒屋,False,active,https://corp.izutsuya.co.jp/ir/businessplan/,自動生成。ページ: https://corp.izutsuya.co.jp/ir/businessplan/ / リンク44件検出,2026-03-16,,,.*\.(pdf),scrape_links,v2
+8267,イオン,False,active,http://www.aeon.info/ir/library/monthly/,eIRシステム（動的ロード）。URL: http://www.aeon.info/ir/library/monthly/,2026-03-16T20:32:34+09:00,,,,eir_api,v2
+8273,イズミ,False,active,https://www.izumi.co.jp/ir/finance/monthly/,年度別PDFリンクが静的HTMLに存在。最新年度のPDFが年次更新される形式。URL: /corp/ir/pdf/backnumber/{YYYY}.pdf,2026-03-16,,月次推移表_\d{4},/corp/ir/pdf/backnumber/\d{4}\.pdf,scrape_links,v2
+8276,平和堂,False,active,http://www.heiwado.jp/ir/sales/,サブページ踏み込み3件検出 best=http://www.heiwado.jp/assets/img/pages/ir/sales/monthly/pdf_sales.pdf?ts=1776733958990,2026-04-21,,月次|売上,.*\.(pdf|xlsx|xls),scrape_links,v2
+8278,フジ,False,active,https://www.the-fuji.com/company/ir/monthly/,HTML表に月次データ検出。table_selector要調整,2026-04-21,,,.*\.(pdf|xlsx|xls),html_table,v2
+8279,オークワ,True,unknown,,,,,,,scrape_links,v2
+8281,ゼビオホールディングス,False,active,http://www.xebio.co.jp/ir/monthly/,自動生成。ページ: http://www.xebio.co.jp/ir/monthly/ / リンク26件検出,2026-03-16,,,/wp\-content/uploads.*\.(pdf),scrape_links,v2
+8282,ケーズホールディングス,True,error,https://www.ksdenki.co.jp/ir/library/monthlyinfo/,error: timeout,2026-04-12,,,.*\.pdf,,v2
+8287,,True,excluded,,物理削除済み・論理削除扱い（BC突合保持）,2026-04-11,,,,,v2
+8289,Ｏｌｙｍｐｉｃグループ,False,active,http://www.olympic-corp.co.jp/ir/sales/,HTML表に月次データ検出。table_selector要調整,2026-04-21,,,/common.*\.(pdf),html_table,v2
+8306,三菱ＵＦＪフィナンシャル・グループ,False,active,"https://stockevents.app/jp/stock/8306.TSE/dividends#:~:text=%E4%B8%89%E8%8F%B1UFJ%E3%83%95%E3%82%A3%E3%83%8A%E3%83%B3%E3%82%B7%E3%83%A3%E3%83%AB%E3%83%BB%E3%82%B0%E3%83%AB%E3%83%BC%E3%83%97%20(8306.TSE)%20%E3%81%AF%E5%8D%8A%E6%9C%9F,12%E6%9C%88%2004%2C%202026%E3%81%A7%E3%81%99%E3%80%82",HTML表に月次データ検出。table_selector要調整,2026-04-21,,PDF,/dam/ir/fs/2025/pdf.*\.(pdf),html_table,v2
+8316,三井住友フィナンシャルグループ,True,excluded,https://www.smfg.co.jp/,物理削除済み・論理削除扱い（BC突合保持）,2026-04-11,,,,,v2
+8508,Ｊトラスト,True,excluded,http://www.jt-corp.co.jp/ir/library/monthly_data/,物理削除済み・論理削除扱い（BC突合保持）,2026-04-11,,,,,v2
+8511,日本証券金融,False,active,http://www.jsf.co.jp/ir/monthly/,自動生成。ページ: http://www.jsf.co.jp/ir/monthly/ / リンク21件検出,2026-03-16,,,.*\.(pdf),scrape_links,v2
+8515,アイフル,False,active,https://www.aiful.co.jp/group/ir/finance/monthly_data.html,自動生成。ページ: https://www.aiful.co.jp/group/ir/finance/monthly_data.html / リンク29件検出,2026-03-16,,,/group.*\.(pdf),scrape_links,v2
+8566,リコーリース,True,no_links_confirmed,https://www.r-lease.co.jp/,no_links_confirmed,2026-04-21,,,,,v2
+8570,イオンフィナンシャルサービス,False,active,http://www.aeonfinancial.co.jp/ir/monthly/,自動生成。ページ: http://www.aeonfinancial.co.jp/ir/monthly/ / リンク9件検出,2026-03-16,,,/\-/media/AeonGroup/Aeonfinancial/Files.*\.(pdf),scrape_links,v2
+8572,アコム,False,active,http://www.acom.co.jp/ir/monthly/,月次PDFリンク7件検出 best=https://pdf.irpocket.com/C8572/ikpa/RWSZ/AmNH.pdf,2026-04-21,,PDF,.*\.(pdf),scrape_links,v2
+8604,野村ホールディングス,False,active,https://www.nomuraholdings.com/investor/monthly/,月次ページ発見（サブページ）: https://www.nomuraholdings.com/en/index.html,2026-04-12,,,.*\.(pdf|xlsx|xls),scrape_links,v2
+8613,丸三証券,True,skip,,丸三証券,2026-03-16T19:20:37+09:00,,,,skip,v2
+8614,,True,excluded,https://www.matsui.co.jp/company/ir/disclosure/business/,物理削除済み・論理削除扱い（BC突合保持）,2026-04-11,,,,,v2
+8622,水戸証券,True,skip,,水戸証券,2026-03-16T19:20:37+09:00,,,,skip,v2
+8624,いちよし証券,True,no_links_confirmed,https://www.ichiyoshi.co.jp/stockholder,no_links_confirmed,2026-04-21,,,,,v2
+8628,松井証券,False,active,https://www.matsui.co.jp/company/ir/disclosure/business/,自動生成。ページ: https://www.matsui.co.jp/company/ir/disclosure/business/ / リンク5件検出,2026-03-16,,,/company.*\.(pdf|xls),scrape_links,v2
+8630,ＳＯＭＰＯホールディングス,False,active,http://www.sompo-hd.com/ir/financial/monthly.html,自動生成。ページ: http://www.sompo-hd.com/ir/financial/monthly.html / リンク12件検出,2026-03-16,,月次|PDF,/\-/media/hd/files/doc/pdf/e_seiseki.*\.(pdf),scrape_links,v2
+8698,マネックスグループ,True,error,https://www.monexgroup.jp/jp/investor/finance/global.html,error: timeout,2026-04-21,,,revenues_mg_monthly|.*\.(pdf|xlsx|xls),,v2
+8700,丸八証券,True,skip,,丸八証券,2026-03-16T19:20:37+09:00,,,,skip,v2
+8704,トレイダーズホールディングス,False,active,https://www.tradershd.com/ir/,eIRシステム検出。コード=8704,2026-04-21,,,.*\.(pdf|xlsx|xls),eir_api,v2
+8706,極東証券,True,eir_spa,,IRサイトのkaishai情報はeir-parts.netのJavaScript動的ロード（setParts相当）。月次売買実績の開示自体も確認できず。,2026-03-15,,,,,v1
+8707,,True,excluded,,物理削除済み・論理削除扱い（BC突合保持）,2026-04-11,,,,,v2
+8708,アイザワ証券グループ,True,skip,,アイザワ証券グループ,2026-03-16T19:20:37+09:00,,,,skip,v2
+8725,MS&ADインシュアランスグループHD,False,active,https://www.ms-ad-hd.com/ja/ir/financial/monthly.html,月次PDFリンク22件検出 best=https://www.ms-ad-hd.com/ja/ir/financial/monthly/main/01/teaserItems1/00/linkList/0/link/2025_monthlydata_jp.xlsx,2026-04-12,,,monthlydata.*\.(xlsx|pdf)|.*monthly.*\.(xlsx|pdf),scrape_links,v2
+8732,,True,excluded,,物理削除済み・論理削除扱い（BC突合保持）,2026-04-11,,,,,v2
+8739,スパークス・グループ,False,active,https://www.sparx.jp/ir/data/,eIRシステム（動的ロード）。URL: https://www.sparx.jp/ir/data/,2026-03-16T19:13:46+09:00,,,,eir_api,v2
+8742,小林洋行,False,active,https://www.kobayashiyoko.com/news/,小林洋行月次。fl=False（PDF-lhpミス修正）,2026-03-24,,,/upfile/\d+_\d+\.pdf,scrape_links,v2
+8766,東京海上ホールディングス,False,active,http://www.tokiomarinehd.com/ir/financial/monthly.html,自動生成。ページ: http://www.tokiomarinehd.com/ir/financial/monthly.html / リンク10件検出,2026-03-16,,\d{4},/ir/financial/sd214a00000018v9\-att.*\.(xls),scrape_links,v2
+8798,アドバンスクリエイト,False,active,http://www.advancecreate.co.jp/ir/monthly_report/,ダウンロードリンクなし(no_links)。URL: http://www.advancecreate.co.jp/ir/monthly_report/,2026-03-16,,月次|月報,.*\.pdf,scrape_links,v2
+8801,三井不動産,False,active,https://www.mitsuifudosan.co.jp/corporate/ir/library/,自動生成。ページ: https://www.mitsuifudosan.co.jp/corporate/ir/library/ / リンク812件検出,2026-03-16,,,/corporate.*\.(pdf|xls|xlsx),scrape_links,v2
+8848,レオパレス２１,False,active,http://www.leopalace21.co.jp/ir/finance/monthly/index.html,月次PDFリンク1件検出 best=http://www.leopalace21.co.jp/ir/finance/monthly/xls/dl_2025.xls,2026-04-21,,,/ir/finance/monthly/xls/dl_\d{4}\.xls,scrape_links,v2
+8975,いちごオフィスリート投資法人,False,active,https://www.japan-reit.com/meigara/8975/release/,HTML表に月次データ検出。table_selector要調整,2026-04-21,,,,html_table,v2
+9001,東武鉄道,False,active,https://www.tobu.co.jp/ir/irMonth/,JS動的ページ。Playwright必須。月次営業概況PDFを取得,2026-03-17,,月次,monthly_financial_results|cms-pdf,scrape_links,v2
+9003,相鉄ホールディングス,False,active,https://www.sotetsu.co.jp/ir/financial/monthly/,JS動的ページ。Playwright必須。月次営業概況PDFを取得,2026-03-17,,月次,eir-parts.net/doc/9003/,scrape_links,v2
+9005,東急,False,active,https://www.tokyu.co.jp/ir/monthly/,月次PDFリンク8件検出 best=https://www.tokyu.co.jp/ja/ir/main/01/teaserItems2/08/linkList/0/link/Medium-term%20Management%20Plan_j2.pdf,2026-04-12,,,.*monthly.*\.(pdf|xlsx|xls)|.*月次.*\.(pdf|xlsx|xls),scrape_links,v2
+9006,京浜急行電鉄,False,active,http://www.keikyu.co.jp/ir/library/railroad.html,eIRシステム（動的ロード）。URL: http://www.keikyu.co.jp/ir/library/railroad.html,2026-03-16T19:13:46+09:00,,,,eir_api,v2
+9008,京王電鉄,False,active,http://www.keio.co.jp/company/stockholder/finance/monthly_report/,月次PDFリンク11件検出 best=https://contents.xj-storage.jp/xcontents/AS01800/41db4b1c/a295/4df2/b9c3/4cbed79d6362/20260325104242038s.pdf,2026-04-21,,PDF,/assets/pdf/company/sustainability/esg\-data\.pdf,scrape_links,v2
+9009,京成電鉄,False,active,https://new-www.keisei.co.jp/keisei/ir/financial/monthly.html,月次PDFリンク9件検出 best=https://new-www.keisei.co.jp/keisei/ir/financial/dl/monthly/2025.pdf?02,2026-03-16,,,,scrape_links,v2
+9020,東日本旅客鉄道,False,active,https://www.jreast.co.jp/investor/monthly/,URL自体が月次ページだがコンテンツ未検出（JS遅延/SPA疑い）。要手動確認,2026-04-12,,,.*\.pdf,html_table,v2
+9021,西日本旅客鉄道,False,active,http://www.westjr.co.jp/company/ir/finance/monthly/,自動生成。ページ: http://www.westjr.co.jp/company/ir/finance/monthly/ / リンク30件検出,2026-03-16,,,.*\.(pdf),scrape_links,v2
+9024,西武ホールディングス,False,active,http://www.seibuholdings.co.jp/ir/ir_material/monthly/,eIRシステム（動的ロード）。URL: http://www.seibuholdings.co.jp/ir/ir_material/monthly/,2026-03-16T20:26:36+09:00,,月次|データ,.*\.(pdf|xlsx|xls),scrape_links,v2
+9031,西日本鉄道,False,active,http://www.nishitetsu.co.jp/ir/monthly/,月次PDFリンク45件検出 best=http://www.nishitetsu.co.jp/ja/ir/i_news/i_news20260331/main/0/link/260331.pdf,2026-04-21,,,.*\.(pdf),scrape_links,v2
+9041,近鉄グループホールディングス,False,active,https://www.kintetsu-g-hd.co.jp/ir/tsukijieigyougaikyou/,自動生成。ページ: https://www.kintetsu-g-hd.co.jp/ir/tsukijieigyougaikyou/ / リンク12件検出,2026-03-16,,,.*\.(pdf),scrape_links,v2
+9042,阪急阪神ホールディングス,False,active,https://www.hankyu-hanshin.co.jp/ir/library/monthly/,自動生成。ページ: https://www.hankyu-hanshin.co.jp/ir/library/monthly/ / リンク340件検出,2026-03-16,,,.*\.(pdf),scrape_links,v2
+9044,南海電気鉄道,False,active,http://www.nankai.co.jp/ir/library/monthly_report,月次営業概況PDF。pattern: /monthly_report/pdf/{YYMM}_getsuji.pdf,2026-03-17,,,monthly_report/pdf,scrape_links,v2
+9045,京阪ホールディングス,False,active,https://www.keihan-holdings.co.jp/corporate/ir/library/monthly-report.html,自動生成。ページ: https://www.keihan-holdings.co.jp/corporate/ir/library/monthly-report.html / リンク8件検出,2026-03-16,,月次|PDF,/corporate/ir/library/pdf.*\.(pdf),scrape_links,v2
+9048,名古屋鉄道,False,active,http://www.meitetsu.co.jp/ir/monthly/,名古屋鉄道月次。playwright追加+lhpの年固定除去,2026-03-24,,\d{4},__icsFiles/afieldfile/.*\.(pdf),scrape_links,v2
+9064,ヤマトホールディングス,False,active,https://www.yamato-hd.co.jp/investors/financials/monthlydata/,月次ページ発見（サブページ）: https://www.yamato-hd.co.jp/investors/financials/monthlydata/#header,2026-04-12,,,.*\.(pdf|xlsx|xls|html),scrape_links,v2
+9076,セイノーホールディングス,True,error,https://info.monex.co.jp/help/invest/calendar.html,"error: Page.goto: net::ERR_CONNECTION_RESET at https://info.monex.co.jp/help/invest/calendar.html
+Call log:
+  - navigating to ""https://info.monex.co.jp/help/invest/calendar.html"", waiting until ""load""
+",2026-04-21,,,/seino/media/pdf\-lib/shd/ir/account\-settlement.*\.(pdf),,v2
+9142,九州旅客鉄道,False,active,https://www.jrkyushu.co.jp/company/ir/finance/monthly/,自動生成。ページ: https://www.jrkyushu.co.jp/company/ir/finance/monthly/ / リンク18件検出,2026-03-16,,,/company.*\.(pdf),scrape_links,v2
+9143,ＳＧホールディングス,False,active,http://www.sg-hldgs.co.jp/ir/library/delivery/,eIRシステム検出。コード=9143,2026-04-21,,,,eir_api,v2
+9163,ナレルグループ,True,no_links_confirmed,https://nareru-group.co.jp/ir/indicator,月次ページリンク 3 件検出、サブページ踏み込み後にDLリンク無し（best=https://shikiho.toyokeizai.net/news/search/category?query=%E6%9C%88%E6%AC%A1%E5%A0%B1%E5%91%8A%E6%9B%B8%E9%80%9F%E5%A0%B1）,2026-04-21,,,/wordpress/wp\-content/uploads/FISCO/nareru_group\d{6}22\.pdf,,v2
+9166,ＧＥＮＤＡ,False,active,https://genda.jp/ir/monthly/,月次PDFリンク2件検出 best=https://genda.jp/wp-content/uploads/2023/11/GENDAグループ店舗展開進捗レポート_2311.pdf,2026-04-21,,\d{4},/wp\-content/uploads/2023/11/GENDAグループ店舗展開進捗レポート_2311\.pdf,scrape_links,v2
+9201,日本航空,True,error,https://www.jal.com/ja/safety/data_monthly_trans/,error: timeout,2026-04-12,,,.*\.pdf,,v2
+9202,ＡＮＡホールディングス,False,active,http://www.anahd.co.jp/ir/monthly/,月次PDFリンク3件検出 best=http://www.anahd.co.jp/group/investors/management/pdf/value_creation_roadmap_2030.pdf,2026-04-21,,PDF,/group/csr/data/pdf/esg\.pdf,scrape_links,v2
+9204,スカイマーク,False,active,https://www.skymark.co.jp/ja/company/traffic_and_capacity_statistics/,月次ページ発見（サブページ）: https://www.skymark.co.jp/ja/company/traffic_and_capacity_statistics/,2026-03-16,,,,scrape_links,v2
+9206,スターフライヤー,False,active,https://www.starflyer.jp/starflyer/ir/traffic_figures/,HTML表に月次データ検出。table_selector要調整,2026-04-21,,,.*\.(pdf|xlsx|xls),html_table,v2
+9223,ＡＳＮＯＶＡ,False,active,https://www.asnova.co.jp/ir/,eIRシステム（動的ロード）。URL: https://www.asnova.co.jp/ir/,2026-03-16T19:13:46+09:00,,,,eir_api,v2
+9259,タカヨシホールディングス,True,no_links_confirmed,https://takayoshi-inc.com/ir/,月次ページリンク 2 件検出、サブページ踏み込み後にDLリンク無し（best=https://shikiho.toyokeizai.net/news/search/category?query=%E6%9C%88%E6%AC%A1%E5%A0%B1%E5%91%8A%E6%9B%B8%E9%80%9F%E5%A0%B1）,2026-04-21,,,,,v2
+9262,シルバーライフ,False,active,https://www.silver-life.co.jp/ir/index.html,月次PDFリンク2件検出 best=https://contents.xj-storage.jp/xcontents/AS71108/1700289f/7acc/49e0/b7e2/cd238c27ba03/20260413093807899s.pdf,2026-04-21,,月次,xcontents,scrape_links,v2
+9279,ギフトホールディングス,False,active,https://www.gift-group.co.jp/ir/library/04,ギフトHD月次。fl=False（PDF-lhpミス修正）,2026-03-24,,,.*\.(pdf),scrape_links,v2
+9327,イー・ロジット,True,no_links_confirmed,https://www.e-logit.com/ir/monthly/,no_links_confirmed,2026-04-21,,,.*\.(pdf|xlsx|xls),,v2
+9412,(株)スカパーＪＳＡＴホールディングス,False,active,https://www.skyperfectjsat.space/ir/financial_data/month_count,eIRシステム検出。コード=9412,2026-04-21,,,,eir_api,v2
+9513,電源開発,False,active,http://www.jpower.co.jp/ir/,月次PDFリンク1件検出 best=http://www.jpower.co.jp/ir/pdf/monthly/2602.pdf,2026-04-21,,,/ir/pdf/monthly/.*\.(pdf)|monthly.*\.(pdf),scrape_links,v2
+9517,イーレックス,False,active,https://www.erex.co.jp/ir/library/monthly/,eIRシステム検出。コード=9517,2026-04-21,,月次|売上|電力|取扱,.*\.(pdf|xlsx|xls),eir_api,v2
+9543,静岡ガス,True,excluded,https://ir.shizuokagas.co.jp/ja/ir/Library.html,物理削除済み・論理削除扱い（BC突合保持）,2026-04-11,,,,,v2
+9601,松竹,False,active,https://www.shochiku.co.jp/company/ir/,自動生成。ページ: https://www.shochiku.co.jp/company/ir/ / リンク5件検出,2026-03-16,,,/wp\-content/uploads.*\.(pdf),scrape_links,v2
+9602,東宝,False,active,https://www.toho.co.jp/company/ir/list.html,自動生成。ページ: https://www.toho.co.jp/company/ir/list.html / リンク58件検出,2026-03-16,,PDF,/xcontents/AS05040.*\.(pdf),scrape_links,v2
+9603,エイチ・アイ・エス,False,active,https://www.his.co.jp/ir/monthly-report/,HTML表に月次データ検出。table_selector要調整,2026-04-21,,,.*\.(pdf|xlsx|xls),html_table,v2
+9605,東映,False,active,https://www.toei.co.jp/ir/monthly/,月次PDFリンク3件検出 best=https://www.toei.co.jp/ir/library/integration/__icsFiles/afieldfile/2025/12/19/TOEI_IR_2025_hi.pdf,2026-04-21,,,/ir.*\.(pdf),scrape_links,v2
+9616,共立メンテナンス,False,active,https://corp.kyoritsugroup.co.jp/ir/monthly/,月次PDFリンク5件検出 best=https://corp.kyoritsugroup.co.jp/Portals/0/pdf/securityservicessign.pdf,2026-04-21,,,.*\.(pdf),scrape_links,v2
+9627,アインホールディングス,False,active,https://www.ainj.co.jp/ir/monthly/,eIRシステム検出。コード=9627,2026-04-21,,,.*\.(pdf),eir_api,v2
+9706,日本空港ビルデング,False,active,https://www.tokyo-airport-bldg.co.jp/ir/index.html,自動生成。ページ: https://www.tokyo-airport-bldg.co.jp/ir/index.html / リンク10件検出,2026-03-16,,,/files/ir.*\.(pdf),scrape_links,v2
+9726,ＫＮＴ－ＣＴホールディングス,False,active,https://www.kntcthd.co.jp/ja/ir/library/monthly_report/2025.html,自動生成。ページ: https://www.kntcthd.co.jp/ja/ir/library/monthly_report/2025.html / リンク20件検出,2026-03-16,,PDF,/files/ja/ir/library/monthly_report.*\.(pdf),scrape_links,v2
+9744,(株)メイテックグループホールディングス,False,active,https://www.meitecgroup-holdings.com/ja/ir.html,自動生成。ページ: https://www.meitecgroup-holdings.com/ja/ir.html / リンク19件検出,2026-03-16,,,.*\.(pdf),scrape_links,v2
+9828,Genki Global Dining Concepts,False,active,https://www.genkisushi.co.jp/ir/monthly/,eIRシステム検出。コード=9828,2026-04-21,,,.*\.(pdf|xlsx|xls),eir_api,v2
+9830,トラスコ中山,False,active,http://www.trusco.co.jp/ir/financial/monthly/,月次PDFリンク1件検出 best=https://www.trusco.co.jp/ir/financial/monthly/files/monthlysales_Trusco Nakayama Corporation_20263.pdf,2026-04-21,,PDF,/ir/financial/monthly/files/月次売上高_トラスコ中山株式会社_2026年2月\.pdf,scrape_links,v2
+9831,ヤマダホールディングス,False,active,https://www.yamada-holdings.jp/ir/monthly.html,"ヤマダHD月次。ltp=None, lhpを絶対URL対応に拡張",2026-03-24,,,.*\.(pdf|xlsx|xls),scrape_links,v2
+9835,ジュンテンドー,False,active,http://www.juntendo.co.jp/ir/ir-library/monthly/,eIRシステム検出。コード=9835,2026-04-21,,月次,ssl4.eir-parts.net/doc/9835,eir_api,v2
+9842,アークランズ,False,active,https://www.arclands.co.jp/ja/english/trend1.html,月次PDFリンク8件検出 best=https://www.arclands.co.jp/ja/english/trend1/main/00/teaserItems1/00/linkList/0/link/MonthlySalesReport202502%20(2).pdf,2026-04-21,,PDF,/ja/english/trend1/main.*\.(pdf),scrape_links,v2
+9843,ニトリホールディングス,False,active,http://www.nitorihd.co.jp/ir/performance/sales.html,HTML表に月次データ検出。table_selector要調整,2026-04-21,,報告,/pdf/annual\.pdf,html_table,v2
+9850,グルメ杵屋,False,active,https://gourmet-kineya-hd.co.jp/ir/monthly/,eIRシステム検出。コード=9850,2026-04-21,,月次,.*\.(pdf|xlsx|xls),eir_api,v2
+9854,愛眼,False,active,https://www.aigan.co.jp/corporate/ir/other/,月次PDFリンク2件検出 best=https://www.aigan.co.jp/wp/wp-content/uploads/feature/sokuhou202603.pdf,2026-04-21,,月次速報,sokuhou,scrape_links,v2
+9861,(株)吉野家ホールディングス,False,active,http://www.yoshinoya-holdings.com/ir/report/yoshinoya/,自動生成。ページ: http://www.yoshinoya-holdings.com/ir/report/yoshinoya/ / リンク22件検出,2026-03-16,,月次,/file/ir/report.*\.(pdf),scrape_links,v2
+9873,,True,excluded,,物理削除済み・論理削除扱い（BC突合保持）,2026-04-11,,,,,v2
+9876,コックス,False,active,https://shikiho.toyokeizai.net/news/0/937008,月次PDFリンク1件検出 best=https://www.rentracks.co.jp/ir/library/pdf/21th/2026_03_03_monthly.pdf,2026-04-21,,,.*\.(pdf),scrape_links,v2
+9878,セキド,False,active,https://sekido.com/ir,自動生成。ページ: https://sekido.com/ir / リンク9件検出,2026-03-16,,,/wp/wp\-content/uploads.*\.(pdf),scrape_links,v2
+9887,松屋フーズホールディングス,False,active,https://www.matsuyafoods-holdings.co.jp/ir2/monthly.html,月次PDFリンク2件検出 best=https://www.matsuyafoods-holdings.co.jp/ir2/assets/pdf/260410_matsuyafoods_monthly.pdf,2026-04-21,,,,scrape_links,v2
+9900,サガミホールディングス,False,active,https://shikiho.toyokeizai.net/news/0/888908,月次PDFリンク1件検出 best=https://www.rentracks.co.jp/ir/library/pdf/21th/2026_03_03_monthly.pdf,2026-04-21,,,.*\.(pdf|xlsx|xls),scrape_links,v2
+9904,ベリテ,False,active,https://www.verite.jp/aboutus/irinfo/monthly.html,eIR月次アナウンスなし → scrape_links (2026-03-24 Round8),2026-03-24,,,.*\.(pdf|xlsx|xls),scrape_links,v2
+9945,,True,excluded,,物理削除済み・論理削除扱い（BC突合保持）,2026-04-11,,,,,v2
+9946,ミニストップ,False,active,http://www.ministop.co.jp/corporate/ir/finance/results/,HTML表に月次データ検出。table_selector要調整,2026-04-21,,月次,/corporate/ir/finance/results/.*\.(pdf),html_table,v2
+9948,アークス,False,active,http://www.arcs-g.co.jp/ir/monthly-performance/index.html,HTML表に月次データ検出。table_selector要調整,2026-04-21,,月次,.*\.(pdf|xlsx|xls),html_table,v2
+9962,ミスミグループ本社,True,excluded,https://www.misumi.co.jp/ir/library/monthly_sales,物理削除済み・論理削除扱い（BC突合保持）,2026-04-11,,,,,v2
+9966,,True,excluded,,物理削除済み・論理削除扱い（BC突合保持）,2026-04-11,,,,,v2
+9974,ベルク,False,active,https://www.belc.jp/company/library/monthly,月次PDFリンク2件検出 best=https://contents.xj-storage.jp/xcontents/AS07593/c9c6f1d9/c9b7/4d82/900b/645907c88841/20260408104532513s.pdf,2026-04-21,,,/sites/default/files/doc/service/plastic_bag\.pdf,scrape_links,v2
+9979,大庄,False,active,https://www.daisyo.co.jp/company/ir/getsuji.html,自動生成。ページ: https://www.daisyo.co.jp/company/ir/getsuji.html / リンク16件検出,2026-03-16,,,/company/ir.*\.(pdf),scrape_links,v2
+9983,ファーストリテイリング,False,active,https://www.fastretailing.com/jp/ir/monthly/,月次売上実績,2026-03-16,,,,scrape_links,v2
+9989,サンドラッグ,False,active,https://www.sundrug.co.jp/ir/irdata/monthly,HTML表に月次データ検出。table_selector要調整,2026-04-21,,,,html_table,v2
+9993,(株)ヤマザワ,False,active,http://www.yamazawa.co.jp/ir/monthly/,月次PDFリンク3件検出 best=https://yamazawa.co.jp/ir/202602_4Q-3.pdf,2026-04-21,,\d{4},/ir.*\.(pdf),scrape_links,v2
+9994,やまや,True,no_links_confirmed,https://www.yamaya.jp/company/ir/,月次ページリンク 2 件検出、サブページ踏み込み後にDLリンク無し（best=N/A）,2026-04-21,,月次|月度|売上,.*\.(pdf|xlsx),,v2

@@ -1,0 +1,49 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "fields": [
+    {
+      "key": "連結 売上（百万円）",
+      "name": "連結 売上（百万円）",
+      "row_label_regex": "売上高.百万円.",
+      "value_type": "integer",
+      "notes": "「売上高（百万円）」行から最初の整数（単月売上額）を取得",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "連結 売上（百万円） records 2673 vs BC 358 (7倍差). records は子会社合算含、BC は単一segment"
+    },
+    {
+      "key": "連結 売上（前年同月比）",
+      "name": "連結 売上（前年同月比）",
+      "row_label_regex": "売上高.百万円.",
+      "value_type": "percentage",
+      "notes": "「売上高（百万円）」行から最初のpercentage値（前年同月比）を取得。value_type=percentageで整数と区別",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "連結 売上（百万円） records 2673 vs BC 358 (7倍差). records は子会社合算含、BC は単一segment"
+    },
+    {
+      "key": "パートナーサイト運営者数（名）",
+      "name": "パートナーサイト運営者数（名）",
+      "row_label_regex": "パートナーサイト運営者数",
+      "value_type": "integer",
+      "notes": "「パートナーサイト運営者数(名)」行から整数を取得",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "連結 売上（百万円） records 2673 vs BC 358 (7倍差). records は子会社合算含、BC は単一segment"
+    }
+  ],
+  "ticker": "6045",
+  "company_name": "レントラックス",
+  "created_at": "2026-03-28T16:48:22.059777+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2026年３月期２月度の月次売上高等のお知らせ",
+  "sample_submission_date": "2026-03-23",
+  "fields_count": 3,
+  "manual_override": true,
+  "manual_override_note": "2026-04-10 extraction_method=geminiに変更（custom_promptが効くように）",
+  "manual_override_at": "2026-04-10T08:03:01.941622+09:00",
+  "custom_prompt": "あなたは ticker 6045 の月次開示 PDF から KPI を抽出するアシスタントです.\n\n抽出対象月: {year}年{month}月度\n\n重要ルール:\n  - 当月 (指定月) の値のみ採用\n  - 四半期累計・上期累計・通期・前年同期実績 等の集計値は絶対に拾わない\n  - サブブランド行ではなく「全店」「既存店」「合計」等の集約行を採用\n  - 前年同月比 field には 「+X.X%増」「−X.X%減」の narrative が該当する場合は\n    100 を加算した値 (例: +5.2% → 105.2, -4.9% → 95.1) を返す\n  - 見つからない field は null\n\n出力形式: JSON\n{\n  - \"連結 売上（百万円）\": 整数 (「売上高（百万円）」行から最初の整数（単月売上額）を取得)\n  - \"連結 売上（前年同月比）\": 前年同月比 (例 105.2) (「売上高（百万円）」行から最初のpercentage値（前年同月比）を取得。value_type=percentageで整数と区別)\n  - \"パートナーサイト運営者数（名）\": 整数 (「パートナーサイト運営者数(名)」行から整数を取得)\n}\n",
+  "overwrite_past_months": true,
+  "extraction_method": "gemini",
+  "regex_redesign_at": "2026-04-19T21:54:40.737766+09:00",
+  "regex_redesign_note": "Gemini 切替 (regex 限界 or 誤マッチのため).",
+  "_agent_patched_at": "2026-04-20T07:01:01.904417+09:00"
+}

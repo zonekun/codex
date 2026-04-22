@@ -1,0 +1,43 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "extraction_method": "gemini",
+  "doc_title_pattern": "(\\\\d{4})年(\\\\d{1,2})月度.*月次売上状況",
+  "year_from_title_regex": "(\\\\d{4})年",
+  "month_from_title_regex": "(\\\\d{1,2})月度",
+  "fields": [
+    {
+      "key": "全店 売上（前年同月比）",
+      "name": "全店 売上（前年同月比）",
+      "description": "「店舗数 Japan Eyewear Stores Monthly Sales YoY, Number of Stores」という表の「全 店 All Stores Sales」行の数値（全店売上高の前年同月比%）。",
+      "value_type": "percentage",
+      "yoy_offset": 100.0,
+      "_manual_description": true
+    },
+    {
+      "key": "全店 店舗数",
+      "name": "全店 店舗数",
+      "description": "「店舗数 Japan Eyewear Stores Monthly Sales YoY, Number of Stores」という表の「月末店舗数（店） Num. of Stores」行の数値（月末時点の店舗数）。",
+      "value_type": "integer",
+      "_manual_description": true
+    },
+    {
+      "key": "既存店 売上（前年同月比）",
+      "name": "既存店 売上（前年同月比）",
+      "description": "「店舗数 Japan Eyewear Stores Monthly Sales YoY, Number of Stores」という表の「既存店 Existing Stores Sales」行の数値（既存店売上高の前年同月比%）。",
+      "value_type": "percentage",
+      "yoy_offset": 100.0,
+      "_manual_description": true
+    }
+  ],
+  "extraction_notes": "タイトルから対象年月を抽出し、本文中の「店舗数 Japan Eyewear Stores Monthly Sales YoY, Number of Stores」表から該当月のデータを抽出する。また、本文中の要約部分からも確認可能。",
+  "ticker": "3046",
+  "company_name": "3046",
+  "created_at": "2026-03-29T18:37:28.692563+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2026年２月度（2026年８月期）月次売上状況（速報）等について",
+  "sample_submission_date": "2026-03-05",
+  "fields_count": 3,
+  "manual_override": true,
+  "p3_fix_at": "2026-04-18T15:47:34+09:00"
+}

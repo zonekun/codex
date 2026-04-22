@@ -1,0 +1,12 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - build
+      - -f
+      - docker/Dockerfile.index-price-load
+      - -t
+      - us-west1-docker.pkg.dev/gmailpj-357912/stock/index-price-load:latest
+      - .
+
+images:
+  - us-west1-docker.pkg.dev/gmailpj-357912/stock/index-price-load:latest

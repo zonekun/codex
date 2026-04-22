@@ -1,0 +1,12 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - build
+      - -f
+      - docker/Dockerfile.is-holiday
+      - -t
+      - us-west1-docker.pkg.dev/gmailpj-357912/tools/is-holiday:latest
+      - .
+
+images:
+  - us-west1-docker.pkg.dev/gmailpj-357912/tools/is-holiday:latest

@@ -1,0 +1,64 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "doc_title_pattern": "(\\d{4})年(\\d{1,2})月度の月次売上高等に係る昨年対比増減率について",
+  "year_from_title_regex": "(\\d{4})年",
+  "month_from_title_regex": "(\\d{1,2})月",
+  "fields": [
+    {
+      "key": "全店 売上（百万円）",
+      "name": "全店 売上（百万円）",
+      "row_label_regex": "全店売上高\\s+([\\d,]+)\\s+([\\d,]+)\\s+([\\d,]+)\\s+([\\d,]+)\\s+([\\d,]+)",
+      "value_type": "integer",
+      "group": 5,
+      "notes": "単位は千円。百万円に変換するには1000で割る必要あり。",
+      "unit_scale": 0.001
+    },
+    {
+      "key": "全店 売上（前年同月比）",
+      "name": "全店 売上（前年同月比）",
+      "row_label_regex": "全店売上高\\s+昨対増減率\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)",
+      "value_type": "percentage",
+      "group": 5
+    },
+    {
+      "key": "全店 店舗数",
+      "name": "全店 店舗数",
+      "row_label_regex": "稼働店舗数\\s+(\\d+)\\(\\d+\\)\\s+(\\d+)\\(\\d+\\)\\s+(\\d+)\\(\\d+\\)\\s+(\\d+)\\(\\d+\\)\\s+(\\d+)\\(\\d+\\)",
+      "value_type": "integer",
+      "group": 5
+    },
+    {
+      "key": "既存店 売上（前年同月比）",
+      "name": "既存店 売上（前年同月比）",
+      "row_label_regex": "既存店売上高\\s+昨対増減率\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)",
+      "value_type": "percentage",
+      "group": 5,
+      "yoy_offset": 100.0
+    },
+    {
+      "key": "既存店 客数（前年同月比）",
+      "name": "既存店 客数（前年同月比）",
+      "row_label_regex": "既存店客数\\s+昨対増減率\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)",
+      "value_type": "percentage",
+      "group": 5,
+      "yoy_offset": 100
+    },
+    {
+      "key": "既存店 客単価（前年同月比）",
+      "name": "既存店 客単価（前年同月比）",
+      "row_label_regex": "既存店客単価\\s+昨対増減率\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)",
+      "value_type": "percentage",
+      "group": 5,
+      "yoy_offset": 100.0
+    }
+  ],
+  "extraction_notes": "2026年2月度のデータは、文書内の「第 43期下半期（2025 年10 月～2026年３月）」の表の5番目の列から抽出しています。全店売上高の単位は千円です。",
+  "ticker": "2705",
+  "company_name": "2705",
+  "created_at": "2026-03-28T16:33:13.371867+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2026年2月度の月次売上高等に係る昨年対比増減率について",
+  "sample_submission_date": "2026-03-04",
+  "fields_count": 6
+}

@@ -1,0 +1,12 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - build
+      - -f
+      - docker/Dockerfile.irbank-tdnet
+      - -t
+      - us-west1-docker.pkg.dev/gmailpj-357912/tdnet/irbank-tdnet-download:latest
+      - .
+
+images:
+  - us-west1-docker.pkg.dev/gmailpj-357912/tdnet/irbank-tdnet-download:latest

@@ -1,0 +1,36 @@
+{
+  "source": "non-tdnet(pdf)",
+  "format": "pdf",
+  "doc_title_pattern": "\\d{6}_\\d{4}_(?P<title_main>\\d{4}年\\d{1,2}月度受注速報)_\\w+",
+  "year_from_title_regex": "(?P<year>\\d{4})年\\d{1,2}月度受注速報",
+  "month_from_title_regex": "\\d{4}年(?P<month>\\d{1,2})月度受注速報",
+  "fields": [
+    {
+      "key": "リフォーム 受注（前年同月比）",
+      "name": "リフォーム 受注（前年同月比）",
+      "row_label_regex": "リフォーム\\s+(\\d+)%",
+      "value_type": "percentage",
+      "group": 1
+    },
+    {
+      "key": "戸建住宅 受注（前年同月比）",
+      "name": "戸建住宅 受注（前年同月比）",
+      "row_label_regex": "戸建住宅\\s+(\\d+)%",
+      "value_type": "percentage",
+      "group": 1
+    }
+  ],
+  "extraction_notes": "月次受注速報の対前年比増減率（当月度）を抽出。行ラベルに続く最初のパーセント値を対象とする。",
+  "ticker": "1840",
+  "company_name": "1840",
+  "created_at": "2026-04-05T09:35:46.860395+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "202407_1840_2024年7月度受注速報_022d4a75",
+  "sample_submission_date": "",
+  "report_url": "TDNET文書",
+  "sample_file": "202407_1840_2024年7月度受注速報_022d4a75",
+  "month_direction": "row",
+  "_source_renamed_at": "2026-04-18T16:36:34+09:00",
+  "_source_renamed_from": "pdf",
+  "manual_override": true
+}

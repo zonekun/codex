@@ -1,0 +1,13 @@
+{
+  "ticker": "7564",
+  "company_name": "ワークマン",
+  "ir_page_url": "https://www.workman.co.jp/ir情報/月次報告",
+  "status": "active",
+  "type": "scrape_links",
+  "link_text_pattern": "月次前年比速報|月次データ|月次.*速報",
+  "link_href_pattern": "\\.pdf$",
+  "note": "TDnet 業績予想カテゴリで月次 filter 通らず → IR HP scrape_links に切替（2026-04-19）",
+  "manual_override": true,
+  "manual_override_at": "2026-04-19T10:40:09.368855+09:00",
+  "updated_at": "2026-04-19T10:40:09.368855+09:00"
+}

@@ -1,0 +1,54 @@
+{
+  "source": "pdf",
+  "format": "pdf",
+  "doc_title_pattern": "^(\\d{4})(\\d{2})_(\\d{4})_(\\d{4})年(\\d{1,2})月期_(\\d{1,2})月度の売上概況_.*",
+  "year_from_title_regex": "_(\\d{4})年",
+  "month_from_title_regex": "_(\\d{1,2})月度の売上概況_",
+  "fields": [
+    {
+      "key": "国内 店舗数",
+      "name": "国内 店舗数",
+      "row_label_regex": "国内店舗数は(\\d+)店舗",
+      "value_type": "integer",
+      "group": 1,
+      "use_last_number": false,
+      "notes": "2023年2月末時点の店舗数"
+    },
+    {
+      "key": "国内全店 売上（前年同月比）",
+      "name": "国内全店 売上（前年同月比）",
+      "row_label_regex": "売上高合計\\s+(\\d+\\.\\d+)",
+      "value_type": "percentage",
+      "group": 1,
+      "use_last_number": false,
+      "notes": "2月度の国内全店売上高の前年同月比"
+    },
+    {
+      "key": "既存店 売上（前年同月比）",
+      "name": "既存店 売上（前年同月比）",
+      "row_label_regex": "売上高合計\\s+\\d+\\.\\d+\\s+(\\d+\\.\\d+)",
+      "value_type": "percentage",
+      "group": 1,
+      "use_last_number": false,
+      "notes": "2月度の国内既存店売上高の前年同月比"
+    },
+    {
+      "key": "海外 既存店 売上（前年対比）",
+      "name": "海外 既存店 売上（前年対比）",
+      "row_label_regex": "海外計\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)",
+      "value_type": "percentage",
+      "group": 6,
+      "use_last_number": true,
+      "notes": "2月度の海外既存店売上高の前年同月比。海外計の2行目から2月度の値を取得。"
+    }
+  ],
+  "extraction_notes": "月次開示資料から指定された売上高および店舗数を抽出。売上高は前年同月比。",
+  "ticker": "4343",
+  "company_name": "4343",
+  "created_at": "2026-04-04T01:47:11.375333+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "202303_4343_２０２３年２月期_２月度の売上概況_25017f40",
+  "sample_submission_date": "",
+  "report_url": "TDNET文書",
+  "sample_file": "202303_4343_２０２３年２月期_２月度の売上概況_25017f40"
+}

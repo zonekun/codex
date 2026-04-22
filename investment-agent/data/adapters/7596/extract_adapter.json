@@ -1,0 +1,36 @@
+{
+  "source": "pdf",
+  "format": "pdf",
+  "doc_title_pattern": "\\d{6}_\\d{4}_平成\\d{2}年\\d{1}月期_月次売上の状況\\(速報\\)_[\\da-f]{8}",
+  "year_from_title_regex": "平成(\\d{2})年",
+  "month_from_title_regex": "(\\d{1})月期",
+  "fields": [
+    {
+      "key": "全社 売上（前年同月比）",
+      "name": "全社 売上（前年同月比）",
+      "row_label_regex": "全\\s*社\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)",
+      "value_type": "percentage",
+      "group": 6,
+      "use_last_number": true,
+      "notes": "月次売上表の2段目（10月～3月）の「全社」行から3月の値を取得。use_last_number=trueで2段目の行を選択し、group=6で3月の値を取得。"
+    },
+    {
+      "key": "既存店 売上（前年同月比）",
+      "name": "既存店 売上（前年同月比）",
+      "row_label_regex": "既存店\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)",
+      "value_type": "percentage",
+      "group": 6,
+      "use_last_number": true,
+      "notes": "月次売上表の2段目（10月～3月）の「既存店」行から3月の値を取得。use_last_number=trueで2段目の行を選択し、group=6で3月の値を取得。"
+    }
+  ],
+  "extraction_notes": "月次売上高前年同月比較の表は、上半期と下半期で2つのブロックに分かれている。最新月（3月）の値は2つ目のブロックにあり、行ラベルが重複するため、use_last_number=trueで2つ目の行を対象とし、groupで3月の値を取得する。",
+  "ticker": "7596",
+  "company_name": "7596",
+  "created_at": "2026-04-04T01:20:45.381554+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "200704_7596_平成19年3月期_月次売上の状況(速報）_97ae32e2",
+  "sample_submission_date": "",
+  "report_url": "TDNET文書",
+  "sample_file": "200704_7596_平成19年3月期_月次売上の状況(速報）_97ae32e2"
+}

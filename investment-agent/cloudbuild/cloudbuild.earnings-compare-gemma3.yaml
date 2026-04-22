@@ -1,0 +1,15 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - build
+      - -f
+      - docker/Dockerfile.earnings-compare-gemma3
+      - -t
+      - us-west1-docker.pkg.dev/gmailpj-357912/stock/earnings-compare-gemma3:latest
+      - .
+
+images:
+  - us-west1-docker.pkg.dev/gmailpj-357912/stock/earnings-compare-gemma3:latest
+
+# CUDA base image のダウンロードがあるため長めに設定
+timeout: 2400s

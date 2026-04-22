@@ -1,0 +1,29 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "doc_title_pattern": "月次業績のお知らせ",
+  "year_from_title_regex": "(\\d{4})年",
+  "month_from_title_regex": "(\\d{1,2})月度",
+  "fields": [
+    {
+      "key": "全店 売上（前年同月比）",
+      "name": "全店 売上（前年同月比）",
+      "row_label_regex": "全店売上高の状況.*?10月\\s+11月\\s+12月\\s+1月\\s+2月\\s+3月.*?(\\d+\\.\\d+％)\\s+(\\d+\\.\\d+％)\\s+(\\d+\\.\\d+％)\\s+(\\d+\\.\\d+％)\\s+(\\d+\\.\\d+％)",
+      "value_type": "percentage"
+    },
+    {
+      "key": "既存店 売上（前年同月比）",
+      "name": "既存店 売上（前年同月比）",
+      "row_label_regex": "既存店売上高の状況.*?10月\\s+11月\\s+12月\\s+1月\\s+2月\\s+3月.*?(\\d+\\.\\d+％)\\s+(\\d+\\.\\d+％)\\s+(\\d+\\.\\d+％)\\s+(\\d+\\.\\d+％)\\s+(\\d+\\.\\d+％)",
+      "value_type": "percentage"
+    }
+  ],
+  "extraction_notes": "The row_label_regex uses re.DOTALL to span multiple lines and captures the 5th percentage value from the sequence following the 10月-3月 month headers, which corresponds to the 2月 value in this document. The last capturing group is the target value.",
+  "ticker": "3317",
+  "company_name": "3317",
+  "created_at": "2026-03-24T08:18:59.153216+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2026年３月期２月度　月次業績のお知らせ",
+  "sample_submission_date": "2026-03-05",
+  "fields_count": 2
+}

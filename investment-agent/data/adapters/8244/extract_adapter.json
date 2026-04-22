@@ -1,0 +1,39 @@
+{
+  "source": "pdf",
+  "format": "pdf",
+  "doc_title_pattern": "(\\d{4})(\\d{2})_(\\d{4})_平成(\\d{1,2})年(\\d{1,2})月売上報告_([0-9a-f]{8})",
+  "year_from_title_regex": "平成(\\d{1,2})年",
+  "month_from_title_regex": "(\\d{1,2})月売上報告",
+  "fields": [
+    {
+      "key": "全店 売上（前年同月比）",
+      "name": "全店 売上（前年同月比）",
+      "row_label_regex": "合\\s*計\\s*([▲\\d.]+)\\s*[▲\\d.]+",
+      "value_type": "percentage",
+      "group": 1
+    },
+    {
+      "key": "全店 客数（前年同月比）",
+      "name": "全店 客数（前年同月比）",
+      "row_label_regex": "合\\s*計\\s*[▲\\d.]+\\s*([▲\\d.]+)",
+      "value_type": "percentage",
+      "group": 1
+    },
+    {
+      "key": "取扱高（前年同月比）",
+      "name": "取扱高（前年同月比）",
+      "row_label_regex": "取扱高ベースの売上高(?:※)?\\s*([▲\\d.]+)",
+      "value_type": "percentage",
+      "group": 1
+    }
+  ],
+  "extraction_notes": "全店 客数（前年同月比）のrow_label_regexは、売上高と客数の両方をキャプチャする行から客数のみを抽出するため、客数部分をgroup=1としています。",
+  "ticker": "8244",
+  "company_name": "8244",
+  "created_at": "2026-04-04T01:00:20.227893+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "201510_8244_平成27年9月売上報告_698cf429",
+  "sample_submission_date": "",
+  "report_url": "TDNET文書",
+  "sample_file": "201510_8244_平成27年9月売上報告_698cf429"
+}

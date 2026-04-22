@@ -1,0 +1,9 @@
+{
+  "ticker": "8622",
+  "status": "skip",
+  "skip_reason": "no_monthly_disclosure",
+  "note": "水戸証券",
+  "updated_at": "2026-03-16T19:20:37+09:00",
+  "type": "skip",
+  "company_name": "水戸証券"
+}

@@ -1,0 +1,49 @@
+{
+  "source": "non-tdnet(pdf)",
+  "format": "pdf",
+  "extraction_method": "regex",
+  "fiscal_year_start_month": 1,
+  "doc_title_pattern": "月次連結売上高",
+  "year_from_title_regex": "(\\d{4})年",
+  "month_from_title_regex": "(\\d{1,2})月",
+  "column_map": {
+    "1": 1,
+    "2": 2,
+    "3": 3,
+    "4": 4,
+    "5": 5,
+    "6": 6,
+    "7": 7,
+    "8": 8,
+    "9": 9,
+    "10": 10,
+    "11": 11,
+    "12": 12
+  },
+  "fields": [
+    {
+      "key": "連結 売上（百万円）",
+      "bc_key": "連結 売上（百万円）",
+      "value_type": "float",
+      "row_label_regex": "月次\\s+月次\\s+売上高((?:\\s+[\\d,]+){1,12})",
+      "group": "{col_idx}",
+      "match_occurrence": 1,
+      "description": "PDF '月次 月次 売上高' 行、対象月列（百万円）。"
+    },
+    {
+      "key": "連結 売上（前年同月比）",
+      "bc_key": "連結 売上（百万円）",
+      "value_type": "percentage",
+      "row_label_regex": "月次\\s+対前年同期増減率.{0,10}?((?:\\s+[\\d\\.]+){1,12})",
+      "group": "{col_idx}",
+      "match_occurrence": 1,
+      "description": "PDF '月次 対前年同期増減率（％）' 行、対象月列（差分形式、yoy_offset=100 で BC 100+形式に変換）。"
+    }
+  ],
+  "ticker": "6627",
+  "company_name": "6627",
+  "manual_override": true,
+  "regex_redesign_at": "2026-04-19T00:24:25.976967+09:00",
+  "regex_redesign_note": "gemini → PDF regex へ手動再設計。金額 '月次 月次 売上高' 行と前年比 '対前年同期増減率（％）' 行を別 field で取得。前年比は差分形式 (34.3 等) なので yoy_offset=100 で BC 比率形式 (134.3 等) に変換。",
+  "_reverse_mapping_applied_at": "2026-04-19T10:06:25.736611+09:00"
+}

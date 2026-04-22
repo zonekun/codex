@@ -1,0 +1,12 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - build
+      - -f
+      - docker/Dockerfile.yf-stock-info-load
+      - -t
+      - us-west1-docker.pkg.dev/gmailpj-357912/stock/yf-stock-info-load:latest
+      - .
+
+images:
+  - us-west1-docker.pkg.dev/gmailpj-357912/stock/yf-stock-info-load:latest

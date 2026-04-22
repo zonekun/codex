@@ -1,0 +1,10 @@
+{
+  "ticker": "8975",
+  "company_name": "いちごオフィスリート投資法人",
+  "updated_at": "2026-04-05T14:21:40.174737+09:00",
+  "type": null,
+  "status": "skip",
+  "skip_reason": "ddg_false_positive",
+  "note": "ddg_search: ARES Monthly Report",
+  "url": null
+}

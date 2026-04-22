@@ -1,0 +1,13 @@
+{
+  "ticker": "7203",
+  "company_name": "トヨタ自動車",
+  "ir_page_url": "https://global.toyota/jp/",
+  "updated_at": "2026-04-12T10:22:32.722969+09:00",
+  "last_checked": "2026-04-12",
+  "status": "active",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": null,
+  "link_href_pattern": null,
+  "note": "月次ページ発見（サブページ）: https://global.toyota/jp/"
+}

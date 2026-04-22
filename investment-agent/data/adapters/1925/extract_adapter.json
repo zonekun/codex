@@ -1,0 +1,52 @@
+{
+  "source": "pdf",
+  "format": "pdf",
+  "doc_title_pattern": "^(\\d{4})(\\d{2})_.*",
+  "year_from_title_regex": "^(\\d{4})\\d{2}_",
+  "month_from_title_regex": "^\\d{4}(\\d{2})_",
+  "fields": [
+    {
+      "key": "マンション 受注（前年同月比）",
+      "name": "マンション 受注（前年同月比）",
+      "row_label_regex": "マンション\\s*([+-]?\\d+\\s*％)",
+      "value_type": "percentage",
+      "group": 1,
+      "use_last_number": false
+    },
+    {
+      "key": "住宅 受注（前年同月比）",
+      "name": "住宅 受注（前年同月比）",
+      "row_label_regex": "住宅\\s*⼩計\\s*([+-]?\\d+\\s*％)",
+      "value_type": "percentage",
+      "group": 1,
+      "use_last_number": false
+    },
+    {
+      "key": "商業建築 受注（前年同月比）",
+      "name": "商業建築 受注（前年同月比）",
+      "row_label_regex": "流通店舗\\s*([+-]?\\d+\\s*％)",
+      "value_type": "percentage",
+      "group": 1,
+      "use_last_number": false,
+      "notes": "「商業建築」は「流通店舗 (Commercial Facilities)」として抽出しています。また、開発物件売却の影響を除いた「参考」データではなく、メインの表の値を採用しています。"
+    },
+    {
+      "key": "集合住宅 受注（前年同月比）",
+      "name": "集合住宅 受注（前年同月比）",
+      "row_label_regex": "集合住宅\\s*([+-]?\\d+\\s*％)",
+      "value_type": "percentage",
+      "group": 1,
+      "use_last_number": false,
+      "notes": "開発物件売却の影響を除いた「参考」データではなく、メインの表の値を採用しています。"
+    }
+  ],
+  "extraction_notes": "各項目は、開発物件売却の影響を除いた「参考」データではなく、メインの表の値を採用しています。「商業建築」は「流通店舗 (Commercial Facilities)」として抽出しています。",
+  "ticker": "1925",
+  "company_name": "1925",
+  "created_at": "2026-04-04T01:17:10.582857+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "202504_1925_2025å¹´4æåº¦å¥ç´ç¶æ³ã®ãå_±å_e0d7b5ed",
+  "sample_submission_date": "",
+  "report_url": "TDNET文書",
+  "sample_file": "202504_1925_2025å¹´4æåº¦å¥ç´ç¶æ³ã®ãå_±å_e0d7b5ed"
+}

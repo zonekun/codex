@@ -1,0 +1,38 @@
+{
+  "source": "non-tdnet(pdf)",
+  "format": "pdf",
+  "month_direction": "row",
+  "doc_title_pattern": "鉄道営業収入|Railway Revenue",
+  "year_from_title_regex": "(\\d{4})年度",
+  "month_from_title_regex": "(\\d{1,2})月",
+  "fields": [
+    {
+      "key": "鉄道営業収入 定期（前年同月比）",
+      "name": "鉄道営業収入 定期（前年同月比）",
+      "row_label_regex": "定期\\s*Commuter",
+      "value_type": "percentage"
+    },
+    {
+      "key": "鉄道営業収入 定期外（前年同月比）",
+      "name": "鉄道営業収入 定期外（前年同月比）",
+      "row_label_regex": "定期外.*Sub\\s*Total",
+      "value_type": "percentage"
+    },
+    {
+      "key": "鉄道営業収入 合計（前年同月比）",
+      "name": "鉄道営業収入 合計（前年同月比）",
+      "row_label_regex": "合計.*Grand\\s*Total",
+      "value_type": "percentage"
+    }
+  ],
+  "ticker": "9020",
+  "updated_at": "2026-04-15T21:57:50.656440+09:00",
+  "created_by": "manual-investigation",
+  "fields_count": 3,
+  "overwrite_past_months": true,
+  "manual_override": true,
+  "manual_override_note": "2026-04-15 定期外列をSub Total列に固定（近距離列と取り違えNG修正）",
+  "manual_override_at": "2026-04-15T21:57:50.656440+09:00",
+  "_source_renamed_at": "2026-04-18T16:36:34+09:00",
+  "_source_renamed_from": "pdf"
+}

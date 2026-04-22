@@ -1,0 +1,30 @@
+# 2023 バックフィル #5〜#11 AI フェーズ（2 バッチに集約）
+# A: ticker 3691-6366 (#5+#6+#7、19,165 doc)
+# B: ticker 6367-9997 (#8+#9+#10+#11、26,933 doc)
+# 新コード（numpy+stream+12regex+3086例外）の本番検証、1CPU/4Gi 維持
+
+name: 2023_batch05_11_ai
+
+loads: []
+
+workflows:
+  - name: ai_processing_flow
+    location: us-central1
+    data:
+      date_from: "20230101"
+      date_to: "20231231"
+      ticker_from: "3691"
+      ticker_to: "6366"
+  - name: ai_processing_flow
+    location: us-central1
+    data:
+      date_from: "20230101"
+      date_to: "20231231"
+      ticker_from: "6367"
+      ticker_to: "9997"
+
+options:
+  parallel_loads: 1
+  poll_interval_s: 180
+  notify_on_start: true
+  notify_each_load: false

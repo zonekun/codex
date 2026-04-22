@@ -1,0 +1,44 @@
+# 2023 バックフィル #2+#3（ticker 190A-232A, 2330-3023、各 ~3,000 doc）
+# 11分割の #2 と #3。新コード（numpy+stream）本番初回、2 CPU / 8Gi ai-finalize で検証
+# 失敗時は即中断（Gemini/Embedding Batch 重複課金防止）→ LINE 通知
+# 参照: docs/plans/20260417_091112_tdnet_load_ai_split.md
+
+name: 2023_batch02_03
+
+loads:
+  - job: tdnet-load-daily
+    region: us-west1
+    env:
+      DATE_FROM: "20230101"
+      DATE_TO: "20231231"
+      TICKER_FROM: "190A"
+      TICKER_TO: "232A"
+  - job: tdnet-load-daily
+    region: us-west1
+    env:
+      DATE_FROM: "20230101"
+      DATE_TO: "20231231"
+      TICKER_FROM: "2330"
+      TICKER_TO: "3023"
+
+workflows:
+  - name: ai_processing_flow
+    location: us-central1
+    data:
+      date_from: "20230101"
+      date_to: "20231231"
+      ticker_from: "190A"
+      ticker_to: "232A"
+  - name: ai_processing_flow
+    location: us-central1
+    data:
+      date_from: "20230101"
+      date_to: "20231231"
+      ticker_from: "2330"
+      ticker_to: "3023"
+
+options:
+  parallel_loads: 1        # 慎重に直列（load→load→WF→WF）
+  poll_interval_s: 120
+  notify_on_start: true
+  notify_each_load: true   # 2件しかないので各完了通知あり

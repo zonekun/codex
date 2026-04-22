@@ -1,0 +1,70 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "doc_title_pattern": "^(\\d{4}年\\d{1,2}月度 月次売上高等前年同月比についてのお知らせ)$",
+  "year_from_title_regex": "(\\d{4})年",
+  "month_from_title_regex": "(\\d{1,2})月度",
+  "fields": [
+    {
+      "key": "既存店 売上（前年同月比）",
+      "name": "既存店 売上（前年同月比）",
+      "row_label_regex": "全店\\s*売上高（%）",
+      "value_type": "percentage",
+      "notes": "2026年6月期テーブルの全店 売上高（%）行の2月度データ"
+    },
+    {
+      "key": "既存店 客数（前年同月比）",
+      "name": "既存店 客数（前年同月比）",
+      "row_label_regex": "全店.*?客数（%）",
+      "value_type": "percentage",
+      "notes": "2026年6月期テーブルの全店 客数（%）行の2月度データ",
+      "bc_key": "既存店 売上（前年同月比）"
+    },
+    {
+      "key": "全店 店舗数",
+      "name": "全店 店舗数",
+      "row_label_regex": "全店.*?店舗数",
+      "value_type": "integer",
+      "notes": "2026年6月期テーブルの全店 店舗数行の2月度データ"
+    },
+    {
+      "key": "既存店 売上（前年同月比）",
+      "name": "既存店 売上（前年同月比）",
+      "row_label_regex": "既存店\\s*既存店全店\\s*売上高（%）",
+      "value_type": "percentage",
+      "notes": "2026年6月期テーブルの既存店全店 売上高（%）行の2月度データ"
+    },
+    {
+      "key": "既存店 客数（前年同月比）",
+      "name": "既存店 客数（前年同月比）",
+      "row_label_regex": "既存店.*?客数（%）",
+      "value_type": "percentage",
+      "notes": "2026年6月期テーブルの既存店全店 客数（%）行の2月度データ",
+      "bc_key": "既存店 売上（前年同月比）"
+    },
+    {
+      "key": "既存店 客単価（前年同月比）",
+      "name": "既存店 客単価（前年同月比）",
+      "row_label_regex": "既存店.*?客単価（%）",
+      "value_type": "percentage",
+      "notes": "2026年6月期テーブルの既存店全店 客単価（%）行の2月度データ",
+      "bc_key": "既存店 売上（前年同月比）"
+    },
+    {
+      "key": "全店 店舗数",
+      "name": "全店 店舗数",
+      "row_label_regex": "既存店.*?店舗数",
+      "value_type": "integer",
+      "notes": "2026年6月期テーブルの既存店全店 店舗数行の2月度データ"
+    }
+  ],
+  "extraction_notes": "2026年2月度の月次売上高等前年同月比のデータは、文書内の「2026年6月期」セクションの表から抽出します。各メトリクスは、対応する行ラベルと2月度の列（8番目の数値）から取得します。row_label_regexは、行ラベルとその上位のカテゴリ（全店、既存店）を組み合わせて、一意性を確保しています。re.DOTALLフラグを想定し、.*?は改行を含む任意の文字にマッチします。re.IGNORECASEフラグも想定しています。",
+  "ticker": "3082",
+  "company_name": "3082",
+  "created_at": "2026-03-17T18:34:54.879563+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2026年２月度 月次売上高等前年同月比についてのお知らせ",
+  "sample_submission_date": "2026-03-04",
+  "fields_count": 7,
+  "_reverse_mapping_applied_at": "2026-04-19T00:15:08.858548+09:00"
+}

@@ -1,0 +1,46 @@
+{
+  "source": "pdf",
+  "format": "pdf",
+  "doc_title_pattern": "月次売上概況",
+  "year_from_title_regex": "(\\d{4})年",
+  "month_from_title_regex": "(\\d{1,2})月",
+  "fields": [
+    {
+      "key": "日本・韓国 売上（前年同月比）",
+      "name": "日本・韓国 売上（前年同月比）",
+      "row_label_regex": "合計\\s*日本・韓国計\\s+(\\d+%)(\\s+\\d+%)(\\s+\\d+%)(\\s+\\d+%)(\\s+\\d+%)(\\s+\\d+%)",
+      "value_type": "percentage",
+      "group": 4
+    },
+    {
+      "key": "日本・韓国 既存店 EC 売上（前年同月比）",
+      "name": "日本・韓国 既存店 EC 売上（前年同月比）",
+      "row_label_regex": "既存店計\\s*ＥＣ計\\s+(\\d+%)(\\s+\\d+%)(\\s+\\d+%)(\\s+\\d+%)(\\s+\\d+%)(\\s+\\d+%)",
+      "value_type": "percentage",
+      "group": 4
+    },
+    {
+      "key": "日本・韓国 既存店 売上（前年同月比）",
+      "name": "日本・韓国 既存店 売上（前年同月比）",
+      "row_label_regex": "^既存店計\\s+(\\d+%)(\\s+\\d+%)(\\s+\\d+%)(\\s+\\d+%)(\\s+\\d+%)(\\s+\\d+%)",
+      "value_type": "percentage",
+      "group": 4
+    },
+    {
+      "key": "日本・韓国 既存店 店舗 売上（前年同月比）",
+      "name": "日本・韓国 既存店 店舗 売上（前年同月比）",
+      "row_label_regex": "既存店計\\s*店舗計\\s+(\\d+%)(\\s+\\d+%)(\\s+\\d+%)(\\s+\\d+%)(\\s+\\d+%)(\\s+\\d+%)",
+      "value_type": "percentage",
+      "group": 4
+    }
+  ],
+  "extraction_notes": "文書内の月次売上表（7月～12月）から、10月の値（4番目のキャプチャグループ）を抽出します。row_label_regexは行のラベルと6ヶ月分のパーセンテージ値をキャプチャするように設定されています。",
+  "ticker": "8029",
+  "company_name": "8029",
+  "created_at": "2026-04-04T00:43:44.032693+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "000000_8029_ææ¬¡å£²ä¸æ¦æ³ï¼10æåº¦ï¼(123KB)_27fdef97",
+  "sample_submission_date": "",
+  "report_url": "TDNET文書",
+  "sample_file": "000000_8029_ææ¬¡å£²ä¸æ¦æ³ï¼10æåº¦ï¼(123KB)_27fdef97"
+}

@@ -1,0 +1,317 @@
+{
+  "source": "non-tdnet(pdf)",
+  "format": "pdf",
+  "extraction_method": "regex",
+  "fiscal_year_start_month": 4,
+  "doc_title_pattern": "月次前年比速報",
+  "use_fy_history_correction": true,
+  "fields": [
+    {
+      "key": "全店 売上（前年同月比）",
+      "bc_key": "全店 売上（前年同月比）",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "BC 側データ古いため独自管理。",
+      "value_type": "percentage",
+      "sections": [
+        {
+          "months": [
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "row_label_regex": "全\\s*店\\s*売上高((?:\\s+[\\d\\.]+){1,9})",
+          "column_map": {
+            "4": 1,
+            "5": 2,
+            "6": 3,
+            "7": 5,
+            "8": 6,
+            "9": 7
+          },
+          "group": "{col_idx}",
+          "match_occurrence": 1
+        },
+        {
+          "months": [
+            10,
+            11,
+            12,
+            1,
+            2,
+            3
+          ],
+          "row_label_regex": "全\\s*店\\s*売上高((?:\\s+[\\d\\.]+){1,10})",
+          "column_map": {
+            "10": 1,
+            "11": 2,
+            "12": 3,
+            "1": 5,
+            "2": 6,
+            "3": 7
+          },
+          "group": "{col_idx}",
+          "match_occurrence": 2
+        }
+      ]
+    },
+    {
+      "key": "全店 客数（前年同月比）",
+      "bc_key": "全店 客数（前年同月比）",
+      "bc_ignore": true,
+      "value_type": "percentage",
+      "sections": [
+        {
+          "months": [
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "row_label_regex": "全\\s*店\\s*客数((?:\\s+[\\d\\.]+){1,9})",
+          "column_map": {
+            "4": 1,
+            "5": 2,
+            "6": 3,
+            "7": 5,
+            "8": 6,
+            "9": 7
+          },
+          "group": "{col_idx}",
+          "match_occurrence": 1
+        },
+        {
+          "months": [
+            10,
+            11,
+            12,
+            1,
+            2,
+            3
+          ],
+          "row_label_regex": "全\\s*店\\s*客数((?:\\s+[\\d\\.]+){1,10})",
+          "column_map": {
+            "10": 1,
+            "11": 2,
+            "12": 3,
+            "1": 5,
+            "2": 6,
+            "3": 7
+          },
+          "group": "{col_idx}",
+          "match_occurrence": 2
+        }
+      ]
+    },
+    {
+      "key": "全店 客単価（前年同月比）",
+      "bc_key": "全店 客単価（前年同月比）",
+      "bc_ignore": true,
+      "value_type": "percentage",
+      "sections": [
+        {
+          "months": [
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "row_label_regex": "全\\s*店\\s*客単価((?:\\s+[\\d\\.]+){1,9})",
+          "column_map": {
+            "4": 1,
+            "5": 2,
+            "6": 3,
+            "7": 5,
+            "8": 6,
+            "9": 7
+          },
+          "group": "{col_idx}",
+          "match_occurrence": 1
+        },
+        {
+          "months": [
+            10,
+            11,
+            12,
+            1,
+            2,
+            3
+          ],
+          "row_label_regex": "全\\s*店\\s*客単価((?:\\s+[\\d\\.]+){1,10})",
+          "column_map": {
+            "10": 1,
+            "11": 2,
+            "12": 3,
+            "1": 5,
+            "2": 6,
+            "3": 7
+          },
+          "group": "{col_idx}",
+          "match_occurrence": 2
+        }
+      ]
+    },
+    {
+      "key": "既存店 売上（前年同月比）",
+      "bc_key": "既存店 売上（前年同月比）",
+      "bc_ignore": true,
+      "value_type": "percentage",
+      "sections": [
+        {
+          "months": [
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "row_label_regex": "既\\s*存\\s*店\\s*売上高((?:\\s+[\\d\\.]+){1,9})",
+          "column_map": {
+            "4": 1,
+            "5": 2,
+            "6": 3,
+            "7": 5,
+            "8": 6,
+            "9": 7
+          },
+          "group": "{col_idx}",
+          "match_occurrence": 1
+        },
+        {
+          "months": [
+            10,
+            11,
+            12,
+            1,
+            2,
+            3
+          ],
+          "row_label_regex": "既\\s*存\\s*店\\s*売上高((?:\\s+[\\d\\.]+){1,10})",
+          "column_map": {
+            "10": 1,
+            "11": 2,
+            "12": 3,
+            "1": 5,
+            "2": 6,
+            "3": 7
+          },
+          "group": "{col_idx}",
+          "match_occurrence": 2
+        }
+      ]
+    },
+    {
+      "key": "既存店 客数（前年同月比）",
+      "bc_key": "既存店 客数（前年同月比）",
+      "bc_ignore": true,
+      "value_type": "percentage",
+      "sections": [
+        {
+          "months": [
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "row_label_regex": "既\\s*存\\s*店\\s*客数((?:\\s+[\\d\\.]+){1,9})",
+          "column_map": {
+            "4": 1,
+            "5": 2,
+            "6": 3,
+            "7": 5,
+            "8": 6,
+            "9": 7
+          },
+          "group": "{col_idx}",
+          "match_occurrence": 1
+        },
+        {
+          "months": [
+            10,
+            11,
+            12,
+            1,
+            2,
+            3
+          ],
+          "row_label_regex": "既\\s*存\\s*店\\s*客数((?:\\s+[\\d\\.]+){1,10})",
+          "column_map": {
+            "10": 1,
+            "11": 2,
+            "12": 3,
+            "1": 5,
+            "2": 6,
+            "3": 7
+          },
+          "group": "{col_idx}",
+          "match_occurrence": 2
+        }
+      ]
+    },
+    {
+      "key": "既存店 客単価（前年同月比）",
+      "bc_key": "既存店 客単価（前年同月比）",
+      "bc_ignore": true,
+      "value_type": "percentage",
+      "sections": [
+        {
+          "months": [
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "row_label_regex": "既\\s*存\\s*店\\s*客単価((?:\\s+[\\d\\.]+){1,9})",
+          "column_map": {
+            "4": 1,
+            "5": 2,
+            "6": 3,
+            "7": 5,
+            "8": 6,
+            "9": 7
+          },
+          "group": "{col_idx}",
+          "match_occurrence": 1
+        },
+        {
+          "months": [
+            10,
+            11,
+            12,
+            1,
+            2,
+            3
+          ],
+          "row_label_regex": "既\\s*存\\s*店\\s*客単価((?:\\s+[\\d\\.]+){1,10})",
+          "column_map": {
+            "10": 1,
+            "11": 2,
+            "12": 3,
+            "1": 5,
+            "2": 6,
+            "3": 7
+          },
+          "group": "{col_idx}",
+          "match_occurrence": 2
+        }
+      ]
+    }
+  ],
+  "ticker": "7564",
+  "company_name": "7564",
+  "manual_override": true,
+  "regex_redesign_at": "2026-04-19T15:15:59.805547+09:00",
+  "regex_redesign_note": "year_from_title_regex / month_from_title_regex を廃止. ファイル名先頭 YYYYMMDD (TDnet 提出日) - 1月 を year_month として採用.",
+  "year_month_from_submission_minus_1": true
+}

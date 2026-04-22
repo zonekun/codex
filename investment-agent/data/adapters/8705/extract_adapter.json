@@ -1,0 +1,85 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "doc_title_pattern": "(\\d{4}年\\d{1,2}月の月次業績等（速報）に関するお知らせ)",
+  "year_from_title_regex": "(\\d{4})年",
+  "month_from_title_regex": "(\\d{1,2})月",
+  "fields": [
+    {
+      "key": "純営業収益（円）",
+      "name": "純営業収益（円）",
+      "row_label_regex": "純営業収益（千円）\\s+([\\d,]+)\\s+([\\d,]+)\\s+([\\d,]+)\\s+([\\d,]+)\\s+([\\d,]+)\\s+([\\d,]+)",
+      "value_type": "integer",
+      "group": 6,
+      "use_last_number": false,
+      "unit_scale": 1000
+    },
+    {
+      "key": "受入手数料（円）",
+      "name": "受入手数料（円）",
+      "row_label_regex": "受入手数料\\s+([\\d,]+)\\s+([\\d,]+)\\s+([\\d,]+)\\s+([\\d,]+)\\s+([\\d,]+)\\s+([\\d,]+)",
+      "value_type": "integer",
+      "group": 6,
+      "use_last_number": false,
+      "unit_scale": 1000
+    },
+    {
+      "key": "トレーディング損益（円）",
+      "name": "トレーディング損益（円）",
+      "row_label_regex": "トレーディング損益\\s+([△\\d,]+)\\s+([△\\d,]+)\\s+([△\\d,]+)\\s+([△\\d,]+)\\s+([△\\d,]+)\\s+([△\\d,]+)",
+      "value_type": "integer",
+      "group": 6,
+      "use_last_number": false,
+      "unit_scale": -1000
+    },
+    {
+      "key": "その他収益（円）",
+      "name": "その他収益（円）",
+      "row_label_regex": "^その他\\s+([\\d,]+)\\s+([\\d,]+)\\s+([\\d,]+)\\s+([\\d,]+)\\s+([\\d,]+)\\s+([\\d,]+)",
+      "value_type": "integer",
+      "group": 6,
+      "use_last_number": false,
+      "unit_scale": 1000
+    },
+    {
+      "key": "口座数（口座）",
+      "name": "口座数（口座）",
+      "row_label_regex": "口座数\\s+([\\d,]+)\\s+([\\d,]+)\\s+([\\d,]+)\\s+([\\d,]+)\\s+([\\d,]+)\\s+([\\d,]+)",
+      "value_type": "integer",
+      "group": 6,
+      "use_last_number": false
+    },
+    {
+      "key": "預かり資産（円）",
+      "name": "預かり資産（円）",
+      "row_label_regex": "預かり資産（百万円）\\s+([\\d,]+)\\s+([\\d,]+)\\s+([\\d,]+)\\s+([\\d,]+)\\s+([\\d,]+)\\s+([\\d,]+)",
+      "value_type": "integer",
+      "group": 6,
+      "use_last_number": false
+    },
+    {
+      "key": "株式等売買代金（円）",
+      "name": "株式等売買代金（円）",
+      "row_label_regex": "株式等売買代金（百万円）\\s+([\\d,]+)\\s+([\\d,]+)\\s+([\\d,]+)\\s+([\\d,]+)\\s+([\\d,]+)\\s+([\\d,]+)",
+      "value_type": "integer",
+      "group": 6,
+      "use_last_number": false
+    },
+    {
+      "key": "デリバティブ取引売買高（百枚）",
+      "name": "デリバティブ取引売買高（百枚）",
+      "row_label_regex": "デリバティブ取引売買高（百枚）\\s+([\\d,]+)\\s+([\\d,]+)\\s+([\\d,]+)\\s+([\\d,]+)\\s+([\\d,]+)\\s+([\\d,]+)",
+      "value_type": "integer",
+      "group": 6,
+      "use_last_number": false
+    }
+  ],
+  "extraction_notes": "すべてのメトリクスは「８月 ９月 10月 11月 12月 １月」の形式の表から、最新月（１月）の値を抽出しています。純営業収益、受入手数料、トレーディング損益、その他収益は千円単位、預かり資産、株式等売買代金は百万円単位、デリバティブ取引売買高は百枚単位です。",
+  "ticker": "8705",
+  "company_name": "8705",
+  "created_at": "2026-03-28T16:53:00.741175+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2026年１月の月次業績等（速報）に関するお知らせ",
+  "sample_submission_date": "2026-02-13",
+  "fields_count": 8
+}

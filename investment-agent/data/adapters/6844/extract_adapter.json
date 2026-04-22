@@ -1,0 +1,14 @@
+{
+  "source": "pdf",
+  "format": "pdf",
+  "fields": [],
+  "extraction_notes": "The provided sample text is an Integrated Report and does not contain the requested monthly order intake data. Therefore, no fields could be extracted.",
+  "ticker": "6844",
+  "company_name": "6844",
+  "created_at": "2026-04-04T01:32:54.302827+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "000000_6844_2025IntegratedReport_JA_1_7d568037",
+  "sample_submission_date": "",
+  "report_url": "TDNET文書",
+  "sample_file": "000000_6844_2025IntegratedReport_JA_1_7d568037"
+}

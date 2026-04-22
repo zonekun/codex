@@ -1,0 +1,44 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "extraction_method": "gemini",
+  "doc_title_pattern": "(\\d{4})年(\\d{1,2})月の月次売上概況のお知らせ",
+  "year_from_title_regex": "(\\d{4})年",
+  "month_from_title_regex": "(\\d{1,2})月",
+  "fields": [
+    {
+      "key": "グループ 売上高（前年同月比）",
+      "name": "グループ 売上高（前年同月比）",
+      "description": "「グループ売上高 (％)」行の文書タイトルに記載された月の列にある前年同月比のパーセント値。",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "bc_ignore_reason": "BC側がゼロ（データ誤り）",
+      "_bc_ignore_reason": "BC側未収集（BC=0.0固定）。我々の抽出値を正とする (2026-04-18判断)"
+    },
+    {
+      "key": "グループ 中品売上高（前年同月比）",
+      "name": "グループ 中品売上高（前年同月比）",
+      "description": "「中古売上高 (％)」行の文書タイトルに記載された月の列にある前年同月比のパーセント値。",
+      "value_type": "percentage"
+    },
+    {
+      "key": "グループ 新品売上高（前年同月比）",
+      "name": "グループ 新品売上高（前年同月比）",
+      "description": "「新品売上高 (％)」行の文書タイトルに記載された月の列にある前年同月比のパーセント値。「グループ売上高」行ではなく「新品売上高」行から取得すること。",
+      "value_type": "percentage"
+    }
+  ],
+  "extraction_notes": "「中品売上高」は文書中の「中古売上高」に対応します。",
+  "ticker": "7610",
+  "company_name": "7610",
+  "created_at": "2026-03-29T18:34:45.350180+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2026年2月の月次売上概況のお知らせ",
+  "sample_submission_date": "2026-03-06",
+  "fields_count": 3,
+  "manual_override": true,
+  "manual_override_note": "反省踏まえた再調査に基づく修正",
+  "manual_override_at": "2026-04-10T08:03:11.653589+09:00",
+  "custom_prompt": "テーブルの対象月の列が空欄の場合はnullを返してください。他の月の値で代替しないでください。",
+  "p5_bc_ignore_at": "2026-04-18T15:59:20+09:00"
+}

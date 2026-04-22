@@ -1,0 +1,18 @@
+FROM python:3.12-slim
+
+WORKDIR /app
+
+RUN pip install --no-cache-dir \
+    pandas>=2.0 \
+    pyarrow>=15.0 \
+    structlog>=24.0 \
+    tenacity>=8.0 \
+    "google-cloud-bigquery[pandas]>=3.0"
+
+COPY scripts/paper_trade_011_4_pnl.py scripts/paper_trade_011_4_pnl.py
+COPY scripts/notify.py scripts/notify.py
+
+ENV PYTHONUTF8=1
+ENV PYTHONUNBUFFERED=1
+
+ENTRYPOINT ["python", "scripts/paper_trade_011_4_pnl.py"]

@@ -1,0 +1,19 @@
+FROM python:3.12-slim
+
+WORKDIR /app
+
+RUN pip install --no-cache-dir \
+    jpholiday \
+    pandas>=2.0 \
+    yfinance>=0.2 \
+    curl-cffi>=0.6 \
+    "google-cloud-bigquery[pandas]>=3.0" \
+    db-dtypes>=0.3
+
+COPY scripts/dividend_date_load.py scripts/dividend_date_load.py
+COPY scripts/notify.py scripts/notify.py
+
+ENV PYTHONUTF8=1
+ENV PYTHONUNBUFFERED=1
+
+ENTRYPOINT ["python", "scripts/dividend_date_load.py"]

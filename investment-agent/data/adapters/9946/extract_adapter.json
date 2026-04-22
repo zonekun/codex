@@ -1,0 +1,27 @@
+{
+  "source": "html_table",
+  "format": "html",
+  "sheet_name": "HTML table",
+  "label_col_index": 0,
+  "data_start_row": 1,
+  "fields": [
+    {
+      "key": "全店 売上（前年同月比）",
+      "name": "全店 売上（前年同月比）",
+      "row_label_regex": "全店売上",
+      "value_type": "percentage"
+    },
+    {
+      "key": "既存店 平均日販（円）",
+      "name": "既存店 平均日販（円）",
+      "row_label_regex": "既存店.*日当り",
+      "value_type": "integer"
+    }
+  ],
+  "extraction_notes": "国内 店舗数 はデータプレビューに見つかりませんでした。",
+  "ticker": "9946",
+  "company_name": "9946",
+  "created_at": "2026-04-04T00:34:01.880720+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_file": "000000_9946_monthly_table.html"
+}

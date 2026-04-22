@@ -1,0 +1,12 @@
+{
+  "ticker": "6580",
+  "company_name": "ライトアップ",
+  "inactive_reason": "BC月次データ 2024-03 以降停止（管理対象外判断 2026-04-17）",
+  "excluded": true,
+  "manual_override": true,
+  "inactive_set_at": "2026-04-17T19:33:20+09:00",
+  "_reverse_mapping_applied_at": "2026-04-19T00:18:08.701048+09:00",
+  "_excluded": true,
+  "_excluded_at": "2026-04-19T10:04:46.555884+09:00",
+  "_excluded_reason": "月次開示停止中。2024年3月度（2024-04-11発表）以降、2年以上月次PDFの公表なし。BC 側も 2023-12 以前のデータのみで追跡不可。論理削除（ファイル・records は残す、開示再開時は _excluded フラグ除去で復帰可能）。"
+}

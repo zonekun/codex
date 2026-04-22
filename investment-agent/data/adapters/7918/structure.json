@@ -1,0 +1,54 @@
+{
+  "ticker": "7918",
+  "company_name": "7918",
+  "metrics": [
+    {"name": "全店 売上（前年同月比）"},
+    {"name": "全店 客単価（前年同月比）"},
+    {"name": "全店 客数（前年同月比）"},
+    {"name": "全店 店舗数"},
+    {"name": "既存店 売上（前年同月比）"},
+    {"name": "既存店 客単価（前年同月比）"},
+    {"name": "既存店 客数（前年同月比）"}
+  ],
+  "monthly_items": [
+    {
+      "name": "全店 売上高（％）",
+      "_manual_add": true,
+      "_bc_value_invalid": true,
+      "_note": "PDF直取得（【全店実績の対前年比較】グループ合計行）。BC側と指標定義が微差のため bc_ignore=true で運用。抽出値を正とする。"
+    },
+    {
+      "name": "全店 客数（％）",
+      "_manual_add": true,
+      "_bc_value_invalid": true,
+      "_note": "PDF直取得。BC不採用。"
+    },
+    {
+      "name": "全店 客単価（％）",
+      "_manual_add": true,
+      "_bc_value_invalid": true,
+      "_note": "PDF直取得。BC不採用。"
+    },
+    {
+      "name": "既存店 売上高（％）",
+      "_manual_add": true,
+      "_bc_value_invalid": true,
+      "_note": "PDF直取得（【既存店実績の対前年比較】グループ合計行）。BC不採用。"
+    },
+    {
+      "name": "既存店 客数（％）",
+      "_manual_add": true,
+      "_bc_value_invalid": true,
+      "_note": "PDF直取得。BC不採用。"
+    },
+    {
+      "name": "既存店 客単価（％）",
+      "_manual_add": true,
+      "_bc_value_invalid": true,
+      "_note": "PDF直取得。BC不採用。"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-18T20:15:00+09:00",
+  "monthly_items_updated_at": "2026-04-18T20:15:00+09:00"
+}

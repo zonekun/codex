@@ -1,0 +1,13 @@
+{
+  "ticker": "7412",
+  "company_name": "アトム",
+  "ir_page_url": "http://www.atom-corp.co.jp/",
+  "updated_at": "2026-04-12T10:22:46.612750+09:00",
+  "last_checked": "2026-04-12",
+  "status": "active",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": null,
+  "link_href_pattern": null,
+  "note": "月次ページ発見（サブページ）: http://www.atom-corp.co.jp/"
+}

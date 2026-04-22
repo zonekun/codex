@@ -1,0 +1,63 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "doc_title_pattern": "月次|月度|月間|売上|速報|実績|業績|概況|KPI|ＫＰＩ|状況|報告|推移|月末",
+  "year_from_title_regex": "(\\d{4})",
+  "month_from_title_regex": "(\\d{1,2})",
+  "fields": [
+    {
+      "key": "全売上（百万円）",
+      "name": "全売上（百万円）",
+      "row_label_regex": "収益認識基準 適用後売上高\\(百万円\\）",
+      "value_type": "integer",
+      "use_last_number": true,
+      "notes": "収益認識基準適用後の売上高の最新月（7月）の値を抽出"
+    },
+    {
+      "key": "全売上（前年同月比）",
+      "name": "全売上（前年同月比）",
+      "row_label_regex": "収益認識基準 適用後売上高.*前年比 \\(％\\)",
+      "value_type": "percentage",
+      "use_last_number": true,
+      "notes": "収益認識基準適用後の売上高の前年同月比の最新月（7月）の値を抽出"
+    },
+    {
+      "key": "全店 店舗数",
+      "name": "全店 店舗数",
+      "row_label_regex": "合計店舗数(\\d+)店舗",
+      "value_type": "integer",
+      "group": 1,
+      "notes": "★店舗★セクションから合計店舗数を抽出"
+    },
+    {
+      "key": "既存店 売上（前年同月比）",
+      "name": "既存店 売上（前年同月比）",
+      "row_label_regex": "7月の既存\\d+店舗の売上高は 、前年同月比 (-?\\d+)％",
+      "value_type": "percentage",
+      "group": 1,
+      "notes": "概況セクションから7月の既存店売上高の前年同月比を抽出"
+    }
+  ],
+  "extraction_notes": "文書タイトルから報告年月を抽出し、各メトリクスは最新月（7月）の値を抽出する。全売上は収益認識基準適用後の値を採用。",
+  "ticker": "7605",
+  "company_name": "7605",
+  "created_at": "2026-03-28T16:51:30.700539+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "月次実績報告表(2025年7月号)",
+  "sample_submission_date": "2025-08-12",
+  "fields_count": 4,
+  "inactive_reason": "上場廃止 2025-10-14 (他社による買収)",
+  "excluded": true,
+  "manual_override": true,
+  "inactive_set_at": "2026-04-17T16:05:46+09:00",
+  "_agent_loosened_from": "月次実績報告表\\((\\d{4})年(\\d{1,2})月号\\)",
+  "_agent_patched_at": "2026-04-19T20:51:30.819494+09:00",
+  "_agent_patch_history": [
+    {
+      "ts": "2026-04-19T20:51:30.819494+09:00",
+      "applied": [
+        "top-level: ['doc_title_pattern', '_agent_loosened_from']"
+      ]
+    }
+  ]
+}

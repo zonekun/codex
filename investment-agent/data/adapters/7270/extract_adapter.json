@@ -1,0 +1,58 @@
+{
+  "source": "pdf",
+  "format": "pdf",
+  "doc_title_pattern": "",
+  "year_from_title_regex": "",
+  "month_from_title_regex": "",
+  "fields": [
+    {
+      "key": "世界生産 台数（前年同月比）",
+      "name": "世界生産 台数（前年同月比）",
+      "row_label_regex": "世界生産合計\\s+[^%]+?([▲+-]?\\d+\\.?\\d*%)",
+      "value_type": "percentage",
+      "group": 1,
+      "use_last_number": true
+    },
+    {
+      "key": "国内生産 台数（前年同月比）",
+      "name": "国内生産 台数（前年同月比）",
+      "row_label_regex": "国内生産\\s+[^%]+?([▲+-]?\\d+\\.?\\d*%)",
+      "value_type": "percentage",
+      "group": 1,
+      "use_last_number": true
+    },
+    {
+      "key": "国内販売 台数（前年同月比）",
+      "name": "国内販売 台数（前年同月比）",
+      "row_label_regex": "国内販売合計\\s+[^%]+?([▲+-]?\\d+\\.?\\d*%)",
+      "value_type": "percentage",
+      "group": 1,
+      "use_last_number": true
+    },
+    {
+      "key": "海外生産 台数（前年同月比）",
+      "name": "海外生産 台数（前年同月比）",
+      "row_label_regex": "海外生産\\s+[^%]+?([▲+-]?\\d+\\.?\\d*%)",
+      "value_type": "percentage",
+      "group": 1,
+      "use_last_number": true
+    },
+    {
+      "key": "輸出台数（前年同月比）",
+      "name": "輸出台数（前年同月比）",
+      "row_label_regex": "輸出合計\\s+[^%]+?([▲+-]?\\d+\\.?\\d*%)",
+      "value_type": "percentage",
+      "group": 1,
+      "use_last_number": true
+    }
+  ],
+  "extraction_notes": "",
+  "ticker": "7270",
+  "company_name": "7270",
+  "created_at": "2026-04-04T00:55:50.610639+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "201701_7270_生産・国内販売・輸出実績（2017年1月度〜2017年12月度）PDF_1.1M_f223a4d6",
+  "sample_submission_date": "",
+  "report_url": "TDNET文書",
+  "sample_file": "201701_7270_生産・国内販売・輸出実績（2017年1月度〜2017年12月度）PDF_1.1M_f223a4d6"
+}

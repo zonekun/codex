@@ -1,0 +1,56 @@
+{
+  "source": "non-tdnet(pdf)",
+  "format": "pdf",
+  "doc_title_pattern": "^.*_(\\\\w+)_(\\\\d+),_(\\\\d{4})IR_InformationMonthly_sales_.*$",
+  "year_from_title_regex": "_(\\\\d{4})IR_InformationMonthly_sales",
+  "month_from_title_regex": "_(\\\\w+)_(\\\\d+),_(\\\\d{4})IR_InformationMonthly_sales",
+  "fields": [
+    {
+      "key": "全店 売上（前年同月比）",
+      "name": "全店 売上（前年同月比）",
+      "row_label_regex": "全\\s*店\\s*売\\s*上\\s*高\\s*25年度\\s*([\\\\d.]+)\\s*([\\\\d.]+)\\s*([\\\\d.]+)\\s*([\\\\d.]+)\\s*([\\\\d.]+)\\s*([\\\\d.]+)\\s*([\\\\d.]+)\\s*([\\\\d.]+)\\s*([\\\\d.]+)\\s*([\\\\d.]+)\\s*([\\\\d.]+)\\s*([\\\\d.]+)",
+      "value_type": "percentage",
+      "group": 12
+    },
+    {
+      "key": "全店 店舗数",
+      "name": "全店 店舗数",
+      "row_label_regex": "月末店舗数\\s*25年度\\s*(\\\\d+)\\s*(\\\\d+)\\s*(\\\\d+)\\s*(\\\\d+)\\s*(\\\\d+)\\s*(\\\\d+)\\s*(\\\\d+)\\s*(\\\\d+)\\s*(\\\\d+)\\s*(\\\\d+)\\s*(\\\\d+)\\s*(\\\\d+)店",
+      "value_type": "integer",
+      "group": 12
+    },
+    {
+      "key": "既存店 売上（前年同月比）",
+      "name": "既存店 売上（前年同月比）",
+      "row_label_regex": "^売\\s*上\\s*高\\s*25年度\\s*([\\\\d.]+)\\s*([\\\\d.]+)\\s*([\\\\d.]+)\\s*([\\\\d.]+)\\s*([\\\\d.]+)\\s*([\\\\d.]+)\\s*([\\\\d.]+)\\s*([\\\\d.]+)\\s*([\\\\d.]+)\\s*([\\\\d.]+)\\s*([\\\\d.]+)\\s*([\\\\d.]+)",
+      "value_type": "percentage",
+      "group": 12
+    },
+    {
+      "key": "既存店 客単価（前年同月比）",
+      "name": "既存店 客単価（前年同月比）",
+      "row_label_regex": "客\\s*単\\s*価\\s*25年度\\s*([\\\\d.]+)\\s*([\\\\d.]+)\\s*([\\\\d.]+)\\s*([\\\\d.]+)\\s*([\\\\d.]+)\\s*([\\\\d.]+)\\s*([\\\\d.]+)\\s*([\\\\d.]+)\\s*([\\\\d.]+)\\s*([\\\\d.]+)\\s*([\\\\d.]+)\\s*([\\\\d.]+)",
+      "value_type": "percentage",
+      "group": 12
+    },
+    {
+      "key": "既存店 客数（前年同月比）",
+      "name": "既存店 客数（前年同月比）",
+      "row_label_regex": "既\\s*存\\s*店\\s*客\\s*数\\s*25年度\\s*([\\\\d.]+)\\s*([\\\\d.]+)\\s*([\\\\d.]+)\\s*([\\\\d.]+)\\s*([\\\\d.]+)\\s*([\\\\d.]+)\\s*([\\\\d.]+)\\s*([\\\\d.]+)\\s*([\\\\d.]+)\\s*([\\\\d.]+)\\s*([\\\\d.]+)\\s*([\\\\d.]+)",
+      "value_type": "percentage",
+      "group": 12
+    }
+  ],
+  "extraction_notes": "文書のタイトルから抽出される年月は報告書の発行年月です。表データは25年度の3月（12番目の月）の値を抽出します。",
+  "ticker": "9828",
+  "company_name": "9828",
+  "created_at": "2026-04-05T18:11:38.999748+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "000000_9828_March_4,_2026IR_InformationMonthly_sales_079abbe7",
+  "sample_submission_date": "",
+  "report_url": "TDNET文書",
+  "sample_file": "000000_9828_March_4,_2026IR_InformationMonthly_sales_079abbe7",
+  "_source_renamed_at": "2026-04-18T16:36:34+09:00",
+  "_source_renamed_from": "pdf",
+  "manual_override": true
+}

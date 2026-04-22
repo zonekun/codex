@@ -1,0 +1,27 @@
+FROM python:3.12-slim
+
+WORKDIR /app
+
+RUN pip install --no-cache-dir \
+    PyPDF2>=3.0 \
+    google-cloud-storage>=2.16 \
+    google-cloud-bigquery>=3.0 \
+    google-genai>=1.0 \
+    langchain-text-splitters>=0.2 \
+    pdfminer.six>=20231228 \
+    pydantic>=2.0 \
+    pydantic-settings>=2.0 \
+    numpy>=1.24
+
+COPY scripts/tdnet_load_parallel.py scripts/tdnet_load_parallel.py
+COPY src/llm/__init__.py src/llm/__init__.py
+COPY src/llm/truncation.py src/llm/truncation.py
+COPY src/llm/page_aware_text.py src/llm/page_aware_text.py
+COPY src/core/__init__.py src/core/__init__.py
+COPY src/core/config.py src/core/config.py
+COPY src/__init__.py src/__init__.py
+
+ENV PYTHONUTF8=1
+ENV PYTHONUNBUFFERED=1
+
+ENTRYPOINT ["python", "scripts/tdnet_load_parallel.py"]

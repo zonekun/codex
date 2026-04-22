@@ -1,0 +1,14 @@
+{
+  "source": "pdf",
+  "format": "pdf",
+  "fields": [],
+  "extraction_notes": "サンプル文書には、指定された月次売上関連のメトリクスに該当するデータが見つかりませんでした。これは「マルチステークホルダー方針」に関する文書であり、月次開示の数値データは含まれていません。",
+  "ticker": "8160",
+  "company_name": "8160",
+  "created_at": "2026-04-04T00:52:38.227469+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "000000_8160_マルチステークホルダー方針_324920e9",
+  "sample_submission_date": "",
+  "report_url": "TDNET文書",
+  "sample_file": "000000_8160_マルチステークホルダー方針_324920e9"
+}

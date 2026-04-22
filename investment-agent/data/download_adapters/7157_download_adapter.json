@@ -1,0 +1,9 @@
+{
+  "ticker": "7157",
+  "company_name": "ライフネット生命保険",
+  "updated_at": "2026-03-15",
+  "link_text_pattern": "月次|業績速報|新契約|monthly",
+  "link_href_pattern": "\\.(pdf|xlsx)",
+  "css_selector": null,
+  "note": "https://ir.lifenet-seimei.co.jp/ja/ir/financial/monthly.html から PDF リンクを取得"
+}

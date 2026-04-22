@@ -1,0 +1,57 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "doc_title_pattern": "^(\\d{4})年\\d{1,2}月期(\\d{1,2})月度 直営店売上高速報、店舗数推移について$",
+  "year_from_title_regex": "^(\\d{4})年",
+  "month_from_title_regex": "期(\\d{1,2})月度",
+  "fields": [
+    {
+      "key": "ラーメン事業 既存店 売上（前年同月比）",
+      "name": "ラーメン事業 既存店 売上（前年同月比）",
+      "row_label_regex": "ラーメン事業は客数が前年同月比.*?客単価が前年同月比.*?前年同月比売上高は\\s*(\\d+\\.\\d+)%",
+      "value_type": "percentage"
+    },
+    {
+      "key": "ラーメン事業 既存店 客数（前年同月比）",
+      "name": "ラーメン事業 既存店 客数（前年同月比）",
+      "row_label_regex": "ラーメン事業は客数が前年同月比\\s*(\\d+\\.\\d+)%",
+      "value_type": "percentage"
+    },
+    {
+      "key": "ラーメン事業 既存店 客単価（前年同月比）",
+      "name": "ラーメン事業 既存店 客単価（前年同月比）",
+      "row_label_regex": "ラーメン事業は客数が前年同月比.*?客単価が前年同月比\\s*(\\d+\\.\\d+)%",
+      "value_type": "percentage"
+    },
+    {
+      "key": "レストラン事業 既存店 売上（前年同月比）",
+      "name": "レストラン事業 既存店 売上（前年同月比）",
+      "row_label_regex": "レストラン事業では客数が.*?客単価が前年同月比.*?前年同月比売上高は\\s*(\\d+\\.\\d+)%",
+      "value_type": "percentage",
+      "bc_key": "ラーメン事業 既存店 売上（前年同月比）"
+    },
+    {
+      "key": "レストラン事業 既存店 客数（前年同月比）",
+      "name": "レストラン事業 既存店 客数（前年同月比）",
+      "row_label_regex": "レストラン事業では客数が\\s*(\\d+\\.\\d+)%",
+      "value_type": "percentage",
+      "bc_key": "ラーメン事業 既存店 客数（前年同月比）"
+    },
+    {
+      "key": "レストラン事業 既存店 客単価（前年同月比）",
+      "name": "レストラン事業 既存店 客単価（前年同月比）",
+      "row_label_regex": "レストラン事業では客数が.*?客単価が前年同月比\\s*(\\d+\\.\\d+)%",
+      "value_type": "percentage",
+      "bc_key": "ラーメン事業 既存店 客単価（前年同月比）"
+    }
+  ],
+  "extraction_notes": "既存店に関するデータは、本文中の記述箇所から抽出しています。",
+  "ticker": "245A",
+  "company_name": "245A",
+  "created_at": "2026-03-24T08:15:42.644051+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2026年8月期２月度 直営店売上高速報、店舗数推移について",
+  "sample_submission_date": "2026-03-06",
+  "fields_count": 6,
+  "_reverse_mapping_applied_at": "2026-04-18T23:51:10.887679+09:00"
+}

@@ -1,0 +1,14 @@
+{
+  "ticker": "3817",
+  "company_name": "3817",
+  "metrics": [
+    {
+      "name": "株式会社AIT 売上高（円）"
+    },
+    {
+      "name": "株式会社SRA 売上高（円）"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

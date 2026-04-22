@@ -1,0 +1,16 @@
+{
+  "ticker": "4641",
+  "company_name": "アルプス技研",
+  "ir_page_url": "https://www.alpsgiken.co.jp/ir/financial/kado.html",
+  "updated_at": "2026-04-12T12:59:12.428744+09:00",
+  "last_checked": "2026-04-12",
+  "status": "active",
+  "type": "html_table",
+  "skip_reason": "月次開示ページ・ダウンロードリンク未発見",
+  "note": "稼働率データHTMLテーブル（20テーブル）。PDF無し。2026-04-12修正",
+  "link_href_pattern": null,
+  "link_text_pattern": null,
+  "manual_override": true,
+  "manual_override_note": "2026-04-12 curl_cffiページ分析に基づく修正",
+  "manual_override_at": "2026-04-12T12:59:12.428744+09:00"
+}

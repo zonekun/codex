@@ -1,0 +1,9 @@
+{
+  "ticker": "8628",
+  "company_name": "松井証券",
+  "updated_at": "2026-03-15",
+  "link_text_pattern": "月次|業績|売買|口座|monthly",
+  "link_href_pattern": "\\.(pdf|xlsx)",
+  "css_selector": null,
+  "note": "https://www.matsui.co.jp/company/ir/disclosure/business/ から PDF リンクを取得"
+}

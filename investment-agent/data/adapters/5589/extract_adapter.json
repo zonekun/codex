@@ -1,0 +1,29 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "extraction_method": "gemini",
+  "doc_title_pattern": "^(\\d{4})年(\\d{1,2})月期(\\d{1,2})月度 ASNET取引台数実績（速報値）$",
+  "year_from_title_regex": "^(\\d{4})",
+  "month_from_title_regex": "期(\\d{1,2})月度",
+  "fields": [
+    {
+      "key": "ASNET 取引台数実績（台）",
+      "name": "ASNET 取引台数実績（台）",
+      "description": "ASNETの11月度の取引台数実績（台）。「単位：台」の直後に続く表形式データにおいて、「11月度」の「ASNET全体」に該当する数値（台）。",
+      "value_type": "integer"
+    },
+    {
+      "key": "ASNET 取引台数実績（前年同月比）",
+      "name": "ASNET 取引台数実績（前年同月比）",
+      "description": "ASNETの11月度の取引台数実績の前年同月比（%）。「単位：台」の直後に続く表形式データにおいて、「11月度」の「（前年同月比）」に該当する数値（%）。",
+      "value_type": "percentage"
+    }
+  ],
+  "ticker": "5589",
+  "company_name": "オートサーバー",
+  "created_at": "2026-03-29T18:40:35.854270+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2025年12月期11月度 ASNET取引台数実績（速報値）",
+  "sample_submission_date": "2025-12-01",
+  "fields_count": 2
+}

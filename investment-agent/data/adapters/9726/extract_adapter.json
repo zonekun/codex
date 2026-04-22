@@ -1,0 +1,54 @@
+{
+  "source": "pdf",
+  "format": "pdf",
+  "doc_title_pattern": ".*",
+  "year_from_title_regex": "(\\d{4})年",
+  "month_from_title_regex": "(\\d{1,2})月",
+  "fields": [
+    {
+      "key": "全店 売上（前年同月比）",
+      "name": "全店 売上（前年同月比）",
+      "row_label_regex": "合計\\s+[\\d,]+\\s+([\\d.]+)",
+      "value_type": "percentage",
+      "group": 1
+    },
+    {
+      "key": "全店 売上（百万円）",
+      "name": "全店 売上（百万円）",
+      "row_label_regex": "合計\\s+([\\d,]+)",
+      "value_type": "float",
+      "group": 1,
+      "notes": "単位が千円のため、百万円に変換するには100で割る必要があります。"
+    },
+    {
+      "key": "国内旅行 取扱額（前年同月比）",
+      "name": "国内旅行 取扱額（前年同月比）",
+      "row_label_regex": "国内旅行計\\s+[\\d,]+\\s+([\\d.]+)",
+      "value_type": "percentage",
+      "group": 1
+    },
+    {
+      "key": "海外旅行 取扱額（前年同月比）",
+      "name": "海外旅行 取扱額（前年同月比）",
+      "row_label_regex": "海外旅行計\\s+[\\d,]+\\s+([\\d.]+)",
+      "value_type": "percentage",
+      "group": 1
+    },
+    {
+      "key": "訪日旅行 取扱額（前年同月比）",
+      "name": "訪日旅行 取扱額（前年同月比）",
+      "row_label_regex": "訪日旅行\\s+[\\d,]+\\s+([\\d.]+)",
+      "value_type": "percentage",
+      "group": 1
+    }
+  ],
+  "extraction_notes": "全店 売上（百万円）は、元のテキストが千円単位のため、抽出後に100で割る必要があります。",
+  "ticker": "9726",
+  "company_name": "9726",
+  "created_at": "2026-04-04T01:10:49.412726+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "202504_9726_2025年4月取扱額実績(PDF_96KB)_752e1b2c",
+  "sample_submission_date": "",
+  "report_url": "TDNET文書",
+  "sample_file": "202504_9726_2025年4月取扱額実績(PDF_96KB)_752e1b2c"
+}

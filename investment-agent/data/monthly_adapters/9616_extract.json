@@ -1,0 +1,67 @@
+{
+  "source": "non-tdnet(pdf)",
+  "format": "pdf",
+  "doc_title_pattern": ".*",
+  "year_from_title_regex": "(\\d{4})年",
+  "month_from_title_regex": "(\\d{1,2})月度",
+  "fields": [
+    {
+      "key": "グループ 売上（前年同月比）",
+      "name": "グループ 売上（前年同月比）",
+      "row_label_regex": "^合\\s*計\\s+[\\d,]+\\s+[\\d,]+\\s+[\\+\\-]?\\d[\\d,]*\\s+([\\+\\-]?\\d[\\d.]*)%",
+      "value_type": "percentage",
+      "group": 1,
+      "yoy_offset": 100
+    },
+    {
+      "key": "グループ 売上（百万円）",
+      "name": "グループ 売上（百万円）",
+      "row_label_regex": "^合\\s*計\\s+([\\d,]+)",
+      "value_type": "integer",
+      "group": 1
+    },
+    {
+      "key": "ホテル事業 売上（前年同月比）",
+      "name": "ホテル事業 売上（前年同月比）",
+      "row_label_regex": "^ホテル事業\\s+[\\d,]+\\s+[\\d,]+\\s+[\\+\\-]?\\d[\\d,]*\\s+([\\+\\-]?\\d[\\d.]*)%",
+      "value_type": "percentage",
+      "group": 1,
+      "bc_key": "ホテル事業 売上（前年同月比）",
+      "yoy_offset": 100.0
+    },
+    {
+      "key": "寮事業 売上（前年同月比）",
+      "name": "寮事業 売上（前年同月比）",
+      "row_label_regex": "^寮事業\\s+[\\d,]+\\s+[\\d,]+\\s+[\\+\\-]?\\d[\\d,]*\\s+([\\+\\-]?\\d[\\d.]*)%",
+      "value_type": "percentage",
+      "group": 1,
+      "yoy_offset": 100
+    },
+    {
+      "key": "総合ビルマネジメント事業 売上（前年同月比）",
+      "name": "総合ビルマネジメント事業 売上（前年同月比）",
+      "row_label_regex": "^総合ビルマネジメント事業\\s+[\\d,]+\\s+[\\d,]+\\s+[\\+\\-]?\\d[\\d,]*\\s+([\\+\\-]?\\d[\\d.]*)%",
+      "value_type": "percentage",
+      "group": 1,
+      "yoy_offset": 100
+    }
+  ],
+  "extraction_notes": "各事業の売上（前年同月比）およびグループ合計売上（百万円、前年同月比）を抽出。単月実績の列から値を取得する。",
+  "ticker": "9616",
+  "company_name": "9616",
+  "created_at": "2026-04-04T01:00:06.530095+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "202511_9616_2025年11月度_経営情報_Monthly_Report_1ebd3f02",
+  "sample_submission_date": "",
+  "report_url": "TDNET文書",
+  "sample_file": "202511_9616_2025年11月度_経営情報_Monthly_Report_1ebd3f02",
+  "extraction_method": "gemini",
+  "manual_override": true,
+  "manual_override_note": "反省踏まえた再調査に基づく修正",
+  "manual_override_at": "2026-04-10T08:03:02.568454+09:00",
+  "custom_prompt": "テーブルにはセグメント行と合計行があります:\n寮事業: 5000～6000百万円台\nホテル事業: 8000～10000百万円台\nその他: 数百百万円\n合計 Total: 25000百万円台 ← こちらを使う\n「グループ 売上（百万円）」→ 「合計 Total」行の値。\n最初のセグメント行の値を返さないでください。合計は最も大きな数値です。",
+  "overwrite_past_months": true,
+  "_source_renamed_at": "2026-04-18T16:36:34+09:00",
+  "_source_renamed_from": "pdf",
+  "_reverse_mapping_applied_at": "2026-04-19T15:16:58.280472+09:00"
+}

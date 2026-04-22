@@ -1,0 +1,11 @@
+{
+  "ticker": "9519",
+  "company_name": "9519",
+  "metrics": [
+    {
+      "name": "再生可能エネ 売電量（kWh）"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

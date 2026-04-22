@@ -1,0 +1,17 @@
+{
+  "ticker": "4245",
+  "company_name": "4245",
+  "metrics": [
+    {
+      "name": "CO2 削減量（kg-CO2）"
+    },
+    {
+      "name": "売電収入（円）"
+    },
+    {
+      "name": "発電量（kWh）"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

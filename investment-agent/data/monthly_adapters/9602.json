@@ -1,0 +1,50 @@
+{
+  "source": "non-tdnet(pdf)",
+  "format": "pdf",
+  "fields": [
+    {
+      "key": "映画興行部門 興行収入（円）",
+      "name": "映画興行部門 興行収入（円）",
+      "row_label_regex": "映画興行事業の営業収入は([\\d,]+)百万円",
+      "value_type": "integer",
+      "group": 1,
+      "notes": "単位は百万円。文書は四半期報告書のため、四半期累計の興行収入。"
+    },
+    {
+      "key": "映画興行部門 興行収入（前年同月比）",
+      "name": "映画興行部門 興行収入（前年同月比）",
+      "row_label_regex": "映画興行事業の営業収入は[\\d,]+百万円（前年同四半期比([\\d.]+)％増）",
+      "value_type": "percentage",
+      "group": 1,
+      "notes": "文書は四半期報告書のため、「前年同月比」は「前年同四半期比」として抽出。"
+    },
+    {
+      "key": "映画配給部門 興行収入（円）",
+      "name": "映画配給部門 興行収入（円）",
+      "row_label_regex": "映画営業事業の営業収入は([\\d,]+)百万円",
+      "value_type": "integer",
+      "group": 1,
+      "notes": "単位は百万円。文書は四半期報告書のため、四半期累計の興行収入。"
+    },
+    {
+      "key": "映画配給部門 興行収入（前年同月比）",
+      "name": "映画配給部門 興行収入（前年同月比）",
+      "row_label_regex": "映画営業事業の営業収入は[\\d,]+百万円（前年同四半期比([\\d.]+)％増）",
+      "value_type": "percentage",
+      "group": 1,
+      "notes": "文書は四半期報告書のため、「前年同月比」は「前年同四半期比」として抽出。"
+    }
+  ],
+  "extraction_notes": "文書は四半期報告書であり、月次データではなく四半期累計データが記載されています。また、要求された「前年同月比」は文書中の「前年同四半期比」を抽出しています。",
+  "ticker": "9602",
+  "company_name": "9602",
+  "created_at": "2026-04-05T10:30:03.132168+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "000000_9602_PDF_3450e80f",
+  "sample_submission_date": "",
+  "report_url": "TDNET文書",
+  "sample_file": "000000_9602_PDF_3450e80f",
+  "_source_renamed_at": "2026-04-18T16:36:34+09:00",
+  "_source_renamed_from": "pdf",
+  "manual_override": true
+}

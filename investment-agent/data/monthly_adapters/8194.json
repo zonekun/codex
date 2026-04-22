@@ -1,0 +1,13 @@
+{
+  "ticker": "8194",
+  "company_name": "(株)ライフコーポレーション",
+  "ir_page_url": "https://www.ryutsuu.biz/sales",
+  "updated_at": "2026-04-12T10:24:08.077885+09:00",
+  "last_checked": "2026-04-12",
+  "status": "active",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": null,
+  "link_href_pattern": null,
+  "note": "月次ページ発見（サブページ）: https://www.ryutsuu.biz/sales"
+}

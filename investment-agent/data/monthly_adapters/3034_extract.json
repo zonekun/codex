@@ -1,0 +1,36 @@
+{
+  "source": "non-tdnet(pdf)",
+  "format": "pdf",
+  "extraction_method": "gemini",
+  "doc_title_pattern": "マンスリー.*レポート",
+  "year_from_title_regex": "(\\d{4})年",
+  "month_from_title_regex": "(\\d{1,2})月",
+  "fields": [
+    {
+      "key": "調剤報酬（前年同月比）",
+      "name": "調剤報酬（前年同月比）",
+      "row_label_regex": "調剤報酬.*単月",
+      "value_type": "percentage"
+    },
+    {
+      "key": "処方箋応需枚数（前年同月比）",
+      "name": "処方箋応需枚数（前年同月比）",
+      "row_label_regex": "処方箋応需.*枚数.*単月",
+      "value_type": "percentage"
+    },
+    {
+      "key": "グループ店舗数",
+      "name": "グループ店舗数",
+      "row_label_regex": "店舗数",
+      "value_type": "integer"
+    }
+  ],
+  "notes": "画像PDF。Gemini個人APIキーで抽出（OCRからGeminiに変更 2026-04-13）",
+  "ticker": "3034",
+  "updated_at": "2026-04-13T08:09:15.279290+09:00",
+  "created_by": "manual-investigation",
+  "fields_count": 3,
+  "_source_renamed_at": "2026-04-18T16:36:34+09:00",
+  "_source_renamed_from": "pdf",
+  "manual_override": true
+}

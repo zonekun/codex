@@ -1,0 +1,63 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "extraction_method": "gemini",
+  "fields": [
+    {
+      "key": "累計店舗数",
+      "name": "累計店舗数",
+      "description": "「累計店舗数」の項目に記載されている数値。単位は店舗。",
+      "value_type": "integer",
+      "_manual_description": true,
+      "bc_ignore": true,
+      "_bc_ignore_reason": "extract/gcs破綻, 深堀要"
+    },
+    {
+      "key": "取扱高（億円）",
+      "name": "取扱高（億円）",
+      "description": "「オンラインチャージ約 30 億円」と記載されている取扱高の数値「30」。単位は億円。",
+      "value_type": "integer",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "extract/gcs破綻, 深堀要"
+    },
+    {
+      "key": "累計ID数（百万）",
+      "name": "累計ID数（百万）",
+      "description": "「累計ID数」の項目に記載されている数値。単位は百万。",
+      "value_type": "integer",
+      "_manual_description": true,
+      "bc_ignore": true,
+      "_bc_ignore_reason": "extract/gcs破綻, 深堀要"
+    }
+  ],
+  "ticker": "4015",
+  "company_name": "4015",
+  "created_at": "2026-03-29T18:40:23.812988+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2026年1月 月次業績報告",
+  "sample_submission_date": "2026-02-25",
+  "fields_count": 3,
+  "inactive": true,
+  "inactive_reason": "プレゼン資料型PDF（グラフ中心、テーブル構造なし）。月次収集対象外",
+  "custom_prompt": "あなたは ticker 4015 の月次開示 PDF から KPI を抽出するアシスタントです.\n\n抽出対象月: {year}年{month}月度\n\n重要ルール:\n  - 当月 (指定月) の値のみ採用\n  - 四半期累計・上期累計・通期・前年同期実績 等の集計値は絶対に拾わない\n  - サブブランド行ではなく「全店」「既存店」「合計」等の集約行を採用\n  - 前年同月比 field には 「+X.X%増」「−X.X%減」の narrative が該当する場合は\n    100 を加算した値 (例: +5.2% → 105.2, -4.9% → 95.1) を返す\n  - 見つからない field は null\n\n出力形式: JSON\n{\n  - \"累計店舗数\": 整数\n  - \"取扱高（億円）\": 整数\n  - \"累計ID数（百万）\": 整数\n}\n",
+  "manual_override": true,
+  "manual_override_note": "2026-04-10 解読不可能のため除外",
+  "manual_override_at": "2026-04-10T08:03:04.435719+09:00",
+  "overwrite_past_months": true,
+  "excluded": true,
+  "excluded_reason": "解読不可能なPDF。エクストラクト対象外",
+  "desc_rewrite_at": "2026-04-17T23:21:37+09:00",
+  "doc_title_pattern": "月次|月度|月間|売上|速報|実績|業績|概況|KPI|ＫＰＩ|状況|報告|推移|月末",
+  "_agent_loosened_from": "",
+  "_agent_patched_at": "2026-04-19T20:38:17.081695+09:00",
+  "_agent_patch_history": [
+    {
+      "ts": "2026-04-19T20:38:17.082713+09:00",
+      "applied": [
+        "top-level: ['doc_title_pattern', '_agent_loosened_from']"
+      ]
+    }
+  ],
+  "regex_redesign_at": "2026-04-19T22:24:32.258016+09:00",
+  "regex_redesign_note": "Gemini 切替 (regex 限界 or 誤マッチのため)."
+}

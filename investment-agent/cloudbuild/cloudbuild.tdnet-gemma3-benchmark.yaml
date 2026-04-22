@@ -1,0 +1,14 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - build
+      - -f
+      - docker/Dockerfile.tdnet-gemma3-benchmark
+      - -t
+      - us-west1-docker.pkg.dev/gmailpj-357912/stock/tdnet-gemma3-benchmark:latest
+      - .
+
+images:
+  - us-west1-docker.pkg.dev/gmailpj-357912/stock/tdnet-gemma3-benchmark:latest
+
+timeout: 2400s

@@ -1,0 +1,57 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "doc_title_pattern": "YYYY年M月度 月次売上高速報(小売)",
+  "year_from_title_regex": "(\\d{4})年",
+  "month_from_title_regex": "(\\d{1,2})月",
+  "fields": [
+    {
+      "key": "トライアル 既存店 売上（前年同月比）",
+      "name": "トライアル 既存店 売上（前年同月比）",
+      "row_label_regex": "^売上高\\s+101\\.4\\s+98\\.3",
+      "value_type": "percentage",
+      "notes": "既存店売上高の行を特定するため、先頭のラベルと最初の2つの値を使用しています。"
+    },
+    {
+      "key": "トライアル 既存店 客数（前年同月比）",
+      "name": "トライアル 既存店 客数（前年同月比）",
+      "row_label_regex": "^客数",
+      "value_type": "percentage"
+    },
+    {
+      "key": "トライアル 既存店 客単価（前年同月比）",
+      "name": "トライアル 既存店 客単価（前年同月比）",
+      "row_label_regex": "^客単価",
+      "value_type": "percentage"
+    },
+    {
+      "key": "トライアル 全店 売上（前年同月比）",
+      "name": "トライアル 全店 売上（前年同月比）",
+      "row_label_regex": "^売上高\\s+111\\.9\\s+108\\.1",
+      "value_type": "percentage",
+      "notes": "全店売上高の行を特定するため、先頭のラベルと最初の2つの値を使用しています。"
+    },
+    {
+      "key": "トライアル 店舗数",
+      "name": "トライアル 店舗数",
+      "row_label_regex": "^全店舗数\\s+357\\s+358",
+      "value_type": "integer",
+      "notes": "トライアルの全店舗数の行を特定するため、先頭のラベルと最初の2つの値を使用しています。"
+    },
+    {
+      "key": "西友 店舗数",
+      "name": "西友 店舗数",
+      "row_label_regex": "^全店舗数\\s+245\\s+245",
+      "value_type": "integer",
+      "notes": "西友の全店舗数の行を特定するため、先頭のラベルと最初の2つの値を使用しています。"
+    }
+  ],
+  "extraction_notes": "複数の指標で同じ行ラベル（例: '売上高'や'全店舗数'）が使用されているため、row_label_regexでは行ラベルに加えて最初の数値をパターンに含めることで、各行を一意に識別するようにしています。これにより、特定の行から正確なデータを抽出することが可能になります。",
+  "ticker": "141A",
+  "company_name": "141A",
+  "created_at": "2026-03-21T20:06:53.055654+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2026年2月度 月次売上高速報(小売)",
+  "sample_submission_date": "2026-03-10",
+  "fields_count": 6
+}

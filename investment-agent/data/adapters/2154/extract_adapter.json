@@ -1,0 +1,47 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "ticker": "2154",
+  "company_name": "オープンアップグループ",
+  "doc_title_pattern": "\\d{4}年\\d{1,2}月度 国内技術社員在籍数・稼働率",
+  "year_from_title_regex": "(\\d{4})年",
+  "month_from_title_regex": "(\\d{1,2})月度",
+  "fields": [
+    {
+      "key": "エンジニア合計在籍数（名）",
+      "name": "エンジニア合計在籍数（名）",
+      "row_label_regex": "エンジニア在籍数.*?稼働率.*?\\d{4}年\\d{1,2}月末時点\\s+(\\d{1,3}(?:,\\d{3})*)\\s+\\d{2,3}\\.\\d",
+      "value_type": "integer",
+      "notes": "エンジニア合計の最新月時点の在籍数。先頭のYYYY年M月末時点が当月。"
+    },
+    {
+      "key": "エンジニア合計稼働率（%）",
+      "name": "エンジニア合計稼働率（%）",
+      "row_label_regex": "エンジニア在籍数.*?稼働率.*?\\d{4}年\\d{1,2}月末時点\\s+\\d{1,3}(?:,\\d{3})*\\s+(\\d{2,3}\\.\\d)",
+      "value_type": "float",
+      "notes": "エンジニア合計の最新月稼働率。"
+    },
+    {
+      "key": "機電・ITエンジニア在籍数（名）",
+      "name": "機電・ITエンジニア在籍数（名）",
+      "row_label_regex": "機電.*?IT.*?エンジニア在籍.*?稼働率.*?\\d{4}年\\d{1,2}月末時点\\s+(\\d{1,3}(?:,\\d{3})*)\\s+\\d{1,3}",
+      "value_type": "integer",
+      "notes": "機電・ITエンジニアの合計在籍数。"
+    },
+    {
+      "key": "建設エンジニア在籍数（名）",
+      "name": "建設エンジニア在籍数（名）",
+      "row_label_regex": "在籍数\\s*[(（]名[)）]\\s*稼働率\\s*\\d{4}年\\d{1,2}月末時点\\s+(\\d{1,3}(?:,\\d{3})*)\\s+\\d{2,3}\\.\\d",
+      "value_type": "integer",
+      "notes": "建設エンジニア在籍数。'在籍数(名)稼働率 YYYY年M月末時点'アンカーでチャンク順序問題を回避 (round9)"
+    }
+  ],
+  "extraction_notes": "最新月時点（YYYY年M月末時点）の最初の値が当月在籍数。各エンジニアカテゴリ別の在籍数・稼働率を抽出。",
+  "sample_doc_title": "2026年1月度 国内技術社員在籍数・稼働率の月次開示に関するお知らせ",
+  "sample_submission_date": "2026-02-27",
+  "created_at": "2026-03-24T00:00:00",
+  "updated_at": "2026-03-24",
+  "updated_by": "round9_batch_fix",
+  "created_by": "manual_fix",
+  "fields_count": 4
+}

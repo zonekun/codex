@@ -1,0 +1,39 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "doc_title_pattern": "月次売上高前年比情報に関するお知らせ",
+  "year_from_title_regex": "",
+  "month_from_title_regex": "",
+  "fields": [
+    {
+      "key": "全社 売上（前年同月比）",
+      "name": "全社 売上（前年同月比）",
+      "row_label_regex": "全社\\s*売上高",
+      "value_type": "percentage"
+    },
+    {
+      "key": "全店 店舗数",
+      "name": "全店 店舗数",
+      "row_label_regex": "店舗数",
+      "value_type": "integer"
+    },
+    {
+      "key": "既存店 売上（前年同月比）",
+      "name": "既存店 売上（前年同月比）",
+      "row_label_regex": "既存店\\s*売上高",
+      "value_type": "percentage"
+    }
+  ],
+  "extraction_notes": "「全社 客数（前年同月比）」、「全社 客単価（前年同月比）」、「既存店 客数（前年同月比）」、「既存店 客単価（前年同月比）」の項目は、テキスト上で「全社」と「既存店」の区別なく同じ行ラベル（「客数」および「客単価」）を使用しており、row_label_regexのみでは一意に識別できないため、JSONには含めていません。",
+  "ticker": "7445",
+  "company_name": "7445",
+  "created_at": "2026-03-17T17:28:52.231831+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "月次売上高前年比情報に関するお知らせ",
+  "sample_submission_date": "2026-02-04",
+  "fields_count": 3,
+  "extraction_method": "gemini",
+  "manual_override": true,
+  "manual_override_note": "コード修正必要→gemini method変更（元: regex）",
+  "manual_override_at": "2026-04-08T22:08:49.428239+09:00"
+}

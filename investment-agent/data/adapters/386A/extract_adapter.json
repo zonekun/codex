@@ -1,0 +1,53 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "doc_title_pattern": "(\\\\d{4})年(\\\\d{1,2})月度 月次情報のお知らせ",
+  "year_from_title_regex": "(\\\\d{4})年",
+  "month_from_title_regex": "(\\\\d{1,2})月",
+  "fields": [
+    {
+      "key": "既存店 売上（前年同月比）",
+      "name": "既存店 売上（前年同月比）",
+      "row_label_regex": "(?s)１\\\\.\\\\s+既存店.*?２月\\\\s+(\\\\d{1,3}\\\\.\\\\d{1,2}%)",
+      "value_type": "percentage"
+    },
+    {
+      "key": "既存店 客数（前年同月比）",
+      "name": "既存店 客数（前年同月比）",
+      "row_label_regex": "(?s)１\\\\.\\\\s+既存店.*?２月\\\\s+\\\\d{1,3}\\\\.\\\\d{1,2}%\\\\s+(\\\\d{1,3}\\\\.\\\\d{1,2}%)",
+      "value_type": "percentage"
+    },
+    {
+      "key": "既存店 客単価（前年同月比）",
+      "name": "既存店 客単価（前年同月比）",
+      "row_label_regex": "(?s)１\\\\.\\\\s+既存店.*?２月\\\\s+\\\\d{1,3}\\\\.\\\\d{1,2}%\\\\s+\\\\d{1,3}\\\\.\\\\d{1,2}%\\\\s+(\\\\d{1,3}\\\\.\\\\d{1,2}%)",
+      "value_type": "percentage"
+    },
+    {
+      "key": "全店 売上（前年同月比）",
+      "name": "全店 売上（前年同月比）",
+      "row_label_regex": "(?s)２\\\\.\\\\s+全店.*?２月\\\\s+(\\\\d{1,3}\\\\.\\\\d{1,2}%)",
+      "value_type": "percentage"
+    },
+    {
+      "key": "全店 客数（前年同月比）",
+      "name": "全店 客数（前年同月比）",
+      "row_label_regex": "(?s)２\\\\.\\\\s+全店.*?２月\\\\s+\\\\d{1,3}\\\\.\\\\d{1,2}%\\\\s+(\\\\d{1,3}\\\\.\\\\d{1,2}%)",
+      "value_type": "percentage"
+    },
+    {
+      "key": "全店 客単価（前年同月比）",
+      "name": "全店 客単価（前年同月比）",
+      "row_label_regex": "(?s)２\\\\.\\\\s+全店.*?２月\\\\s+\\\\d{1,3}\\\\.\\\\d{1,2}%\\\\s+\\\\d{1,3}\\\\.\\\\d{1,2}%\\\\s+(\\\\d{1,3}\\\\.\\\\d{1,2}%)",
+      "value_type": "percentage"
+    }
+  ],
+  "extraction_notes": "row_label_regex uses Python's re.DOTALL flag (via `(?s)`) and non-greedy matching (`.*?`) to span multiple lines and capture the correct '２月' entry within its respective '既存店' or '全店' section, as the month label '２月' appears in both tables.",
+  "ticker": "386A",
+  "company_name": "386A",
+  "created_at": "2026-03-24T08:22:06.888282+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2026年２月度 月次情報のお知らせ",
+  "sample_submission_date": "2026-03-04",
+  "fields_count": 6
+}

@@ -1,0 +1,63 @@
+{
+  "source": "non-tdnet(pdf)",
+  "format": "pdf",
+  "doc_title_pattern": ".*売上高の状況.*",
+  "year_from_title_regex": "(\\d{4})年\\d{1,2}月度",
+  "month_from_title_regex": "\\d{4}年(\\d{1,2})月度",
+  "fields": [
+    {
+      "key": "全店 売上（前年同月比）",
+      "name": "全店 売上（前年同月比）",
+      "row_label_regex": "6月\\s+([\\d.]+)\\s+[\\d.]+\\s+[\\d.]+\\s+[\\d.]+\\s+[\\d.]+\\s+[\\d.]+",
+      "value_type": "percentage",
+      "group": 1
+    },
+    {
+      "key": "全店 客単価（前年同月比）",
+      "name": "全店 客単価（前年同月比）",
+      "row_label_regex": "6月\\s+[\\d.]+\\s+[\\d.]+\\s+([\\d.]+)\\s+[\\d.]+\\s+[\\d.]+\\s+[\\d.]+",
+      "value_type": "percentage",
+      "group": 1
+    },
+    {
+      "key": "全店 客数（前年同月比）",
+      "name": "全店 客数（前年同月比）",
+      "row_label_regex": "6月\\s+[\\d.]+\\s+([\\d.]+)\\s+[\\d.]+\\s+[\\d.]+\\s+[\\d.]+\\s+[\\d.]+",
+      "value_type": "percentage",
+      "group": 1
+    },
+    {
+      "key": "既存店 売上（前年同月比）",
+      "name": "既存店 売上（前年同月比）",
+      "row_label_regex": "6月\\s+[\\d.]+\\s+[\\d.]+\\s+[\\d.]+\\s+([\\d.]+)\\s+[\\d.]+\\s+[\\d.]+",
+      "value_type": "percentage",
+      "group": 1
+    },
+    {
+      "key": "既存店 客単価（前年同月比）",
+      "name": "既存店 客単価（前年同月比）",
+      "row_label_regex": "6月\\s+[\\d.]+\\s+[\\d.]+\\s+[\\d.]+\\s+[\\d.]+\\s+[\\d.]+\\s+([\\d.]+)",
+      "value_type": "percentage",
+      "group": 1
+    },
+    {
+      "key": "既存店 客数（前年同月比）",
+      "name": "既存店 客数（前年同月比）",
+      "row_label_regex": "6月\\s+[\\d.]+\\s+[\\d.]+\\s+[\\d.]+\\s+[\\d.]+\\s+([\\d.]+)\\s+[\\d.]+",
+      "value_type": "percentage",
+      "group": 1
+    }
+  ],
+  "extraction_notes": "月次売上高前年比較表から、最新月（6月）の各項目を抽出。各項目は行の特定の位置にあるため、row_label_regexで該当行を特定し、groupで位置を指定して抽出する。",
+  "ticker": "7636",
+  "company_name": "7636",
+  "created_at": "2026-04-04T01:38:56.674194+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "201606_7636_2016年6月度_売上高の状況_8b522c0f",
+  "sample_submission_date": "",
+  "report_url": "TDNET文書",
+  "sample_file": "201606_7636_2016年6月度_売上高の状況_8b522c0f",
+  "_source_renamed_at": "2026-04-18T16:36:34+09:00",
+  "_source_renamed_from": "pdf",
+  "manual_override": true
+}

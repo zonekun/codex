@@ -1,0 +1,55 @@
+{
+  "source": "html_table",
+  "format": "html",
+  "label_col_index": 0,
+  "fields": [
+    {
+      "key": "全店 売上（前年同月比）",
+      "name": "全店 売上（前年同月比）",
+      "row_label_regex": "全店.*売上.*前年同月比",
+      "value_type": "percentage"
+    },
+    {
+      "key": "全店 客単価（前年同月比）",
+      "name": "全店 客単価（前年同月比）",
+      "row_label_regex": "全店.*客単価.*前年同月比",
+      "value_type": "percentage"
+    },
+    {
+      "key": "全店 客数（前年同月比）",
+      "name": "全店 客数（前年同月比）",
+      "row_label_regex": "全店.*客数.*前年同月比",
+      "value_type": "percentage"
+    },
+    {
+      "key": "全店 店舗数",
+      "name": "全店 店舗数",
+      "row_label_regex": "全店.*店舗数",
+      "value_type": "integer"
+    },
+    {
+      "key": "既存店 売上（前年同月比）",
+      "name": "既存店 売上（前年同月比）",
+      "row_label_regex": "既存店.*売上.*前年同月比",
+      "value_type": "percentage"
+    },
+    {
+      "key": "既存店 客単価（前年同月比）",
+      "name": "既存店 客単価（前年同月比）",
+      "row_label_regex": "既存店.*客単価.*前年同月比",
+      "value_type": "percentage"
+    },
+    {
+      "key": "既存店 客数（前年同月比）",
+      "name": "既存店 客数（前年同月比）",
+      "row_label_regex": "既存店.*客数.*前年同月比",
+      "value_type": "percentage"
+    }
+  ],
+  "extraction_notes": "DataFrameプレビューに具体的な行ラベルがなかったため、一般的なパターンに基づいてrow_label_regexを生成しました。実際のExcelファイルに合わせて調整が必要になる場合があります。",
+  "ticker": "8209",
+  "company_name": "8209",
+  "created_at": "2026-04-04T01:20:12.215373+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_file": "000000_8209_monthly_table.html"
+}

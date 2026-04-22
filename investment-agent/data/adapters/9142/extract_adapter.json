@@ -1,0 +1,41 @@
+{
+  "source": "pdf",
+  "format": "pdf",
+  "year_from_title_regex": "(\\d{4})å¹´",
+  "month_from_title_regex": "(\\d+)æ",
+  "fields": [
+    {
+      "key": "定期外収入（前年同月比）",
+      "name": "定期外収入（前年同月比）",
+      "row_label_regex": "^3月\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)",
+      "value_type": "percentage",
+      "group": 1,
+      "use_last_number": true
+    },
+    {
+      "key": "定期収入（前年同月比）",
+      "name": "定期収入（前年同月比）",
+      "row_label_regex": "^3月\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)",
+      "value_type": "percentage",
+      "group": 2,
+      "use_last_number": true
+    },
+    {
+      "key": "九州新幹線利用状況（前年同月比）",
+      "name": "九州新幹線利用状況（前年同月比）",
+      "row_label_regex": "^3月\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)",
+      "value_type": "percentage",
+      "group": 6,
+      "use_last_number": true
+    }
+  ],
+  "extraction_notes": "月次データは「3月」の行から抽出。運輸取扱収入は直接対応する列がないため抽出しない。",
+  "ticker": "9142",
+  "company_name": "9142",
+  "created_at": "2026-04-04T01:38:36.270792+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "201704_9142_2017å¹´_3ææ_ï¼83_KBï¼_ea06835a",
+  "sample_submission_date": "",
+  "report_url": "TDNET文書",
+  "sample_file": "201704_9142_2017å¹´_3ææ_ï¼83_KBï¼_ea06835a"
+}

@@ -1,0 +1,60 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "doc_title_pattern": "月次営業速報に関するお知らせ",
+  "year_from_title_regex": "(\\d{4})年\\d{1,2}月度",
+  "month_from_title_regex": "\\d{4}年(\\d{1,2})月度",
+  "fields": [
+    {
+      "key": "全店 売上（前年同月比）",
+      "name": "全店 売上（前年同月比）",
+      "row_label_regex": "売上高\\s+全店\\s+\\d+\\.\\d+\\s+\\d+\\.\\d+\\s+(\\d+\\.\\d+)",
+      "value_type": "percentage"
+    },
+    {
+      "key": "全店 客数（前年同月比）",
+      "name": "全店 客数（前年同月比）",
+      "row_label_regex": "客数\\s+全店\\s+\\d+\\.\\d+\\s+\\d+\\.\\d+\\s+(\\d+\\.\\d+)",
+      "value_type": "percentage"
+    },
+    {
+      "key": "全店 客単価（前年同月比）",
+      "name": "全店 客単価（前年同月比）",
+      "row_label_regex": "客単価\\s+全店\\s+\\d+\\.\\d+\\s+\\d+\\.\\d+\\s+(\\d+\\.\\d+)",
+      "value_type": "percentage"
+    },
+    {
+      "key": "全店 店舗数",
+      "name": "全店 店舗数",
+      "row_label_regex": "計\\s+\\d+\\s+\\d+\\s+\\d+\\s+\\d+\\s+(\\d+)",
+      "value_type": "integer",
+      "notes": "店舗数合計の行から最後の数値を抽出"
+    },
+    {
+      "key": "既存店 売上（前年同月比）",
+      "name": "既存店 売上（前年同月比）",
+      "row_label_regex": "売上高\\s+既存店\\s+\\d+\\.\\d+\\s+\\d+\\.\\d+\\s+(\\d+\\.\\d+)",
+      "value_type": "percentage"
+    },
+    {
+      "key": "既存店 客数（前年同月比）",
+      "name": "既存店 客数（前年同月比）",
+      "row_label_regex": "客数\\s+既存店\\s+\\d+\\.\\d+\\s+\\d+\\.\\d+\\s+(\\d+\\.\\d+)",
+      "value_type": "percentage"
+    },
+    {
+      "key": "既存店 客単価（前年同月比）",
+      "name": "既存店 客単価（前年同月比）",
+      "row_label_regex": "客単価\\s+既存店\\s+\\d+\\.\\d+\\s+\\d+\\.\\d+\\s+(\\d+\\.\\d+)",
+      "value_type": "percentage"
+    }
+  ],
+  "extraction_notes": "月次実績前年同月比の表から、2月度の数値を抽出。店舗数は「◇店舗数」セクションの合計行から抽出。",
+  "ticker": "3549",
+  "company_name": "3549",
+  "created_at": "2026-03-17T18:39:59.805388+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2026年2月度 月次営業速報に関するお知らせ",
+  "sample_submission_date": "2026-03-05",
+  "fields_count": 7
+}

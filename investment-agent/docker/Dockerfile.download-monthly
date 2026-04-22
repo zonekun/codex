@@ -1,0 +1,25 @@
+# Playwright + Python ベースイメージ（Chromium 同梱）
+FROM mcr.microsoft.com/playwright/python:v1.50.0-jammy
+
+WORKDIR /app
+
+RUN pip install --no-cache-dir \
+    "playwright==1.50.0" \
+    playwright-stealth>=2.0 \
+    requests>=2.31 \
+    beautifulsoup4>=4.12 \
+    lxml>=5.0 \
+    curl-cffi>=0.6 \
+    google-cloud-storage>=2.16 \
+    google-auth>=2.0 \
+    pandas>=2.0
+
+# Google Chrome stable を追加インストール（bot検出回避用。Chromium より本物のChromeが通りやすいサイト対策）
+RUN playwright install chrome --with-deps || true
+
+COPY scripts/download_monthly.py scripts/download_monthly.py
+
+ENV PYTHONUTF8=1
+ENV PYTHONUNBUFFERED=1
+
+ENTRYPOINT ["python", "scripts/download_monthly.py"]

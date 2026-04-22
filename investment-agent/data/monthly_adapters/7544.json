@@ -1,0 +1,18 @@
+{
+  "ticker": "7544",
+  "company_name": "スリーエフ",
+  "updated_at": "2026-03-16",
+  "company_hp_url": "http://www.three-f.co.jp/",
+  "ir_page_url": "",
+  "type": "unknown",
+  "css_selector": null,
+  "link_text_pattern": null,
+  "link_href_pattern": null,
+  "table_selector": null,
+  "status": "needs_review",
+  "skip_reason": "url_not_found",
+  "note": "ダウンロードリンクなし(no_links)。URL: https://support.google.com/websearch",
+  "url_source": "migrated",
+  "last_checked": null,
+  "last_success": null
+}

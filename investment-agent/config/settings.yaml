@@ -1,0 +1,73 @@
+general:
+  timezone: Asia/Tokyo
+  log_level: INFO
+  env: development   # development / production
+
+scheduler:
+  source_monitor_interval_min: 30   # ソース監視間隔（分）
+  analysis_interval_min: 60         # 分析実行間隔（分）
+  order_time: "08:30"               # 毎日の発注時刻 (JST)
+
+datastore:
+  gcp_project_id: "gmailpj-357912"
+  bigquery_dataset: "STOCK"
+  gcs_bucket: "stock_data_1930932"
+  local_csv_dir: "data/csv"
+  cache_dir: "data/cache"
+  cache_ttl_hours: 24               # APIキャッシュ有効期限（時間）
+
+idea:
+  extraction_model: "claude-sonnet-4-20250514"
+  max_ideas_per_source: 10
+  dedup_similarity_threshold: 0.85
+
+analysis:
+  significance_level: 0.05
+  min_sample_size: 30
+  lookback_years: 5
+
+backtest:
+  initial_capital: 10000000     # 1000万円
+  commission_rate: 0.001        # 0.1%
+  slippage_bps: 5
+  min_sharpe_ratio: 1.0
+  min_win_rate: 0.50
+  max_drawdown: 0.20
+  walk_forward_splits: 5
+
+trading:
+  demo_period_days: 20          # デモトレード期間（営業日）
+  max_position_pct: 0.10        # 1銘柄最大比率
+  max_total_positions: 20       # 最大同時保有数
+  risk_free_rate: 0.001         # 無リスク金利
+
+knowledge:
+  base_dir: "docs/knowledges"
+  max_context_files: 10         # LLMに渡す最大知見ファイル数
+  categories:                   # 知見カテゴリ
+    - analysis                  # 分析知見
+    - data                      # データ情報・定期取得ジョブ
+    - tools                     # パッケージ・スクリプト使用方法
+    - api                       # 外部API仕様
+    - strategies                # 投資戦略知見
+
+nisshokin:
+  base_url: "https://www.jsf.co.jp/"
+  fetch_time: "18:30"           # 株価データ取得後に実行
+  request_interval_sec: 2       # リクエスト間隔（レートリミット対策）
+  storage_dir: "data/lake/nisshokin"
+
+cleansed_data:
+  output_dir: "data/cleansed"
+  indicators:                   # 事前クレンジングして保存する指標
+    - "pbr"                     # PBR（頻用するため事前計算）
+    - "per"
+    - "market_cap"
+    - "sector"
+
+reference_code:
+  dir: "reference_code"         # 参考分析コードのディレクトリ
+  auto_load: true               # 分析時に自動でLLMコンテキストに含める
+
+skills:
+  dir: "skills"                 # Claude Codeスキル定義ディレクトリ

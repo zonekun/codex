@@ -1,0 +1,13 @@
+{
+  "ticker": "8725",
+  "company_name": "MS&ADインシュアランスグループHD",
+  "ir_page_url": "https://www.ms-ad-hd.com/ja/ir/financial/monthly.html",
+  "updated_at": "2026-04-12T10:25:53.340562+09:00",
+  "last_checked": "2026-04-12",
+  "status": "active",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": "月次",
+  "link_href_pattern": "/ja/ir/financial/monthly/main.*\\.(xls|xlsx)",
+  "note": "月次PDFリンク22件検出 best=https://www.ms-ad-hd.com/ja/ir/financial/monthly/main/01/teaserItems1/00/linkList/0/link/2025_monthlydata_jp.xlsx"
+}

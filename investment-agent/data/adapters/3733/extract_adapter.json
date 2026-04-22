@@ -1,0 +1,35 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "doc_title_pattern": "(\\d{4})年(\\d{1,2})月期\\s+(\\d{1,2})月度月次売上高等に関するお知らせ",
+  "year_from_title_regex": "^(\\d{4})年",
+  "month_from_title_regex": "(\\d{1,2})月度月次売上高等に関するお知らせ",
+  "fields": [
+    {
+      "key": "単体 売上（百万円）",
+      "name": "単体 売上（百万円）",
+      "row_label_regex": "売上高\\s+\\(百万円\\s*\\)\\s+[\\d,]+\\s+[\\d,]+\\s+([\\d,]+)",
+      "value_type": "integer",
+      "group": 1,
+      "use_last_number": false,
+      "notes": "最新月の売上高（百万円）を抽出。カンマは自動的に除去されます。"
+    },
+    {
+      "key": "単体 売上（前年同月比）",
+      "name": "単体 売上（前年同月比）",
+      "row_label_regex": "前年同月比\\s+\\(%\\s*\\)\\s+[\\d.]+\\s+[\\d.]+\\s+([\\d.]+)",
+      "value_type": "percentage",
+      "group": 1,
+      "use_last_number": false,
+      "notes": "最新月の前年同月比（%）を抽出。"
+    }
+  ],
+  "extraction_notes": "文書タイトルから報告対象年と月を抽出し、表データから該当月の数値を特定しています。表の月順は11月、12月、1月と仮定し、1月度の値を取得しています。",
+  "ticker": "3733",
+  "company_name": "3733",
+  "created_at": "2026-03-28T16:40:58.749082+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2026年10月期　1月度月次売上高等に関するお知らせ",
+  "sample_submission_date": "2026-02-17",
+  "fields_count": 2
+}

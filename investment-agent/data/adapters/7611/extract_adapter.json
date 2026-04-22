@@ -1,0 +1,59 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "doc_title_pattern": "^(\\d{4}年\\d{1,2}月期\\d{1,2}月度売上高速報についてのお知らせ)$",
+  "year_from_title_regex": "(\\d{4})年\\d{1,2}月期",
+  "month_from_title_regex": "\\d{4}年\\d{1,2}月期(\\d{1,2})月度",
+  "fields": [
+    {
+      "key": "全店 売上（前年同月比）",
+      "name": "全店 売上（前年同月比）",
+      "row_label_regex": "^売\\s*上\\s*高\\s*前期比\\s*％",
+      "value_type": "percentage"
+    },
+    {
+      "key": "全店 客数（前年同月比）",
+      "name": "全店 客数（前年同月比）",
+      "row_label_regex": "^客\\s*数\\s*前期比\\s*％",
+      "value_type": "percentage"
+    },
+    {
+      "key": "全店 客単価（前年同月比）",
+      "name": "全店 客単価（前年同月比）",
+      "row_label_regex": "^客\\s*単\\s*価\\s*前期比\\s*％",
+      "value_type": "percentage"
+    },
+    {
+      "key": "全店 店舗数",
+      "name": "全店 店舗数",
+      "row_label_regex": "^当期",
+      "value_type": "integer"
+    },
+    {
+      "key": "既存店 売上（前年同月比）",
+      "name": "既存店 売上（前年同月比）",
+      "row_label_regex": "^売\\s*上\\s*高\\s*前期比\\s*％",
+      "value_type": "percentage"
+    },
+    {
+      "key": "既存店 客数（前年同月比）",
+      "name": "既存店 客数（前年同月比）",
+      "row_label_regex": "^客\\s*数\\s*前期比\\s*％",
+      "value_type": "percentage"
+    },
+    {
+      "key": "既存店 客単価（前年同月比）",
+      "name": "既存店 客単価（前年同月比）",
+      "row_label_regex": "^客\\s*単\\s*価\\s*前期比\\s*％",
+      "value_type": "percentage"
+    }
+  ],
+  "extraction_notes": "「全店」と「既存店」の各メトリクス（売上、客数、客単価、店舗数）のrow_label_regexは、それぞれのセクション内で同じパターンを持つため、抽出システムは「【全店の対前期比較】」や「【既存店の対前期比較】」といったセクション見出しを考慮して、適切なテーブルまたは行から値を抽出する必要があります。特に店舗数については、「月末店舗数」という見出しの下にある「当期」の行を対象とします。",
+  "ticker": "7611",
+  "company_name": "ハイデイ日高",
+  "created_at": "2026-03-24T08:14:15.788846+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2026年２月期２月度売上高速報についてのお知らせ",
+  "sample_submission_date": "2026-03-04",
+  "fields_count": 7
+}

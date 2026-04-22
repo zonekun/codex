@@ -1,0 +1,66 @@
+{
+  "source": "download",
+  "format": "xls",
+  "sheet_name": "単月ベース",
+  "label_col_index": 1,
+  "month_row_index": 3,
+  "data_start_row": 4,
+  "fields": [
+    {
+      "key": "マリン（前年同月比）",
+      "name": "マリン（前年同月比）",
+      "row_label_regex": "マリン",
+      "value_type": "percentage"
+    },
+    {
+      "key": "一般計 保険料（百万円）",
+      "name": "一般計 保険料（百万円）",
+      "row_label_regex": "一般\\s*計",
+      "value_type": "percentage",
+      "notes": "DataFrameのプレビューでは「一般計」の行はパーセント値であり、「保険料（百万円）」の形式のデータは見当たりません。プレビューの「一般計」行をパーセント値として抽出します。"
+    },
+    {
+      "key": "一般計 売上（前年同月比）",
+      "name": "一般計 売上（前年同月比）",
+      "row_label_regex": "一般\\s*計",
+      "value_type": "percentage",
+      "notes": "DataFrameのプレビューでは「一般計」の行は「保険料」の増減率と推測されます。「売上」という明示的なラベルはありませんが、プレビューの「一般計」行をパーセント値として抽出します。"
+    },
+    {
+      "key": "新種（傷害）（前年同月比）",
+      "name": "新種（傷害）（前年同月比）",
+      "row_label_regex": "新\\s*種\\s*（傷害）",
+      "value_type": "percentage"
+    },
+    {
+      "key": "新種（除傷害）（前年同月比）",
+      "name": "新種（除傷害）（前年同月比）",
+      "row_label_regex": "新\\s*種\\s*（除傷害）",
+      "value_type": "percentage"
+    },
+    {
+      "key": "火災（前年同月比）",
+      "name": "火災（前年同月比）",
+      "row_label_regex": "火\\s*災",
+      "value_type": "percentage"
+    },
+    {
+      "key": "自動車（前年同月比）",
+      "name": "自動車（前年同月比）",
+      "row_label_regex": "自\\s*動\\s*車",
+      "value_type": "percentage"
+    },
+    {
+      "key": "自賠責（前年同月比）",
+      "name": "自賠責（前年同月比）",
+      "row_label_regex": "自\\s*賠\\s*責",
+      "value_type": "percentage"
+    }
+  ],
+  "extraction_notes": "「一般計 保険料（百万円）」および「一般計 売上（前年同月比）」については、DataFrameプレビューの「一般計」行がパーセント値であるため、両者とも同じ行からパーセント値として抽出するルールを定義しています。本来の単位や内容と異なる可能性があります。",
+  "ticker": "8766",
+  "company_name": "8766",
+  "created_at": "2026-04-04T01:06:09.325189+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_file": "000000_8766_2016å¹´åº¦EXCEL_1afd58f3.xls"
+}

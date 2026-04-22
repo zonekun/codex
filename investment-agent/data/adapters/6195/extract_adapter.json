@@ -1,0 +1,46 @@
+{
+  "source": "pdf",
+  "format": "pdf",
+  "doc_title_pattern": "^(\\d{4})(\\d{2})_(\\d{4})_エネルギー事業の(\\d{1,2})月月次概況（速報）に関するお知らせ",
+  "year_from_title_regex": "^(\\d{4})\\d{2}",
+  "month_from_title_regex": "エネルギー事業の(\\d{1,2})月月次概況",
+  "fields": [
+    {
+      "key": "平均電力市場調達単価予想（円/kWh）",
+      "name": "平均電力市場調達単価予想（円/kWh）",
+      "row_label_regex": "2021年10月\\s+([\\d.-]+)\\s+([\\d.-]+)\\s+([\\d.-]+)\\s+約?([\\d.-]+)",
+      "value_type": "float",
+      "group": 1
+    },
+    {
+      "key": "平均電力市場調達単価実績（円/kWh）",
+      "name": "平均電力市場調達単価実績（円/kWh）",
+      "row_label_regex": "2021年10月\\s+([\\d.-]+)\\s+([\\d.-]+)\\s+([\\d.-]+)\\s+約?([\\d.-]+)",
+      "value_type": "float",
+      "group": 2
+    },
+    {
+      "key": "平均電力販売単価（円/kWh）",
+      "name": "平均電力販売単価（円/kWh）",
+      "row_label_regex": "2021年10月\\s+([\\d.-]+)\\s+([\\d.-]+)\\s+([\\d.-]+)\\s+約?([\\d.-]+)",
+      "value_type": "float",
+      "group": 3
+    },
+    {
+      "key": "概算電力供給量（億kWh）",
+      "name": "概算電力供給量（億kWh）",
+      "row_label_regex": "2021年10月\\s+([\\d.-]+)\\s+([\\d.-]+)\\s+([\\d.-]+)\\s+約?([\\d.-]+)",
+      "value_type": "float",
+      "group": 4
+    }
+  ],
+  "extraction_notes": "row_label_regexは、文書タイトルから抽出される年と月（例: 2021年10月）をターゲットとしています。表の該当行全体をキャプチャし、groupで各列の値を指定しています。数値にはハイフン（-）や「約」が付く場合も考慮しています。",
+  "ticker": "6195",
+  "company_name": "6195",
+  "created_at": "2026-04-04T01:31:24.027793+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "202111_6195_エネルギー事業の10月月次概況（速報）に関するお知らせ_3d314bfb",
+  "sample_submission_date": "",
+  "report_url": "TDNET文書",
+  "sample_file": "202111_6195_エネルギー事業の10月月次概況（速報）に関するお知らせ_3d314bfb"
+}

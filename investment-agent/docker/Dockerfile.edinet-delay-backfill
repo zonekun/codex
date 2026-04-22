@@ -1,0 +1,15 @@
+FROM python:3.12-slim
+
+WORKDIR /app
+
+RUN pip install --no-cache-dir \
+    requests>=2.31 \
+    google-cloud-storage>=2.16
+
+COPY scripts/edinet_delay_backfill.py scripts/edinet_delay_backfill.py
+COPY scripts/notify.py scripts/notify.py
+
+ENV PYTHONUTF8=1
+ENV PYTHONUNBUFFERED=1
+
+ENTRYPOINT ["python", "scripts/edinet_delay_backfill.py"]

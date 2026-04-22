@@ -1,0 +1,13 @@
+{
+  "ticker": "3222",
+  "company_name": "ユナイテッド・スーパーマーケット・ホールディングス",
+  "ir_page_url": "https://www.usmh.co.jp/",
+  "updated_at": "2026-04-12T10:19:51.620830+09:00",
+  "last_checked": "2026-04-12",
+  "status": "active",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": null,
+  "link_href_pattern": null,
+  "note": "月次ページ発見（サブページ）: https://www.usmh.co.jp/"
+}

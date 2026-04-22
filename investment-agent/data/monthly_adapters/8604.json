@@ -1,0 +1,13 @@
+{
+  "ticker": "8604",
+  "company_name": "野村ホールディングス",
+  "ir_page_url": "https://www.nomuraholdings.com/en/index.html",
+  "updated_at": "2026-04-12T10:25:20.680999+09:00",
+  "last_checked": "2026-04-12",
+  "status": "active",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": null,
+  "link_href_pattern": null,
+  "note": "月次ページ発見（サブページ）: https://www.nomuraholdings.com/en/index.html"
+}

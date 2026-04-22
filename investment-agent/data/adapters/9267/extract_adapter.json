@@ -1,0 +1,47 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "doc_title_pattern": "(\\d{4})年(\\d{1,2})月期 (\\d{1,2})月度月次営業速報",
+  "year_from_title_regex": "^(\\d{4})年",
+  "month_from_title_regex": "(\\d{1,2})月度月次営業速報$",
+  "fields": [
+    {
+      "key": "全社 売上（前年同月比）",
+      "name": "全社 売上（前年同月比）",
+      "row_label_regex": "売上高前年[比⽐]（全店）|Net sales % change \\(all stores\\)",
+      "value_type": "percentage"
+    },
+    {
+      "key": "全店 店舗数",
+      "name": "全店 店舗数",
+      "row_label_regex": "総店舗数|Total stores",
+      "value_type": "integer"
+    },
+    {
+      "key": "既存店 売上（前年同月比）",
+      "name": "既存店 売上（前年同月比）",
+      "row_label_regex": "売上高前年[比⽐]（既存店）|Net sales % change \\(existing stores\\)",
+      "value_type": "percentage"
+    },
+    {
+      "key": "既存店 客数（前年同月比）",
+      "name": "既存店 客数（前年同月比）",
+      "row_label_regex": "客数前年[比⽐]（既存店）|Customer traffic % change \\(existing stores\\)",
+      "value_type": "percentage"
+    },
+    {
+      "key": "既存店 客単価（前年同月比）",
+      "name": "既存店 客単価（前年同月比）",
+      "row_label_regex": "客単価前年[比⽐]（既存店）|Spending per customer % change \\(existing stores\\)",
+      "value_type": "percentage"
+    }
+  ],
+  "extraction_notes": "OCRの揺らぎに対応するため、一部の漢字（比）は正規表現で複数の文字（[比⽐]）を許容しています。また、日本語と英語のラベル両方に対応しています。",
+  "ticker": "9267",
+  "company_name": "9267",
+  "created_at": "2026-03-17T18:32:10.359227+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2026年6月期 2月度月次営業速報",
+  "sample_submission_date": "2026-02-27",
+  "fields_count": 5
+}

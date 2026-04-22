@@ -1,0 +1,47 @@
+{
+  "_excluded": true,
+  "_excluded_at": "2026-04-18T20:30:00+09:00",
+  "_excluded_reason": "月次開示管理対象外。内容がいちご太陽光・風力発電所の月次発電実績のみで、いちご（不動産・再エネの総合企業）事業のほんの一部に過ぎず、株価要因として追う意味がない。論理削除（ファイル・records は残す）。",
+  "source": "tdnet",
+  "format": "text",
+  "extraction_method": "gemini",
+  "doc_title_pattern": ".*月次発電実績(\\d{4}年\\d{1,2}月)のお知らせ",
+  "year_from_title_regex": "(?P<year>\\d{4})年",
+  "month_from_title_regex": "(?P<month>\\d{1,2})月",
+  "fields": [
+    {
+      "key": "発電量（kWh)",
+      "name": "発電量（kWh)",
+      "description": "「発電量（ kWh） CO2削減量（ kg-CO2）」というヘッダーを持つ表の、「合計 (A)+(B)」列にある発電量（kWh）。",
+      "value_type": "integer",
+      "_manual_description": true
+    },
+    {
+      "key": "発電量（前年同月比）",
+      "name": "発電量（前年同月比）",
+      "description": "「【月次発電量実績】＜当期年度＞」表の「前年同月比」列、対象月行（タイトルに記載された月）の値。値は「+8.8%」「-1.6%」のような正負記号付きパーセント表記で記載されている。**そのまま 8.8 や -1.6 のように返す（100で割って小数化しない、%記号と+記号は外して数値のみ）**。yoy_offset=100でBC側水準値（例: 108.8）と比較される。",
+      "value_type": "percentage",
+      "yoy_offset": 100,
+      "_manual_description": true
+    },
+    {
+      "key": "CO2削減量（kg-CO2）",
+      "name": "CO2削減量（kg-CO2）",
+      "description": "「発電量（ kWh） CO2削減量（ kg-CO2）」というヘッダーを持つ表の、「CO2削減量（ kg-CO2）（※2）」の「合計 (C)+(D)」列にあるCO2削減量（kg-CO2）。",
+      "value_type": "integer",
+      "_manual_description": true
+    }
+  ],
+  "ticker": "2337",
+  "company_name": "2337",
+  "created_at": "2026-03-29T18:34:35.240649+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "いちご太陽光および風力発電所 月次発電実績（2026年2月）のお知らせ",
+  "sample_submission_date": "2026-03-04",
+  "fields_count": 3,
+  "manual_override": true,
+  "p3_fix_at": "2026-04-18T15:47:34+09:00",
+  "p2_regression_fix_at": "2026-04-18T18:41:50+09:00",
+  "_doc_title_pattern_fixed_at": "2026-04-18T23:24:00.332286+09:00",
+  "_doc_title_pattern_fixed_from": ".*月次発電実績（\\d{4}年\\d{1,2}月）のお知らせ"
+}

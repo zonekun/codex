@@ -1,0 +1,49 @@
+steps:
+  # Step 1: Ollama インストール + Qwen2.5 7B を /workspace に Pull
+  - name: 'ubuntu:22.04'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        set -e
+
+        apt-get update -q && apt-get install -y -q curl zstd
+        curl -fsSL https://ollama.ai/install.sh | sh
+
+        mkdir -p /workspace/.ollama/models
+        export OLLAMA_MODELS=/workspace/.ollama/models
+        export OLLAMA_HOST=127.0.0.1:11434
+
+        ollama serve &
+        OLLAMA_PID=$$!
+
+        for i in $$(seq 1 30); do
+          if curl -sf http://127.0.0.1:11434/api/tags > /dev/null 2>&1; then
+            echo "Ollama ready"
+            break
+          fi
+          sleep 3
+        done
+
+        OLLAMA_MODELS=/workspace/.ollama/models ollama pull qwen2.5:7b
+        kill $$OLLAMA_PID || true
+        echo "Model pull complete. Files:"
+        ls /workspace/.ollama/models/
+
+  # Step 2: /workspace のモデルファイルを GCS にアップロード（cloud-sdk で gcloud 使用）
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        set -e
+        echo "Uploading to GCS..."
+        gcloud storage rsync -r /workspace/.ollama/models/ gs://stock_data_1930932/test/ollama-models/models/
+        echo "=== Setup complete: gs://stock_data_1930932/test/ollama-models/models/ ==="
+
+# Qwen2.5 7B のダウンロード・アップロードで 60 分程度かかる
+timeout: 3600s
+
+options:
+  machineType: 'E2_HIGHCPU_8'
+  diskSizeGb: 20

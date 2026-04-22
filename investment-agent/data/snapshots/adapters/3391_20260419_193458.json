@@ -1,0 +1,77 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "extraction_method": "gemini",
+  "doc_title_pattern": "(\\d{4})年(\\d{1,2})月度 月次営業速報に関するお知らせ",
+  "year_from_title_regex": "(\\d{4})年",
+  "month_from_title_regex": "(\\d{1,2})月",
+  "fields": [
+    {
+      "key": "全店 売上（前年同月比）",
+      "name": "全店 売上（前年同月比）",
+      "description": "「連結月次前年対比伸び率 2026年２月期」表の「全店 単月売上」行、1月（１月）列にある前年同月比（%）の値。",
+      "value_type": "percentage",
+      "yoy_offset": 100.0
+    },
+    {
+      "key": "全店 客数（前年同月比）",
+      "name": "全店 客数（前年同月比）",
+      "description": "「連結月次前年対比伸び率 2026年２月期」表の「全店 客数」行、1月（１月）列にある前年同月比（%）の値。",
+      "value_type": "percentage",
+      "yoy_offset": 100,
+      "_manual_yoy_offset": true
+    },
+    {
+      "key": "全店 客単価（前年同月比）",
+      "name": "全店 客単価（前年同月比）",
+      "description": "「連結月次前年対比伸び率 2026年２月期」表の「全店 客単価」行、1月（１月）列にある前年同月比（%）の値。",
+      "value_type": "percentage",
+      "yoy_offset": 100,
+      "_manual_yoy_offset": true
+    },
+    {
+      "key": "全店 店舗数",
+      "name": "全店 店舗数",
+      "description": "「店舗 状況」セクションにある、12月が「5,680」、1月が「5,681」と記載されている「店舗数」行の、1月（１月）列にある全店店舗数（店舗）の値。この値は統合後のツルハグループ全体の店舗数を示す。",
+      "value_type": "integer"
+    },
+    {
+      "key": "既存店 売上（前年同月比）",
+      "name": "既存店 売上（前年同月比）",
+      "description": "「連結月次前年対比伸び率 2026年２月期」表の「既存店 単月売上」行、1月（１月）列にある前年同月比（%）の値。",
+      "value_type": "percentage",
+      "yoy_offset": 100,
+      "_manual_yoy_offset": true
+    },
+    {
+      "key": "既存店 客数（前年同月比）",
+      "name": "既存店 客数（前年同月比）",
+      "description": "「連結月次前年対比伸び率 2026年２月期」表の「既存店 客数」行、1月（１月）列にある前年同月比（%）の値。",
+      "value_type": "percentage",
+      "yoy_offset": 100,
+      "_manual_yoy_offset": true
+    },
+    {
+      "key": "既存店 客単価（前年同月比）",
+      "name": "既存店 客単価（前年同月比）",
+      "description": "「連結月次前年対比伸び率 2026年２月期」表の「既存店 客単価」行、1月（１月）列にある前年同月比（%）の値。",
+      "value_type": "percentage",
+      "_manual_yoy_offset": true,
+      "bc_key": "既存店 客単価（前年同月比）",
+      "yoy_offset": 100.0
+    }
+  ],
+  "ticker": "3391",
+  "company_name": "3391",
+  "created_at": "2026-03-29T18:37:57.997555+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2026年１月度 月次営業速報に関するお知らせ",
+  "sample_submission_date": "2026-02-12",
+  "fields_count": 7,
+  "manual_override": true,
+  "manual_override_note": "NG96調査結果に基づくadapter修正（yoy_offset/unit_scale/regex等）",
+  "manual_override_at": "2026-04-08T21:05:22.002144+09:00",
+  "p1_fix_at": "2026-04-18T15:46:51+09:00",
+  "_reverse_mapping_applied_at": "2026-04-19T18:57:10.890686+09:00",
+  "_3391_kyakutanka_undo_note": "2026-04-19 undo: 既存店客単価 vs 全店客数 の偶然一致マッピングを撤回"
+}

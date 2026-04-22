@@ -1,0 +1,46 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "extraction_method": "gemini",
+  "doc_title_pattern": "(?P<year>\\d{4})年\\d{2}月期月次概況((?P<month>\\d+)月度速報)のお知らせ",
+  "year_from_title_regex": "(?P<year>\\d{4})年",
+  "month_from_title_regex": "（(?P<month>\\d+)月度速報）",
+  "fields": [
+    {
+      "key": "アセットマネジメント 新規プロジェクト件数",
+      "name": "アセットマネジメント 新規プロジェクト件数",
+      "description": "アセットマネジメント事業の「新規プロジェクト件数」の表において、2026年12月期の実績として記載されているの件数（件）。",
+      "value_type": "integer",
+      "_manual_description": true
+    },
+    {
+      "key": "不動産 管理戸数（戸）",
+      "name": "不動産 管理戸数（戸）",
+      "description": "プロパティマネジメント事業の「管理戸数 累計」の表において、2026年の実績として記載されているの管理戸数（戸）。",
+      "value_type": "integer",
+      "_manual_description": true
+    },
+    {
+      "key": "ガス設備 管理戸数（戸）",
+      "name": "ガス設備 管理戸数（戸）",
+      "description": "エネルギー事業の「ガス設備管理戸数累計」の表において、2026年の実績として記載されているの管理戸数（戸）。",
+      "value_type": "integer",
+      "_manual_description": true
+    }
+  ],
+  "extraction_notes": "文書タイトルから対象年（2026年）と対象月（2月）を特定し、各項目に対応する表から該当する月の速報値を取得する。速報値である旨の注記があるため、その点も考慮する。",
+  "ticker": "2970",
+  "company_name": "2970",
+  "created_at": "2026-03-29T18:38:44.649103+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2026年12月期月次概況（２月度速報）のお知らせ",
+  "sample_submission_date": "2026-03-04",
+  "fields_count": 3,
+  "manual_override": true,
+  "manual_override_note": "NG62調査に基づくcustom_prompt/yoy_offset/overwrite_past_months修正",
+  "manual_override_at": "2026-04-09T12:22:17.958273+09:00",
+  "custom_prompt": "テーブルの列ヘッダー（月）を正確に読み、対象月と一致する列から値を取得してください。隣の列を読まないでください。",
+  "desc_rewrite_at": "2026-04-17T23:15:49+09:00",
+  "_doc_title_pattern_fixed_at": "2026-04-18T23:24:02.521629+09:00",
+  "_doc_title_pattern_fixed_from": "(?P<year>\\d{4})年\\d{2}月期月次概況（(?P<month>\\d+)月度速報）のお知らせ"
+}

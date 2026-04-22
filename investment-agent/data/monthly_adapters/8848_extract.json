@@ -1,0 +1,51 @@
+{
+  "source": "download",
+  "format": "xls",
+  "label_col_index": 1,
+  "month_row_index": 2,
+  "data_start_row": 4,
+  "fields": [
+    {
+      "key": "セキュリティシステム設置戸数 純増（戸）",
+      "name": "セキュリティシステム設置戸数 純増（戸）",
+      "row_label_regex": "セキュリティシステム設置戸数 純増",
+      "value_type": "integer"
+    },
+    {
+      "key": "入居率（%）",
+      "name": "入居率（%）",
+      "row_label_regex": "入居率",
+      "value_type": "percentage"
+    },
+    {
+      "key": "管理戸数 純増（戸）",
+      "name": "管理戸数 純増（戸）",
+      "row_label_regex": "管理戸数 純増",
+      "value_type": "integer"
+    },
+    {
+      "key": "賃貸WEB契約件数（戸）",
+      "name": "賃貸WEB契約件数（戸）",
+      "row_label_regex": "賃貸WEB契約件数",
+      "value_type": "integer"
+    },
+    {
+      "key": "賃貸店舗（店）",
+      "name": "賃貸店舗（店）",
+      "row_label_regex": "賃貸店舗",
+      "value_type": "integer"
+    },
+    {
+      "key": "防犯カメラ設置棟数 純増（棟）",
+      "name": "防犯カメラ設置棟数 純増（棟）",
+      "row_label_regex": "防犯カメラ設置棟数 純増",
+      "value_type": "integer"
+    }
+  ],
+  "extraction_notes": "The requested metrics were not found in the provided DataFrame preview. The 'row_label_regex' values are assumed based on the metric names, and 'sheet_name' is omitted as the metrics are likely on a different sheet within the same file, but the general data structure (label_col_index, month_row_index, data_start_row) is assumed to be consistent with the preview.",
+  "ticker": "8848",
+  "company_name": "8848",
+  "created_at": "2026-04-05T10:22:21.216538+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_file": "000000_8848_月次データ_dc87bacf.xls"
+}

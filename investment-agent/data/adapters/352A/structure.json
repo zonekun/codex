@@ -1,0 +1,14 @@
+{
+  "ticker": "352A",
+  "company_name": "352A",
+  "metrics": [
+    {
+      "name": "ピラティスK 店舗数"
+    },
+    {
+      "name": "全店 店舗数"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

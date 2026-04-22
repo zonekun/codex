@@ -1,0 +1,46 @@
+{
+  "source": "download",
+  "format": "xlsx",
+  "sheet_name": "月次データ",
+  "label_col_index": 0,
+  "month_row_index": 1,
+  "data_start_row": 2,
+  "fields": [
+    {
+      "key": "国内 生産台数（前年同月比）",
+      "name": "国内 生産台数（前年同月比）",
+      "row_label_regex": "国内 生産台数（前年同月比）",
+      "value_type": "percentage"
+    },
+    {
+      "key": "国内 販売台数（前年同月比）",
+      "name": "国内 販売台数（前年同月比）",
+      "row_label_regex": "国内 販売台数（前年同月比）",
+      "value_type": "percentage"
+    },
+    {
+      "key": "海外 生産台数（前年同月比）",
+      "name": "海外 生産台数（前年同月比）",
+      "row_label_regex": "海外 生産台数（前年同月比）",
+      "value_type": "percentage"
+    },
+    {
+      "key": "総生産台数（前年同月比）",
+      "name": "総生産台数（前年同月比）",
+      "row_label_regex": "総生産台数（前年同月比）",
+      "value_type": "percentage"
+    },
+    {
+      "key": "輸出 出荷台数（前年同月比）",
+      "name": "輸出 出荷台数（前年同月比）",
+      "row_label_regex": "輸出 出荷台数（前年同月比）",
+      "value_type": "percentage"
+    }
+  ],
+  "extraction_notes": "DataFrameプレビューが注意シートのみのため、データシートの構造（シート名、ラベル列、月行、データ開始行）は一般的なExcel月次開示データの構造を仮定しています。実際のデータシートに合わせて調整が必要になる場合があります。",
+  "ticker": "7211",
+  "company_name": "7211",
+  "created_at": "2026-04-05T10:01:15.579217+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_file": "000000_7211_こちらのエクセルファイル_08edd029.xlsx"
+}

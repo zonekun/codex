@@ -1,0 +1,20 @@
+# 2023 batch#1 ai-finalize 既存 execution を resume 監視（tdnet-ai-finalize-fqkzj）
+# parse バグで監視失敗したが job は走り出しているので、既存 execution を引き継ぐ
+
+name: 2023_batch01_finalize_resume
+
+loads:
+  - job: tdnet-ai-finalize
+    region: us-west1
+    env:
+      RUN_ID: "68eea86d-2446-4680-b9be-a01cc512847c"
+
+workflows: []
+
+options:
+  parallel_loads: 1
+  poll_interval_s: 180
+  notify_on_start: false
+  resume_execs:
+    loads:
+      - tdnet-ai-finalize-fqkzj

@@ -1,0 +1,16 @@
+{
+  "source": "non-tdnet(pdf)",
+  "format": "pdf",
+  "fields": [],
+  "ticker": "8306",
+  "company_name": "8306",
+  "created_at": "2026-04-05T10:18:54.551928+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "000000_8306_æ±ºç®ãã¤ã©ã¤ãï¼æ³¨1ï¼ï¼PDF_1._e5f015f8",
+  "sample_submission_date": "",
+  "report_url": "TDNET文書",
+  "sample_file": "000000_8306_æ±ºç®ãã¤ã©ã¤ãï¼æ³¨1ï¼ï¼PDF_1._e5f015f8",
+  "_source_renamed_at": "2026-04-18T16:36:34+09:00",
+  "_source_renamed_from": "pdf",
+  "manual_override": true
+}

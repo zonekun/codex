@@ -1,0 +1,93 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "extraction_method": "regex",
+  "fiscal_year_start_month": 9,
+  "doc_title_pattern": "売上速報についてのお知らせ",
+  "year_from_title_regex": "(\\d{4})年",
+  "month_from_title_regex": "(\\d{1,2})月度",
+  "column_map": {
+    "9": 1,
+    "10": 2,
+    "11": 3,
+    "12": 4,
+    "1": 5,
+    "2": 6,
+    "3": 8,
+    "4": 9,
+    "5": 10,
+    "6": 11,
+    "7": 12,
+    "8": 13
+  },
+  "fields": [
+    {
+      "key": "全店 売上（前年同月比）",
+      "bc_key": "全店 売上（前年同月比）",
+      "value_type": "percentage",
+      "row_label_regex": "売上高((?:\\s+[\\d\\.]+){1,14})",
+      "group": "{col_idx}",
+      "match_occurrence": 1,
+      "description": "PDF 1 表目(全店) の '売上高' 行、対象月列。"
+    },
+    {
+      "key": "全店 客数（前年同月比）",
+      "bc_key": "全店 客数（前年同月比）",
+      "value_type": "percentage",
+      "row_label_regex": "客数((?:\\s+[\\d\\.]+){1,14})",
+      "group": "{col_idx}",
+      "match_occurrence": 1,
+      "description": "PDF 1 表目(全店) の '客数' 行、対象月列。"
+    },
+    {
+      "key": "全店 客単価（前年同月比）",
+      "bc_key": "全店 客単価（前年同月比）",
+      "value_type": "percentage",
+      "row_label_regex": "客単価((?:\\s+[\\d\\.]+){1,14})",
+      "group": "{col_idx}",
+      "match_occurrence": 1,
+      "description": "PDF 1 表目(全店) の '客単価' 行、対象月列。"
+    },
+    {
+      "key": "全店 店舗数",
+      "bc_key": "全店 店舗数",
+      "value_type": "integer",
+      "row_label_regex": "店舗数\\(店\\)((?:\\s+(?:\\d[\\d,]*|-)){1,14})",
+      "group": "{col_idx}",
+      "match_occurrence": 1,
+      "description": "PDF 1 表目(全店) の '店舗数(店)' 行、対象月列。"
+    },
+    {
+      "key": "既存店 売上（前年同月比）",
+      "bc_key": "既存店 売上（前年同月比）",
+      "value_type": "percentage",
+      "row_label_regex": "売上高((?:\\s+[\\d\\.]+){1,14})",
+      "group": "{col_idx}",
+      "match_occurrence": 2,
+      "description": "PDF 2 表目(既存店) の '売上高' 行、対象月列。"
+    },
+    {
+      "key": "既存店 客数（前年同月比）",
+      "bc_key": "既存店 客数（前年同月比）",
+      "value_type": "percentage",
+      "row_label_regex": "客数((?:\\s+[\\d\\.]+){1,14})",
+      "group": "{col_idx}",
+      "match_occurrence": 2,
+      "description": "PDF 2 表目(既存店) の '客数' 行、対象月列。"
+    },
+    {
+      "key": "既存店 客単価（前年同月比）",
+      "bc_key": "既存店 客単価（前年同月比）",
+      "value_type": "percentage",
+      "row_label_regex": "客単価((?:\\s+[\\d\\.]+){1,14})",
+      "group": "{col_idx}",
+      "match_occurrence": 2,
+      "description": "PDF 2 表目(既存店) の '客単価' 行、対象月列。"
+    }
+  ],
+  "ticker": "428A",
+  "company_name": "428A",
+  "manual_override": true,
+  "regex_redesign_at": "2026-04-19T00:24:25.976967+09:00",
+  "regex_redesign_note": "gemini → PDF regex へ手動再設計。fiscal_year_start_month=9 + column_map で上期計を物理列7としてスキップ。1表目=全店 (match_occurrence=1)、2表目=既存店 (match_occurrence=2)。"
+}

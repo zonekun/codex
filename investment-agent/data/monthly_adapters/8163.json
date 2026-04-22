@@ -1,0 +1,13 @@
+{
+  "ticker": "8163",
+  "company_name": "ＳＲＳホールディングス",
+  "ir_page_url": "https://srs-holdings.co.jp/",
+  "updated_at": "2026-04-12T10:23:35.911016+09:00",
+  "last_checked": "2026-04-12",
+  "status": "active",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": null,
+  "link_href_pattern": null,
+  "note": "月次ページ発見（サブページ）: https://srs-holdings.co.jp/"
+}

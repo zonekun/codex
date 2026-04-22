@@ -1,0 +1,32 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "extraction_method": "gemini",
+  "fields": [
+    {
+      "key": "東京デリカ 全社 売上（前年同月比）",
+      "name": "東京デリカ 全社 売上（前年同月比）",
+      "description": "「商品売上」の表において、「全社 前期比(％)」の行にある、対象月の数値（パーセント）。",
+      "value_type": "percentage"
+    },
+    {
+      "key": "東京デリカ 全店 店舗数",
+      "name": "東京デリカ 全店 店舗数",
+      "description": "「店舗数」の表において、「月末」の行にある、対象月の店舗数（整数）。",
+      "value_type": "integer"
+    },
+    {
+      "key": "東京デリカ 既存店 売上（前年同月比）",
+      "name": "東京デリカ 既存店 売上（前年同月比）",
+      "description": "「商品売上」の表において、「既存 店 前期比(％)」の行にある、対象月の数値（パーセント）。",
+      "value_type": "percentage"
+    }
+  ],
+  "ticker": "9990",
+  "company_name": "9990",
+  "created_at": "2026-03-29T18:43:01.895146+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "(株)東京デリカの月次売上情報等のお知らせ",
+  "sample_submission_date": "2026-03-03",
+  "fields_count": 3
+}

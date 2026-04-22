@@ -1,0 +1,27 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "extraction_method": "gemini",
+  "fields": [
+    {
+      "key": "バロー 全店 売上（前年同月比）",
+      "name": "バロー 全店 売上（前年同月比）",
+      "description": "「a．スーパーマーケット（SM） ㈱バロー」の表の「売上高」行、「2月」列にある数値。前年同月比（%）。",
+      "value_type": "percentage",
+      "yoy_offset": 100
+    },
+    {
+      "key": "グループ 店舗数",
+      "name": "グループ 店舗数",
+      "description": "「2．出退店と店舗数」のセクションにある「グループ総計」の店舗数。単位は店舗。",
+      "value_type": "integer"
+    }
+  ],
+  "ticker": "9956",
+  "company_name": "9956",
+  "created_at": "2026-03-29T18:42:51.023190+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2026年3月期　2月度月次営業情報に関するお知らせ",
+  "sample_submission_date": "2026-03-10",
+  "fields_count": 2
+}

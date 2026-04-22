@@ -1,0 +1,7 @@
+# Cloud Build 送信時に除外するファイル
+.venv/
+data/
+keys/
+*.pyc
+__pycache__/
+.env

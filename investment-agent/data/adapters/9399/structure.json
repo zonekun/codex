@@ -1,0 +1,20 @@
+{
+  "ticker": "9399",
+  "company_name": "9399",
+  "metrics": [
+    {
+      "name": "IBIT 合計購入価額（円）"
+    },
+    {
+      "name": "IBIT 時価評価額（円）"
+    },
+    {
+      "name": "IBIT 評価損益（円）"
+    },
+    {
+      "name": "IBIT 購入数量"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

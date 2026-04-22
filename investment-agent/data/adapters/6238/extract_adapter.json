@@ -1,0 +1,48 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "extraction_method": "gemini",
+  "doc_title_pattern": "(4{4})年(4{1,2})月度 月次概況（速報）のお知らせ",
+  "year_from_title_regex": "(4{4})",
+  "month_from_title_regex": "(4{1,2})",
+  "fields": [
+    {
+      "key": "単体 売上（百万円）",
+      "name": "単体 売上（百万円）",
+      "description": "「2026年３月期月次実績」の表の「売上高（百万円）」行の「12月」列にある数値（百万円）。",
+      "value_type": "integer"
+    },
+    {
+      "key": "単体 売上（前年同月比）",
+      "name": "単体 売上（前年同月比）",
+      "description": "「2026年３月期月次実績 前年同月比 (％)」の表の「売上高（% ）」行の「12月」列にある前年同月比（%）。",
+      "value_type": "percentage"
+    },
+    {
+      "key": "総プレイ回数（回）",
+      "name": "総プレイ回数（回）",
+      "description": "「2026年３月期月次実績」の表の「KPI 総プレイ回数（万回）」行の「12月」列にある数値（万回）。",
+      "value_type": "integer"
+    },
+    {
+      "key": "ピクトリンク月末有料会員数（人）",
+      "name": "ピクトリンク月末有料会員数（人）",
+      "description": "「2026年３月期月次実績」の表の「ピクトリンク月末有料会員数（万人）」行の「12月」列にある数値（万人）。",
+      "value_type": "integer"
+    },
+    {
+      "key": "総プレイ回数（前年同月比）",
+      "name": "総プレイ回数（前年同月比）",
+      "description": "「2026年３月期月次実績 前年同月比 (％)」の表の「KPI 総プレイ回数（ %）」行の「12月」列にある前年同月比（%）。",
+      "value_type": "percentage"
+    }
+  ],
+  "extraction_notes": "",
+  "ticker": "6238",
+  "company_name": "6238",
+  "created_at": "2026-03-28T19:55:24.538829+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2025年12月度 月次概況（速報）のお知らせ",
+  "sample_submission_date": "2026-01-23",
+  "fields_count": 5
+}

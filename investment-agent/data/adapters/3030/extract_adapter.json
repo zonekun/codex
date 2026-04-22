@@ -1,0 +1,60 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "extraction_method": "gemini",
+  "doc_title_pattern": "(\\\\d{4})年(\\\\d{1,2})月期 第(\\\\d)四半期 決算補足説明資料",
+  "year_from_title_regex": "(\\\\d{4})年",
+  "month_from_title_regex": "(\\\\d{1,2})月期",
+  "fields": [
+    {
+      "key": "全店 売上（前年同月比）",
+      "name": "全店 売上（前年同月比）",
+      "description": "「全店実績の対前年比較」表の「売上高（％）」行、「8月」列にある全店売上高の前年同月比（%）",
+      "value_type": "percentage"
+    },
+    {
+      "key": "全店 客数（前年同月比）",
+      "name": "全店 客数（前年同月比）",
+      "description": "「全店実績の対前年比較」表の「客数（％）」行、「8月」列にある全店客数の前年同月比（%）",
+      "value_type": "percentage"
+    },
+    {
+      "key": "全店 客単価（前年同月比）",
+      "name": "全店 客単価（前年同月比）",
+      "description": "「全店実績の対前年比較」表の「客単価（％）」行、「8月」列にある全店客単価の前年同月比（%）",
+      "value_type": "percentage"
+    },
+    {
+      "key": "全店 店舗数",
+      "name": "全店 店舗数",
+      "description": "「2026年２月期第２四半期末 店舗数」の項目にある全店店舗数（店舗）",
+      "value_type": "integer"
+    },
+    {
+      "key": "既存店 売上（前年同月比）",
+      "name": "既存店 売上（前年同月比）",
+      "description": "「既存店実績の対前年比較」表の「売上高（％）」行、「8月」列にある既存店売上高の前年同月比（%）",
+      "value_type": "percentage"
+    },
+    {
+      "key": "既存店 客数（前年同月比）",
+      "name": "既存店 客数（前年同月比）",
+      "description": "「既存店実績の対前年比較」表の「客数（％）」行、「8月」列にある既存店客数の前年同月比（%）",
+      "value_type": "percentage"
+    },
+    {
+      "key": "既存店 客単価（前年同月比）",
+      "name": "既存店 客単価（前年同月比）",
+      "description": "「既存店実績の対前年比較」表の「客単価（％）」行、「8月」列にある既存店客単価の前年同月比（%）",
+      "value_type": "percentage"
+    }
+  ],
+  "extraction_notes": "月次データは、決算期末の最新月（8月）の数値を抽出する。",
+  "ticker": "3030",
+  "company_name": "(株)ハブ",
+  "created_at": "2026-03-28T19:53:25.598250+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2026年２月期 第２四半期 決算補足説明資料",
+  "sample_submission_date": "2025-10-14",
+  "fields_count": 7
+}
