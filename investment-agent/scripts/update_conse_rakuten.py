@@ -23,13 +23,16 @@ import json
 import re
 import io
 import argparse
+import hashlib
+import platform
+import traceback
 from datetime import date, datetime
 from bs4 import BeautifulSoup
 
 from google import genai
 from google.genai import types
 from pydantic import BaseModel, Field
-from PIL import Image
+from PIL import Image, ImageDraw
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -68,6 +71,176 @@ _gemini_client = genai.Client(api_key=GEMINI_API_KEY)
 class EmojiChoice(BaseModel):
     """画像認証で Gemini が選ぶ emoji の id（0〜9）。"""
     id: int = Field(ge=0, le=9)
+
+
+def _now_jst_str() -> str:
+    return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+
+def _short(value, limit: int = 180) -> str:
+    text = "" if value is None else str(value)
+    text = text.replace("\r", "\\r").replace("\n", "\\n")
+    return text[:limit]
+
+
+def _write_debug_event(debug_dir: str | None, event: str, **payload) -> None:
+    """画像認証デバッグ用の構造化ログを JSONL で追記する。"""
+    if not debug_dir:
+        return
+    record = {
+        "ts": _now_jst_str(),
+        "event": event,
+        **payload,
+    }
+    try:
+        with open(os.path.join(debug_dir, "events.jsonl"), "a", encoding="utf-8") as f:
+            f.write(json.dumps(record, ensure_ascii=False, default=str) + "\n")
+    except Exception as e:
+        print(f"  ⚠️ debug event 書き込み失敗: {e}")
+
+
+def _append_debug_text(debug_dir: str | None, text: str) -> None:
+    if not debug_dir:
+        return
+    try:
+        with open(os.path.join(debug_dir, "summary.log"), "a", encoding="utf-8") as f:
+            f.write(f"[{_now_jst_str()}] {text}\n")
+    except Exception as e:
+        print(f"  ⚠️ debug summary 書き込み失敗: {e}")
+
+
+def _safe_driver_value(driver, script: str, default=None):
+    try:
+        return driver.execute_script(script)
+    except Exception:
+        return default
+
+
+def _snapshot_page_state(driver, debug_dir: str, tag: str) -> None:
+    """端末差分確認用にブラウザ/画面/ページ状態を保存する。"""
+    state = {
+        "tag": tag,
+        "url": _short(getattr(driver, "current_url", ""), 500),
+        "title": _short(getattr(driver, "title", ""), 300),
+        "window_rect": None,
+        "window_handles": [],
+        "current_window_handle": None,
+        "device_pixel_ratio": _safe_driver_value(driver, "return window.devicePixelRatio"),
+        "inner_size": _safe_driver_value(
+            driver,
+            "return {w: window.innerWidth, h: window.innerHeight, "
+            "scrollX: window.scrollX, scrollY: window.scrollY};",
+        ),
+        "screen": _safe_driver_value(
+            driver,
+            "return {w: screen.width, h: screen.height, aw: screen.availWidth, "
+            "ah: screen.availHeight, colorDepth: screen.colorDepth};",
+        ),
+        "user_agent": _safe_driver_value(driver, "return navigator.userAgent"),
+        "capabilities": {},
+        "platform": platform.platform(),
+        "python": sys.version,
+    }
+    try:
+        caps = getattr(driver, "capabilities", {}) or {}
+        state["capabilities"] = {
+            "browserName": caps.get("browserName"),
+            "browserVersion": caps.get("browserVersion"),
+            "platformName": caps.get("platformName"),
+            "pageLoadStrategy": caps.get("pageLoadStrategy"),
+            "chrome": caps.get("chrome"),
+        }
+    except Exception as e:
+        state["capabilities_error"] = repr(e)
+    try:
+        state["window_rect"] = driver.get_window_rect()
+    except Exception as e:
+        state["window_rect_error"] = repr(e)
+    try:
+        state["window_handles"] = list(driver.window_handles)
+        state["current_window_handle"] = driver.current_window_handle
+    except Exception as e:
+        state["window_handles_error"] = repr(e)
+
+    try:
+        driver.save_screenshot(os.path.join(debug_dir, f"{tag}_fullpage.png"))
+        state["fullpage_screenshot"] = f"{tag}_fullpage.png"
+    except Exception as e:
+        state["fullpage_screenshot_error"] = repr(e)
+
+    _write_debug_event(debug_dir, "page_state", **state)
+    with open(os.path.join(debug_dir, f"{tag}_page_state.json"), "w", encoding="utf-8") as f:
+        json.dump(state, f, ensure_ascii=False, indent=2)
+
+
+def _element_info(driver, element, label: str) -> dict:
+    info = {"label": label}
+    try:
+        info.update({
+            "tag": element.tag_name,
+            "displayed": element.is_displayed(),
+            "enabled": element.is_enabled(),
+            "location": element.location,
+            "size": element.size,
+            "rect": element.rect,
+            "text": _short(element.text, 120),
+            "class": _short(element.get_attribute("class"), 160),
+            "id": _short(element.get_attribute("id"), 80),
+            "name": _short(element.get_attribute("name"), 80),
+            "value": _short(element.get_attribute("value"), 120),
+        })
+    except Exception as e:
+        info["element_error"] = repr(e)
+    try:
+        info["client_rect"] = driver.execute_script(
+            "const r = arguments[0].getBoundingClientRect(); "
+            "return {x:r.x,y:r.y,width:r.width,height:r.height,top:r.top,left:r.left,"
+            "bottom:r.bottom,right:r.right};",
+            element,
+        )
+    except Exception as e:
+        info["client_rect_error"] = repr(e)
+    return info
+
+
+def _img_info(driver, img_element) -> dict:
+    info = _element_info(driver, img_element, "img")
+    try:
+        src = img_element.get_attribute("src") or ""
+        current_src = img_element.get_attribute("currentSrc") or ""
+        info.update({
+            "alt": _short(img_element.get_attribute("alt"), 160),
+            "src_len": len(src),
+            "src_sha256_12": hashlib.sha256(src.encode("utf-8", errors="ignore")).hexdigest()[:12] if src else "",
+            "current_src_len": len(current_src),
+            "current_src_sha256_12": hashlib.sha256(current_src.encode("utf-8", errors="ignore")).hexdigest()[:12] if current_src else "",
+            "natural": driver.execute_script(
+                "return {w: arguments[0].naturalWidth, h: arguments[0].naturalHeight, "
+                "complete: arguments[0].complete};",
+                img_element,
+            ),
+        })
+    except Exception as e:
+        info["img_error"] = repr(e)
+    return info
+
+
+def _save_contact_sheet(images: list[Image.Image], debug_dir: str, tag: str) -> None:
+    """10枚の画像を id ラベル付きで1枚にまとめる。端末差分の目視確認用。"""
+    if not images:
+        return
+    cell_w, cell_h = 120, 140
+    sheet = Image.new("RGB", (cell_w * 5, cell_h * 2), "white")
+    for idx, image in enumerate(images):
+        thumb = image.convert("RGB")
+        thumb.thumbnail((100, 100))
+        x = (idx % 5) * cell_w + 10
+        y = (idx // 5) * cell_h + 30
+        sheet.paste(thumb, (x, y))
+        draw = ImageDraw.Draw(sheet)
+        draw.rectangle((x, y - 24, x + 42, y - 4), fill=(230, 230, 230))
+        draw.text((x + 6, y - 22), f"id {idx}", fill=(0, 0, 0))
+    sheet.save(os.path.join(debug_dir, f"{tag}_contact_sheet.png"))
 
 # ==========================================
 # BigQuery クライアント
@@ -224,6 +397,7 @@ def _capture_emojis(driver, debug_dir=None, tag=""):
     シャッフル対策で毎回 find_element する。debug_dir 指定時は {tag}_emoji_{i}.png で保存。"""
     images = []
     buttons = []
+    metadata = []
     for i in range(10):
         element_id = f"emoji_{i}"
         button = driver.find_element(By.ID, element_id)
@@ -232,9 +406,25 @@ def _capture_emojis(driver, debug_dir=None, tag=""):
         png_data = img_element.screenshot_as_png
         image = Image.open(io.BytesIO(png_data))
         images.append(image)
+        png_hash = hashlib.sha256(png_data).hexdigest()
+        item_meta = {
+            "index": i,
+            "element_id": element_id,
+            "png_bytes": len(png_data),
+            "png_sha256": png_hash,
+            "image_size": {"w": image.width, "h": image.height},
+            "button": _element_info(driver, button, element_id),
+            "img": _img_info(driver, img_element),
+        }
+        metadata.append(item_meta)
         if debug_dir is not None:
             image.save(os.path.join(debug_dir, f"{tag}_emoji_{i}.png"))
-    return images, buttons
+    if debug_dir is not None:
+        _save_contact_sheet(images, debug_dir, tag)
+        with open(os.path.join(debug_dir, f"{tag}_emoji_meta.json"), "w", encoding="utf-8") as f:
+            json.dump(metadata, f, ensure_ascii=False, indent=2)
+        _write_debug_event(debug_dir, "emoji_capture", tag=tag, count=len(metadata), items=metadata)
+    return images, buttons, metadata
 
 
 def perform_image_authentication(driver):
@@ -253,25 +443,46 @@ def perform_image_authentication(driver):
     debug_dir = os.path.join(_DEBUG_ROOT, f"rakuten_auth_{datetime.now().strftime('%Y%m%d_%H%M%S')}")
     os.makedirs(debug_dir, exist_ok=True)
     print(f"🗂️ デバッグPNG保存先: {debug_dir}")
+    _append_debug_text(debug_dir, "image authentication debug started")
+    _write_debug_event(
+        debug_dir,
+        "auth_start",
+        target_count=len(target_alt_texts),
+        targets=target_alt_texts,
+        model=GEMINI_MODEL,
+    )
+    _snapshot_page_state(driver, debug_dir, "auth_start")
 
     try:
         wait = WebDriverWait(driver, 20)
         wait.until(expected_conditions.presence_of_element_located((By.ID, "emoji_0")))
+        _write_debug_event(debug_dir, "emoji_0_present")
 
         clicked_count = 0
 
         for kw_idx, alt_text in enumerate(target_alt_texts, start=1):
             print(f"\n🔍 [kw{kw_idx}] キーワード '{alt_text}' に最も似ている画像を探しています...")
+            _append_debug_text(debug_dir, f"kw{kw_idx} start keyword={alt_text}")
+            _snapshot_page_state(driver, debug_dir, f"kw{kw_idx}_pre_state")
 
             # 毎キーワードで DOM から再取得（クリック後のシャッフル対応）
             try:
-                emoji_images, emoji_buttons = _capture_emojis(
+                emoji_images, emoji_buttons, emoji_meta = _capture_emojis(
                     driver,
                     debug_dir=debug_dir,
                     tag=f"kw{kw_idx}_pre",
                 )
             except NoSuchElementException as e:
                 print(f"❌ 画像要素が見つかりませんでした: {e}")
+                _write_debug_event(
+                    debug_dir,
+                    "emoji_capture_failed",
+                    keyword_index=kw_idx,
+                    keyword=alt_text,
+                    error=repr(e),
+                    traceback=traceback.format_exc(),
+                )
+                _snapshot_page_state(driver, debug_dir, f"kw{kw_idx}_capture_failed")
                 return
 
             prompt_text = "\n".join([
@@ -290,9 +501,32 @@ def perform_image_authentication(driver):
                 )
                 result_text = (response.text or "").strip()
                 print(f"  raw response: {result_text}")
+                response_info = {
+                    "keyword_index": kw_idx,
+                    "keyword": alt_text,
+                    "raw_text": result_text,
+                    "parsed_type": type(response.parsed).__name__ if hasattr(response, "parsed") else None,
+                    "emoji_hashes": [
+                        {
+                            "index": item["index"],
+                            "png_sha256": item["png_sha256"],
+                            "image_size": item["image_size"],
+                            "button_rect": item.get("button", {}).get("rect"),
+                            "client_rect": item.get("button", {}).get("client_rect"),
+                            "displayed": item.get("button", {}).get("displayed"),
+                            "enabled": item.get("button", {}).get("enabled"),
+                        }
+                        for item in emoji_meta
+                    ],
+                }
+                _write_debug_event(debug_dir, "gemini_response", **response_info)
 
                 with open(os.path.join(debug_dir, f"kw{kw_idx}_gemini.txt"), "w", encoding="utf-8") as f:
                     f.write(f"keyword: {alt_text}\nraw: {result_text}\n")
+                    f.write(f"parsed_type: {response_info['parsed_type']}\n")
+                    f.write("emoji_hashes:\n")
+                    for item in response_info["emoji_hashes"]:
+                        f.write(json.dumps(item, ensure_ascii=False) + "\n")
 
                 choice = response.parsed
                 if isinstance(choice, EmojiChoice):
@@ -304,37 +538,112 @@ def perform_image_authentication(driver):
                 if 0 <= best_index <= 9:
                     print(f"🤖 Geminiの判定: ID {best_index} が '{alt_text}' です。")
                     target_button = emoji_buttons[best_index]
+                    click_target_info = _element_info(driver, target_button, f"emoji_{best_index}")
+                    _write_debug_event(
+                        debug_dir,
+                        "click_target_selected",
+                        keyword_index=kw_idx,
+                        keyword=alt_text,
+                        best_index=best_index,
+                        target=click_target_info,
+                    )
                     driver.execute_script("arguments[0].click();", target_button)
                     print(f"🎯 ボタン(ID: emoji_{best_index})をクリックしました。")
+                    _write_debug_event(
+                        debug_dir,
+                        "click_done",
+                        keyword_index=kw_idx,
+                        keyword=alt_text,
+                        best_index=best_index,
+                    )
                     clicked_count += 1
                     time.sleep(2.5)  # シャッフル / 再描画待ち
 
                     try:
+                        _snapshot_page_state(driver, debug_dir, f"kw{kw_idx}_post_state")
                         _capture_emojis(driver, debug_dir=debug_dir, tag=f"kw{kw_idx}_post")
                     except Exception as cap_err:
                         print(f"  ⚠️ post-click キャプチャ失敗: {cap_err}")
+                        _write_debug_event(
+                            debug_dir,
+                            "post_click_capture_failed",
+                            keyword_index=kw_idx,
+                            keyword=alt_text,
+                            best_index=best_index,
+                            error=repr(cap_err),
+                            traceback=traceback.format_exc(),
+                        )
                 else:
                     print(f"❌ Geminiが範囲外のIDを返しました: {best_index}")
+                    _write_debug_event(
+                        debug_dir,
+                        "gemini_out_of_range",
+                        keyword_index=kw_idx,
+                        keyword=alt_text,
+                        best_index=best_index,
+                        raw_text=result_text,
+                    )
 
             except Exception as api_error:
                 print(f"❌ Gemini API エラー: {api_error}")
+                _write_debug_event(
+                    debug_dir,
+                    "gemini_or_click_error",
+                    keyword_index=kw_idx,
+                    keyword=alt_text,
+                    error=repr(api_error),
+                    traceback=traceback.format_exc(),
+                )
+                _snapshot_page_state(driver, debug_dir, f"kw{kw_idx}_error_state")
                 continue
 
         if clicked_count == len(target_alt_texts):
             print("\n✔️ 全ての画像の選択が完了しました。")
+            _write_debug_event(debug_dir, "all_keywords_clicked", clicked_count=clicked_count)
             try:
                 print("🔍 「認証する」ボタンを探しています...")
                 auth_button = driver.find_element(By.XPATH, "//input[@value='認証する']")
+                auth_button_info = _element_info(driver, auth_button, "auth_button")
+                _write_debug_event(debug_dir, "auth_button_found", button=auth_button_info)
                 print("🎯 「認証する」ボタンをクリックします。")
                 auth_button.click()
                 time.sleep(5)
+                _snapshot_page_state(driver, debug_dir, "after_auth_button_click")
+                _write_debug_event(
+                    debug_dir,
+                    "auth_button_clicked",
+                    url=_short(getattr(driver, "current_url", ""), 500),
+                    title=_short(getattr(driver, "title", ""), 300),
+                )
             except NoSuchElementException:
                 print("❌ 「認証する」ボタンが見つかりませんでした。")
+                _write_debug_event(
+                    debug_dir,
+                    "auth_button_missing",
+                    traceback=traceback.format_exc(),
+                )
+                _snapshot_page_state(driver, debug_dir, "auth_button_missing")
         else:
             print(f"⚠️ 一部の画像のクリックに失敗しました（成功: {clicked_count}/{len(target_alt_texts)}）")
+            _write_debug_event(
+                debug_dir,
+                "partial_click_failure",
+                clicked_count=clicked_count,
+                target_count=len(target_alt_texts),
+            )
+            _snapshot_page_state(driver, debug_dir, "partial_click_failure")
 
     except Exception as e:
         print(f"Seleniumの処理中にエラーが発生しました: {e}")
+        _write_debug_event(
+            debug_dir,
+            "selenium_error",
+            error=repr(e),
+            traceback=traceback.format_exc(),
+        )
+        _snapshot_page_state(driver, debug_dir, "selenium_error")
+    finally:
+        _append_debug_text(debug_dir, f"image authentication debug finished clicked_count={locals().get('clicked_count', 0)}")
 
 
 def login(driver):
