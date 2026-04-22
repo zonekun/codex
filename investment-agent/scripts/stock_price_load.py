@@ -385,13 +385,18 @@ def main() -> None:
         target_data = fetch_stock_data(tickers, date_str, date_str_hyphen)
 
         bq_rows = 0
-        if not target_data.empty:
-            save_to_gcs(target_data, date_str)
-            if SKIP_DB_REGISTER == 0:
-                bq_rows = save_to_bq(target_data)
-            else:
-                print("\n【スキップ】設定により、BigQueryへの登録処理をスキップします。")
-            save_to_dropbox(target_data, date_str_hyphen)
+        if target_data.empty:
+            raise RuntimeError(
+                f"株価データが取得できませんでした: target_date={date_str_hyphen}, "
+                f"tickers={len(tickers)}. GCS/BigQuery/Dropboxへの保存は実行していません。"
+            )
+
+        save_to_gcs(target_data, date_str)
+        if SKIP_DB_REGISTER == 0:
+            bq_rows = save_to_bq(target_data)
+        else:
+            print("\n【スキップ】設定により、BigQueryへの登録処理をスキップします。")
+        save_to_dropbox(target_data, date_str_hyphen)
 
         log_text = log_cap.stop()
 
