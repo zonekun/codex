@@ -65,6 +65,9 @@
 - Git ルートは `C:\Users\zonekun\Documents\codex`
 - 現在ブランチは `codex/integration`
 - `origin` は `https://github.com/zonekun/codex.git`
+- 初回 commit / push 済み
+  - commit: `a2d87f1 Initial codex workspace import`
+  - upstream: `origin/codex/integration`
 - `scripts/switch_codex_branch.ps1` は `codex/integration` 上で正常終了
 - 未初回コミット状態の `codex/integration` でも失敗しないよう、`switch_codex_branch.ps1` と `bootstrap_codex_workspace.ps1` の branch 確認を修正
 - 秘密情報系は `.gitignore` で除外確認
@@ -75,7 +78,7 @@
   - `.uv-python/`
   - `.claude/settings.local.json`
   - `.claude/scheduled_tasks.lock`
-- `git add --dry-run investment-agent` は `.git/index.lock` 作成が必要なため、Codex sandbox では権限拒否。通常 PowerShell で実施する
+- `git add --dry-run investment-agent` は Codex sandbox では `.git/index.lock` 権限拒否だったため、通常 PowerShell 側で実施
 
 ## 現在の結論
 Codex 移行で必要だった以下は完了。
@@ -88,11 +91,11 @@ Codex 移行で必要だった以下は完了。
 - Python 3.12.10 での起動確認
 - 主要 5 スクリプトの smoke
 - Git `origin` / `codex/integration` 確認
+- 初回 commit / push 完了
 - branch 切替補助スクリプトの unborn branch 対応
 
 現時点で Codex 側の通常作業は継続可能。
 
 ## 残タスク
-1. 初回 commit / push を行う場合は、`investment-agent/` 全体を載せる前に対象ファイル量と除外設定を最終確認する
-2. Claude Code 側で Git 取り込みを開始する場合は、`origin` と `codex/integration` を基準に pull / checkout 手順を合わせる
-3. `pytest` は今回対象外。必要になった時点で `uv sync --extra dev` を実施する
+1. Claude Code 側で Git 取り込みを開始する場合は、`origin` と `codex/integration` を基準に pull / checkout 手順を合わせる
+2. `pytest` は今回対象外。必要になった時点で `uv sync --extra dev` を実施する

@@ -8,8 +8,9 @@
 - Codex プロジェクトは `C:\Users\zonekun\Documents\codex\investment-agent`
 - 現在の作業ブランチは `codex/integration`
 - `origin` は `https://github.com/zonekun/codex.git`
-- 現時点では初回 commit は未実施
-- `investment-agent/` 全体が Git ルート配下の untracked として見えている
+- 初回 commit / push 済み
+  - commit: `a2d87f1 Initial codex workspace import`
+  - upstream: `origin/codex/integration`
 
 ## 除外方針
 初回 commit / push 前に、以下が Git 対象外であることを確認する。
@@ -27,7 +28,7 @@
 - `.pytest_cache/`
 
 ## 初回 commit 手順
-初回 commit を作る場合は、必ず dry-run で対象を確認してから実行する。
+初回 commit は実施済み。再作成が必要な場合のみ、必ず dry-run で対象を確認してから実行する。
 
 ```powershell
 cd C:\Users\zonekun\Documents\codex
