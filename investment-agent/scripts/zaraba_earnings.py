@@ -882,7 +882,7 @@ def _split_factors(factors: str | list[str]) -> tuple[str, str]:
 
     プラス因子: 上方修正・増配・進捗↑・YoY+・翌期↑・コンセ乖離+・QoQ+・成長加速・
                 自社株買い・記念配当・テーマブースト・PEG割安・売り長
-    マイナス因子: 下方修正・減配・大幅減配・進捗↓・YoY-・翌期↓・翌期予想非開示・コンセ乖離-・QoQ-・
+    マイナス因子: 下方修正・減配・大幅減配・進捗↓・YoY-・通期予想非開示・翌期↓・翌期予想非開示・コンセ乖離-・QoQ-・
                 成長減速・PEG割高・折込⚠・出来高x..⚠・出尽くし
     """
     if isinstance(factors, str):
@@ -890,7 +890,7 @@ def _split_factors(factors: str | list[str]) -> tuple[str, str]:
     else:
         items = list(factors)
     NEG_MARKERS = (
-        "下方", "減配", "進捗↓", "翌期↓", "翌期予想非開示", "QoQ-", "成長減速", "PEG割高",
+        "下方", "減配", "進捗↓", "通期予想非開示", "翌期↓", "翌期予想非開示", "QoQ-", "成長減速", "PEG割高",
         "折込", "出来高", "出尽くし",
     )
     pos, neg = [], []
@@ -1253,6 +1253,7 @@ def _xbrl_to_jquants_rec(disc, extracted, related_titles: list[str] | None = Non
         rec["EPS"] = extracted.earnings_per_share
         # 予想値は extract_pipeline 側の対応待ち（現時点では None）
         rec["FOP"] = extracted.raw_extract.get("FORECAST_OP", {}).get("value") if extracted.raw_extract.get("FORECAST_OP") else None
+        rec["ShortFOP"] = extracted.raw_extract.get("SHORT_TERM_FORECAST_OP", {}).get("value") if extracted.raw_extract.get("SHORT_TERM_FORECAST_OP") else None
         rec["NxFOP"] = extracted.raw_extract.get("NEXT_YEAR_FORECAST_OP", {}).get("value") if extracted.raw_extract.get("NEXT_YEAR_FORECAST_OP") else None
         rec["FDivAnn"] = extracted.raw_extract.get("FORECAST_DIV_ANN", {}).get("value") if extracted.raw_extract.get("FORECAST_DIV_ANN") else None
 
@@ -1306,10 +1307,15 @@ def _score_record(
     # 「最新の通期予想」= 今日のFOPがあればそれを優先、なければpriorの最新
     # 今日がガイダンス修正を含む場合、F1進捗・F4翌期比較・F5出尽くしは新FOPベースで判定
     today_forecast_op = _to_num(rec.get("FOP"))
+    short_term_forecast_op = _to_num(rec.get("ShortFOP"))
     effective_forecast_op: float | None = (
         today_forecast_op if (today_forecast_op is not None and today_forecast_op != 0)
         else forecast_op
     )
+
+    if today_forecast_op is None and short_term_forecast_op is not None:
+        score -= 1
+        factors.append("通期予想非開示")
 
     # Q単独OP = 今回累計 - 前Q累計（1Qの場合 prev=0）
     cur_per = rec.get("CurPerType", "")

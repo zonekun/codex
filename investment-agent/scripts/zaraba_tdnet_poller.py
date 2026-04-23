@@ -316,6 +316,11 @@ TDNET_TAG_MAP: dict[str, list[str]] = {
         "OperatingIncomeIFRS", "OperatingProfitIFRS",
         "BusinessProfitIFRS", "BusinessProfitLossIFRS",
     ],
+    "SHORT_TERM_FORECAST_OP": [
+        "OperatingIncome", "OperatingProfit",
+        "OperatingIncomeIFRS", "OperatingProfitIFRS",
+        "BusinessProfitIFRS", "BusinessProfitLossIFRS",
+    ],
     "NEXT_YEAR_FORECAST_OP": [
         "OperatingIncome", "OperatingProfit",
         "OperatingIncomeIFRS", "OperatingProfitIFRS",
@@ -335,7 +340,8 @@ TDNET_PREFER_CONSOLIDATED = ["ConsolidatedMember"]  # 連結優先、なけれ�
 # FORECAST_OP: CurrentYearDuration_ConsolidatedMember_ForecastMember
 # NEXT_YEAR_FORECAST_OP: NextYearDuration_ConsolidatedMember_ForecastMember
 # FORECAST_DIV_ANN: CurrentYearDuration_AnnualMember_NonConsolidatedMember_ForecastMember
-TDNET_FORECAST_CURRENT_PATTERNS = ["CurrentYearDuration", "CurrentAccumulatedQ"]
+TDNET_FORECAST_CURRENT_PATTERNS = ["CurrentYearDuration"]
+TDNET_FORECAST_SHORT_TERM_PATTERNS = ["CurrentAccumulatedQ"]
 # 翌期見通しは通期のみを使う。NextAccumulatedQ* は翌期1Q/2Qなどの短期予想で、
 # FY実績と比較すると 7931 のように「翌期↓-81%」等の誤判定になる。
 TDNET_FORECAST_NEXTYEAR_PATTERNS = ["NextYearDuration"]
@@ -402,8 +408,13 @@ def _extract_tdnet_pl(
     result: dict[str, dict[str, Any] | None] = {}
 
     for jq_col, tag_candidates in TDNET_TAG_MAP.items():
-        is_forecast = jq_col.startswith("FORECAST") or jq_col.startswith("NEXT_YEAR")
+        is_forecast = (
+            jq_col.startswith("FORECAST")
+            or jq_col.startswith("NEXT_YEAR")
+            or jq_col.startswith("SHORT_TERM")
+        )
         is_nextyear = jq_col.startswith("NEXT_YEAR")
+        is_short_term = jq_col.startswith("SHORT_TERM")
         is_div = "DIV" in jq_col
         found = None
 
@@ -426,6 +437,11 @@ def _extract_tdnet_pl(
                     if is_nextyear:
                         # NEXT_YEAR_*: NextYearDuration を含む context のみ
                         if not any(p in ctx for p in TDNET_FORECAST_NEXTYEAR_PATTERNS):
+                            continue
+                    elif is_short_term:
+                        # SHORT_TERM_*: CurrentAccumulatedQ* の短期予想のみ。
+                        # 通期FOPとしては使わず、通期予想非開示の検知補助に使う。
+                        if not any(p in ctx for p in TDNET_FORECAST_SHORT_TERM_PATTERNS):
                             continue
                     else:
                         # FORECAST_*: CurrentYearDuration を含む context のみ
