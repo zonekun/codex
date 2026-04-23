@@ -258,7 +258,10 @@ def cmd_prepare(
 
     if data == PREPARE_DATA_CONSENSUS:
         df_conse = _load_or_fetch_consensus(bq, force=force)
+        updated = _refresh_prior_consensus(target_date, target, df_conse)
         print(f"コンセンサスのみ取得完了: {len(df_conse)}件")
+        if updated is not None:
+            print(f"prior_data.json の consensus_profit 更新: {updated}銘柄")
         return
 
     # ── 1-1. ターゲット銘柄取得 ─────────────────────────
@@ -488,6 +491,55 @@ def _load_or_fetch_consensus(bq, force: bool = False) -> pd.DataFrame:
     log.info("consensus_cached", path=str(new_path), rows=len(df))
 
     return df
+
+
+def _refresh_prior_consensus(
+    target_date: str,
+    target: str,
+    df_conse: pd.DataFrame,
+) -> int | None:
+    """既存 prior_data.json の consensus_profit だけを最新コンセンサスで差し替える.
+
+    --data consensus は「コンセのみ更新」の指定なので、元CSVだけでなく watch が読む
+    prior_data.json 内のスナップショットも更新する。prior が無い場合は何もしない。
+    """
+    prior_path = (
+        _prior_data_path(target_date)
+        if target == PREPARE_TARGET_ALL
+        else _legacy_prior_data_path(target_date)
+    )
+    if not prior_path.exists():
+        log.info("prior_consensus_refresh_skipped", reason="prior_not_found", path=str(prior_path))
+        return None
+
+    with open(prior_path, encoding="utf-8") as f:
+        prior = json.load(f)
+
+    cur = df_conse[df_conse["TARGET"] == "CURRENT"].copy()
+    if cur.empty:
+        log.warning("prior_consensus_refresh_skipped", reason="no_current_consensus")
+        return 0
+    cur["TICKER"] = cur["TICKER"].astype(str).str[:4]
+    conse_map = {
+        str(row["TICKER"])[:4]: _to_num(row.get("PROFIT"))
+        for _, row in cur.iterrows()
+    }
+
+    updated = 0
+    for ticker, info in prior.items():
+        tk = str(ticker)[:4]
+        if tk in conse_map:
+            info["consensus_profit"] = conse_map[tk]
+            info["consensus_profit_unit"] = "百万円"
+            updated += 1
+        else:
+            info.pop("consensus_profit", None)
+            info.pop("consensus_profit_unit", None)
+
+    with open(prior_path, "w", encoding="utf-8") as f:
+        json.dump(prior, f, ensure_ascii=False, indent=2, default=str)
+    log.info("prior_consensus_refreshed", path=str(prior_path), updated=updated)
+    return updated
 
 
 def _load_beta_20d() -> dict[str, float]:
@@ -1548,7 +1600,7 @@ def main() -> None:
         "--data",
         choices=[PREPARE_DATA_FULL, PREPARE_DATA_CONSENSUS],
         default=PREPARE_DATA_FULL,
-        help="取得データ: full=全データ（既定） / consensus=コンセのみ",
+        help="取得データ: full=全データ（既定） / consensus=コンセのみ（prior_data内のコンセも更新）",
     )
 
     # catchup
