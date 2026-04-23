@@ -1,6 +1,6 @@
 # Claude Code 取り込み伝言メモ テンプレート
 
-Codex 側の変更を Claude Code 側へ取り込んでもらうための伝言メモ。`docs/handoff.md` は Claude Code 内の Windows -> Linux 引き継ぎ用なので、この用途では使わない。
+Codex 側の変更を Claude Code 側へ取り込んでもらうための伝言メモ。実際の伝言は `docs/codex-to-claude-handoff.md` に残す。Claude Code 側の `docs/handoff.md` は Windows -> Linux 引き継ぎ用なので、この用途では使わない。
 
 原則としてこの粒度に留める。詳細な調査ログや長い経緯は別ファイルに分離し、伝言メモには取り込みに必要な情報と事象要約だけを書く。
 

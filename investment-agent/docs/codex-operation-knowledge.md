@@ -93,7 +93,7 @@
 - 主要ドキュメント
   - `CLAUDE.md`
   - `docs/commands.md`
-  - `docs/handoff.md`
+  - `docs/codex-to-claude-handoff.md`
 
 ## 11. Codex 側で守るべき線引き
 

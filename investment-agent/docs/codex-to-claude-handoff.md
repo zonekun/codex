@@ -1,12 +1,12 @@
-# 端末間引き継ぎボード
+# Codex → Claude Code 引き継ぎメモ
 
-別端末のClaude Codeに作業を引き継ぐためのファイル。
-git push/pull で同期される。
+Codex 側で行った変更や特例対応を Claude Code 側へ伝えるためのメモ。
+Claude Code 側の `docs/handoff.md` とは目的が違うため、混同を避ける。
 
 ## ルール
 
 - エントリは新しい順（上が最新）
-- 受け取り側が完了したら `status` を `done` に変更し、結果を追記
+- Claude Code 側が確認したら `status` を `done` に変更し、結果を追記
 - 不要になったエントリは削除してよい
 
 ---
