@@ -102,6 +102,10 @@
 - 認証、MCP、GCP、ブラウザ操作を触る場合は、既存運用との差分を明示する
 - 運用ルールを変更した場合は、コード変更と同じ重みで handoff に残す
 - `CLAUDE.md` のルールを無視して独自運用へ寄せない
+- `docs/knowledges/` 配下は Claude Code → Codex の一方通行同期対象として扱う
+- Codex 側で機能改修しても、`docs/knowledges/` を直接更新しない
+- Codex 側の再発防止、作業ルール、同期上の注意は本ファイルまたは `docs/codex-parallel-operation-policy.md` に記録する
+- `docs/knowledges/` の更新が必要な場合は、Claude Code 側で反映する前提のメモとしてユーザーへ伝える
 
 ## 12. Codex 側の実務優先事項
 

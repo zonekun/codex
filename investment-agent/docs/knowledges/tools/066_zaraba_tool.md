@@ -27,7 +27,7 @@
 
 | コマンド | 用途 |
 |---------|------|
-| `prepare --date YYYYMMDD [--force] [--target scheduled\|all] [--data full\|consensus]` | 事前準備。BQ から銘柄情報を一括取得してキャッシュ |
+| `prepare --date YYYYMMDD [--force]` | 事前準備。BQ から銘柄情報を一括取得してキャッシュ |
 | `catchup --date YYYYMMDD --until HH:MM` | 指定時刻までの発表済み DiscNo をキャッシュに記録 |
 | `watch --date YYYYMMDD` | ザラバ監視。J-Quants ポーリング + スコアリング + リアルタイム表示 |
 | `review --date YYYYMMDD` | 過去 watch 結果（results.csv）を時系列で表形式表示 |
@@ -37,12 +37,6 @@
 ```bash
 # 1. 事前準備（前日夜 or 当日朝）
 PYTHONUTF8=1 python scripts/zaraba_earnings.py prepare --date 20260407
-
-# 全銘柄を対象に事前準備（watch はこの全銘柄キャッシュを使って評価）
-PYTHONUTF8=1 python scripts/zaraba_earnings.py prepare --date 20260407 --target all
-
-# コンセンサスだけ更新
-PYTHONUTF8=1 python scripts/zaraba_earnings.py prepare --date 20260407 --data consensus
 
 # 2. 監視開始
 PYTHONUTF8=1 python scripts/zaraba_earnings.py watch --date 20260407
@@ -219,8 +213,6 @@ predict notebook (因子改善)
 ### パラメータ管理
 
 スコアリングの閾値・ウェイトは現在 `zaraba_earnings.py` にハードコーディング。将来的に config YAML に切り出し、predict notebook から自動生成も可能。
-
-ザラバ決算モニター表の列幅は `zaraba_earnings.py` 先頭の `WATCH_TABLE_WIDTH_*` 定数で調整する。
 
 ## 既知の問題: watch コマンドが機能しない
 
