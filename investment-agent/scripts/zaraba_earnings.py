@@ -1308,17 +1308,17 @@ def _score_record(
     # 今日がガイダンス修正を含む場合、F1進捗・F4翌期比較・F5出尽くしは新FOPベースで判定
     today_forecast_op = _to_num(rec.get("FOP"))
     short_term_forecast_op = _to_num(rec.get("ShortFOP"))
+    cur_per = rec.get("CurPerType", "")
     effective_forecast_op: float | None = (
         today_forecast_op if (today_forecast_op is not None and today_forecast_op != 0)
         else forecast_op
     )
 
-    if today_forecast_op is None and short_term_forecast_op is not None:
+    if cur_per == "FY" and today_forecast_op is None and short_term_forecast_op is not None:
         score -= 1
         factors.append("通期予想非開示")
 
     # Q単独OP = 今回累計 - 前Q累計（1Qの場合 prev=0）
-    cur_per = rec.get("CurPerType", "")
     standalone_op: float | None = None
     if cumulative_op is not None:
         if cur_per == "1Q" or prev_cumulative_op is None:
