@@ -58,6 +58,20 @@ POLL_INTERVAL_SEC = 1.0       # 初期ポーリング間隔
 POLL_BACKOFF_MAX_SEC = 30.0   # 429 バックオフ上限
 POLL_BACKOFF_FACTOR = 2.0     # バックオフ倍率
 
+# ザラバ決算モニター表の列幅。横幅を調整したい場合はここだけ編集する。
+WATCH_TABLE_WIDTH_SCORE = 5
+WATCH_TABLE_WIDTH_CODE = 5
+WATCH_TABLE_WIDTH_NAME = 12
+WATCH_TABLE_WIDTH_CAP = 6
+WATCH_TABLE_WIDTH_JUDGE = 6
+WATCH_TABLE_WIDTH_POS = 28
+WATCH_TABLE_WIDTH_NEG = 22
+
+PREPARE_TARGET_SCHEDULED = "scheduled"
+PREPARE_TARGET_ALL = "all"
+PREPARE_DATA_FULL = "full"
+PREPARE_DATA_CONSENSUS = "consensus"
+
 # jpholiday が対応しない特別休日（大晦日・年始休暇）
 _SPECIAL_HOLIDAYS: set[date] = {
     date(2026, 12, 31),
@@ -143,6 +157,10 @@ def _prior_data_path(target_date: str) -> Path:
     return _cache_dir(target_date) / "prior_data.json"
 
 
+def _prepare_meta_path(target_date: str) -> Path:
+    return _cache_dir(target_date) / "prepare_meta.json"
+
+
 def _calendar_path(target_date: str) -> Path:
     return _cache_dir(target_date) / "calendar.csv"
 
@@ -177,25 +195,47 @@ def _save_seen(target_date: str, seen: dict) -> None:
 # ====================================================================
 # Phase 1: prepare — 事前準備
 # ====================================================================
-def cmd_prepare(target_date: str, force: bool = False) -> None:
+def cmd_prepare(
+    target_date: str,
+    force: bool = False,
+    target: str = PREPARE_TARGET_SCHEDULED,
+    data: str = PREPARE_DATA_FULL,
+) -> None:
     """事前準備: BQ から対象銘柄と事前情報を取得してキャッシュ."""
-    log.info("prepare_start", date=target_date, force=force)
+    if target not in {PREPARE_TARGET_SCHEDULED, PREPARE_TARGET_ALL}:
+        raise ValueError(f"invalid prepare target: {target}")
+    if data not in {PREPARE_DATA_FULL, PREPARE_DATA_CONSENSUS}:
+        raise ValueError(f"invalid prepare data: {data}")
+
+    log.info("prepare_start", date=target_date, force=force, target=target, data=data)
 
     prior_path = _prior_data_path(target_date)
+    meta_path = _prepare_meta_path(target_date)
     cal_path = _calendar_path(target_date)
 
-    if prior_path.exists() and not force:
-        log.info("cache_exists", path=str(prior_path))
-        print(f"キャッシュ済み: {prior_path}")
-        print("再取得するには --force を指定してください")
-        # キャッシュから読み込んでサマリー表示
-        with open(prior_path, encoding="utf-8") as f:
-            prior = json.load(f)
-        _print_prepare_summary(target_date, prior)
-        return
+    if data == PREPARE_DATA_FULL and prior_path.exists() and not force:
+        cached_target = PREPARE_TARGET_SCHEDULED
+        if meta_path.exists():
+            with open(meta_path, encoding="utf-8") as f:
+                cached_target = json.load(f).get("target", PREPARE_TARGET_SCHEDULED)
+        if cached_target == target:
+            log.info("cache_exists", path=str(prior_path), target=target)
+            print(f"キャッシュ済み: {prior_path}")
+            print("再取得するには --force を指定してください")
+            # キャッシュから読み込んでサマリー表示
+            with open(prior_path, encoding="utf-8") as f:
+                prior = json.load(f)
+            _print_prepare_summary(target_date, prior)
+            return
+        log.info("cache_target_mismatch", cached_target=cached_target, requested_target=target)
 
     bq = _get_bq_client()
     ds = f"{PROJECT_ID}.{DATASET}"
+
+    if data == PREPARE_DATA_CONSENSUS:
+        df_conse = _load_or_fetch_consensus(bq, force=force)
+        print(f"コンセンサスのみ取得完了: {len(df_conse)}件")
+        return
 
     # ── 1-1. ターゲット銘柄取得 ─────────────────────────
     # YYYYMMDD → YYYY-MM-DD
@@ -214,17 +254,32 @@ def cmd_prepare(target_date: str, force: bool = False) -> None:
     """
     df_cal = bq.query(cal_sql).to_dataframe()
 
-    if df_cal.empty:
+    if target == PREPARE_TARGET_SCHEDULED and df_cal.empty:
         print(f"対象日 {d} の決算予定銘柄が見つかりません")
         log.warning("no_earnings_scheduled", date=d)
         return
 
-    tickers = df_cal["TICKER"].unique().tolist()
+    if target == PREPARE_TARGET_ALL:
+        target_sql = f"""
+        SELECT DISTINCT TICKER
+        FROM `{ds}.STOCK_CODE_LIST`
+        WHERE REGEXP_CONTAINS(CAST(TICKER AS STRING), r'^[0-9]{{4}}$')
+        ORDER BY TICKER
+        """
+        df_target = bq.query(target_sql).to_dataframe()
+        if df_target.empty:
+            print("全銘柄マスタが見つかりません")
+            log.warning("no_master_tickers")
+            return
+        tickers = df_target["TICKER"].astype(str).str[:4].unique().tolist()
+    else:
+        tickers = df_cal["TICKER"].astype(str).str[:4].unique().tolist()
     ticker_csv = ", ".join(f"'{t}'" for t in tickers)
-    log.info("target_tickers", count=len(tickers))
+    log.info("target_tickers", target=target, count=len(tickers))
 
     # ── 1-2. 全データを BQ から一括取得 ───────────────────
-    print(f"BQ から {len(tickers)} 銘柄分のデータを取得中...")
+    target_label = "全銘柄" if target == PREPARE_TARGET_ALL else "決算予定銘柄"
+    print(f"BQ から {target_label} {len(tickers)} 銘柄分のデータを取得中...")
 
     # (1) 会社予想（通期）+ 前回発表予想: 最新レコード
     # 銘柄ごとに「直近2件」のみ取得（最新=iloc[0]、その前=iloc[1]）
@@ -318,7 +373,7 @@ def cmd_prepare(target_date: str, force: bool = False) -> None:
         log.info("bq_result", name=name, rows=len(raw[name]))
 
     # ── コンセンサス（別管理） ─────────────────────────
-    df_conse = _load_or_fetch_consensus(bq)
+    df_conse = _load_or_fetch_consensus(bq, force=force)
 
     # ── β20d（GCS） ────────────────────────────────
     beta_map = _load_beta_20d()
@@ -351,12 +406,25 @@ def cmd_prepare(target_date: str, force: bool = False) -> None:
     df_cal.to_csv(cal_path, index=False, encoding="utf-8")
     with open(prior_path, "w", encoding="utf-8") as f:
         json.dump(prior, f, ensure_ascii=False, indent=2, default=str)
+    with open(meta_path, "w", encoding="utf-8") as f:
+        json.dump(
+            {
+                "date": target_date,
+                "target": target,
+                "data": data,
+                "ticker_count": len(tickers),
+                "created_at": datetime.now(JST).isoformat(),
+            },
+            f,
+            ensure_ascii=False,
+            indent=2,
+        )
 
-    log.info("prepare_done", tickers=len(tickers), cache=str(prior_path))
+    log.info("prepare_done", target=target, tickers=len(tickers), cache=str(prior_path))
     _print_prepare_summary(target_date, prior)
 
 
-def _load_or_fetch_consensus(bq) -> pd.DataFrame:
+def _load_or_fetch_consensus(bq, force: bool = False) -> pd.DataFrame:
     """コンセンサス: ローカルキャッシュの DATAAT と BQ の MAX(DATAAT) を比較し、必要時のみ全件取得."""
     ds = f"{PROJECT_ID}.{DATASET}"
     CONSENSUS_CACHE_DIR.mkdir(parents=True, exist_ok=True)
@@ -375,7 +443,7 @@ def _load_or_fetch_consensus(bq) -> pd.DataFrame:
     df_max = bq.query(max_sql).to_dataframe()
     bq_dataat = df_max["max_dataat"].iloc[0] if not df_max.empty else None
 
-    if local_dataat and bq_dataat and local_dataat == bq_dataat:
+    if not force and local_dataat and bq_dataat and local_dataat == bq_dataat:
         log.info("consensus_cache_hit", dataat=local_dataat)
         return pd.read_csv(local_path, encoding="utf-8")
 
@@ -658,11 +726,13 @@ def _print_prepare_summary(target_date: str, prior: dict) -> None:
     """事前サマリーをターミナルに表示."""
     d = f"{target_date[:4]}-{target_date[4:6]}-{target_date[6:8]}"
     items = sorted(prior.values(), key=lambda x: x.get("disc_time", "99:99"))
+    display_limit = 200
+    display_items = items[:display_limit]
     print()
     print(f"=== {d} ザラバ決算 事前サマリー（{len(items)}銘柄） ===")
     print(f"{'時刻':<7} | {'Code':<5} | {'銘柄名':<14} | {'Q':^4} | {'会社OP':>12} | {'コンセ':>10} | {'修正':^4} | {'折込':^6} | {'出来高':^6}")
     print("-" * 100)
-    for item in items:
+    for item in display_items:
         t = item.get("disc_time", "??:??")[:5]
         code = item.get("ticker", "????")
         name = (item.get("name", "") or "")[:12]
@@ -686,6 +756,8 @@ def _print_prepare_summary(target_date: str, prior: dict) -> None:
 
         print(f"{t:<7} | {code:<5} | {name:<14} | {q:^4} | {fop_s:>12} | {conse_s:>10} | {rev:^4} | {orikomi:^6} | {vol_s:^6}")
 
+    if len(items) > display_limit:
+        print(f"... {len(items) - display_limit}銘柄は省略（キャッシュには全件保存済み）")
     print()
 
 
@@ -953,13 +1025,13 @@ def cmd_watch(target_date: str) -> None:
             title=f"ザラバ決算モニター {target_date}  [{src} | {now} | {poll_interval:.1f}s間隔]",
             show_lines=False,
         )
-        table.add_column("Score", justify="right", width=5)
-        table.add_column("Code", width=5)
-        table.add_column("Name", width=12)
-        table.add_column("Cap", justify="right", width=6)
-        table.add_column("Judge", width=6)
-        table.add_column("Pos", width=28)
-        table.add_column("Neg", width=22)
+        table.add_column("Score", justify="right", width=WATCH_TABLE_WIDTH_SCORE)
+        table.add_column("Code", width=WATCH_TABLE_WIDTH_CODE)
+        table.add_column("Name", width=WATCH_TABLE_WIDTH_NAME)
+        table.add_column("Cap", justify="right", width=WATCH_TABLE_WIDTH_CAP)
+        table.add_column("Judge", width=WATCH_TABLE_WIDTH_JUDGE)
+        table.add_column("Pos", width=WATCH_TABLE_WIDTH_POS)
+        table.add_column("Neg", width=WATCH_TABLE_WIDTH_NEG)
 
         if not scored_results:
             table.add_row("", "", "  待機中...", "", "", "", "")
@@ -982,7 +1054,7 @@ def cmd_watch(target_date: str) -> None:
                 table.add_row(
                     Text(score_str, style=style),
                     r["ticker"],
-                    (r.get("name", "") or "")[:12],
+                    (r.get("name", "") or "")[:WATCH_TABLE_WIDTH_NAME],
                     _fmt_cap(r.get("market_cap_oku")),
                     Text(_short_verdict(verdict), style=style),
                     r.get("pos_factors", ""),
@@ -1435,6 +1507,18 @@ def main() -> None:
     p_prep = sub.add_parser("prepare", help="事前準備（BQ キャッシュ取得）")
     p_prep.add_argument("--date", required=True, type=resolve_date, help="対象日 YYYYMMDD | t=今日 p=前取引日 n=次取引日")
     p_prep.add_argument("--force", action="store_true", help="キャッシュを無視して再取得")
+    p_prep.add_argument(
+        "--target",
+        choices=[PREPARE_TARGET_SCHEDULED, PREPARE_TARGET_ALL],
+        default=PREPARE_TARGET_SCHEDULED,
+        help="取得対象: scheduled=決算予定銘柄（既定） / all=全銘柄",
+    )
+    p_prep.add_argument(
+        "--data",
+        choices=[PREPARE_DATA_FULL, PREPARE_DATA_CONSENSUS],
+        default=PREPARE_DATA_FULL,
+        help="取得データ: full=全データ（既定） / consensus=コンセのみ",
+    )
 
     # catchup
     p_catch = sub.add_parser("catchup", help="指定時刻までの DiscNo キャッシュ作成")
@@ -1452,7 +1536,7 @@ def main() -> None:
     args = parser.parse_args()
 
     if args.command == "prepare":
-        cmd_prepare(args.date, force=args.force)
+        cmd_prepare(args.date, force=args.force, target=args.target, data=args.data)
     elif args.command == "catchup":
         cmd_catchup(args.date, until_time=getattr(args, "until"))
     elif args.command == "watch":
