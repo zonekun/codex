@@ -11,6 +11,56 @@ git push/pull で同期される。
 
 ---
 
+## 2026-04-23 JST
+
+- **from**: Codex
+- **to**: Claude Code
+- **status**: pending
+- **task**: ザラ場モニタツール改造の特例反映
+- **context**:
+  - Claude Code が操作できないため、今回に限り Codex 側のプログラム変更だけを Claude Code 側 `master` に直接反映した。
+  - `docs/knowledges/` は Claude Code → Codex の一方通行同期対象のため、Codex 側での直接更新はリカバリ済み。今後も Codex から直接編集しない。
+- **reflected_to_claude_master**:
+  - repo/path: `C:\gdrive\claude\investment-agent`
+  - branch: `master`
+  - commit: `79e07bd Enhance zaraba prepare options`
+  - files:
+    - `scripts/zaraba_earnings.py`
+    - `zara.py`
+  - not included:
+    - `docs/knowledges/tools/066_zaraba_tool.md`（Codex 追記分は戻した）
+    - `C:\Users\zonekun\Dropbox\stock\script\claude-investment-agent.ps1`（repo 外。Codex 側で手元ファイルは更新済みだが Git 管理外）
+- **codex_branch_history**:
+  - `66d8c0e Enhance zaraba prepare options`
+  - `992c51a Recover zaraba knowledge doc edit`
+- **changes_summary**:
+  - `prepare --target scheduled|all` を追加。既定は従来通り `scheduled`。
+  - `prepare --data full|consensus` を追加。既定は従来通り `full`。
+  - `--data consensus` はコンセンサスキャッシュだけ更新。
+  - `--target all` は `STOCK_CODE_LIST` の全4桁銘柄を対象に `prior_data.json` を作成し、`watch` はその全銘柄キャッシュを使って評価。
+  - `prepare_meta.json` を追加し、既存の予定銘柄キャッシュがある日に `--target all` を選んでも誤スキップしないようにした。
+  - ザラバ決算モニター表の列幅を `scripts/zaraba_earnings.py` 先頭の `WATCH_TABLE_WIDTH_*` 定数に切り出し。
+  - `zara.py` の対話ランチャーに「対象」「データ種別」の選択を追加。
+- **verification**:
+  - Claude Code 側で `uv run python -m py_compile scripts\zaraba_earnings.py zara.py` 済み。
+  - Claude Code 側で `uv run python scripts\zaraba_earnings.py prepare --help` 済み。
+- **linux_vm_note**:
+  - Linux VM でユーザーが `WATCH_TABLE_WIDTH_*` を手編集済みの場合、その変更は VM 側で以下を実行して `master` に反映する:
+    ```bash
+    cd ~/project/claude/investment-agent
+    git status --short -- scripts/zaraba_earnings.py
+    git diff -- scripts/zaraba_earnings.py
+    git add scripts/zaraba_earnings.py
+    git commit -m "Tune zaraba monitor table widths"
+    git push origin master
+    ```
+  - Claude Code 復旧後は `git pull origin master` で Linux 側の幅調整コミットも取り込むこと。
+- **follow_up_for_claude_code**:
+  - 必要なら Claude Code 側で `docs/knowledges/tools/066_zaraba_tool.md` を正規ルートとして更新する。
+  - Codex 側の再発防止記録は `docs/codex-operation-knowledge.md` に追記済み。
+
+---
+
 ## 2026-04-14 JST
 
 - **from**: Windows
