@@ -336,7 +336,9 @@ TDNET_PREFER_CONSOLIDATED = ["ConsolidatedMember"]  # 連結優先、なけれ�
 # NEXT_YEAR_FORECAST_OP: NextYearDuration_ConsolidatedMember_ForecastMember
 # FORECAST_DIV_ANN: CurrentYearDuration_AnnualMember_NonConsolidatedMember_ForecastMember
 TDNET_FORECAST_CURRENT_PATTERNS = ["CurrentYearDuration", "CurrentAccumulatedQ"]
-TDNET_FORECAST_NEXTYEAR_PATTERNS = ["NextYearDuration", "NextAccumulatedQ"]
+# 翌期見通しは通期のみを使う。NextAccumulatedQ* は翌期1Q/2Qなどの短期予想で、
+# FY実績と比較すると 7931 のように「翌期↓-81%」等の誤判定になる。
+TDNET_FORECAST_NEXTYEAR_PATTERNS = ["NextYearDuration"]
 TDNET_FORECAST_DIV_ANN_PATTERNS = ["AnnualMember"]  # 年間配当は AnnualMember を含む
 
 

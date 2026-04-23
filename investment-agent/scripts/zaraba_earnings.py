@@ -882,7 +882,7 @@ def _split_factors(factors: str | list[str]) -> tuple[str, str]:
 
     プラス因子: 上方修正・増配・進捗↑・YoY+・翌期↑・コンセ乖離+・QoQ+・成長加速・
                 自社株買い・記念配当・テーマブースト・PEG割安・売り長
-    マイナス因子: 下方修正・減配・大幅減配・進捗↓・YoY-・翌期↓・コンセ乖離-・QoQ-・
+    マイナス因子: 下方修正・減配・大幅減配・進捗↓・YoY-・翌期↓・翌期予想非開示・コンセ乖離-・QoQ-・
                 成長減速・PEG割高・折込⚠・出来高x..⚠・出尽くし
     """
     if isinstance(factors, str):
@@ -890,7 +890,7 @@ def _split_factors(factors: str | list[str]) -> tuple[str, str]:
     else:
         items = list(factors)
     NEG_MARKERS = (
-        "下方", "減配", "進捗↓", "翌期↓", "QoQ-", "成長減速", "PEG割高",
+        "下方", "減配", "進捗↓", "翌期↓", "翌期予想非開示", "QoQ-", "成長減速", "PEG割高",
         "折込", "出来高", "出尽くし",
     )
     pos, neg = [], []
@@ -1383,6 +1383,9 @@ def _score_record(
             elif nx_chg < -0.10:
                 score -= 2
                 factors.append(f"翌期↓{nx_chg:+.0%}")
+        else:
+            score -= 1
+            factors.append("翌期予想非開示")
 
     # ── F5: 出尽くしリスク（3Q） ─────────────────────
     if cur_per == "3Q" and cumulative_op is not None and effective_forecast_op and effective_forecast_op > 0:
