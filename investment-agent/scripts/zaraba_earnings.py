@@ -154,11 +154,17 @@ def _cache_dir(target_date: str) -> Path:
 
 
 def _prior_data_path(target_date: str) -> Path:
-    return _cache_dir(target_date) / "prior_data.json"
+    """全銘柄 prepare 用の共有キャッシュパス。
+
+    target_date は互換用に受け取るが、全銘柄の BQ コストを避けるため日付別にはしない。
+    日付ごとの状態管理が必要な seen/results は引き続き _cache_dir(target_date) 配下。
+    決算予定銘柄 prepare は日ごとに対象が変わるため、従来通り日付別キャッシュを使う。
+    """
+    return CACHE_BASE / "prior_data.json"
 
 
 def _prepare_meta_path(target_date: str) -> Path:
-    return _cache_dir(target_date) / "prepare_meta.json"
+    return CACHE_BASE / "prepare_meta.json"
 
 
 def _calendar_path(target_date: str) -> Path:
@@ -174,6 +180,18 @@ def _results_path(target_date: str) -> Path:
 
 
 def _master_all_path(target_date: str) -> Path:
+    return CACHE_BASE / "master_all.csv"
+
+
+def _legacy_prior_data_path(target_date: str) -> Path:
+    return _cache_dir(target_date) / "prior_data.json"
+
+
+def _legacy_prepare_meta_path(target_date: str) -> Path:
+    return _cache_dir(target_date) / "prepare_meta.json"
+
+
+def _legacy_master_all_path(target_date: str) -> Path:
     return _cache_dir(target_date) / "master_all.csv"
 
 
@@ -209,8 +227,12 @@ def cmd_prepare(
 
     log.info("prepare_start", date=target_date, force=force, target=target, data=data)
 
-    prior_path = _prior_data_path(target_date)
-    meta_path = _prepare_meta_path(target_date)
+    if target == PREPARE_TARGET_ALL:
+        prior_path = _prior_data_path(target_date)
+        meta_path = _prepare_meta_path(target_date)
+    else:
+        prior_path = _legacy_prior_data_path(target_date)
+        meta_path = _legacy_prepare_meta_path(target_date)
     cal_path = _calendar_path(target_date)
 
     if data == PREPARE_DATA_FULL and prior_path.exists() and not force:
@@ -222,6 +244,8 @@ def cmd_prepare(
             log.info("cache_exists", path=str(prior_path), target=target)
             print(f"キャッシュ済み: {prior_path}")
             print("再取得するには --force を指定してください")
+            if target == PREPARE_TARGET_ALL:
+                print(f"全銘柄共有キャッシュのため指定日 {target_date} では再取得しません")
             # キャッシュから読み込んでサマリー表示
             with open(prior_path, encoding="utf-8") as f:
                 prior = json.load(f)
@@ -976,12 +1000,19 @@ def cmd_watch(target_date: str) -> None:
         with open(prior_path, encoding="utf-8") as f:
             prior = json.load(f)
         log.info("prior_loaded", count=len(prior))
+    elif _legacy_prior_data_path(target_date).exists():
+        legacy_path = _legacy_prior_data_path(target_date)
+        with open(legacy_path, encoding="utf-8") as f:
+            prior = json.load(f)
+        log.info("prior_loaded_legacy", count=len(prior), path=str(legacy_path))
     else:
         log.warning("no_prior_cache", msg="prepare 未実行。事前情報なしでスコアリング（一部因子無効）")
 
     # マスタ全件（カレンダー外銘柄の名前引き用）
     master_lookup: dict[str, str] = {}
     master_all_p = _master_all_path(target_date)
+    if not master_all_p.exists() and _legacy_master_all_path(target_date).exists():
+        master_all_p = _legacy_master_all_path(target_date)
     if master_all_p.exists():
         df_ma = pd.read_csv(master_all_p, encoding="utf-8", dtype=str)
         master_lookup = dict(zip(df_ma["TICKER"], df_ma["STOCK_NAME"]))
@@ -1511,7 +1542,7 @@ def main() -> None:
         "--target",
         choices=[PREPARE_TARGET_SCHEDULED, PREPARE_TARGET_ALL],
         default=PREPARE_TARGET_SCHEDULED,
-        help="取得対象: scheduled=決算予定銘柄（既定） / all=全銘柄",
+        help="取得対象: scheduled=決算予定銘柄（既定・日付別） / all=全銘柄（共有キャッシュ）",
     )
     p_prep.add_argument(
         "--data",
