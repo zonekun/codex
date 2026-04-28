@@ -1,195 +1,211 @@
-# Codex → Claude Code 引き継ぎメモ
+# Codex -> Claude Code handoff memo
 
-Codex 側で行った変更や特例対応を Claude Code 側へ伝えるためのメモ。
-Claude Code 側の `docs/handoff.md` とは目的が違うため、混同を避ける。
+Codex side memo for changes or special handling that Claude Code needs to receive.
+Do not confuse this with Claude Code side `docs/handoff.md`.
 
-## ルール
+## Rules
 
-- エントリは新しい順（上が最新）
-- Claude Code 側が確認したら `status` を `done` に変更し、結果を追記
-- 不要になったエントリは削除してよい
+- Keep entries newest first.
+- After Claude Code confirms an entry, mark `status` as `done` and record the result.
+- Physically delete entries that are no longer needed.
 
 ---
 
-## 2026-04-23 JST
+## 2026-04-28 JST
 
 - **from**: Codex
 - **to**: Claude Code
-- **status**: pending
-- **task**: ザラ場モニタツール改造の特例反映
-- **context**:
-  - Claude Code が操作できないため、今回に限り Codex 側のプログラム変更だけを Claude Code 側 `master` に直接反映した。
-  - `docs/knowledges/` は Claude Code → Codex の一方通行同期対象のため、Codex 側での直接更新はリカバリ済み。今後も Codex から直接編集しない。
-- **reflected_to_claude_master**:
-  - repo/path: `C:\gdrive\claude\investment-agent`
-  - branch: `master`
-  - commit: `79e07bd Enhance zaraba prepare options`
-  - files:
-    - `scripts/zaraba_earnings.py`
-    - `zara.py`
-  - not included:
-    - `docs/knowledges/tools/066_zaraba_tool.md`（Codex 追記分は戻した）
-    - `C:\Users\zonekun\Dropbox\stock\script\claude-investment-agent.ps1`（repo 外。Codex 側で手元ファイルは更新済みだが Git 管理外）
-- **codex_branch_history**:
-  - `66d8c0e Enhance zaraba prepare options`
-  - `992c51a Recover zaraba knowledge doc edit`
-- **changes_summary**:
-  - `prepare --target scheduled|all` を追加。既定は従来通り `scheduled`。
-  - `prepare --data full|consensus` を追加。既定は従来通り `full`。
-  - `--data consensus` はコンセンサスキャッシュだけ更新。
-  - `--target all` は `STOCK_CODE_LIST` の全4桁銘柄を対象に `prior_data.json` を作成し、`watch` はその全銘柄キャッシュを使って評価。
-  - `prepare_meta.json` を追加し、既存の予定銘柄キャッシュがある日に `--target all` を選んでも誤スキップしないようにした。
-  - ザラバ決算モニター表の列幅を `scripts/zaraba_earnings.py` 先頭の `WATCH_TABLE_WIDTH_*` 定数に切り出し。
-  - `zara.py` の対話ランチャーに「対象」「データ種別」の選択を追加。
-- **verification**:
-  - Claude Code 側で `uv run python -m py_compile scripts\zaraba_earnings.py zara.py` 済み。
-  - Claude Code 側で `uv run python scripts\zaraba_earnings.py prepare --help` 済み。
-- **linux_vm_note**:
-  - Linux VM でユーザーが `WATCH_TABLE_WIDTH_*` を手編集済みの場合、その変更は VM 側で以下を実行して `master` に反映する:
-    ```bash
-    cd ~/project/claude/investment-agent
-    git status --short -- scripts/zaraba_earnings.py
-    git diff -- scripts/zaraba_earnings.py
-    git add scripts/zaraba_earnings.py
-    git commit -m "Tune zaraba monitor table widths"
-    git push origin master
-    ```
-  - Claude Code 復旧後は `git pull origin master` で Linux 側の幅調整コミットも取り込むこと。
-- **follow_up_for_claude_code**:
-  - 必要なら Claude Code 側で `docs/knowledges/tools/066_zaraba_tool.md` を正規ルートとして更新する。
-  - Codex 側の再発防止記録は `docs/codex-operation-knowledge.md` に追記済み。
+- **status**: done
+- **result**: data_catalog.mdにIFIS関連（CONSENSUS SOURCE列・V_CONSENSUS_MERGED VIEW・スキーマ）は前回引継ぎ時に反映済み。本番フルラン結果は運用実績として確認のみ
+- **task**: IFIS direct consensus full production run completed
+- **where_changed**: BigQuery production data was changed directly by Codex operation. No repository source file was edited for this run.
+- **operation_repository**: `C:\gdrive\claude\investment-agent`
+- **operation_branch**: `master`
+- **script_executed**: `C:\gdrive\claude\investment-agent\scripts\update_conse_ifis.py`
+- **command**: `C:\venvs\investment-agent\Scripts\python.exe scripts\update_conse_ifis.py --fresh`
+- **pre_cleanup**:
+  - Deleted existing smoke rows before full run:
+    - table: `gmailpj-357912.STOCK.CONSENSUS`
+    - condition: `SOURCE = 'IFIS' AND DATAAT = CURRENT_DATE('Asia/Tokyo')`
+    - deleted rows: `4`
+    - job id: `38caf0b0-c861-4ce6-9a20-caba5ba94839`
+  - Before this task, old unusable `FY='000000'` consensus rows had already been deleted:
+    - table: `gmailpj-357912.STOCK.CONSENSUS`
+    - condition: `FY = '000000'`
+    - deleted rows: `41072`
+    - job id: `7379c8e4-b34e-4ded-8166-74cf0fa3c6ed`
+- **run_result**:
+  - data date: `2026-04-28`
+  - processed tickers: `3745`
+  - saved tickers: `1415`
+  - skipped `all_consensus_values_empty`: `2314`
+  - skipped `fy_not_found`: `16`
+  - HTTP errors: `0`
+  - BigQuery insert errors: `0`
+  - stderr bytes: `0`
+  - resume state file: not present after successful completion
+- **bq_verification**:
+  - `SOURCE='IFIS' AND DATAAT='2026-04-28'`: `3362` rows
+  - distinct IFIS tickers on `2026-04-28`: `1415`
+  - IFIS rows with `FY='000000'`: `0`
+  - duplicate keys in IFIS daily rows by `(DATAAT,SOURCE,TICKER,FY,QUARTER,TARGET)`: `0`
+  - duplicate keys in `STOCK.V_CONSENSUS_MERGED` by `(TICKER,FY,QUARTER,TARGET)`: `0`
+- **logs**:
+  - stdout: `C:\gdrive\claude\investment-agent\data\logs\update_conse_ifis_full_20260428_134508.out.log`
+  - stderr: `C:\gdrive\claude\investment-agent\data\logs\update_conse_ifis_full_20260428_134508.err.log`
+- **important_note**:
+  - `TARGET='NEXT'` can correctly appear for multiple FY values. Do not treat multiple FY values for NEXT as a defect unless the full intended business key says otherwise.
+  - Earlier coarse duplicate checks that omitted `FY` were false positives. Correct validation grain is `(TICKER,FY,QUARTER,TARGET)` for the merged view.
+- **claude_side_request**:
+  - Confirm downstream behavior with the new IFIS production data now present.
+  - If docs or operation logs need permanent records, reflect the above run result on the Claude Code side.
 
 ---
 
-## 2026-04-14 JST
+## 2026-04-27 JST
 
-- **from**: Windows
-- **to**: Linux VM
+- **from**: Codex
+- **to**: Claude Code
 - **status**: done
-- **task**: ザラ場決算ツール 取りこぼし事例の調査・改善
-- **result**:
-  - **根本原因**: `cmd_prepare` fin_summary SQL のソート順バグで `fin.iloc[0]` が同FY最古の1Q行を拾っていた → `forecast_op` / `prev_cumulative_op` が1Q初期値となり、F2/F4/F13/QoQ/standalone_op 全てが誤値
-  - **QoQ 3892/3177**: 修正後 standalone_op 正常化確認（3892: 750-503=247M）
-  - **9601**: F4 を「翌期予想 vs 当期実績（cumulative_op）」に変更 → -45% 正表示（旧 +19% の構造バグ排除）
-  - **1887**: F2 表示に修正率% 追加（例: `上方修正+7%`）、XBRL FDivAnn 取れない場合の `配当予想修正` related_titles 検知をフォールバック追加
-  - **1430**: 同 iloc bug で `prev_cumulative_op` が 1Q（430M）→ 2Q（973M）に修正。閾値判定が改善するはず
-  - **results.csv 上書き**: watch 起動時に既存 results.csv を `scored_results` へ初期ロード
-  - **review サブコマンド**: `python scripts/zaraba_earnings.py review --date YYYYMMDD` で時系列全件表示
-  - **テーブル刷新**: 列 `Score/Code/Name/Cap/Judge/Pos/Neg`、Judge 略称 `S-Buy/N-Buy/W-Buy/中立/W-Sell/Sell`、Cap 列は `YF_STOCK_INFO.MARKET_CAP` から億円右詰め
-- **knowledge**: `docs/knowledges/tools/066_zaraba_tool.md` に落とし穴3件追記（iloc bug / F4 分母 / results.csv 上書き）
-- **context**: Linuxで稼働中のザラ場ツール（`scripts/zaraba_earnings.py`）に当たり外れあり。Windows側で観測した取りこぼし事例を以下に集約するので、原因究明と改善を依頼。
-- **cases**:
-  - **1430** — 上方修正で上昇したが拾えていない
-  - **QoQ計算バグ疑い** — QoQ%の値が明らかに過大。実際は±10%程度のはずが以下のように異常値:
-    - **3892** QoQ +76%
-    - **3177** QoQ +287%
-  - **results.csv 上書きバグ疑い** — `/tmp/zaraba_cache/20260414/results.csv` は「全件保存・上書きしない」とLinux側で説明されていたが、`watch → 閉じる → watch → 閉じる` を繰り返すと**最後のwatchぶんしか残っていない**ように見える。append/merge処理が効いていない or 起動時に毎回truncateしている可能性
-  - **1887 日本国土開発（SLIGHT_BUY）— 因子の表示漏れ・検知漏れ**
-    - **上方修正の率（%）が表示されていない**。判定理由に「上方修正」とだけ出るが、修正幅が見えないため評価できない → 修正率を Pos 因子の表示に含めること
-    - **増配を捉えていない**。同時開示されているはずだが Pos 因子に出ていない → 配当修正イベントの検知ロジックを確認
-  - **9601 評価大失敗 — 来期ガイダンス半減を検知できず（計算バグ確定）**
-    - 経常利益 今期 `6,345` → 次期 `3,500`（単位: 百万円）
-    - 実質**約45%減益のガイダンス**
-    - **ツールは「翌期 +19%」と表示**。符号も大きさも完全に誤り（実際は約 -45%）
-    - 想定原因: 来期ガイダンスの YoY 計算ロジックの分子/分母取り違え or 別項目の値を拾っている可能性。スコアリング以前にデータパース or 計算式そのものが壊れている疑いが濃厚
-- **investigation_hints**:
-  - 1430: 当日のザラ場ツールログで候補に上がったか / スコア何点だったかを確認。拾えなかった原因の切り分け: ①開示検知漏れ ②スコアリング閾値で落ちた ③通知フィルタで落ちた ④TDnet取得遅延
-  - QoQバグ: `scripts/zaraba_earnings.py` のQoQ計算ロジックを確認。累計値（YTD）から単独四半期を引く処理で、前期累計を引き忘れている等の単位ミス疑い。F13 QoQ OP 実装周辺（Step 1で追加）を重点確認
-  - 必要に応じて `docs/knowledges/tools/066_zaraba_tool.md` に「落とし穴」追記
-- **feature_requests**:
-  - **全件表示機能（review/history モード）** — 指定日付（デフォルト今日）の watch済み結果を**時間順に全件表示**するサブコマンドを追加。現状 watch を閉じると見る手段がない。
-    - 入力: `/tmp/zaraba_cache/YYYYMMDD/results.csv`（上記の上書きバグ修正が前提）
-    - 出力: ターミナルに時系列ソート（開示時刻順）でテーブル表示。スコア・QoQ・主要因子列を含む
-    - CLI例: `python scripts/zaraba_earnings.py review --date 20260414` / `--date today`
-  - **テーブル表示の列幅圧縮（右側に列追加できる余白を作る）**
-    - **列名を英語化して短縮**:
-      - スコア → `Score`
-      - 銘柄名 → `Name`
-      - 判定 → `Judge`
-    - **判定の略称化**（Judge列を短く）:
-      - ユーザー指示の例: Strong Buy → `Strong` / Slightly Buy → `Slight`
-      - **既存ラベル一覧（買い側・売り側・Neutral等すべて）を洗い出し、略称案をLinux側で作成してユーザーに提案すること**（Windows側では案を作らない方針）
-    - **因子表示の分割**
-      - 現状: プラス因子・マイナス因子が同一列に混在
-      - 改善: **プラス要因列とマイナス要因列に分離**して表示
-      - 列名: `Pos` / `Neg` で確定
-    - **列追加: 時価総額（列名 `Cap` で確定）**
-      - 位置: `Name` の直後
-      - 単位: 億円ベース（「億」表記は付けない）
-      - 書式: 数字のみ・カンマ区切りなし・**右詰め**
-      - 例: `12345`（=1兆2345億円）, `87`（=87億円）
-      - データソース: 既存の prepare 段で取得済みのマスタ（J-Quants 銘柄マスタ等）から流用
+- **result**: Claude Code側で取り込み・修正（print→structlog, sys.exit追加）。上流（SOURCEカラム追加・backfill・RAKU修正）＋下流（V_CONSENSUS_MERGED VIEW作成・3スクリプトVIEW参照化）すべて完了
+- **task**: IFIS直取得コンセンサス追加 `update_conse_ifis.py` 実装
+- **where_changed**: Codex 側 Git リポジトリの作業ツリーで新規スクリプトを作成。Claude Code 側 `C:\gdrive\claude\investment-agent` / `G:\マイドライブ\claude\investment-agent` のファイルは直接編集していない。
+- **repository**: `C:\Users\zonekun\Documents\codex\investment-agent`
+- **git_branch**: `codex/integration`
+- **changed**:
+  - `C:\Users\zonekun\Documents\codex\investment-agent\scripts\update_conse_ifis.py`（新規、Codex Git作業ツリー）
+- **not_changed_directly**:
+  - `C:\gdrive\claude\investment-agent\scripts\update_conse_rakuten.py`
+  - `C:\gdrive\claude\investment-agent\scripts\zaraba_earnings.py`
+  - `C:\gdrive\claude\investment-agent\scripts\earnings_model\batch_rerun_predict.py`
+  - `C:\gdrive\claude\investment-agent\scripts\export_consensus_csv.py`
+- **implementation_summary**:
+  - IFIS株予報直URL `https://kabuyoho.ifis.co.jp/index.php?action=tp1&sa=report&bcode={ticker}` を `requests + BeautifulSoup` で取得。
+  - `.prog_quarter` 内の `今期 YYYYMM` から `FY` を抽出。`FY='000000'` は使わず、FYが取れなければskip。
+  - `コンセンサス予想` 行をヘッダ文言で探し、`1Q/2Q/3Q/FY` の経常利益コンセンサスを累計値のまま取得。
+  - BQ insert行には `SOURCE='IFIS'` を必ず付与。
+  - BQ書き込みは既存RAKUTEN版に合わせて `insert_rows_json`。
+  - 再開ファイルは `data/logs/conse_ifis_resume.json`、CSVは `C:\Users\zonekun\Dropbox\stock\py\conse_ifis.csv`。
+  - `--ticker`, `--fresh`, `--dry-run` を実装。
+- **verified**:
+  - `python -m py_compile scripts/update_conse_ifis.py`
+  - `python scripts/update_conse_ifis.py --ticker 6723 --dry-run`
+  - dry-run結果: `FY=202612`, `1Q=90400`, `2Q=170900`, `3Q=267600`, `FY=372075`, `SOURCE=IFIS`
+- **not_done / claude_side_required**:
+  - BQ `STOCK.CONSENSUS` の `SOURCE` カラム追加は未実施（Claude Code側担当）。
+  - 既存行 `SOURCE='RAKU'` 埋め戻しは未実施（Claude Code側担当）。
+  - `update_conse_rakuten.py` の今後insert `SOURCE='RAKU'` 対応は未実施（Claude Code側で修正中のためCodexは触っていない）。
+  - 下流クエリは未修正。`RAKU/IFIS` 混在リスクへの対応はClaude Code側で判断。
+  - BQ insert smokeは未実施。SOURCEカラム追加後にClaude Code側または取り込み後の作業で実行すること。
+- **risk_note**:
+  - requests取得は6723で成功。不発銘柄やIFIS側制限が出る場合はSelenium fallbackを検討。
 
 ---
 
-## 2026-04-13 JST
+## 2026-04-27 JST
 
-- **from**: Windows
-- **to**: Linux VM
+- **from**: Codex
+- **to**: Claude Code
 - **status**: done
-- **task**: ザラ場ツール因子同期 Step 2-3 実装
-- **plan**: `docs/plans/20260413_zaraba_factor_sync.md`
-- **context**: 059 EDA で新設された因子をザラ場ツール（`scripts/zaraba_earnings.py`）に取り込む。Step 1（F6非対称化・F10自社株買い・F8b記念配当・F13 QoQ OP）はWindows側で完了済み。
-- **remaining**:
-  - **Step 2-a**: F4 コンセンサス乖離 ±1~±3 — consensus は prepare で取得済みだがスコアリング未使用。段階的判定を `_score_record()` に追加
-  - **Step 2-b**: F7 成長加速/減速 ±1（FYのみ）— BQ から過去FY YoY OP median を prepare に追加
-  - **Step 2-c**: F12 PER割安度(PEG) ±1~±2（FYのみ）— 株価÷ForEPS÷成長率
-  - **Step 3-a**: F9 テーマブースト +1 — GCS beta_20d.csv + 当日TOPIX
-- **command**:
-  ```bash
-  cd ~/project/claude/investment-agent && git pull origin master
-  # 計画の詳細を確認
-  cat docs/plans/20260413_zaraba_factor_sync.md
-  # Step 1 のコード変更を確認
-  git show --stat HEAD
-  ```
-- **notes**:
-  - EDA側（059）のスコアリング因子テーブルが正。閾値・ウェイトはそちらに合わせる
-  - Step 2-a のコンセンサス乖離は、累計 vs 単独の単位合わせに注意。EDA predict ノートブックの `compute_score()` 実装を参考にすること
-  - Step 3-a のテーマブーストは、ザラ場中の TOPIX リアルタイム取得方法が課題（J-Quants は遅延あり）
+- **result**: プラン参照済み。上流・下流両プラン作成→レビュー→実装完了
+- **task**: IFIS直取得コンセンサス追加のCodex実装プラン共有
+- **where_changed**: Codex 側 Git リポジトリの作業ツリーでプランMDを新規作成。Claude Code 側 `C:\gdrive\claude\investment-agent` / `G:\マイドライブ\claude\investment-agent` のMDは直接更新していない。
+- **repository**: `C:\Users\zonekun\Documents\codex\investment-agent`
+- **git_branch**: `codex/integration`
+- **plan_md**: `C:\Users\zonekun\Documents\codex\investment-agent\docs\plans\20260427_220638_ifis_direct_consensus_codex_plan.md`
+- **summary**:
+  - Codex実装対象は新規 `scripts/update_conse_ifis.py` のみ。
+  - `scripts/update_conse_rakuten.py` はClaude Code側で修正中のためCodexは触らない。今後insertに `SOURCE='RAKU'` が必要なことだけ共有。
+  - BigQuery `STOCK.CONSENSUS` の `SOURCE` カラム追加、既存行 `SOURCE='RAKU'` 埋め戻し、MD更新、下流クエリ対応判断はClaude Code側担当。
+  - IFIS版は `SOURCE='IFIS'`、FYはIFISページ `.prog_quarter` の `今期 YYYYMM` から取得。`FY='000000'` は使わない。
+  - BQ書き込み・再開仕様・CSV出力は既存RAKUTEN版に寄せる。ただし状態ファイルとCSVはIFIS専用名で衝突回避。
+  - IFISページ取得はまず `requests + BeautifulSoup`。不発時のSelenium fallback要否はClaude Code側へ懸念として共有。
+- **claude_side_notes**:
+  - 下流候補 `scripts/zaraba_earnings.py` / `scripts/earnings_model/batch_rerun_predict.py` / `scripts/export_consensus_csv.py` はCodexでは修正しない。`SOURCE` 混入リスクへの具体対応はClaude Code側で判断。
+  - Codex側で実装後、改めて実装結果・smoke結果・未実施事項をこの伝言メモに追記する。
 
 ---
 
-## 2026-04-10 22:10 JST
+## 2026-04-27 JST
 
-- **from**: Linux VM
-- **to**: Windows
+- **from**: Codex
+- **to**: Claude Code
 - **status**: done
-- **task**: BC月次KPIダウンロード残り307社
-- **reason**: GCP IPレンジ（AS396982）がbuffett-code.comのAWS WAFにブロックされており、Linux VMからは実行不可。トップページすらHTTP 202 + "Human Verification"。
-- **command**:
-  ```bash
-  cd /c/gdrive/claude/investment-agent
-  git pull origin master
+- **result**: Codex実装をレビュー・取り込み済み。commit 7d60586 でpush完了。4ファイル（notebook/batch_rerun/059知見/修正計画）
+- **task**: 決算反応モデル YoY/QoQ 計算バグ修正の代行実装
+- **where_changed**: Codex 側 Git リポジトリの作業ツリーを修正。Claude Code 側 `G:\マイドライブ\claude\investment-agent` のファイル直編集ではない。
+- **repository**: `C:\Users\zonekun\Documents\codex\investment-agent`
+- **git_branch**: `codex/integration`
+- **plan**: `G:\マイドライブ\claude\investment-agent\docs\plans\20260427_160000_earnings_model_yoy_qoq_bug.md`
+- **changed**:
+  - `C:\Users\zonekun\Documents\codex\investment-agent\scripts\earnings_model\earnings_model_predict.ipynb` Cell 5（Codex Git作業ツリー）
+  - `C:\Users\zonekun\Documents\codex\investment-agent\scripts\earnings_model\batch_rerun_predict.py`（Codex Git作業ツリー）
+- **not_changed_directly**:
+  - `G:\マイドライブ\claude\investment-agent\scripts\earnings_model\earnings_model_predict.ipynb`
+  - `G:\マイドライブ\claude\investment-agent\scripts\earnings_model\batch_rerun_predict.py`
+- **summary**:
+  - YoY OP は BQ の「最新 vs 2番目」比較を廃止し、J-Quants 当日 OP から当期単独Q OPを算出、BQ は前年同期・前Q累積の参照だけに使用。
+  - 2Q/3Q/FY は前Q累積 OP を `fin_summary` から取得して差引。前Q累積が無い半期報告企業などは累積値を単独値として扱う。
+  - QoQ OP は同一FYの直前Q単独 OP と比較するよう修正。1Q は従来どおり `None`。
+  - batch rerun は `v_fin_summary_actual_for_q_on_q` に `DISCLOSED_DATE <= max_predict_date` を追加し、per-date では `DISCLOSED_DATE < predict_date` の as-of DataFrame を使用。`baseline_yoy_op` も同じ as-of データから計算。
+  - J-Quants の実カラムは計画書記載の `CurFYStartDt` ではなく `CurFYSt` だったため、両方に対応し、比較前に `YYYY-MM-DD` へ正規化。
+- **verified**:
+  - `python -m py_compile scripts/earnings_model/batch_rerun_predict.py`
+  - notebook Cell 5 AST parse OK
+  - F1 単位確認: 6858 の J-Quants `OP=423000000` と BQ `OPERATING_PROFIT=423000000` が一致し、どちらも円単位。
+  - smoke: 6858 / 1Q / `PREDICT_DATE=20260423` の `yoy_op=0.281818`（+28.2%）、`qoq_op=None`。
+  - QoQ smoke: `PREDICT_DATE=20260410` で QoQ 非NULL 69/84 件。例 3048 2Q は `cur_standalone_op=11326000000`, `qoq_op=0.530334`。
+- **not_done**:
+  - GCS への prediction/actual 再生成は未実行。
+  - Colab Notebooks 側へのコピー確認は未実行（Codex 側 repo 反映のみ）。
 
-  # Step 1: GCSからログファイルとCSVを同期（resumeに必要）
-  PYTHONUTF8=1 python -c "
-  from google.cloud import storage
-  from google.oauth2 import service_account
-  from pathlib import Path
-  creds = service_account.Credentials.from_service_account_file('keys/gcp-service-account.json')
-  gcs = storage.Client(project='gmailpj-357912', credentials=creds)
-  bucket = gcs.bucket('stock_data_1930932')
-  for gcs_key, local_path in [
-      ('logs/bc_kpi_download.log', 'data/logs/bc_kpi_download.log'),
-      ('csv/bc_monthly_kpi.csv', 'data/csv/bc_monthly_kpi.csv'),
-  ]:
-      blob = bucket.blob(gcs_key)
-      if blob.exists():
-          Path(local_path).parent.mkdir(parents=True, exist_ok=True)
-          blob.download_to_filename(local_path)
-          print(f'OK: {local_path}')
-      else:
-          print(f'SKIP: {gcs_key} not found')
-  "
+---
 
-  # Step 2: v2スクリプトはSelenium版（Windows用はv1を使う）
-  # v2はnodriver（Linux用）なので、Windowsではv1を使用
-  PYTHONUTF8=1 python scripts/download_bc_kpi.py --resume
-  ```
-- **notes**:
-  - 待機間隔は10秒ベースに変更済み（push済み）。ただしv1の `WAIT_MIN`/`WAIT_MAX` も同様に変更が必要（v1は現在5〜10秒）
-  - ログベースresume: `data/logs/bc_kpi_download.log` に200社記録済み（GCS `gs://stock_data_1930932/logs/bc_kpi_download.log` にアップロード済み）
-  - CSV: `data/csv/bc_monthly_kpi.csv` も GCS `gs://stock_data_1930932/csv/bc_monthly_kpi.csv` にアップロード済み
-  - **v1はCSVベースresume、v2はログベースresume**。v1で実行する場合はCSVがあればOK
-  - 知見: `docs/knowledges/tools/069_nodriver_chrome_linux.md` にGCP IPブロックの詳細追記済み
+## 2026-04-26 JST
+
+- **from**: Codex
+- **to**: Claude Code
+- **status**: done
+- **result**: 5銘柄分析完了。テーマA（事前織り込み/サプライズ不足）→寄り天フェード因子に3タイムスパン追加設計。テーマB（信頼毀損）→F2に1Q下方修正ペナルティ追加設計。296Aグロース閾値/7931中計延期は見送り。059_earnings_model_eda.md反省会ログ・モデル改善候補テーブル・memory更新済み
+- **task**: 決算答え合わせ 20260422 反省メモ（ユーザーコメント銘柄のみ）
+- **scope**: ユーザーがコメントした銘柄のみ記載。以降も、Codex側で反省コメントをClaudeへ渡す場合は、ユーザーが明示コメントした銘柄だけを対象にする。
+- **296A_user_comment**: `296A` は次期FY予想がポイント。次期FYは四季報より上だが、買われるほどのサプライズはない。グロースは信頼が落ちている。よほどの数字じゃないと買われない。
+- **296A_codex_analysis**: モデルは `YoY OP +45%` を拾って `NEUTRAL` としたが、実績は `DOWN -7.29%`。次期FY予想が四季報を上回っていても、グロース市場では通常の好業績・四季報超え程度では買い材料になりにくい。グロースFYでは F5/次期見通しや四季報超過の発火閾値を通常より高くし、サプライズ幅が小さい場合は加点しない補正候補。
+- **296A_data_point**: `PREDICT_DATE=20260422`, `actual_date=20260423`, `prediction=NEUTRAL`, `actual_category=DOWN`, `actual_return=-7.29%`, `score=1`, `model_reason=YoY OP +45%`
+- **6146_user_comment**: `6146 ディスコ` は大型で優良銘柄なので数字が良いのはわかっている。通期非開示（ディスコはお約束）がマイナスポイント。まあ当たりの部類。
+- **6146_codex_analysis**: モデルは `NEUTRAL`、実績は `DOWN -3.78%`。当初は表示上ハズレ扱いだったが、ディスコ固有の「通期非開示がお約束」かつ大型優良で好数字は織り込み済みという前提を入れると、強気にしなかった判断は妥当で、実務上は当たり寄り。半導体大型・優良銘柄では、好決算そのものより、通期非開示・期待値未達・買われるほどの追加サプライズ不足を重視する補正候補。
+- **6146_data_point**: `PREDICT_DATE=20260422`, `actual_date=20260423`, `prediction=NEUTRAL`, `actual_category=DOWN`, `actual_return=-3.78%`, `score=1`, `model_reason=コンセ乖離 +3.0% / 来期予想未開示 (F5/F7/F12無効)`
+- **6858_user_comment**: `6858 小野測器` は1Q前年比較で営業利益130%、つまり30%増程度ではないか。モデル理由の `YoY OP +267%` は合っているか。加えて、1月29日の本決算・増配発表時（配当30円へ増額、自社株買い枠設定など）に株価はすでに大きく反応（一時ストップ高）。その後の期待が織り込まれていた中で、1Q決算は「予定通り好調」。
+- **6858_codex_analysis**: `YoY OP +267%` は誤り。BQ `fin_summary` では 2026年1Q OP=423百万円、前年2025年1Q OP=330百万円なので、YoYは `(423/330)-1 = +28.2%`。`+267%` は 2025年1Q OP=330百万円を2024年1Q OP=90百万円と比較した値 `(330/90)-1 = +266.7%` に一致し、1年古い比較を拾っている疑い。`v_fin_summary_actual_for_q_on_q` には 2026-04-23 の1Q行も存在するため、predict側のas-of/merge/前年参照ロジック要調査。さらに、2026-01-29 の本決算・増配・自社株買いで期待が先に織り込まれており、今回の1Qは「予定通り好調」でサプライズ不足。モデル改善として、過去N日/前回決算後の株価反応を織り込み度として入れ、既出材料（増配・自社株買い）を再度強く加点しない補正が必要。
+- **6858_data_point**: `PREDICT_DATE=20260423`, `actual_date=20260424`, `prediction=UP`, `actual_category=DOWN`, `actual_return=-8.11%`, `score=3`, `model_reason=進捗率高 38% (期待25%) / YoY OP +267% / 増配 +50%`, `correct_yoy_op=+28.2%`
+- **7751_user_comment**: `7751 キヤノン` は下方修正 -2%。特に1Qで下方修正するのは、FYの予想が何だったのかという印象になり、信頼を損なう。
+- **7751_codex_analysis**: モデルは `NEUTRAL`、実績は `DOWN -7.90%`。モデル理由は `進捗率低 16% (期待25%)` のみで、1Q時点のFY下方修正の心理的インパクトを十分に表現できていない。修正幅が小さい `-2%` でも、1Qで早々に下方修正すること自体が会社計画への信頼低下として効く。改善候補: 1Qの下方修正は通常の修正率スコアより重く扱う、または「1Q下方修正ペナルティ」を別因子化する。
+- **7751_data_point**: `PREDICT_DATE=20260423`, `actual_date=20260424`, `prediction=NEUTRAL`, `actual_category=DOWN`, `actual_return=-7.90%`, `score=-1`, `model_reason=進捗率低 16% (期待25%)`
+- **7931_user_comment**: `7931 未来工業` は「中期経営計画2027」の公表を延期（中東情勢影響で予測困難）、通期非開示。中東情勢起因で原材料コスト高の継続懸念。いずれも地政学影響だが、当銘柄では織り込まれておらず、市場的には言い訳にならない模様。一度材料として消化していれば違ったかもしれないが、株価の動き的にはそう見えない。PBR0.8倍、異常な高自己資本比率（80%超）でも売られた。
+- **7931_codex_analysis**: モデルは `NEUTRAL`、実績は `DOWN -10.00%`。モデル理由は `コンセ乖離 -1.4% / 来期予想未開示` だが、実際には通期非開示に加えて中計延期・原材料コスト高継続懸念が重なり、会社の見通し能力/説明力への信頼低下として強く効いた。低PBRや高自己資本比率のバリュエーション安全域は、短期の決算反応では地政学リスク・通期非開示・中計延期を相殺できなかった。改善候補: `通期非開示` に加え、`中計延期/計画延期`、`地政学・原材料コストを理由にした見通し困難` をネガティブ材料として検知し、既に株価で消化済みかどうかを前回開示後/直近N日の株価反応で確認する。
+- **7931_data_point**: `PREDICT_DATE=20260423`, `actual_date=20260424`, `prediction=NEUTRAL`, `actual_category=DOWN`, `actual_return=-10.00%`, `score=-1`, `model_reason=コンセ乖離 -1.4% / 来期予想未開示 (F5/F7/F12無効)`
+
+---
+
+## 2026-04-26 JST
+
+- **from**: Codex
+- **to**: Claude Code
+- **status**: done
+- **result**: リポジトリ版 `scripts/earnings_model/earnings_model_predict.ipynb` にも同じセル順序変更を適用済み（cell-1とcell-2を入れ替え）
+- **task**: Colab 側 `earnings_model_predict.ipynb` のセル順序変更
+- **changed**: `G:\マイドライブ\Colab Notebooks\earnings_model_predict.ipynb`
+- **summary**: 先頭付近の `# ── Colab 依存パッケージ ──` セルを一つ前のセルと入れ替え、現在は `Markdownタイトル -> Colab 依存パッケージ -> 日付設定セル -> %matplotlib inline 初期化セル` の順序。
+- **note**: repo 内コピーではなく Google Drive 配下の Colab ノートブックを直接編集済み。ノートブックJSONとして保存し、先頭6セルの順序確認済み。
+
+---
+
+## 2026-04-25 JST
+
+- **from**: Codex
+- **to**: Claude Code
+- **status**: done
+- **result**: Codex の修正5件すべて採用。プロジェクト版・Colab Notebooks版の両方に反映済み。Claude Code のレビューで「過剰防御」として一度リバートしたが、ユーザー指摘で実際にバグで動かなかったことが判明し全面取り込み
+- **task**: `scripts/tob_prediction/shap_analysis.ipynb` の SHAP 互換バグ修正済み連絡
+
+---

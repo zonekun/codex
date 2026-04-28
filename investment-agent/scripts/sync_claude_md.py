@@ -1,14 +1,15 @@
-"""Import Markdown updates from the Claude Code workspace into Codex.
+"""Sync Markdown updates from the Claude Code workspace into Codex.
 
-This tool is intentionally one-sided:
-  - Claude Code workspace is read-only input.
-  - Codex workspace owns the sync manifest.
-  - Only safe three-way Markdown imports are applied automatically.
+This tool supports two modes:
+  - safe: three-way sync using a manifest baseline
+  - mirror: file-level mirror from Claude into Codex, then refresh manifest
 
 Typical usage:
     python scripts/sync_claude_md.py --init-baseline
-    python scripts/sync_claude_md.py
-    python scripts/sync_claude_md.py --apply
+    python scripts/sync_claude_md.py --mode safe
+    python scripts/sync_claude_md.py --mode safe --apply --delete
+    python scripts/sync_claude_md.py --mode mirror
+    python scripts/sync_claude_md.py --mode mirror --apply
 """
 
 from __future__ import annotations
@@ -34,6 +35,7 @@ DEFAULT_EXCLUDES = (
     "docs/git-bootstrap-notes.md",
     "docs/plans/*codex*.md",
 )
+MANIFEST_MAX_AGE_DAYS = 7
 
 
 @dataclass(frozen=True)
@@ -111,6 +113,44 @@ def write_manifest(path: Path, source_root: Path, files: dict[str, FileInfo]) ->
         f.write("\n")
 
 
+def parse_manifest_files(base_files: dict[str, dict]) -> dict[str, FileInfo]:
+    return {
+        k: FileInfo(sha256=v["sha256"], size=int(v.get("size", 0)))
+        for k, v in base_files.items()
+        if isinstance(v, dict) and "sha256" in v
+    }
+
+
+def validate_manifest(
+    manifest: dict,
+    source_root: Path,
+    allow_stale: bool,
+) -> tuple[bool, list[str]]:
+    issues: list[str] = []
+    source_root_text = manifest.get("source_root")
+    if source_root_text and Path(source_root_text) != source_root:
+        issues.append(
+            f"Manifest source_root mismatch: manifest={source_root_text} current={source_root}"
+        )
+
+    updated_at_text = manifest.get("updated_at_jst")
+    if updated_at_text:
+        try:
+            updated_at = datetime.fromisoformat(updated_at_text)
+            age = datetime.now(JST) - updated_at.astimezone(JST)
+            if age > timedelta(days=MANIFEST_MAX_AGE_DAYS):
+                issues.append(
+                    f"Manifest is stale: age={age.days}d > {MANIFEST_MAX_AGE_DAYS}d "
+                    f"(updated_at_jst={updated_at_text})"
+                )
+        except ValueError:
+            issues.append(f"Manifest updated_at_jst is invalid: {updated_at_text}")
+
+    if issues and not allow_stale:
+        return False, issues
+    return True, issues
+
+
 def classify(
     source: dict[str, FileInfo],
     dest: dict[str, FileInfo],
@@ -166,8 +206,37 @@ def classify(
     return rows
 
 
-def print_rows(rows: list[Row], verbose: bool) -> None:
-    visible = rows if verbose else [r for r in rows if r.status != "UNCHANGED"]
+def plan_mirror(
+    source: dict[str, FileInfo],
+    dest: dict[str, FileInfo],
+) -> list[Row]:
+    rows: list[Row] = []
+    paths = sorted(set(source) | set(dest))
+    for path in paths:
+        src = source.get(path)
+        dst = dest.get(path)
+        if src and not dst:
+            rows.append(Row("ADD", path, "new from Claude"))
+        elif dst and not src:
+            rows.append(Row("DELETE", path, "remove destination-only file"))
+        elif src and dst and src.sha256 != dst.sha256:
+            rows.append(Row("MODIFY", path, "overwrite from Claude"))
+    return rows
+
+
+def summarize_rows(rows: list[Row], ordered_statuses: tuple[str, ...]) -> None:
+    counts = {status: 0 for status in ordered_statuses}
+    for row in rows:
+        if row.status in counts:
+            counts[row.status] += 1
+    print("Summary:")
+    for status in ordered_statuses:
+        print(f"  {status:<20} {counts[status]}")
+
+
+def print_rows(rows: list[Row], verbose: bool, hide_statuses: set[str] | None = None) -> None:
+    hide_statuses = hide_statuses or set()
+    visible = rows if verbose else [r for r in rows if r.status not in hide_statuses]
     if not visible:
         print("No Markdown differences detected.")
         return
@@ -213,9 +282,32 @@ def apply_safe_rows(
     return applied, next_manifest
 
 
-def init_baseline(
+def apply_mirror_rows(
+    rows: list[Row],
     source_root: Path,
     dest_root: Path,
+) -> int:
+    applied = 0
+    dest_root_resolved = dest_root.resolve()
+    for row in rows:
+        src = source_root / Path(row.path)
+        dst = dest_root / Path(row.path)
+        if row.status in {"ADD", "MODIFY"}:
+            dst.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(src, dst)
+            applied += 1
+        elif row.status == "DELETE":
+            if dst.exists():
+                resolved = dst.resolve()
+                if dest_root_resolved not in resolved.parents and resolved != dest_root_resolved:
+                    raise RuntimeError(f"Refusing to delete outside destination: {resolved}")
+                dst.unlink()
+                applied += 1
+    return applied
+
+
+def init_baseline(
+    source_root: Path,
     manifest_path: Path,
     source_files: dict[str, FileInfo],
     dest_files: dict[str, FileInfo],
@@ -243,16 +335,18 @@ def init_baseline(
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Detect and safely import Claude Code Markdown updates into Codex."
+        description="Sync Claude Code Markdown updates into Codex."
     )
     parser.add_argument("--source", type=Path, default=DEFAULT_SOURCE)
     parser.add_argument("--dest", type=Path, default=Path(__file__).resolve().parent.parent)
     parser.add_argument("--manifest", type=Path, default=DEFAULT_MANIFEST)
     parser.add_argument("--target", action="append", dest="targets")
     parser.add_argument("--exclude", action="append", dest="excludes")
+    parser.add_argument("--mode", choices=("safe", "mirror"), default="safe")
     parser.add_argument("--init-baseline", action="store_true")
     parser.add_argument("--apply", action="store_true")
-    parser.add_argument("--delete", action="store_true", help="Apply Claude-side deletions too.")
+    parser.add_argument("--delete", action="store_true", help="safe mode only: apply Claude-side deletions")
+    parser.add_argument("--allow-stale-manifest", action="store_true")
     parser.add_argument("--verbose", action="store_true")
     return parser.parse_args()
 
@@ -277,8 +371,30 @@ def main() -> int:
     source_files = collect_markdown(source_root, targets, excludes)
     dest_files = collect_markdown(dest_root, targets, excludes)
 
+    print(f"Mode: {args.mode}")
+    print(f"Source: {source_root}")
+    print(f"Dest:   {dest_root}")
+    print(f"Targets: {', '.join(targets)}")
+    print(f"Excludes: {', '.join(excludes)}")
+    print()
+
     if args.init_baseline:
-        return init_baseline(source_root, dest_root, manifest_path, source_files, dest_files)
+        return init_baseline(source_root, manifest_path, source_files, dest_files)
+
+    if args.mode == "mirror":
+        rows = plan_mirror(source_files, dest_files)
+        summarize_rows(rows, ("ADD", "MODIFY", "DELETE"))
+        print_rows(rows, args.verbose)
+        print("\nMirror mode note: on --apply, files are mirrored and the manifest is reset to the post-sync shared state.")
+        if args.delete:
+            print("Warning: --delete is ignored in mirror mode because delete is part of mirror semantics.")
+
+        if args.apply:
+            applied = apply_mirror_rows(rows, source_root, dest_root)
+            write_manifest(manifest_path, source_root, source_files)
+            print(f"\nApplied mirror changes: {applied}")
+            print(f"Manifest refreshed: {manifest_path}")
+        return 0
 
     manifest = load_manifest(manifest_path)
     base_files = manifest.get("files", {})
@@ -286,16 +402,41 @@ def main() -> int:
         print("Baseline manifest is missing or empty. Run with --init-baseline first.")
         return 2
 
+    is_valid, manifest_issues = validate_manifest(
+        manifest,
+        source_root,
+        allow_stale=args.allow_stale_manifest,
+    )
+    for issue in manifest_issues:
+        print(f"Manifest issue: {issue}")
+    if not is_valid:
+        print("Refusing safe sync with stale or mismatched manifest. Re-run with --init-baseline or --allow-stale-manifest.")
+        return 2
+
     rows = classify(source_files, dest_files, base_files)
-    print_rows(rows, args.verbose)
+    summarize_rows(
+        rows,
+        (
+            "SAFE_IMPORT",
+            "CLAUDE_DELETED",
+            "BASELINE_MISSING_SAME",
+            "BASELINE_STALE",
+            "CODEX_ONLY",
+            "CONFLICT",
+        ),
+    )
+    print_rows(rows, args.verbose, hide_statuses={"UNCHANGED"})
 
     blockers = [r for r in rows if r.status == "CONFLICT"]
+    delete_candidates = [r for r in rows if r.status == "CLAUDE_DELETED"]
+    if delete_candidates and not args.delete:
+        print(f"\nDelete note: {len(delete_candidates)} Claude-side deletions are pending. Re-run with --delete to apply them.")
+    if blockers:
+        print(f"Conflict note: {len(blockers)} paths still require manual review.")
+    print("Safe mode note: this is not a full mirror. Only safe rows are applied automatically.")
+
     if args.apply:
-        manifest_files = {
-            k: FileInfo(sha256=v["sha256"], size=int(v.get("size", 0)))
-            for k, v in base_files.items()
-            if isinstance(v, dict) and "sha256" in v
-        }
+        manifest_files = parse_manifest_files(base_files)
         applied, next_manifest = apply_safe_rows(
             rows,
             source_root,
@@ -305,10 +446,10 @@ def main() -> int:
             include_deletes=args.delete,
         )
         write_manifest(manifest_path, source_root, next_manifest)
-        print(f"Applied safe changes: {applied}")
+        print(f"\nApplied safe changes: {applied}")
+        print(f"Manifest refreshed: {manifest_path}")
 
     if blockers:
-        print(f"Conflicts require manual review: {len(blockers)}")
         return 1
     return 0
 

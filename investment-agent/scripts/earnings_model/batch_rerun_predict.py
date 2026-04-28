@@ -176,7 +176,10 @@ def fetch_shared_data() -> dict:
     print(f"[4/7] fin_summary ({_prev_from}〜{hy(DATE_MAX_PREDICT)}) ...")
     q_prev = f"""SELECT LOCAL_CODE, DISCLOSED_DATE,
       FORECAST_OPERATING_PROFIT, FORECAST_PROFIT,
-      FORECAST_DIVIDEND_PER_SHARE_ANNUAL
+      FORECAST_DIVIDEND_PER_SHARE_ANNUAL,
+      OPERATING_PROFIT,
+      TYPE_OF_CURRENT_PERIOD,
+      CURRENT_FISCAL_YEAR_START_DATE
     FROM `gmailpj-357912.STOCK.fin_summary`
     WHERE DISCLOSED_DATE >= '{_prev_from}'
       AND DISCLOSED_DATE < '{hy(DATE_MAX_PREDICT)}'"""
@@ -189,12 +192,15 @@ def fetch_shared_data() -> dict:
     # baseline YoY (FY 履歴中央値) は3-4期分あれば充分。2020-04以降で10年分を確保
     _qoq_from = "2020-04-01"
     print(f"[5/7] v_fin_summary_actual_for_q_on_q (FY_START >= {_qoq_from}) ...")
-    q_qoq = f"""SELECT LOCAL_CODE, QUARTER,
+    q_qoq = f"""SELECT LOCAL_CODE, DISCLOSED_DATE, QUARTER,
       CURRENT_FISCAL_YEAR_START_DATE, OPERATING_PROFIT, PROFIT
     FROM `gmailpj-357912.STOCK.v_fin_summary_actual_for_q_on_q`
-    WHERE CURRENT_FISCAL_YEAR_START_DATE >= '{_qoq_from}'"""
+    WHERE CURRENT_FISCAL_YEAR_START_DATE >= '{_qoq_from}'
+      AND DISCLOSED_DATE <= '{hy(DATE_MAX_PREDICT)}'"""
     df_qoq = bq.query(q_qoq).to_dataframe()
     df_qoq["tk"] = df_qoq["LOCAL_CODE"].astype(str).str[:4]
+    df_qoq["DISCLOSED_DATE"] = df_qoq["DISCLOSED_DATE"].astype(str)
+    df_qoq["CURRENT_FISCAL_YEAR_START_DATE"] = df_qoq["CURRENT_FISCAL_YEAR_START_DATE"].astype(str)
     shared["df_qoq"] = df_qoq
     print(f"  {len(df_qoq)} 行")
 
@@ -294,8 +300,9 @@ def compute_features(predict_date: str, shared: dict) -> pd.DataFrame | None:
 
     # ── 前回予想（DISCLOSED_DATE < predict_date, 銘柄ごと最新） ──
     dfpv = shared["df_prev"]
+    dfpv_before = dfpv[dfpv["DISCLOSED_DATE"] < ph].copy()
     dfpv_asof = (
-        dfpv[dfpv["DISCLOSED_DATE"] < ph]
+        dfpv_before
         .sort_values("DISCLOSED_DATE", ascending=False)
         .drop_duplicates("tk", keep="first")
     )
@@ -319,37 +326,87 @@ def compute_features(predict_date: str, shared: dict) -> pd.DataFrame | None:
 
     # ── QoQ / YoY マップ ──
     dfq = shared["df_qoq"]
+    # BQの当日行が存在する過去再実行でも、当期OPはJ-Quantsから算出し、
+    # BQは予測日時点で既に開示済みの前年同期・前Q累積だけに使う。
+    dfq_asof = dfq[dfq["DISCLOSED_DATE"] < ph].copy()
     Q_MAP = {"1Q": "1Q", "2Q": "2Q", "3Q": "3Q", "FY": "4Q"}
+    CUM_PREV_Q = {"2Q": "1Q", "3Q": "2Q", "FY": "3Q"}
+    PREV_Q_MAP = {"2Q": "1Q", "3Q": "2Q", "4Q": "3Q"}
+
+    def date_key(value: object) -> str:
+        ts = pd.to_datetime(value, errors="coerce")
+        return "" if pd.isna(ts) else ts.strftime("%Y-%m-%d")
+
+    prev_cum_op_map: dict[str, float] = {}
+    for _, row in df_fin.iterrows():
+        tk = row["ticker"]
+        prev_q_type = CUM_PREV_Q.get(row.get("CurPerType", ""))
+        cur_fy_start = date_key(row.get("CurFYStartDt", row.get("CurFYSt")))
+        if not prev_q_type or not cur_fy_start:
+            continue
+        matched = dfpv_before[
+            (dfpv_before["tk"] == tk)
+            & (dfpv_before["TYPE_OF_CURRENT_PERIOD"] == prev_q_type)
+            & (
+                dfpv_before["CURRENT_FISCAL_YEAR_START_DATE"].astype(str)
+                == cur_fy_start
+            )
+        ].sort_values("DISCLOSED_DATE", ascending=False)
+        if not matched.empty and pd.notna(matched.iloc[0]["OPERATING_PROFIT"]):
+            prev_cum_op_map[tk] = float(matched.iloc[0]["OPERATING_PROFIT"])
+
     qoq_map: dict[str, dict] = {}
     for tk in tickers:
         row0 = df_fin[df_fin["ticker"] == tk].iloc[0]
-        q_label = Q_MAP.get(row0.get("CurPerType", ""), "")
-        tk_qoq = dfq[(dfq["tk"] == tk) & (dfq["QUARTER"] == q_label)]
+        cur_per = row0.get("CurPerType", "")
+        q_label = Q_MAP.get(cur_per, "")
+        cur_fy_start = date_key(row0.get("CurFYStartDt", row0.get("CurFYSt")))
+        jq_op_cum = row0.get("OP")
+        cur_standalone_op: float | None = None
+        if pd.notna(jq_op_cum):
+            if cur_per == "1Q":
+                cur_standalone_op = float(jq_op_cum)
+            else:
+                prev_cum = prev_cum_op_map.get(tk)
+                cur_standalone_op = (
+                    float(jq_op_cum) - prev_cum
+                    if prev_cum is not None
+                    else float(jq_op_cum)
+                )
+
+        tk_qoq = dfq_asof[(dfq_asof["tk"] == tk) & (dfq_asof["QUARTER"] == q_label)]
+        if cur_fy_start:
+            tk_qoq = tk_qoq[
+                tk_qoq["CURRENT_FISCAL_YEAR_START_DATE"].astype(str) < cur_fy_start
+            ]
         tk_qoq = tk_qoq.sort_values("CURRENT_FISCAL_YEAR_START_DATE", ascending=False)
-        if len(tk_qoq) < 2:
-            continue
-        cur_op = tk_qoq.iloc[0]["OPERATING_PROFIT"]
-        prev_op = tk_qoq.iloc[1]["OPERATING_PROFIT"]
-        yoy_op: float | None = (
-            float((cur_op - prev_op) / abs(prev_op))
-            if pd.notna(prev_op) and pd.notna(cur_op) and prev_op != 0
-            else None
-        )
-        # QoQ 単独四半期比較
-        same_fy = tk_qoq[
-            tk_qoq["CURRENT_FISCAL_YEAR_START_DATE"]
-            == tk_qoq.iloc[0]["CURRENT_FISCAL_YEAR_START_DATE"]
-        ]
+        prev_year_op = tk_qoq.iloc[0]["OPERATING_PROFIT"] if len(tk_qoq) >= 1 else None
+        yoy_op: float | None = None
+        if (
+            cur_standalone_op is not None
+            and prev_year_op is not None
+            and pd.notna(prev_year_op)
+            and prev_year_op != 0
+        ):
+            yoy_op = float((cur_standalone_op - float(prev_year_op)) / abs(float(prev_year_op)))
+
+        # QoQ 単独四半期比較: 同一FYの直前Q（1Qは前Qなし）
         qoq_op: float | None = None
-        if len(same_fy) >= 2:
-            c_op = same_fy.iloc[0]["OPERATING_PROFIT"]
-            p_op = same_fy.iloc[1]["OPERATING_PROFIT"]
-            if pd.notna(c_op) and pd.notna(p_op) and p_op != 0:
-                qoq_op = float((c_op - p_op) / abs(p_op))
+        prev_q_label = PREV_Q_MAP.get(q_label)
+        if prev_q_label and cur_standalone_op is not None and cur_fy_start:
+            prev_q_row = dfq_asof[
+                (dfq_asof["tk"] == tk)
+                & (dfq_asof["QUARTER"] == prev_q_label)
+                & (dfq_asof["CURRENT_FISCAL_YEAR_START_DATE"].astype(str) == cur_fy_start)
+            ].sort_values("DISCLOSED_DATE", ascending=False)
+            if not prev_q_row.empty:
+                prev_q_op = prev_q_row.iloc[0]["OPERATING_PROFIT"]
+                if pd.notna(prev_q_op) and prev_q_op != 0:
+                    qoq_op = float((cur_standalone_op - float(prev_q_op)) / abs(float(prev_q_op)))
         qoq_map[tk] = {"yoy_op": yoy_op, "qoq_op": qoq_op}
 
     # ── baseline YoY OP（FY履歴中央値） ──
-    dff = dfq[dfq["QUARTER"] == "4Q"]
+    dff = dfq_asof[dfq_asof["QUARTER"] == "4Q"]
     baseline_yoy_op_map: dict[str, float] = {}
     for tk in tickers:
         tk_fy = dff[dff["tk"] == tk].sort_values("CURRENT_FISCAL_YEAR_START_DATE", ascending=False)
