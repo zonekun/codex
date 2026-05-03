@@ -19,6 +19,7 @@ import fnmatch
 import hashlib
 import json
 import shutil
+import subprocess
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -31,9 +32,14 @@ DEFAULT_MANIFEST = Path("data/logs/claude_md_sync_manifest.json")
 DEFAULT_EXCLUDES = (
     "docs/claude-code-intake-checklist.md",
     "docs/claude-md-sync.md",
-    "docs/codex-*.md",
+    "docs/codex/**",
     "docs/git-bootstrap-notes.md",
     "docs/plans/*codex*.md",
+)
+CODEX_ARTIFACT_PATTERNS = ("*codex*", "*_codex_*")
+CODEX_PROTECTED_PATHS = (
+    "docs/claude-code-handoff-template.md",
+    "docs/reviews/001_sync_claude_md_mirror_gap.md",
 )
 MANIFEST_MAX_AGE_DAYS = 7
 
@@ -49,6 +55,12 @@ class Row:
     status: str
     path: str
     action: str
+
+
+@dataclass(frozen=True)
+class MirrorApplyResult:
+    applied: int
+    blocked_deletes: int
 
 
 def sha256_file(path: Path) -> FileInfo:
@@ -67,6 +79,43 @@ def rel_key(path: Path, root: Path) -> str:
 
 def is_excluded(path: str, excludes: tuple[str, ...]) -> bool:
     return any(fnmatch.fnmatchcase(path, pattern) for pattern in excludes)
+
+
+def is_codex_artifact(path: str) -> bool:
+    if path in CODEX_PROTECTED_PATHS:
+        return True
+    if fnmatch.fnmatchcase(path, "docs/codex/**"):
+        return True
+    filename = path.rsplit("/", 1)[-1]
+    return any(fnmatch.fnmatchcase(filename, pattern) for pattern in CODEX_ARTIFACT_PATTERNS)
+
+
+def git_tracking_state(dest_root: Path, rel_path: str) -> str:
+    git_exe = shutil.which("git")
+    if not git_exe:
+        return "unknown"
+    try:
+        result = subprocess.run(
+            [
+                git_exe,
+                "-C",
+                str(dest_root),
+                "ls-files",
+                "--error-unmatch",
+                "--",
+                rel_path,
+            ],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+    except OSError:
+        return "unknown"
+    if result.returncode == 0:
+        return "tracked"
+    if result.returncode == 1:
+        return "untracked"
+    return "unknown"
 
 
 def collect_markdown(
@@ -209,6 +258,7 @@ def classify(
 def plan_mirror(
     source: dict[str, FileInfo],
     dest: dict[str, FileInfo],
+    dest_root: Path | None = None,
 ) -> list[Row]:
     rows: list[Row] = []
     paths = sorted(set(source) | set(dest))
@@ -218,7 +268,13 @@ def plan_mirror(
         if src and not dst:
             rows.append(Row("ADD", path, "new from Claude"))
         elif dst and not src:
-            rows.append(Row("DELETE", path, "remove destination-only file"))
+            if is_codex_artifact(path):
+                rows.append(Row("CODEX_PROTECTED", path, "Codex artifact, skipping delete"))
+            else:
+                action = "remove destination-only file"
+                if dest_root is not None:
+                    action = f"{action}; git={git_tracking_state(dest_root, path)}"
+                rows.append(Row("DELETE", path, action))
         elif src and dst and src.sha256 != dst.sha256:
             rows.append(Row("MODIFY", path, "overwrite from Claude"))
     return rows
@@ -286,7 +342,23 @@ def apply_mirror_rows(
     rows: list[Row],
     source_root: Path,
     dest_root: Path,
-) -> int:
+    force_delete_untracked: bool = False,
+) -> MirrorApplyResult:
+    blocked = 0
+    if not force_delete_untracked:
+        for row in rows:
+            if row.status != "DELETE":
+                continue
+            state = git_tracking_state(dest_root, row.path)
+            if state != "tracked":
+                print(
+                    f"Blocked DELETE for {row.path}: git={state}. "
+                    "Use --force-delete-untracked to allow this destructive delete."
+                )
+                blocked += 1
+        if blocked:
+            return MirrorApplyResult(applied=0, blocked_deletes=blocked)
+
     applied = 0
     dest_root_resolved = dest_root.resolve()
     for row in rows:
@@ -303,7 +375,7 @@ def apply_mirror_rows(
                     raise RuntimeError(f"Refusing to delete outside destination: {resolved}")
                 dst.unlink()
                 applied += 1
-    return applied
+    return MirrorApplyResult(applied=applied, blocked_deletes=0)
 
 
 def init_baseline(
@@ -346,6 +418,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--init-baseline", action="store_true")
     parser.add_argument("--apply", action="store_true")
     parser.add_argument("--delete", action="store_true", help="safe mode only: apply Claude-side deletions")
+    parser.add_argument(
+        "--force-delete-untracked",
+        action="store_true",
+        help="mirror mode only: allow deleting untracked or git-unknown destination-only files",
+    )
     parser.add_argument("--allow-stale-manifest", action="store_true")
     parser.add_argument("--verbose", action="store_true")
     return parser.parse_args()
@@ -382,17 +459,28 @@ def main() -> int:
         return init_baseline(source_root, manifest_path, source_files, dest_files)
 
     if args.mode == "mirror":
-        rows = plan_mirror(source_files, dest_files)
-        summarize_rows(rows, ("ADD", "MODIFY", "DELETE"))
+        rows = plan_mirror(source_files, dest_files, dest_root=dest_root)
+        summarize_rows(rows, ("ADD", "MODIFY", "DELETE", "CODEX_PROTECTED"))
         print_rows(rows, args.verbose)
         print("\nMirror mode note: on --apply, files are mirrored and the manifest is reset to the post-sync shared state.")
         if args.delete:
             print("Warning: --delete is ignored in mirror mode because delete is part of mirror semantics.")
 
         if args.apply:
-            applied = apply_mirror_rows(rows, source_root, dest_root)
+            result = apply_mirror_rows(
+                rows,
+                source_root,
+                dest_root,
+                force_delete_untracked=args.force_delete_untracked,
+            )
+            if result.blocked_deletes:
+                print(
+                    f"\nBlocked mirror changes: {result.blocked_deletes} destructive deletes. "
+                    "Manifest was not refreshed."
+                )
+                return 1
             write_manifest(manifest_path, source_root, source_files)
-            print(f"\nApplied mirror changes: {applied}")
+            print(f"\nApplied mirror changes: {result.applied}")
             print(f"Manifest refreshed: {manifest_path}")
         return 0
 

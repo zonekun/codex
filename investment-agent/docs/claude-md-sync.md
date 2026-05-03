@@ -28,7 +28,7 @@ Claude Code 側には同期用の仕組みを追加しない。Codex 側だけ�
 
 - `docs/claude-code-intake-checklist.md`
 - `docs/claude-md-sync.md`
-- `docs/codex-*.md`
+- `docs/codex/**`
 - `docs/git-bootstrap-notes.md`
 - `docs/plans/*codex*.md`
 
@@ -76,6 +76,39 @@ Claude Code 側の削除も反映する場合だけ、内容確認後に `--dele
 ```powershell
 python .\scripts\sync_claude_md.py --apply --delete
 ```
+
+## Mirror mode の注意事項
+
+mirror mode は Claude Code 側を正本としてファイルレベルの一致を強制する最終手段として扱う。
+
+```powershell
+$env:PYTHONUTF8='1'
+python .\scripts\sync_claude_md.py --mode mirror
+python .\scripts\sync_claude_md.py --mode mirror --apply
+```
+
+特性:
+
+- Codex 側にしか存在しないファイルは `DELETE` 対象になる。
+- Codex 独自成果物は `CODEX_PROTECTED` として表示し、mirror mode でも削除しない。
+- untracked ファイルの削除は `git restore` で復旧できないため、既定では削除しない。
+- untracked または git 状態不明の destination-only ファイルを削除する場合だけ、`--force-delete-untracked` を明示する。
+
+保護対象:
+
+- `docs/codex/**` 配下の Codex 専用運用MD。
+- ファイル名に `codex` を含む Codex 独自レビュー・検証結果。
+- `scripts/sync_claude_md.py` の `CODEX_PROTECTED_PATHS` に登録された既存成果物。
+
+`docs/codex/**` は Git 管理するが、Claude Code 側からの mirror / 一括反映では削除・上書きしない。Codex 専用MDの退避正本は `codex/meta` ブランチにも保持する。
+
+mirror 実行前チェックリスト:
+
+1. `--mode mirror` を dry-run で実行し、`DELETE` と `CODEX_PROTECTED` を確認する。
+2. `DELETE` 対象に Codex 独自成果物が含まれていないか確認する。
+3. `DELETE` 対象に untracked ファイルが含まれていないか確認する。
+4. Codex 独自成果物が `DELETE` 対象に含まれる場合は、実行せず保護パターンまたは個別保護パスを追加する。
+5. ユーザーから「Claude Code が正」「全上書き」と指示があっても、Codex 独自成果物と untracked ファイルの削除は別確認にする。
 
 ## 原則
 
