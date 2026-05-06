@@ -19,6 +19,35 @@
 - `main` 相当へ直接変更していないことを確認する
 - 取り込み対象以外の不要差分が混ざっていないことを確認する
 
+## 3-1. 取り込み方式
+
+Codex 側でコミット済みのコード変更は、通常のパッチ適用ではなく Git で取り込む。
+
+Codex 側の標準構成:
+
+- repository root: `C:\Users\zonekun\Documents\codex`
+- project path: `C:\Users\zonekun\Documents\codex\investment-agent`
+- branch: `codex/integration`
+- Git 上の変更パス例: `investment-agent/scripts/foo.py`
+- Claude Code 側の対応パス例: `C:\gdrive\claude\investment-agent\scripts\foo.py`
+
+推奨手順:
+
+```powershell
+git fetch origin codex/integration
+git cherry-pick <commit>
+```
+
+通常の patch 適用をデフォルトにしない。Codex 側の Git repository root は `investment-agent` の1階層上で、Claude Code 側は `C:\gdrive\claude\investment-agent` 直下で作業することがある。この prefix 差により、patch がコンテキスト不一致で skip されたり、手動適用が必要になったりする。
+
+Git cherry-pick が使えず、明示的に patch が必要な場合のみ、Codex 側で `investment-agent/` prefix を落とした Claude Code 側用 patch を生成する。
+
+```powershell
+git show --format= --relative=investment-agent <commit> -- investment-agent/<path> > C:\tmp\<commit>_claude.patch
+```
+
+Claude Code 側では `C:\gdrive\claude\investment-agent` から `git apply --3way` で適用する。ファイルコピーや手動編集での取り込みは、Git 取り込みと `--3way` patch の両方が使えない場合の最終手段にする。
+
 ## 4. 差分確認
 
 - 変更ファイル一覧を確認する
