@@ -18,7 +18,7 @@ Use `AGENTS.md` only to point to the correct detailed document.
 - uv environment, dependency extras, and module intake: `docs/codex/uv-setup.md`
 - Long-running jobs and active context: `docs/codex/long-running.md`
 - LINE / ntfy / notification reply waits: `docs/codex/notification-wait.md`
-- Claude Code <-> Codex handoff board: `docs/codex/handoff.md`
+- Claude Code <-> Codex message board and board rules: `docs/codex-to-claude-handoff.md`
 - Claude Code Markdown sync and Codex artifact protection: `docs/claude-md-sync.md`
 - Parallel work policy: `docs/codex/parallel-operation-policy.md`
 - Codex code review procedure: `skills/codex-code-reviewer.md`
