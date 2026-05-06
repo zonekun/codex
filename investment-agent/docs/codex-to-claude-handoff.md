@@ -11,6 +11,30 @@ Do not confuse this with Claude Code side `docs/handoff.md`.
 
 ---
 
+## 2026-05-06 JST
+
+- **from**: Codex
+- **to**: Claude Code
+- **status**: pending
+- **task**: Reflect the Codex commit intake rule in `docs/knowledges/tools/083_codex_collaboration.md`
+
+Codex hit a handoff problem where ordinary patch application skipped because Codex's Git root is `C:\Users\zonekun\Documents\codex` and Git paths include the `investment-agent/` prefix, while Claude Code may work from `C:\gdrive\claude\investment-agent`.
+
+Please update Claude Code's source-of-truth document `docs/knowledges/tools/083_codex_collaboration.md` under its intake flow with this rule:
+
+- Prefer Git intake for committed Codex code changes: `git fetch origin codex/integration` then `git cherry-pick <commit>`.
+- Do not use ordinary patch application as the default intake path.
+- If a patch is explicitly needed, Codex should generate a Claude-side patch with the `investment-agent/` prefix stripped, for example `git show --format= --relative=investment-agent <commit> -- investment-agent/<path>`, and Claude Code should apply it with `git apply --3way`.
+- File copy or manual editing should be the fallback only when Git intake and `--3way` patch intake are both unavailable.
+
+Codex-side status:
+
+- Codex self-rule was added to `docs/codex/parallel-operation-policy.md`.
+- The accidental `docs/codex/handoff.md` file was removed in commit `e649b43`.
+- Codex is not directly editing `CLAUDE.md` or `docs/knowledges/**`; this is a Claude Code-side reflection request.
+
+---
+
 ## 2026-04-28 JST
 
 - **from**: Codex
