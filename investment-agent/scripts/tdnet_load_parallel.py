@@ -41,6 +41,7 @@ _PROJECT_ROOT = Path(__file__).resolve().parent.parent
 if str(_PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(_PROJECT_ROOT))
 
+from src.llm.page_aware_text import PAGE_MARKER_PATTERN  # noqa: E402
 from src.llm.truncation import truncate_for_model  # noqa: E402
 
 
@@ -361,6 +362,12 @@ def parse_tdnet_filename(blob_name: str) -> tuple[str, str, str, str, str, str]:
 _MIN_TEXT_LEN = 50
 
 
+def _content_length(text: str) -> int:
+    """ページマーカーと空白を除いた実コンテンツの文字数を返す。"""
+    stripped = PAGE_MARKER_PATTERN.sub("", text)
+    return len(stripped.split())
+
+
 # ページ内の連続空白（タブ・スペース）のみ圧縮する正規表現
 # 改行(\n) は保持する必要があるため [ \t]+ のみ対象にする
 _INLINE_WS_PATTERN = re.compile(r"[ \t]+")
@@ -623,14 +630,14 @@ def phase1_scan_and_extract(
         text, page_count = _extract_text_pypdf2(pdf_bytes)
         extract_method = "pypdf2"
 
-        if len(text) < _MIN_TEXT_LEN:
+        if _content_length(text) < _MIN_TEXT_LEN:
             text_pm = _extract_text_pdfminer(pdf_bytes)
-            if len(text_pm) >= _MIN_TEXT_LEN:
+            if _content_length(text_pm) >= _MIN_TEXT_LEN:
                 text = text_pm
                 extract_method = "pdfminer"
                 logger.log(f"  フォールバック抽出 (pdfminer) 成功: {blob.name}")
 
-        needs_vision = len(text) < _MIN_TEXT_LEN
+        needs_vision = _content_length(text) < _MIN_TEXT_LEN
         if needs_vision:
             extract_method = "none"
 
@@ -803,6 +810,7 @@ def phase2_vision_batch(
             try:
                 text = resp["response"]["candidates"][0]["content"]["parts"][0]["text"]
                 text = text.strip()
+                # Vision結果にはマーカーが含まれないため len(text) で判定
                 if len(text) >= _MIN_TEXT_LEN:
                     doc.text = text
                     doc.extract_method = "gemini_vision"
@@ -1645,16 +1653,16 @@ def phase1_extract_for_docs(
 
         text, page_count = _extract_text_pypdf2(pdf_bytes)
         doc.extract_method = "pypdf2"
-        if len(text) < _MIN_TEXT_LEN:
+        if _content_length(text) < _MIN_TEXT_LEN:
             text_pm = _extract_text_pdfminer(pdf_bytes)
-            if len(text_pm) >= _MIN_TEXT_LEN:
+            if _content_length(text_pm) >= _MIN_TEXT_LEN:
                 text = text_pm
                 doc.extract_method = "pdfminer"
 
         doc.text = text
         if page_count:
             doc.page_count = page_count
-        doc.needs_vision = len(text) < _MIN_TEXT_LEN
+        doc.needs_vision = _content_length(text) < _MIN_TEXT_LEN
         if doc.needs_vision:
             doc.extract_method = "none"
 
