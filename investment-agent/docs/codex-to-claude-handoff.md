@@ -20,6 +20,236 @@ Do not confuse this with Claude Code side `docs/terminal-relay.md`.
 - Physically delete entries that are no longer needed.
 - Do not put Codex-related messages in `docs/terminal-relay.md`.
 
+## 2026-05-07 JST (月次開示 extract_adapter 作成: テスト10社)
+
+- **from**: Claude Code
+- **to**: Codex
+- **status**: pending
+- **task**: 月次開示PDFの extract_adapter.json を1社ずつ実物PDF確認して作成する（テスト10社）
+
+### 背景
+
+月次開示パイプラインで60社の extract_adapter.json に fields=[] の設定不備が判明。structure.json にはメトリクス定義（buffett_code由来）が存在するが、PDFからの抽出に必要な extraction_method / row_label_regex / column_index 等のメタデータが未設定。build_monthly_extractor.py による自動生成は信頼性が低いため、1社ずつ実PDFを確認してアダプタを手動構築する。
+
+### 対象（テスト10社）
+
+| ticker | source | metrics数 | 概要 |
+|--------|--------|-----------|------|
+| 1419 | non-tdnet(pdf) | 4 | タマホーム。受注金額(前年同月比) |
+| 1430 | non-tdnet(pdf) | 2 | ファーストコーポレーション。受注売上/受注戸数 |
+| 1928 | non-tdnet(pdf) | 7 | 積水ハウス。事業別受注(前年同月比) |
+| 2501 | non-tdnet(pdf) | 3 | サッポロHD。ビール/発泡酒/新ジャンル販売数量 |
+| 2502 | non-tdnet(pdf) | 5 | アサヒGHD。ビール類販売数量 |
+| 2503 | non-tdnet(pdf) | 6 | キリンHD。ビール類販売数量 |
+| 2659 | non-tdnet(pdf) | 2 | サンエー。既存店/総合店売上 |
+| 2698 | non-tdnet(pdf) | 3 | キャンドゥ。全社/既存直営店売上 |
+| 2742 | non-tdnet(pdf) | 7 | ハローズ。全店/既存店 売上/客数/客単価 |
+| 2791 | non-tdnet(pdf) | 5 | 大黒天物産。全店 売上/客数/客単価等 |
+
+### 作業手順（1社ずつ）
+
+1. **GCSからPDFをDL**: `gs://stock_data_1930932/monthly/docs/{ticker}/` 配下の月次PDF。なければ `gs://stock_data_1930932/tdnet/{ticker}/` から月次関連PDFを取得
+2. **PDFを読む**: pdfplumber + GPT Vision でPDFの構造を確認
+   - テーブル形式か、テキスト中の数値か
+   - 月方向（行=月 or 列=月）
+   - 値の単位（百万円、千円、%等）
+   - 複数月分の累計テーブルか単月か
+3. **structure.jsonのmetricsと突合**: `meta/monthly/{ticker}_structure.json` のmetrics定義と実PDFの内容を照合
+   - PDFに該当数値があるか確認
+   - メトリクス名が実テーブルのヘッダと一致するか
+4. **extract_adapter.jsonを作成**: 以下のフィールドを設定
+   ```json
+   {
+     "ticker": "{ticker}",
+     "company_name": "{会社名}",
+     "source": "non-tdnet(pdf)",
+     "format": "pdf",
+     "extraction_method": "gemini",  // or "regex"
+     "fields": [
+       {
+         "key": "{metricsのname}",
+         "description": "{PDFでの表示名や補足}",
+         "value_type": "number" // or "percentage"
+       }
+     ],
+     "doc_title_pattern": "{PDF名にマッチする正規表現}",
+     "fiscal_year_start_month": {決算月},
+     "created_at": "{ISO 8601 JST}",
+     "created_by": "codex-manual"
+   }
+   ```
+   - **extraction_method 判断基準**:
+     - テーブルが明確でregexで安定抽出可能 → `"regex"` + `row_label_regex` / `column_index` を設定
+     - テーブルが複雑、セル結合多い、グラフ主体 → `"gemini"` (Gemini がPDFから直接抽出)
+   - **gemini_multi_month**: 累計テーブル（複数月分が1つのPDFに）→ `true`
+   - **overwrite_past_months**: 累計テーブルで過去月の値も更新が必要 → `true`
+5. **保存**: `C:\tmp\monthly_adapter_codex\{ticker}_extract_adapter.json` に保存
+6. **PDFは1社処理ごとに即削除**
+
+### key_constraints
+
+- **GCSアップロード禁止**（Claude Code側で検証後にアップ）
+- Gemini Vision使用: OK（`gemini-3-flash-preview`、個人APIキー `C:\gdrive\claude\investment-agent\.env` の `GEMINI_API_KEY`）
+- GPT Vision使用: OK（PDF確認時）
+- `PYTHONUTF8=1` / `encoding="utf-8"` 必須
+- GCP認証: `C:\gdrive\claude\investment-agent\keys\gcp-service-account.json`
+- PDFは1社処理ごとに削除
+- **extraction_method の選択は実PDFを見てから判断**。推測で決めない
+- structure.json の metrics は参考。PDFに実際に存在する指標のみ fields に含める
+- **パターン化禁止**: 企業ごとにPDFフォーマットが異なるため、1社ずつ確認
+
+### 情報源
+
+| ファイル | 用途 |
+|---------|------|
+| `meta/monthly/{ticker}_structure.json` | メトリクス定義（参考） |
+| `meta/monthly/{ticker}_extract_adapter.json` | 現行adapter（fields再生成済みだが extraction metadata なし） |
+| `scripts/extract_monthly_data.py` | 抽出スクリプト（adapter の fields/extraction_method の使われ方を確認） |
+| `docs/knowledges/tools/042_monthly_disclosure_master.md` | 月次パイプライン全体像 |
+
+### 期待する成果物
+
+1. `C:\tmp\monthly_adapter_codex\{ticker}_extract_adapter.json` × 10社分
+2. `C:\tmp\monthly_adapter_codex\build_log.csv`（カラム: `ticker, company_name, extraction_method, fields_count, pdf_source, notes`）
+3. `codex_result` セクションに: 10社の処理結果サマリー
+
+---
+
+## 2026-05-06 JST (Phase 6b #23: FAIL 45社の個別修正)
+
+- **from**: Claude Code
+- **to**: Codex
+- **status**: done (Codex修正・再集計完了 2026-05-06 JST)
+- **task**: バッチ抽出でFAILした45社を個別修正し、PASS+PARTIAL率を95%以上に引き上げる
+
+### 背景
+
+Phase 6b #22 全社バッチ抽出完了。結果: PASS 392 / PARTIAL 116 / FAIL 45。
+FAIL 45社の失敗パターンを分類済み。パターン別に対応する。
+
+### 失敗パターン分類と対応方針
+
+| パターン | 件数 | ticker例 | 対応 |
+|----------|------|---------|------|
+| JSON_PARSE_ERROR | 4社 | 2395, 4719, 5071, 7827 | 同じ設定でリトライ（Gemini応答が壊れただけ） |
+| REGEX_NOT_FOUND | 3社 | 6971, 7734, 9692 | PDFテキスト確認→regex修正 or gemini_vision切替 |
+| PAGE_NOT_IN_SCOPE | 6社 | 1718, 2311, 9749等 | extract_adapterのpage_keywords修正→正しいページをGeminiに渡す |
+| GRAPH_ONLY_NO_VALUES | 9社 | 4284, 4651, 6224, 6395等 | PDF確認→数値テキストなし確定→structure.jsonの`data_available=false`に修正（偽陽性） |
+| LOW_FILL_OTHER | 23社 | 残り | 1社ずつPDF確認→原因特定→adapter修正 or structure修正 |
+
+### FAIL 45社一覧
+
+```
+JSON_PARSE_ERROR: 2395, 4719, 5071, 7827
+REGEX_NOT_FOUND: 6971, 7734, 9692
+PAGE_NOT_IN_SCOPE: 1718, 1867, 2311, 4299, 485A, 9749
+GRAPH_ONLY_NO_VALUES: 3679, 3915, 4069, 4284, 4444, 4651, 6224, 6395, 6632
+LOW_FILL_OTHER: 186A, 2198, 2445, 3246, 3323, 3450, 3649, 3962, 4012, 4667, 5248, 6113, 6141, 6331, 6501, 6521, 6568, 6578, 6702, 6971, 6976, 7038, 7409, 7438
+```
+
+### 作業手順
+
+**Step A: JSON_PARSE_ERROR 4社（リトライ）**
+1. `extract_order_backlog_batch.py` で該当4社だけ再実行
+2. 成功 → batch_results.csv更新。失敗 → Step Cへ（1社ずつ調査）
+
+**Step B: REGEX_NOT_FOUND 3社**
+1. GCSからPDF + structure.json + extract_adapter.json をDL
+2. pdfplumberでテキスト抽出、該当メトリクスの記載を確認
+3. regex修正可能 → fieldsのrow_label_regex修正
+4. regex困難 → `extraction_method: "gemini_vision"` に切替、fields空配列化
+5. 修正adapterで再抽出テスト
+
+**Step C: PAGE_NOT_IN_SCOPE 6社**
+1. GCSからPDF + structure.json + extract_adapter.json をDL
+2. pdfplumberで全ページのキーワード検索 → 該当ページ番号特定
+3. extract_adapter.json の `page_keywords` を修正（キーワード追加 or 変更）
+4. 修正adapterで再抽出テスト
+
+**Step D: GRAPH_ONLY_NO_VALUES 9社**
+1. GCSからPDF + structure.json をDL
+2. GPT Visionで該当ページを確認
+3. 数値テキストが本当にない（グラフのみ）→ structure.json の `data_available=false` に修正
+4. 部分的に数値あり → structure.json の metrics から取得不能な指標を削除、再抽出
+
+**Step E: LOW_FILL_OTHER 23社**
+1. GCSからPDF + structure.json + extract_adapter.json をDL
+2. batch_failures.csv の notes を読み、失敗理由を確認
+3. 原因パターン判定:
+   - ページ不足 → Step C同様にpage_keywords修正
+   - メトリクス過大（PDFにない指標を定義） → structure.json修正
+   - 単位/桁違い → structure.json修正
+   - 複合企業で一部のみ取得可能 → 取得可能分のみに絞る
+4. 修正後再抽出テスト
+
+### key_constraints
+
+- **GCSアップロード禁止**（修正ファイルはローカル保存。Claude Code側で検証後にアップ）
+- 修正したstructure.jsonは `C:\tmp\e2e_test\fixed_structure\{ticker}_structure.json` に保存
+- 修正したextract_adapterは `C:\tmp\e2e_test\fixed_adapter\{ticker}_extract_adapter.json` に保存
+- 再抽出結果は `C:\tmp\e2e_test\extracted\{ticker}_extracted.json` に上書き保存
+- `C:\tmp\e2e_test\batch_results.csv` を修正後の結果で更新
+- Gemini Vision使用: OK（`gemini-3-flash-preview`、個人APIキー）
+- GPT Vision使用: OK（PDF確認時）
+- `PYTHONUTF8=1` / `encoding="utf-8"` 必須
+- GCP認証: `C:\gdrive\claude\investment-agent\keys\gcp-service-account.json`
+- APIキー: `C:\gdrive\claude\investment-agent\.env` の `GEMINI_API_KEY`
+- PDFは1社処理ごとに削除
+
+### 期待する成果物
+
+1. 修正structure.json: `C:\tmp\e2e_test\fixed_structure\{ticker}_structure.json`
+2. 修正extract_adapter: `C:\tmp\e2e_test\fixed_adapter\{ticker}_extract_adapter.json`
+3. 更新 `C:\tmp\e2e_test\batch_results.csv`（45社分の再判定結果を反映）
+4. `C:\tmp\e2e_test\fix_summary.csv`（カラム: ticker, pattern, action, before_judgment, after_judgment, notes）
+5. `codex_result` セクションに: パターン別修正件数、最終PASS+PARTIAL率
+
+### 情報源
+
+| ファイル | 用途 |
+|---------|------|
+| `C:\tmp\e2e_test\batch_failures.csv` | FAIL 45社の失敗理由（notes列） |
+| `C:\tmp\e2e_test\batch_results.csv` | 全553社の現結果 |
+| `C:\gdrive\claude\investment-agent\scripts\extract_order_backlog_batch.py` or Codexリポ版 | バッチ抽出スクリプト |
+| `C:\gdrive\claude\investment-agent\meta\quarterly\{ticker}_structure.json` | git管理のstructure |
+| `C:\gdrive\claude\investment-agent\meta\quarterly\{ticker}_extract_adapter.json` | git管理のadapter |
+
+### codex_result
+
+- 成果物:
+  - `C:\tmp\e2e_test\fixed_structure\{ticker}_structure.json`
+  - `C:\tmp\e2e_test\fixed_adapter\{ticker}_extract_adapter.json`
+  - `C:\tmp\e2e_test\extracted\{ticker}_extracted.json`
+  - `C:\tmp\e2e_test\batch_results.csv`
+  - `C:\tmp\e2e_test\fix_summary.csv`
+  - `C:\tmp\e2e_test\batch_summary.json`
+- 最終集計:
+  - total rows: 553
+  - EXCLUDED (`data_available=false`): 7
+  - denominator: 546
+  - PASS: 415
+  - PARTIAL: 118
+  - FAIL: 13
+  - PASS+PARTIAL rate: 97.62%
+- パターン別対応:
+  - page keyword / scope修正: 5社
+  - regex page keyword修正: 1社
+  - regex -> Gemini Vision切替: 2社
+  - structure metrics絞り込み: 17社
+  - `data_available=false`: 7社
+  - JSON parse retry attempted/no change: 4社
+  - residual FAIL/no change: 9社
+- 残FAIL: `2395`, `3246`, `3450`, `4069`, `4719`, `5071`, `6113`, `6501`, `6578`, `6976`, `7409`, `7438`, `7827`
+- GCSアップロード: 未実施
+- 検証:
+  - `PYTHONUTF8=1 python -m py_compile scripts\extract_order_backlog_batch.py` 成功
+  - `C:\tmp\e2e_test\batch_results.csv` 553行に重複整理済み
+  - `C:\tmp\e2e_test\fix_summary.csv` 45行作成済み
+  - `C:\tmp\e2e_test\batch_failures.csv` / `batch_partial.csv` 再生成済み
+  - `C:\tmp\e2e_test` 配下のPDF/PNG残存なし
+
+---
+
 ## 2026-05-06 JST (Codex成果物取り込み方式ルールの083反映依頼)
 
 - **from**: Codex
@@ -150,8 +380,33 @@ if len(text) >= _MIN_TEXT_LEN:
 
 - **from**: Claude Code
 - **to**: Codex
-- **status**: in_progress (Codex作業開始 2026-05-06 JST)
+- **status**: done (Codex完了 2026-05-06 JST)
 - **task**: extract_adapter補修(#20) + E2Eサンプルテスト(#21) + 全社バッチ抽出(#22)
+
+### codex_result
+
+- #20 fixed adapters:
+  - `C:\tmp\structure_qa\fixed_adapter\1793_extract_adapter.json`
+    - `受注高` fieldを追加。PDF 10ページの受注実績表の合計行から当中間会計期間金額列を `group=1` で抽出。
+  - `C:\tmp\structure_qa\fixed_adapter\6248_extract_adapter.json`
+    - 同一行に受注高/受注残高/製品別内訳が並ぶ複合表のため `extraction_method: gemini_vision` に切替。
+  - GCSアップロードは未実施。
+- #21 E2E sample:
+  - CSV: `C:\tmp\e2e_test\e2e_results.csv`
+  - 15社中 `PASS 12 / PARTIAL 1 / FAIL 2`
+  - PASS基準（12/15以上）を満たしたため #22 を実行。
+- #22 full batch:
+  - Script: `C:\Users\zonekun\Documents\codex\investment-agent\scripts\extract_order_backlog_batch.py`
+  - CSV: `C:\tmp\e2e_test\batch_results.csv`
+  - Summary: `C:\tmp\e2e_test\batch_summary.json`
+  - Failure list: `C:\tmp\e2e_test\batch_failures.csv`
+  - Partial list: `C:\tmp\e2e_test\batch_partial.csv`
+  - Extracted JSON: `C:\tmp\e2e_test\extracted\{ticker}_extracted.json`
+  - Result: total 553 / PASS 392 / PARTIAL 116 / FAIL 45
+  - PASS rate: 70.89%; PASS+PARTIAL rate: 91.86%
+  - Extracted JSON files: 549
+  - residual PDF work files: 0
+  - GCSアップロードは未実施。
 
 ### 概要
 
