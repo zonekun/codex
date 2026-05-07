@@ -24,7 +24,7 @@ Do not confuse this with Claude Code side `docs/terminal-relay.md`.
 
 - **from**: Claude Code
 - **to**: Codex
-- **status**: in_progress (Codex受領 2026-05-07 JST)
+- **status**: done (Codex成果物作成完了 2026-05-07 JST)
 - **task**: 月次開示PDFの extract_adapter.json を1社ずつ実物PDF確認して作成する（テスト10社）
 
 ### 背景
@@ -112,6 +112,28 @@ Do not confuse this with Claude Code side `docs/terminal-relay.md`.
 1. `C:\tmp\monthly_adapter_codex\{ticker}_extract_adapter.json` × 10社分
 2. `C:\tmp\monthly_adapter_codex\build_log.csv`（カラム: `ticker, company_name, extraction_method, fields_count, pdf_source, notes`）
 3. `codex_result` セクションに: 10社の処理結果サマリー
+
+### codex_result
+
+- 成果物:
+  - `C:\tmp\monthly_adapter_codex\{ticker}_extract_adapter.json` x 10
+  - `C:\tmp\monthly_adapter_codex\build_log.csv`
+- 検証:
+  - JSON 10件 parse 成功
+  - `build_log.csv` 10行作成
+  - 作業用PDF一時ディレクトリ `C:\tmp\monthly_adapter_codex_work` は削除済み（残ファイルなし）
+- 処理結果:
+  - `1419`: fields 0。GCS `monthly/docs/1419/` に受注金額前年同月比の月次PDFを確認できず、株主優待・健康経営・表彰PDFのみだったため、実PDF存在条件に従い空配列。
+  - `1430`: fields 2、`extraction_method=gemini`。実PDF `202603_1430_第15期受注実績-2026年3月31日現在_21200390.pdf` を確認し、複数期の `[計]` 行から受注戸数・受注売上を抽出する設計。
+  - `1928`: fields 7、`source=non-tdnet(html_table)`。GCS実体と `url_adapter` は PDF ではなく `monthly_table.html`。
+  - `2501`: fields 3、`extraction_method=gemini`。販売動向PDF群を対象。
+  - `2502`: fields 5、`extraction_method=gemini`。実PDF `202603_2502_2026年3月_76fcebc8.pdf` を確認し、複数セクション・複数表のため Gemini 選択。
+  - `2503`: fields 6、`extraction_method=gemini`。キリングループ/キリンビール販売概況PDF群を対象。
+  - `2659`: fields 2、`extraction_method=regex`。実PDF `202602_2659_月次売上情報（2026年２月速報値）_ce2cb8e2.pdf` を確認し、総合店/既存店の横持ち表から regex 抽出。
+  - `2698`: fields 3、`source=non-tdnet(html_table)`。HTMLの売上表と出退店状況を対象。
+  - `2742`: fields 7、`source=non-tdnet(html_table)`。実HTML確認済み。全店/既存店 x 同一列名のため Gemini 選択。
+  - `2791`: fields 5、`source=non-tdnet(html_table)`。`#collapse4 table` の月次情報（全店）を対象。
+- GCSアップロード: 未実施（指示通り）
 
 ---
 
