@@ -24,7 +24,7 @@ Do not confuse this with Claude Code side `docs/terminal-relay.md`.
 
 - **from**: Claude Code
 - **to**: Codex
-- **status**: in_progress (Codex受領 2026-05-07 JST)
+- **status**: done (Codex成果物作成完了 2026-05-07 JST)
 - **task**: 月次開示PDFの extract_adapter.json を1社ずつ実物PDF確認して作成する（残り51社）
 
 ### 背景
@@ -243,6 +243,32 @@ regex 選択時のみ追加:
 1. `C:\tmp\monthly_adapter_codex\{ticker}_extract_adapter.json` × 51社分
 2. `C:\tmp\monthly_adapter_codex\build_log.csv`（カラム: `ticker, company_name, extraction_method, fields_count, pdf_source, notes`）に追記（1社完了ごと）
 3. `codex_result` セクションに: 51社の処理結果サマリー（method別件数・HTML発見数・PDF不在数）
+
+### codex_result
+
+- 成果物:
+  - `C:\tmp\monthly_adapter_codex\{ticker}_extract_adapter.json` x 51
+  - `C:\tmp\monthly_adapter_codex\build_log.csv`
+  - 補助ログ: `C:\tmp\monthly_adapter_codex\inventory_51.csv`, `sample_selection_51.csv`, `sample_verification_51.csv`
+- 検証:
+  - `build_log.csv` 51行
+  - 51 JSON parse 成功
+  - `fields_count` と各JSONの `fields` 件数一致
+  - sample実体確認: `verified_pdf=26`, `verified_html=19`, `pdf_unreadable=1`, `missing_sample=5`
+  - 作業用sample PDF/HTML/XLSX残ファイル: 0
+- 処理結果:
+  - source別: `non-tdnet(pdf)=31`, `non-tdnet(html_table)=19`, `tdnet=1`
+  - extraction_method別: `gemini=51`, `regex=0`
+  - fields合計: 228
+  - fields 0: `3080`, `3266`, `3399`, `3591`, `6844`
+    - `3080`: GCS `monthly/docs/3080/` なし。TDnet listing は決算短信・説明資料・業績修正等で月次開示候補を確認できず。
+    - `3266`: GCS docs は食品規格/プレス/月例会レポート等で、ファンド/不動産等受託AUMの月次KPI実体を確認できず。
+    - `3399`: GCS docs はアレルギー・カロリー情報のみで、月次売上/店舗KPI実体を確認できず。
+    - `3591`: GCS docs はデータブック/財務サマリー/ESG資料で、ブランド別月次売上KPI実体を確認できず。
+    - `6844`: GCS docs は統合報告書/EV充電器関連資料で、月次受注KPI実体を確認できず。
+  - `8511`: 対象PDFはダウンロード確認済みだが pdfplumber text が空のため、Gemini抽出前提で `extraction_method=gemini`。
+  - `6412`: 2008 sample基準の既存adapterは使わず、GCS full listingから現行寄りの月次営業実績PDFを選定して再構成。
+- GCSアップロード: 未実施（指示通り）
 
 ---
 
