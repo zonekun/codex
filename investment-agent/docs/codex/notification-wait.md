@@ -17,13 +17,33 @@ Do not require the exact phrase `LINE双方向会話モード`.
 
 ## Command Form
 
-For LINE bidirectional mode, use:
+For Codex-side LINE bidirectional mode, do not call `scripts\notify.py ntfy --wait` directly. Use the Codex-only wrapper so send ids, active wait state, and reply status are written immediately outside the shared notification module.
 
 ```powershell
-python scripts\notify.py ntfy "<message>" --wait --timeout <seconds>
+$ts = Get-Date -Format 'yyyyMMdd_HHmmss'
+$out = "C:\tmp\codex_line_wait\line_wait_$ts.out.log"
+$err = "C:\tmp\codex_line_wait\line_wait_$ts.err.log"
+$msg = "C:\tmp\codex_line_wait\line_wait_$ts.message.txt"
+Set-Content -Path $msg -Encoding UTF8 -Value "<message>"
+Start-Process -FilePath "C:\venvs\investment-agent\Scripts\python.exe" `
+  -ArgumentList @(
+    "-u", "scripts\codex_line_wait.py", "send-wait",
+    "--message-file", $msg,
+    "--timeout", "<seconds>",
+    "--title", "GPT",
+    "--stdout-log", $out,
+    "--stderr-log", $err
+  ) `
+  -WorkingDirectory "C:\Users\zonekun\Documents\codex\investment-agent" `
+  -RedirectStandardOutput $out `
+  -RedirectStandardError $err `
+  -PassThru `
+  -WindowStyle Hidden
 ```
 
 Do not replace this with a one-way notification unless the user explicitly disables reply waiting.
+
+The `-u` flag and wrapper-owned state file are mandatory for Codex. They prevent the Codex-specific failure mode where redirected stdout stays empty until process exit and the agent cannot distinguish "send failed" from "sent and waiting".
 
 ## Initial Bidirectional Message
 
@@ -43,7 +63,7 @@ Before launching any new background wait or sending any LINE/ntfy message:
 
 1. Inspect the newest active Codex/GPT wait stdout log.
 2. Inspect the matching stderr log if stdout is empty or the send status is unclear.
-3. Check whether a Codex/GPT wait process is still active.
+3. Run `python scripts\codex_line_wait.py status` or inspect `C:\tmp\codex_line_wait\active_gpt_wait.json`.
 4. Do not send a new message until any received reply in the active log has been processed.
 
 After launching a background wait:
