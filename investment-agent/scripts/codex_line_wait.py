@@ -72,6 +72,14 @@ def _read_message(args: argparse.Namespace) -> str:
     raise SystemExit("--message-file or --message-env is required")
 
 
+def _default_reply_path(args: argparse.Namespace, msg_id: str) -> str:
+    if args.reply_file:
+        return str(Path(args.reply_file))
+    if args.stdout_log:
+        return str(Path(args.stdout_log).with_suffix(".reply.txt"))
+    return str(DEFAULT_STATE_PATH.with_name(f"reply_{msg_id}.txt"))
+
+
 def _send_ntfy_with_id(message: str, title: str, priority: str, tags: str) -> tuple[str, int]:
     topic = _load_ntfy_topic()
     msg_id = _gen_unique_msg_id(topic)
@@ -103,6 +111,9 @@ def cmd_status(args: argparse.Namespace) -> int:
     pid = state.get("pid")
     alive = _is_pid_alive(int(pid)) if isinstance(pid, int) else False
     state["pid_alive"] = alive
+    reply_path = state.get("reply_text_path")
+    if isinstance(reply_path, str) and Path(reply_path).exists():
+        state["reply_text"] = Path(reply_path).read_text(encoding="utf-8")
     print(json.dumps(state, ensure_ascii=False, indent=2), flush=True)
     return 0
 
@@ -114,10 +125,31 @@ def cmd_clear_state(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_mark_processed(args: argparse.Namespace) -> int:
+    state_path = Path(args.state_path)
+    state = _load_state(state_path)
+    if state is None:
+        print(f"[codex-line] no state path={state_path}", flush=True)
+        return 1
+    state["processed"] = True
+    state["processed_at_jst"] = _jst_now()
+    state["updated_at_jst"] = _jst_now()
+    _write_state(state_path, state)
+    print(f"[codex-line] marked processed state={state_path}", flush=True)
+    return 0
+
+
 def cmd_send_wait(args: argparse.Namespace) -> int:
     state_path = Path(args.state_path)
     active = _load_state(state_path)
     if active and not args.replace:
+        if active.get("status") == "replied" and active.get("processed") is not True:
+            print(
+                f"[codex-line] unprocessed reply exists state={state_path}; "
+                "run status, handle reply, then mark-processed",
+                flush=True,
+            )
+            return 4
         pid = active.get("pid")
         if isinstance(pid, int) and _is_pid_alive(pid):
             print(
@@ -149,6 +181,7 @@ def cmd_send_wait(args: argparse.Namespace) -> int:
 
     state = {
         "status": "waiting",
+        "processed": False,
         "pid": os.getpid(),
         "msg_id": msg_id,
         "title": args.title,
@@ -179,6 +212,10 @@ def cmd_send_wait(args: argparse.Namespace) -> int:
     state["status"] = "replied"
     state["updated_at_jst"] = _jst_now()
     state["reply_sha256"] = hashlib.sha256(reply.encode("utf-8")).hexdigest()
+    reply_path = _default_reply_path(args, msg_id)
+    Path(reply_path).write_text(reply, encoding="utf-8")
+    state["reply_text_path"] = reply_path
+    state["processed"] = False
     _write_state(state_path, state)
     print(f"[codex-line] reply id={msg_id}", flush=True)
     print(reply, flush=True)
@@ -199,6 +236,7 @@ def main() -> int:
     p_send.add_argument("--tags", default="question")
     p_send.add_argument("--stdout-log", default="")
     p_send.add_argument("--stderr-log", default="")
+    p_send.add_argument("--reply-file")
     p_send.add_argument("--replace", action="store_true")
     p_send.set_defaults(func=cmd_send_wait)
 
@@ -207,6 +245,9 @@ def main() -> int:
 
     p_clear = sub.add_parser("clear-state")
     p_clear.set_defaults(func=cmd_clear_state)
+
+    p_processed = sub.add_parser("mark-processed")
+    p_processed.set_defaults(func=cmd_mark_processed)
 
     args = parser.parse_args()
     return int(args.func(args))

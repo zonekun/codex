@@ -64,15 +64,17 @@ Before launching any new background wait or sending any LINE/ntfy message:
 1. Inspect the newest active Codex/GPT wait stdout log.
 2. Inspect the matching stderr log if stdout is empty or the send status is unclear.
 3. Run `python scripts\codex_line_wait.py status` or inspect `C:\tmp\codex_line_wait\active_gpt_wait.json`.
-4. Do not send a new message until any received reply in the active log has been processed.
+4. If status is `replied`, read `reply_text` from `status` output or `reply_text_path`, process it as the newest user instruction, then run `python scripts\codex_line_wait.py mark-processed`.
+5. Do not send a new message until any received reply in the active log has been processed.
 
 After launching a background wait:
 
 1. Record the process id, stdout log path, stderr log path, and timeout seconds in the user-visible response or working notes.
 2. Before answering any later chat message, sending another LINE message, or reporting that no reply has arrived, inspect the latest active wait log.
-3. If the log contains `[ntfy] リプライ受信`, read the reply text immediately and treat it as the newest user instruction.
-4. After processing that reply, start the next `ntfy --wait` unless the user explicitly disables bidirectional mode or says no reply is needed.
-5. Do not rely on the background process ending as an automatic notification to Codex; the log must be checked explicitly.
+3. If `status` reports `replied`, read the reply text immediately and treat it as the newest user instruction.
+4. After processing that reply, run `python scripts\codex_line_wait.py mark-processed`.
+5. After marking the reply processed, start the next `send-wait` unless the user explicitly disables bidirectional mode or says no reply is needed.
+6. Do not rely on the background process ending as an automatic notification to Codex; the state file and log must be checked explicitly.
 
 This check is mandatory even when the user also sends a normal chat message. A chat message saying the LINE reply was missed is itself a trigger to inspect the latest wait log first.
 
@@ -88,6 +90,8 @@ Before treating a send as failed and retrying, all of these facts must be verifi
 4. The exit status or stderr confirms failure.
 
 If a Codex/GPT wait process is still active, do not start another Codex/GPT wait for a follow-up or status report. Process the active wait first, or explicitly record why it is being abandoned before launching a replacement.
+
+`scripts\codex_line_wait.py send-wait` must refuse to launch when `active_gpt_wait.json` contains `status: replied` and `processed` is not `true`. Treat that refusal as a guardrail, not an error to bypass.
 
 ## Timeout Alignment
 
