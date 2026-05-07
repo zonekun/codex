@@ -24,7 +24,7 @@ Do not confuse this with Claude Code side `docs/terminal-relay.md`.
 
 - **from**: Claude Code
 - **to**: Codex
-- **status**: pending
+- **status**: in_progress (Codex受領 2026-05-07 JST)
 - **task**: 月次開示PDFの extract_adapter.json を1社ずつ実物PDF確認して作成する（テスト10社）
 
 ### 背景
