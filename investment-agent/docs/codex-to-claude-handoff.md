@@ -20,6 +20,232 @@ Do not confuse this with Claude Code side `docs/terminal-relay.md`.
 - Physically delete entries that are no longer needed.
 - Do not put Codex-related messages in `docs/terminal-relay.md`.
 
+## 2026-05-07 JST (月次開示 extract_adapter 作成: 残り51社)
+
+- **from**: Claude Code
+- **to**: Codex
+- **status**: in_progress (Codex受領 2026-05-07 JST)
+- **task**: 月次開示PDFの extract_adapter.json を1社ずつ実物PDF確認して作成する（残り51社）
+
+### 背景
+
+月次開示パイプラインで60社の extract_adapter.json に fields=[] の設定不備が判明。テスト10社をCodexに依頼し品質OKを確認済み（gemini 4社 / regex 1社 / html_table発見 4社 / PDF不在 1社）。残り51社を同じ手順で処理する。
+
+### テスト10社から得た教訓（必読）
+
+1. **source が `non-tdnet(pdf)` でも実体がHTMLの企業がある**: GCSの実体を確認し、HTMLの場合は `source: "non-tdnet(html_table)"` に変更する（テストで4/10社が該当）
+2. **PDFが存在しない企業がある**: GCSに月次PDFがなければ `fields: []` のまま残す（1419が該当）
+3. **迷ったら gemini**: テスト結果でも regex は 1/10社のみ。regex は「テーブルが単純で、行ラベル一意・列固定・セル結合なし」の場合に限定
+4. **6412（平和）は再作成必須**: 前回作成されたadapterは2008年のsampleを参照しており、現行フォーマットと不整合
+
+### 対象（51社）
+
+| # | ticker | source（現設定） | fields数（仮・structure.json基準、実PDF確認で変わりうる） |
+|---|--------|-----------------|---------------|
+| 1 | 2910 | non-tdnet(pdf) | 2 |
+| 2 | 3050 | non-tdnet(pdf) | 6 |
+| 3 | 3080 | tdnet | 3 |
+| 4 | 3196 | non-tdnet(pdf) | 3 |
+| 5 | 3266 | non-tdnet(pdf) | 2 |
+| 6 | 3399 | non-tdnet(pdf) | 7 |
+| 7 | 3563 | non-tdnet(pdf) | 6 |
+| 8 | 3591 | download | 3 |
+| 9 | 3649 | non-tdnet(pdf) | 7 |
+| 10 | 3834 | non-tdnet(pdf) | 3 |
+| 11 | 3902 | non-tdnet(pdf) | 1 |
+| 12 | 4204 | non-tdnet(pdf) | 2 |
+| 13 | 6412 | non-tdnet(pdf) | 再作成 |
+| 14 | 6844 | non-tdnet(pdf) | 7 |
+| 15 | 7091 | non-tdnet(pdf) | 3 |
+| 16 | 7205 | non-tdnet(pdf) | 7 |
+| 17 | 7267 | non-tdnet(pdf) | 5 |
+| 18 | 7269 | non-tdnet(pdf) | 7 |
+| 19 | 7421 | non-tdnet(pdf) | 6 |
+| 20 | 7453 | non-tdnet(pdf) | 7 |
+| 21 | 7494 | non-tdnet(pdf) | 6 |
+| 22 | 7514 | non-tdnet(pdf) | 7 |
+| 23 | 7522 | non-tdnet(pdf) | 11 |
+| 24 | 7561 | tdnet | 7 |
+| 25 | 7604 | non-tdnet(pdf) | 7 |
+| 26 | 8160 | non-tdnet(pdf) | 7 |
+| 27 | 8174 | non-tdnet(pdf) | 4 |
+| 28 | 8179 | non-tdnet(pdf) | 6 |
+| 29 | 8281 | non-tdnet(pdf) | 4 |
+| 30 | 8289 | non-tdnet(pdf) | 7 |
+| 31 | 8306 | non-tdnet(pdf) | 3 |
+| 32 | 8511 | non-tdnet(pdf) | 5 |
+| 33 | 8570 | non-tdnet(pdf) | 2 |
+| 34 | 8704 | non-tdnet(pdf) | 2 |
+| 35 | 9008 | non-tdnet(pdf) | 6 |
+| 36 | 9041 | non-tdnet(pdf) | 5 |
+| 37 | 9042 | non-tdnet(pdf) | 6 |
+| 38 | 9048 | non-tdnet(pdf) | 2 |
+| 39 | 9076 | non-tdnet(pdf) | 2 |
+| 40 | 9163 | non-tdnet(pdf) | 4 |
+| 41 | 9166 | non-tdnet(pdf) | 4 |
+| 42 | 9202 | non-tdnet(pdf) | 6 |
+| 43 | 9517 | non-tdnet(pdf) | 1 |
+| 44 | 9601 | non-tdnet(pdf) | 4 |
+| 45 | 9605 | non-tdnet(pdf) | 2 |
+| 46 | 9842 | non-tdnet(pdf) | 10 |
+| 47 | 9843 | non-tdnet(pdf) | 7 |
+| 48 | 9974 | non-tdnet(pdf) | 6 |
+| 49 | 9979 | non-tdnet(pdf) | 5 |
+| 50 | 9993 | non-tdnet(pdf) | 4 |
+| 51 | 9994 | non-tdnet(pdf) | 3 |
+
+### 作業手順（1社ずつ）
+
+1. **GCSからPDFをDL**: `gsutil cp "gs://stock_data_1930932/monthly/docs/{ticker}/*" C:\tmp\monthly_pdf\{ticker}\` で配下の月次PDFを取得。なければ `gsutil cp "gs://stock_data_1930932/tdnet/{ticker}/*月次*" C:\tmp\monthly_pdf\{ticker}\` から月次関連PDFを取得
+2. **GCS実体のファイル形式を確認**: PDFではなくHTMLの場合がある（テスト10社で4社がHTML）。HTMLならsourceを `non-tdnet(html_table)` に変更
+3. **PDF/HTMLを読む**: pdfplumber + GPT Vision でPDFの構造を確認
+   - テーブル形式か、テキスト中の数値か
+   - 月方向（行=月 or 列=月）
+   - 値の単位（百万円、千円、%等）
+   - 複数月分の累計テーブルか単月か
+4. **structure.jsonのmetricsと突合**: `meta/monthly/{ticker}_structure.json` のmetrics定義と実PDFの内容を照合
+   - PDFに該当数値があるか確認
+   - メトリクス名が実テーブルのヘッダと一致するか
+5. **extraction_method を決定する**（→ 下記「extraction_method 判断基準」セクションを必ず読んでから判断。このセクションを読まずに決定しない）
+6. **extract_adapter.jsonを作成**: 出力フォーマットに従って作成
+7. **保存**: `C:\tmp\monthly_adapter_codex\{ticker}_extract_adapter.json` に保存
+8. **build_log.csv に即追記**（1社完了ごと。全社完了後ではない）
+9. **PDFは1社処理ごとに即削除**
+10. **6412（平和）の場合**: 既存adapterを参照せず、現行PDFのみから新規作成する（既存は2008年sample基準で無効）
+
+### extraction_method 判断基準（最重要セクション）
+
+**原則: 迷ったら `"gemini"` を選ぶ。** テスト10社でも gemini 4 / regex 1 の比率であり、regex が適切なケースは少数。
+
+#### `"regex"` を選んでよい条件（以下の**全て**を満たす場合のみ）
+
+1. テーブルが **1つだけ** で、セル結合がない
+2. 行ラベルが **一意** で他行と混同しない（例: 「既存店」「総合店」が1回ずつしか出ない）
+3. 列の位置が **固定** されている（月ごとに列がずれない）
+4. GPT Vision で確認して、テーブルが単純な構造（行ラベルと数値が明確に対応し、罫線やセパレータが規則的）
+5. 複数セクション・複数ページにまたがらない
+
+→ この5条件を全て満たす場合のみ regex を選択し、`row_label_regex` / `column_index` / `group` を設定する。
+
+**regex 具体例（テスト10社から）**:
+- 2659 サンエー: 1ページの横持ち表、行ラベル「総合店」「既存店」が一意、列は3月〜2月で固定 → regex OK
+
+#### `"gemini"` を選ぶべきケース（いずれか1つでも該当）
+
+1. テーブルが **複数** ある（セクション別・事業部別など）
+2. **セル結合** がある（特に行方向の結合）
+3. 同じラベルが **複数回** 出現する（「売上」が全店と既存店の両方にある等）
+4. **グラフと表が混在** している
+5. 列ヘッダが **2段以上** ある（「当月 / 累計」の上に「数量 / 金額」等）
+6. GPT Vision で確認して **テーブル構造が複雑**（罫線なし、不規則レイアウト等）
+7. 上記5条件のうち **1つでも判断に迷う**
+
+→ gemini を選択。fields の各要素に `description` を詳細に記述し、Gemini がPDFから直接抽出できるようにする。
+
+**gemini 具体例（テスト10社から）**:
+- 2502 アサヒGHD: 1ページ内にアサヒビール・アサヒ飲料・食品の複数表、当月/累計列の区別が必要 → gemini
+- 2503 キリンHD: 「キリングループ」「キリンビール」の2セクション、各セクション内に販売数量表+売上表 → gemini
+
+#### `"gemini"` 選択時の fields の書き方
+
+gemini の場合、`row_label_regex` / `column_index` は不要。代わりに **`description` に抽出指示を詳しく書く**:
+
+```json
+{
+  "key": "ビール類 売上 金額ベース（前年同月比）",
+  "description": "■アサヒビールのカテゴリー別売上金額前年比表で「ビール類計」行の当月前年比。累計列は使わない。",
+  "value_type": "percentage"
+}
+```
+
+description に含めるべき情報:
+- **どのセクション/テーブルか**（「■アサヒビール」「ゴルフ事業」等のセクション名）
+- **どの行か**（「ビール類計」「既存店」等の行ラベル）
+- **どの列か**（「当月」列、「前年同月比」列、「累計列は使わない」等）
+- **除外条件**（「グループ全体ではなく単体の値」「速報値を優先」等）
+
+**description に含めてはいけない情報（overfit禁止）**:
+- 特定の月名（「2月」「最新月」等）— 月は抽出スクリプトのプロンプトで `{month_val}月` と動的に渡される
+- サンプルの具体的な数値（「売上98.5%」等）
+- descriptionには**構造情報（テーブル名・行ラベル・列ヘッダー・単位）のみ**記載すること
+
+#### HTMLの場合
+
+GCS実体がHTMLだった場合:
+- `source` を `"non-tdnet(html_table)"` に変更する
+- `extraction_method` は **`"gemini"` を設定する**（コード上で `extraction_method == "gemini"` を明示的にチェックしてGemini HTML抽出を呼び出す。省略するとデフォルトの `"regex"` になりHTML regex抽出パスに入って精度が低下する）
+- fields の `description` にHTMLテーブルの位置情報（何番目のテーブルか、セクション名等）を記述する
+
+### 出力フォーマット
+
+> 本フォーマットは `042_monthly_disclosure_master.md` §extract_adapter.json正式スキーマのサブセット。下記以外のキーが必要な場合は042を参照。**本ドラフトと042知見MDの記述が矛盾する場合は042を優先する。**
+
+```json
+{
+  "ticker": "{ticker}",
+  "company_name": "{会社名}",
+  "source": "non-tdnet(pdf)",
+  "format": "pdf",
+  "extraction_method": "gemini",
+  "fields": [
+    {
+      "key": "{PDFでの表示名に合わせた名前}",
+      "bc_key": "{structure.jsonのmonthly_items[].nameと完全一致}",
+      "description": "{セクション名・行ラベル・列ヘッダー・単位等の構造情報}",
+      "value_type": "number"
+    }
+  ],
+  "doc_title_pattern": "{PDF名にマッチする正規表現}",
+  "fiscal_year_start_month": {決算月},
+  "created_at": "{ISO 8601 JST}",
+  "created_by": "codex-manual",
+  "sample_file": "{確認に使ったPDFファイル名}",
+  "extraction_notes": "{判断理由の簡潔な記録}"
+}
+```
+
+**`bc_key` ルール**: structure.json の `monthly_items[].name` と完全一致させる。`key` はPDFの表記に合わせてよいが、`bc_key` は必ずstructure.jsonの名前にする。**`key` と `bc_key` が同一なら `bc_key` は省略可**。
+
+**`company_name` の取得方法**: GCS PDF のファイル名（`YYYYMM_{ticker}_{会社名}_...pdf` 形式）から取得する。PDFがない場合は structure.json の `company_name` を使う（ただしtickerのまま設定されている場合あり — その場合はPDFタイトルやGCSメタデータから特定する）。
+
+追加フィールド（該当時のみ）:
+- `gemini_multi_month: true` — 累計テーブル（複数月分が1つのPDFに入っている）
+- `overwrite_past_months: true` — 累計テーブルで過去月の値も更新が必要
+- `custom_prompt: "{追加プロンプト}"` — 英語PDFの日英対応、会計年度境界の指示等、gemini向け特殊指示が必要な場合
+
+regex 選択時のみ追加:
+- fields 内に `row_label_regex`, `column_index`, `group` を設定
+
+### key_constraints
+
+- **GCSアップロード禁止**（Claude Code側で検証後にアップ）
+- Gemini Vision使用: OK（`gemini-3-flash-preview`、個人APIキー `C:\gdrive\claude\investment-agent\.env` の `GEMINI_API_KEY`）
+- GPT Vision使用: OK（PDF確認時）
+- `PYTHONUTF8=1` / `encoding="utf-8"` 必須
+- GCP認証: `C:\gdrive\claude\investment-agent\keys\gcp-service-account.json`
+- PDFは1社処理ごとに削除
+- **extraction_method の選択は実PDFを見てから判断**。推測で決めない
+- structure.json の metrics は参考。PDFに実際に存在する指標のみ fields に含める
+- **パターン化禁止**: 企業ごとにPDFフォーマットが異なるため、1社ずつ確認
+- **6412（平和）は既存adapterを破棄して再作成**: 2008年sampleベースの古いadapterが存在するが、現行PDFフォーマットで作り直す
+
+### 情報源
+
+| ファイル | 用途 |
+|---------|------|
+| `meta/monthly/{ticker}_structure.json` | メトリクス定義（参考） |
+| `meta/monthly/{ticker}_extract_adapter.json` | 現行adapter（fields仮再構築済みだが extraction metadata なし） |
+| `scripts/extract_monthly_data.py` | 抽出スクリプト（adapter の fields/extraction_method の使われ方を確認） |
+| `docs/knowledges/tools/042_monthly_disclosure_master.md` | 月次パイプライン全体像（正式スキーマの正本） |
+
+### 期待する成果物
+
+1. `C:\tmp\monthly_adapter_codex\{ticker}_extract_adapter.json` × 51社分
+2. `C:\tmp\monthly_adapter_codex\build_log.csv`（カラム: `ticker, company_name, extraction_method, fields_count, pdf_source, notes`）に追記（1社完了ごと）
+3. `codex_result` セクションに: 51社の処理結果サマリー（method別件数・HTML発見数・PDF不在数）
+
+---
+
 ## 2026-05-07 JST (月次開示 extract_adapter 作成: テスト10社)
 
 - **from**: Claude Code
