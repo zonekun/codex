@@ -17,33 +17,21 @@ Do not require the exact phrase `LINE双方向会話モード`.
 
 ## Command Form
 
-For Codex-side LINE bidirectional mode, do not call `scripts\notify.py ntfy --wait` directly. Use the Codex-only wrapper so send ids, active wait state, and reply status are written immediately outside the shared notification module.
+For Codex-side LINE bidirectional mode, do not call `scripts\notify.py ntfy --wait` directly. Use the Codex-only wrapper in the foreground so the shell tool returns the reply directly to the active Codex turn.
 
 ```powershell
 $ts = Get-Date -Format 'yyyyMMdd_HHmmss'
-$out = "C:\tmp\codex_line_wait\line_wait_$ts.out.log"
-$err = "C:\tmp\codex_line_wait\line_wait_$ts.err.log"
 $msg = "C:\tmp\codex_line_wait\line_wait_$ts.message.txt"
 Set-Content -Path $msg -Encoding UTF8 -Value "<message>"
-Start-Process -FilePath "C:\venvs\investment-agent\Scripts\python.exe" `
-  -ArgumentList @(
-    "-u", "scripts\codex_line_wait.py", "send-wait",
-    "--message-file", $msg,
-    "--timeout", "<seconds>",
-    "--title", "GPT",
-    "--stdout-log", $out,
-    "--stderr-log", $err
-  ) `
-  -WorkingDirectory "C:\Users\zonekun\Documents\codex\investment-agent" `
-  -RedirectStandardOutput $out `
-  -RedirectStandardError $err `
-  -PassThru `
-  -WindowStyle Hidden
+C:\venvs\investment-agent\Scripts\python.exe -u scripts\codex_line_wait.py send-wait `
+  --message-file $msg `
+  --timeout <seconds> `
+  --title GPT
 ```
 
 Do not replace this with a one-way notification unless the user explicitly disables reply waiting.
 
-The `-u` flag and wrapper-owned state file are mandatory for Codex. They prevent the Codex-specific failure mode where redirected stdout stays empty until process exit and the agent cannot distinguish "send failed" from "sent and waiting".
+The foreground tool call is mandatory for Codex. Background `Start-Process` waits can record replies, but they cannot wake the active Codex turn. That is the Codex-specific failure mode that caused replies to be "received" in files while remaining unhandled.
 
 ## Initial Bidirectional Message
 
@@ -55,41 +43,37 @@ If the local `notify.py ntfy` implementation does not support a documented sende
 
 While bidirectional LINE conversation mode is active, treat a received LINE/ntfy reply as an active conversation turn. Send a concrete reply back with `ntfy --wait` unless the user explicitly says no reply is needed or disables bidirectional mode. Do not leave a received reply unanswered on the assumption that no question was asked.
 
-## Background Wait Handoff
+## Foreground Reply Handoff
 
-If `notify.py ntfy --wait` is launched in a background process, Codex must treat the redirected stdout log as the handoff boundary for the next conversation turn.
+Codex LINE mode must use a foreground wait. The shell output is the handoff boundary for the next conversation turn.
 
-Before launching any new background wait or sending any LINE/ntfy message:
+Before launching any new foreground wait or sending any LINE/ntfy message:
 
-1. Inspect the newest active Codex/GPT wait stdout log.
-2. Inspect the matching stderr log if stdout is empty or the send status is unclear.
-3. Run `python scripts\codex_line_wait.py status` or inspect `C:\tmp\codex_line_wait\active_gpt_wait.json`.
-4. If status is `replied`, read `reply_text` from `status` output or `reply_text_path`, process it as the newest user instruction, then run `python scripts\codex_line_wait.py mark-processed`.
-5. Do not send a new message until any received reply in the active log has been processed.
+1. Run `python scripts\codex_line_wait.py status` or inspect `C:\tmp\codex_line_wait\active_gpt_wait.json`.
+2. If status is `replied`, read `reply_text` from `status` output or `reply_text_path`, process it as the newest user instruction, then run `python scripts\codex_line_wait.py mark-processed`.
+3. Do not send a new message until any received reply in the active state has been processed.
 
-After launching a background wait:
+After launching a foreground wait:
 
-1. Record the process id, stdout log path, stderr log path, and timeout seconds in the user-visible response or working notes.
-2. Before answering any later chat message, sending another LINE message, or reporting that no reply has arrived, inspect the latest active wait log.
-3. If `status` reports `replied`, read the reply text immediately and treat it as the newest user instruction.
-4. After processing that reply, run `python scripts\codex_line_wait.py mark-processed`.
-5. After marking the reply processed, start the next `send-wait` unless the user explicitly disables bidirectional mode or says no reply is needed.
-6. Do not rely on the background process ending as an automatic notification to Codex; the state file and log must be checked explicitly.
+1. Keep the tool call in the foreground until it returns a reply or timeout.
+2. Treat the returned reply text as the newest user instruction.
+3. Run `python scripts\codex_line_wait.py mark-processed` after handling that reply.
+4. After marking the reply processed, start the next foreground `send-wait` unless the user explicitly disables bidirectional mode or says no reply is needed.
 
 This check is mandatory even when the user also sends a normal chat message. A chat message saying the LINE reply was missed is itself a trigger to inspect the latest wait log first.
 
 ## Duplicate Send Prevention
 
-Never resend a LINE/ntfy message only because the redirected stdout log is still empty immediately after launch. An empty stdout log can mean the process is still waiting for a reply.
+Never resend a LINE/ntfy message only because a foreground wait has not returned yet. A running foreground wait can mean the process is still waiting for a reply.
 
 Before treating a send as failed and retrying, all of these facts must be verified:
 
 1. The wait process has exited.
-2. The stderr log has been inspected.
-3. The stdout log does not contain a successful send id.
-4. The exit status or stderr confirms failure.
+2. The shell output and exit status have been inspected.
+3. The output does not contain a successful send id.
+4. The exit status confirms failure.
 
-If a Codex/GPT wait process is still active, do not start another Codex/GPT wait for a follow-up or status report. Process the active wait first, or explicitly record why it is being abandoned before launching a replacement.
+If a Codex/GPT wait process is still active, do not start another Codex/GPT wait for a follow-up or status report. Let the foreground wait return first, or explicitly record why it is being abandoned before launching a replacement.
 
 `scripts\codex_line_wait.py send-wait` must refuse to launch when `active_gpt_wait.json` contains `status: replied` and `processed` is not `true`. Treat that refusal as a guardrail, not an error to bypass.
 

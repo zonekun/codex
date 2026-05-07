@@ -13,7 +13,6 @@ import os
 import subprocess
 import sys
 import time
-import urllib.request
 from datetime import datetime
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -25,7 +24,7 @@ if hasattr(sys.stderr, "reconfigure"):
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from notify import _NTFY_BASE_URL, _gen_unique_msg_id, _load_ntfy_topic, wait_ntfy_reply  # noqa: E402
+from notify import send_ntfy, wait_ntfy_reply  # noqa: E402
 
 
 DEFAULT_STATE_PATH = Path(r"C:\tmp\codex_line_wait\active_gpt_wait.json")
@@ -36,6 +35,8 @@ def _jst_now() -> str:
 
 
 def _is_pid_alive(pid: int) -> bool:
+    if pid <= 0:
+        return False
     result = subprocess.run(
         ["tasklist", "/FI", f"PID eq {pid}", "/FO", "CSV", "/NH"],
         capture_output=True,
@@ -49,7 +50,7 @@ def _load_state(path: Path) -> dict[str, object] | None:
     if not path.exists():
         return None
     try:
-        return json.loads(path.read_text(encoding="utf-8"))
+        return json.loads(path.read_text(encoding="utf-8-sig"))
     except json.JSONDecodeError:
         return {"status": "corrupt", "path": str(path)}
 
@@ -61,14 +62,26 @@ def _write_state(path: Path, state: dict[str, object]) -> None:
         json.dumps(state, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
     )
-    tmp.replace(path)
+    last_error: OSError | None = None
+    for _ in range(5):
+        try:
+            os.replace(tmp, path)
+            return
+        except OSError as exc:
+            last_error = exc
+            time.sleep(0.1)
+    if last_error is not None:
+        raise last_error
 
 
 def _read_message(args: argparse.Namespace) -> str:
     if args.message_file:
         return Path(args.message_file).read_text(encoding="utf-8")
     if args.message_env:
-        return os.environ[args.message_env]
+        message = os.environ.get(args.message_env)
+        if message is None:
+            raise SystemExit(f"environment variable not set: {args.message_env}")
+        return message
     raise SystemExit("--message-file or --message-env is required")
 
 
@@ -81,25 +94,16 @@ def _default_reply_path(args: argparse.Namespace, msg_id: str) -> str:
 
 
 def _send_ntfy_with_id(message: str, title: str, priority: str, tags: str) -> tuple[str, int]:
-    topic = _load_ntfy_topic()
-    msg_id = _gen_unique_msg_id(topic)
-    body = f"{msg_id}\n{message}"
-    payload = json.dumps(
-        {
-            "topic": topic,
-            "title": title,
-            "message": body,
-            "tags": [tags],
-            "priority": 3 if priority == "default" else {"low": 2, "high": 4, "urgent": 5}.get(priority, 3),
-            "click": "",
-            "actions": [],
-        }
-    ).encode("utf-8")
-    req = urllib.request.Request(_NTFY_BASE_URL, data=payload, method="POST")
-    req.add_header("Content-Type", "application/json")
-    req.add_header("X-Sticky", "yes")
-    with urllib.request.urlopen(req, timeout=10) as resp:
-        return msg_id, int(resp.status)
+    msg_id = send_ntfy(
+        message,
+        title=title,
+        tags=tags,
+        priority=priority,
+        with_id=True,
+    )
+    if msg_id is None:
+        raise RuntimeError("send_ntfy did not return a message id")
+    return msg_id, 200
 
 
 def cmd_status(args: argparse.Namespace) -> int:
