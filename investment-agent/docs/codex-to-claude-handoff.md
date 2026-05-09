@@ -26,19 +26,19 @@ Do not confuse this with Claude Code side `docs/terminal-relay.md`.
 
 - **from**: Claude Code
 - **to**: Codex
-- **status**: pending
+- **status**: in_progress
 - **task**: 中間JSONL（38件）を加工プロンプトに従いフォーマットし、加工済みJSONL→Excel を生成する
 
 ### 入力ファイル
 
-- 中間JSONL: `data/logs/yutai_raw_202605.jsonl`（38レコード）
-- 加工プロンプト: `docs/knowledges/tools/098_yutai_format_prompt.md`（v2）
+- 中間JSONL: `C:\Users\zonekun\Documents\codex\investment-agent\data\logs\yutai_raw_202605.jsonl`（38レコード）
+- 加工プロンプト: `C:\Users\zonekun\Documents\codex\investment-agent\docs\knowledges\tools\098_yutai_format_prompt.md`（v2）
 
 ### 作業手順
 
-1. `data/logs/yutai_raw_202605.jsonl` を1行ずつ読み、加工プロンプト（098_yutai_format_prompt.md）のルールに従い `yutai_content` フィールドを生成
-2. 加工済みJSONLを `data/logs/yutai_formatted_202605.jsonl` に出力（1レコード1行、逐次追記）
-3. Excel生成: `PYTHONUTF8=1 python scripts/generate_yutai_excel.py --input data/logs/yutai_formatted_202605.jsonl --output "C:\Users\zonekun\Dropbox\stock\優待"`
+1. `C:\Users\zonekun\Documents\codex\investment-agent\data\logs\yutai_raw_202605.jsonl` を1行ずつ読み、加工プロンプト（`C:\Users\zonekun\Documents\codex\investment-agent\docs\knowledges\tools\098_yutai_format_prompt.md`）のルールに従い `yutai_content` フィールドを生成
+2. 加工済みJSONLを `C:\Users\zonekun\Documents\codex\investment-agent\data\logs\yutai_formatted_202605.jsonl` に出力（1レコード1行、逐次追記）
+3. Excel生成: `PYTHONUTF8=1 python C:\Users\zonekun\Documents\codex\investment-agent\scripts\generate_yutai_excel.py --input C:\Users\zonekun\Documents\codex\investment-agent\data\logs\yutai_formatted_202605.jsonl --output "C:\Users\zonekun\Dropbox\stock\優待"`
 4. 完了後、本伝言板に完了報告＋出力Excelパスを記載
 
 ### 注意事項
