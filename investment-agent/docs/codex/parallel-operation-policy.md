@@ -85,6 +85,9 @@ Codex 側には `investment-agent` の構成を原則として全部取り込む
 - secrets、keys、認証情報は欠落なく移すが、扱いは既存運用に従う
 - MCP、GCP、ブラウザ操作、定期実行などの運用系変更は、Claude Code 側での取り込み前提で整理する
 - `CLAUDE.md` にある運用知識は、Codex 用に読み替えて文書化するが、元の運用ルールを勝手に破棄しない
+- Codex がコミット済みコード変更を渡す時は、通常の patch 適用を前提にしない。Codex の Git ルートは `C:\Users\zonekun\Documents\codex` で、Claude Code 側は `C:\gdrive\claude\investment-agent` 直下を作業単位にすることがあり、`investment-agent/` prefix 差で patch が skip されやすい。
+- 完了報告には `repository`, `branch`, `commit`, Git 上の変更パス、Claude Code 側で混同されやすい対応パスを明記する。Claude Code 側に反映してほしい運用ルールがある場合、Codex は `CLAUDE.md` / `docs/knowledges/**` を直接編集せず、伝言板で反映依頼として渡す。
+- patch が明示的に求められた場合のみ、Codex 側で `investment-agent/` prefix を落とした Claude Code 側用 patch を生成し、`git apply --3way` 前提で渡す。ファイルコピーや手動編集での取り込みを既定手順にしない。
 
 ## 9. Claude Code 側の取り込み手順
 
