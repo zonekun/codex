@@ -1,0 +1,81 @@
+{
+  "source": "non-tdnet(pdf)",
+  "format": "pdf",
+  "doc_title_pattern": "月次営業実績",
+  "year_from_title_regex": "(\\d{4})年",
+  "month_from_title_regex": "(\\d{1,2})月",
+  "fields": [
+    {
+      "key": "ゴルフ事業 全店 コース数",
+      "name": "ゴルフ事業 全店 コース数",
+      "row_label_regex": "^(\\d+)月\\s+\\d+\\s+[\\d.]+\\s+(\\d+)",
+      "value_type": "integer",
+      "group": 2,
+      "use_last_number": true,
+      "bc_key": "ゴルフ事業 全店 コース数"
+    },
+    {
+      "key": "ゴルフ事業 全店 売上（百万円）",
+      "name": "ゴルフ事業 全店 売上（百万円）",
+      "row_label_regex": "^(\\d+)月\\s+\\d+\\s+[\\d.]+\\s+\\d+\\s+[\\d.]+\\s+\\d+\\s+\\d+\\s+[\\d,]+\\s+([\\d,]+)",
+      "value_type": "integer",
+      "group": 2,
+      "use_last_number": true,
+      "bc_key": "ゴルフ事業 全店 売上（百万円）"
+    },
+    {
+      "key": "ゴルフ事業 全店 客数（前年同月比）",
+      "name": "ゴルフ事業 全店 客数（前年同月比）",
+      "row_label_regex": "^(\\d+)月\\s+\\d+\\s+[\\d.]+\\s+\\d+\\s+[\\d.]+\\s+\\d+\\s+\\d+\\s+[\\d,]+\\s+[\\d,]+\\s+([\\d.-]+%)",
+      "value_type": "percentage",
+      "group": 2,
+      "use_last_number": true,
+      "bc_key": "ゴルフ事業 全店 客数（前年同月比）"
+    },
+    {
+      "key": "ゴルフ事業 全店 売上（前年同月比）",
+      "name": "ゴルフ事業 全店 売上（前年同月比）",
+      "row_label_regex": "^(\\d+)月\\s+\\d+\\s+[\\d.]+\\s+\\d+\\s+[\\d.]+\\s+\\d+\\s+\\d+\\s+[\\d,]+\\s+[\\d,]+\\s+[\\d.-]+%\\s+([\\d.-]+%)",
+      "value_type": "percentage",
+      "group": 2,
+      "use_last_number": true,
+      "bc_key": "ゴルフ事業 全店 売上（前年同月比）"
+    },
+    {
+      "key": "ゴルフ事業 既存店 客数（前年同月比）",
+      "name": "ゴルフ事業 既存店 客数（前年同月比）",
+      "row_label_regex": "^(\\d+)月\\s+.*?\\s+([\\d.-]+%)\\s+([\\d.-]+%)\\s+([\\d.-]+%)$",
+      "value_type": "percentage",
+      "group": 2,
+      "use_last_number": true,
+      "bc_key": "ゴルフ事業 既存店 客数（前年同月比）"
+    },
+    {
+      "key": "ゴルフ事業 既存店 客単価（前年同月比）",
+      "name": "ゴルフ事業 既存店 客単価（前年同月比）",
+      "row_label_regex": "^(\\d+)月\\s+.*?\\s+([\\d.-]+%)\\s+([\\d.-]+%)\\s+([\\d.-]+%)$",
+      "value_type": "percentage",
+      "group": 3,
+      "use_last_number": true,
+      "bc_key": "ゴルフ事業 既存店 客単価（前年同月比）"
+    },
+    {
+      "key": "ゴルフ事業 既存店 売上（前年同月比）",
+      "name": "ゴルフ事業 既存店 売上（前年同月比）",
+      "row_label_regex": "^(\\d+)月\\s+.*?\\s+([\\d.-]+%)\\s+([\\d.-]+%)\\s+([\\d.-]+%)$",
+      "value_type": "percentage",
+      "group": 4,
+      "use_last_number": true,
+      "bc_key": "ゴルフ事業 既存店 売上（前年同月比）"
+    }
+  ],
+  "extraction_notes": "全店客単価（前年同月比）は、開示資料の全店テーブルに該当項目がないため除外しています。既存店は『通期ゴルフ場ベース』の数値を参照しています。各正規表現は、降水量テーブルとの混同を避けるため、列の構成を考慮したパターンにしています。",
+  "ticker": "6412",
+  "company_name": "6412",
+  "created_at": "2026-05-06T17:29:53.251726+09:00",
+  "created_by": "gemini-3-flash-preview",
+  "sample_doc_title": "000000_6412_2008年12月_月次営業実績_f04927b6",
+  "sample_submission_date": "",
+  "report_url": "TDNET文書",
+  "sample_file": "000000_6412_2008年12月_月次営業実績_f04927b6"
+}

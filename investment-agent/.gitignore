@@ -1,11 +1,8 @@
 # Environment
 .env
 .venv/
-.venv-codex/
 venv/
 env/
-.uv-cache/
-.uv-python/
 
 # Secrets / Credentials
 keys/
@@ -18,6 +15,9 @@ __pycache__/
 dist/
 build/
 
+# Temporary scripts (one-shot / investigation / PoC)
+scripts/tmp_*.py
+
 # Data (large files / outputs)
 data/csv/
 data/cache/
@@ -28,7 +28,7 @@ data/logs/
 
 # Claude Code (端末固有設定)
 .claude/settings.local.json
-.claude/scheduled_tasks.lock
+.claude.local.md
 
 # IDE
 .vscode/
@@ -50,7 +50,3 @@ htmlcov/
 
 # ruff
 .ruff_cache/
-
-# Temporary bootstrap test workspace
-tmp_codex_bootstrap_test/
-tmp_codex_bootstrap_test_runner.ps1

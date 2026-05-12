@@ -1,0 +1,28 @@
+{
+  "ticker": "2173",
+  "company_name": "Ｇ－博展",
+  "current_version": "2025-11",
+  "versions": [
+    {
+      "valid_from": "2025-11",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Vision extraction selected because structure is complex or data is unavailable."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/2173/20251114_2173_Ｇ－博展_決算短信_2025年12月期第3四半期　決算短信〔日本基準〕（連結）_140120251114502706.pdf",
+  "_source_doc_id": "140120251114502706",
+  "_generated_at": "2026-04-30T17:16:37.272477+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

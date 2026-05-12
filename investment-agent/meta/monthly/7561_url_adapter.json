@@ -1,0 +1,13 @@
+{
+  "ticker": "7561",
+  "company_name": "ハークスレイ",
+  "ir_page_url": "https://www.hurxley.co.jp/ir_information/month/",
+  "updated_at": "2026-04-24T07:28:50.211823+09:00",
+  "last_checked": "2026-04-24",
+  "status": "active",
+  "type": "html_table",
+  "css_selector": null,
+  "table_selector": null,
+  "note": "HTML表に月次データ検出。table_selector要調整",
+  "manual_override": true
+}

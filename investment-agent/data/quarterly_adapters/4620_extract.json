@@ -1,0 +1,28 @@
+{
+  "ticker": "4620",
+  "company_name": "藤倉化",
+  "current_version": "2025-02",
+  "versions": [
+    {
+      "valid_from": "2025-02",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/4620/20250212_4620_藤倉化_決算短信_2025年３月期 第３四半期決算短信［日本基準］（連結）_140120250210568240.pdf",
+  "_source_doc_id": "140120250210568240",
+  "_generated_at": "2026-04-30T18:10:25.340120+09:00",
+  "_model_used": null
+}

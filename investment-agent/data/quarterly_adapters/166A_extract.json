@@ -1,0 +1,28 @@
+{
+  "ticker": "166A",
+  "company_name": "Ｇ－タスキＨＤ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "presentation",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/166A/20260213_166A_Ｇ－タスキＨＤ_決算説明資料_2026年９月期 第１四半期決算説明資料_140120260213558875.pdf",
+  "_source_doc_id": "140120260213558875",
+  "_generated_at": "2026-04-30T16:32:19.169059+09:00",
+  "_model_used": null
+}

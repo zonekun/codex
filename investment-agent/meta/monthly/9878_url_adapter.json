@@ -1,0 +1,16 @@
+{
+  "ticker": "9878",
+  "company_name": "セキド",
+  "ir_page_url": "https://sekido.com/ir",
+  "type": "scrape_links",
+  "status": "inactive",
+  "link_text_pattern": null,
+  "link_href_pattern": null,
+  "playwright_required": false,
+  "inactive_reason": "月次売上開示なし。IRページにはプレスリリース・新株予約権・IR開示のみ（月次売上PDFは存在しない）。BC月次データ 2024-01 以降停止確認済み（2026-04-17）。",
+  "excluded": true,
+  "manual_override": true,
+  "manual_override_note": "2026-04-24 確認済み: IRページに月次売上報告なし。inactive維持",
+  "manual_override_at": "2026-04-24T00:00:00+09:00",
+  "updated_at": "2026-04-24T00:00:00+09:00"
+}

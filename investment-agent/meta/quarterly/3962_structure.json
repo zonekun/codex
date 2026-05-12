@@ -1,0 +1,36 @@
+{
+  "ticker": "3962",
+  "company_name": "チェンジＨＤ",
+  "current_version": "2025-11",
+  "versions": [
+    {
+      "valid_from": "2025-11",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "ppt_chart",
+      "notes": "公共DX領域の売上高推移が棒グラフで示されており、BPR・コンサル事業の項目内に中央省庁向けコンサルの受注残（9.5億円）がテキストで記載されている。 補完チェッカー精査により、陸上自衛隊DX支援案件の現在の受注額が数値付きで開示されているため追加。\nPhase 6b #23: ??JSON?PDF??????????????????????????? [2026-05-07] completedメトリクスのみのため収集対象外(false化)。"
+    }
+  ],
+  "_source_pdf": "tdnet/3962/20251113_3962_チェンジＨＤ_決算説明資料_2026年3月期第2四半期決算説明資料_140120251113500483.pdf",
+  "_source_doc_id": "140120251113500483",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T17:56:44.844181+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      24
+    ],
+    "table_count": 1,
+    "max_rows": 4,
+    "max_cols": 2,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

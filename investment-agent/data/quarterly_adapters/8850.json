@@ -1,0 +1,81 @@
+{
+  "ticker": "8850",
+  "company_name": "スターツ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "前期繰越高",
+          "type": "backlog",
+          "description": "期首時点における受注残高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "当期受注高",
+          "type": "order_intake",
+          "description": "当期中に新たに受注した金額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "完成工事高",
+          "type": "completed",
+          "description": "当期中に完成し売上計上された工事高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "次期繰越高",
+          "type": "backlog",
+          "description": "期末時点における受注残高（手持高）",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "当期施工高",
+          "type": "other",
+          "description": "当期中に実際に施工された金額",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "種別",
+          "items": [
+            "一般住宅",
+            "賃貸住宅",
+            "その他"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "建設事業における受注状況及び完成工事高実績が、一般住宅、賃貸住宅、その他の種別ごとに詳細な表で記載されています。次期繰越高については「手持高」と「うち施工高」の内訳も示されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/8850/20260209_8850_スターツ_決算短信_2026年3月期　第3四半期決算短信〔日本基準〕（連結）_140120260209551478.pdf",
+  "_source_doc_id": "140120260209551478",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T20:09:31.269753+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      7
+    ],
+    "table_count": 1,
+    "max_rows": 6,
+    "max_cols": 9,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "ticker": "3946",
+  "company_name": "トーモク",
+  "current_version": "2025-10",
+  "versions": [
+    {
+      "valid_from": "2025-10",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/3946/20251031_3946_トーモク_決算短信_2026年3月期 第2四半期（中間期）決算短信〔日本基準〕（連結）_140120251029581859.pdf",
+  "_source_doc_id": "140120251029581859",
+  "_generated_at": "2026-04-30T17:56:27.856642+09:00",
+  "_model_used": null
+}

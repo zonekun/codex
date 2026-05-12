@@ -1,0 +1,28 @@
+{
+  "ticker": "6817",
+  "company_name": "スミダ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "presentation",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/6817/20260209_6817_スミダ_決算説明資料_2025年12月期第4四半期及び通期決算説明資料_140120260205549069.pdf",
+  "_source_doc_id": "140120260205549069",
+  "_generated_at": "2026-04-30T19:29:14.367561+09:00",
+  "_model_used": null
+}

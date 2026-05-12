@@ -1,0 +1,54 @@
+{
+  "ticker": "5406",
+  "company_name": "神戸鋼",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "各セグメントにおける新規受注額",
+          "unit": "億円",
+          "is_total": false
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "各セグメントにおける期末時点の未消化受注残高",
+          "unit": "億円",
+          "is_total": false
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "機械およびエンジニアリングの各セグメントについて、2024年度実績、2025年度見通し（前回・今回）、および四半期別の詳細な数値データが表形式で記載されています。造船分野については「手持ち工事量」の定性的な記述のみで数値データはありません。"
+    }
+  ],
+  "_source_pdf": "tdnet/5406/20260206_5406_神戸鋼_決算説明資料_2025年度第3四半期　決算説明資料_140120260205549483.pdf",
+  "_source_doc_id": "140120260205549483",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T18:27:16.824551+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      8,
+      22,
+      23
+    ],
+    "table_count": 2,
+    "max_rows": 8,
+    "max_cols": 14,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "wide table: 14 columns"
+    ]
+  }
+}

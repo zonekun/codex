@@ -1,0 +1,12 @@
+{
+  "ticker": "2751",
+  "company_name": "テンポスホールディングス",
+  "ir_page_url": "https://www.tenpos.co.jp/ir/",
+  "type": "scrape_links",
+  "status": "inactive",
+  "inactive_reason": "IRサイト・TDnetともに月次売上速報の開示なし。四半期決算のみ。BC月次2024-07以降停止",
+  "excluded": true,
+  "manual_override": true,
+  "note": "2026-04-24 Web調査確認: IR(tenpos.co.jp/ir/)に月次なし、irbank TDnet開示にも月次なし",
+  "updated_at": "2026-04-24T19:30:00+09:00"
+}

@@ -1,0 +1,15 @@
+{
+  "ticker": "3028",
+  "company_name": "アルペン",
+  "ir_page_url": "https://store.alpen-group.jp/corporate/ir/finance/",
+  "updated_at": "2026-04-24T13:42:00.493655+09:00",
+  "last_checked": "2026-04-21",
+  "status": "active",
+  "type": "html_table",
+  "css_selector": null,
+  "note": "月次情報はJS描画。Playwright必要。旧URL(alpen-group.jp)→store.alpen-group.jpに移行 (2026-04-24)。",
+  "playwright_required": true,
+  "manual_override": true,
+  "manual_override_at": "2026-04-24T13:42:00.493655+09:00",
+  "manual_override_note": "URL移行+type変更 (2026-04-24)"
+}

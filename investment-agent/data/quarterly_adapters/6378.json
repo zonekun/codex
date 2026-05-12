@@ -1,0 +1,76 @@
+{
+  "ticker": "6378",
+  "company_name": "木村化工",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当該四半期累計期間における受注契約の総額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "当該四半期累計期間における売上高（完成工事高相当）",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当該四半期末時点における未消化の受注残高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "輸出関係売上高",
+          "type": "other",
+          "description": "売上高のうち輸出に関連する金額",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "エンジニアリング事業",
+            "化工機事業",
+            "エネルギー・環境事業"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "決算短信の「3. その他（受注、売上及び受注残の状況）」に、セグメント別の受注高、売上高、受注残高、および輸出状況の構成表が詳細に記載されています。また、経営成績の概況（本文）にも主要な数値の記載があります。"
+    }
+  ],
+  "_source_pdf": "tdnet/6378/20260206_6378_木村化工_決算短信_2026年3月期 第３四半期決算短信〔日本基準〕（連結）_140120260203545556.pdf",
+  "_source_doc_id": "140120260203545556",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:09:29.550328+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      3,
+      4,
+      13
+    ],
+    "table_count": 2,
+    "max_rows": 20,
+    "max_cols": 7,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "source": "non-tdnet(html_table)",
+  "format": "html",
+  "fields": [
+    {
+      "key": "ロイヤルホスト 既存店 売上（前年同月比）",
+      "name": "ロイヤルホスト 既存店 売上（前年同月比）",
+      "description": "IR「月次売上」HTMLページ。ロイヤルホストセクション(id=royalhost)の既存店前年比テーブル。「売上高」行の対象月列。値は前年同月比%(例: 106.5)。",
+      "value_type": "percentage"
+    },
+    {
+      "key": "ロイヤルホスト 既存店 客数（前年同月比）",
+      "name": "ロイヤルホスト 既存店 客数（前年同月比）",
+      "description": "同HTMLテーブル。「来客数」行の対象月列。",
+      "value_type": "percentage"
+    },
+    {
+      "key": "ロイヤルホスト 既存店 客単価（前年同月比）",
+      "name": "ロイヤルホスト 既存店 客単価（前年同月比）",
+      "description": "同HTMLテーブル。「客単価」行の対象月列。",
+      "value_type": "percentage"
+    },
+    {
+      "key": "天丼てんや 既存店 売上（前年同月比）",
+      "name": "天丼てんや 既存店 売上（前年同月比）",
+      "description": "同HTMLページ。てんやセクション(id=tenya)の既存店前年比テーブル。「売上高」行の対象月列。",
+      "value_type": "percentage"
+    },
+    {
+      "key": "天丼てんや 既存店 客数（前年同月比）",
+      "name": "天丼てんや 既存店 客数（前年同月比）",
+      "description": "同HTMLテーブル。「来客数」行の対象月列。",
+      "value_type": "percentage"
+    },
+    {
+      "key": "天丼てんや 既存店 客単価（前年同月比）",
+      "name": "天丼てんや 既存店 客単価（前年同月比）",
+      "description": "同HTMLテーブル。「客単価」行の対象月列。",
+      "value_type": "percentage"
+    }
+  ],
+  "extraction_notes": "ロイヤルホールディングス。IR「月次売上」HTMLページにロイヤルホスト・てんやの2ブランド × 既存店前年比(売上高/来客数/客単価)の6メトリクスを開示。既存店は国内直営店対象。12月期決算。url_adapter html_table(active)で取得。",
+  "ticker": "8179",
+  "company_name": "ロイヤルホールディングス",
+  "created_at": "2026-04-05T10:14:44.599811+09:00",
+  "created_by": "gemini-2.5-flash",
+  "extraction_method": "gemini",
+  "manual_override": true,
+  "manual_override_note": "Codex成果物を自ら検証・再作成。月次売上HTMLから6メトリクス抽出可能",
+  "manual_override_at": "2026-05-08T01:00:00+09:00"
+}

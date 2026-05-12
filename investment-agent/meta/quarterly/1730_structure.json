@@ -1,0 +1,113 @@
+{
+  "ticker": "1730",
+  "company_name": "麻生フオーム",
+  "current_version": "2025-02",
+  "versions": [
+    {
+      "valid_from": "2025-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当第３四半期累計期間における受注高の合計",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "繰越工事高",
+          "type": "backlog",
+          "description": "当第３四半期累計期間末における繰越工事高の合計",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "気泡コンクリート工事 受注高",
+          "type": "order_intake",
+          "description": "気泡コンクリート工事部門の受注高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "地盤改良工事 受注高",
+          "type": "order_intake",
+          "description": "地盤改良工事部門の受注高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "その他工事 受注高",
+          "type": "order_intake",
+          "description": "その他工事部門の受注高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "気泡コンクリート工事 繰越工事高",
+          "type": "backlog",
+          "description": "気泡コンクリート工事部門の繰越工事高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "繰越工事高"
+        },
+        {
+          "name": "地盤改良工事 繰越工事高",
+          "type": "backlog",
+          "description": "地盤改良工事部門の繰越工事高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "繰越工事高"
+        },
+        {
+          "name": "その他工事 繰越工事高",
+          "type": "backlog",
+          "description": "その他工事部門の繰越工事高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "繰越工事高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "工事別",
+          "items": [
+            "気泡コンクリート工事",
+            "地盤改良工事",
+            "その他工事"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "決算短信の「3. その他 (1) 受注高、完成工事高及び繰越工事高」に、工事種別ごとの詳細な実績データが表形式で記載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/1730/20250213_1730_麻生フオーム_決算短信_2025年３月期第３四半期決算短信〔日本基準〕（非連結）_140120250213572220.pdf",
+  "_source_doc_id": "140120250213572220",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T16:36:31.079419+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      3,
+      4,
+      7,
+      8,
+      10
+    ],
+    "table_count": 5,
+    "max_rows": 42,
+    "max_cols": 7,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 5"
+    ]
+  }
+}

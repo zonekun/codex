@@ -1,0 +1,13 @@
+{
+  "ticker": "2730",
+  "company_name": "エディオン",
+  "ir_page_url": "http://www.edion.co.jp/ir/library/monthly/",
+  "updated_at": "2026-04-21T09:28:53.754019+09:00",
+  "last_checked": "2026-04-21",
+  "status": "active",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": null,
+  "link_href_pattern": "/system/files.*\\.(pdf)",
+  "note": "月次PDFリンク5件検出 best=http://www.edion.co.jp/system/files/ir-news/pdf/ja/2025-11/EDION%20211125_Coverage%E3%83%BBReport_Storm%20CORPORATE%20RESEARCH_0.pdf"
+}

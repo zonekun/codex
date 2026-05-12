@@ -1,0 +1,28 @@
+{
+  "ticker": "7683",
+  "company_name": "7683",
+  "metrics": [
+    {
+      "name": "その他（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "オンライン 売上（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "単体 売上（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "単体 売上（百万円）",
+      "source": "bc"
+    },
+    {
+      "name": "店舗 売上（前年同月比）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

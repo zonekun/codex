@@ -1,0 +1,28 @@
+{
+  "ticker": "4173",
+  "company_name": "Ｇ－ＷＡＣＵＬ",
+  "current_version": "2025-01",
+  "versions": [
+    {
+      "valid_from": "2025-01",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "presentation",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/4173/20250117_4173_Ｇ－ＷＡＣＵＬ_決算説明資料_2025年2月期第3四半期 決算説明会書き起こし_140120250115551380.pdf",
+  "_source_doc_id": "140120250115551380",
+  "_generated_at": "2026-04-30T18:00:51.416467+09:00",
+  "_model_used": null
+}

@@ -1,0 +1,28 @@
+{
+  "ticker": "4398",
+  "company_name": "ＢＢＳｅｃ",
+  "current_version": "2026-03",
+  "versions": [
+    {
+      "valid_from": "2026-03",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "presentation",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Vision extraction selected because structure is complex or data is unavailable."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/4398/20260306_4398_ＢＢＳｅｃ_決算説明資料_2026年６月期　第２四半期決算説明 質疑応答集_140120260306577591.pdf",
+  "_source_doc_id": "140120260306577591",
+  "_generated_at": "2026-04-30T18:07:19.410063+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

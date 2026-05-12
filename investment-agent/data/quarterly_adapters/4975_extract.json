@@ -1,0 +1,52 @@
+{
+  "ticker": "4975",
+  "company_name": "ＪＣＵ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "extraction_method": "regex",
+      "source": "tanshin",
+      "page_keywords": [
+        "装置事業",
+        "受注高",
+        "受注残高",
+        "当第３四半期連結累計期間"
+      ],
+      "fields": [
+        {
+          "key": "売上高",
+          "row_label_regex": "^売上高\\s+\\d[\\d,]*百万円\\s+([\\d,]+)百万円",
+          "value_type": "integer",
+          "unit": "百万円",
+          "group": 1,
+          "notes": "装置事業の売上高（当第３四半期連結累計期間）を抽出します。"
+        },
+        {
+          "key": "受注高",
+          "row_label_regex": "^受注高\\s+\\d[\\d,]*百万円\\s+([\\d,]+)百万円",
+          "value_type": "integer",
+          "unit": "百万円",
+          "group": 1,
+          "notes": "装置事業の受注高（当第３四半期連結累計期間）を抽出します。"
+        },
+        {
+          "key": "受注残高",
+          "row_label_regex": "^受注残高\\s+\\d[\\d,]*百万円\\s+([\\d,]+)百万円",
+          "value_type": "integer",
+          "unit": "百万円",
+          "group": 1,
+          "notes": "装置事業の受注残高（当第３四半期連結累計期間）を抽出します。"
+        }
+      ],
+      "gemini_custom_prompt": "",
+      "notes": "装置事業のセグメント別データ表から、当第３四半期の数値を正規表現で抽出します。前年同期比や前年同期の数値を除外するため、2番目の金額項目をキャプチャします。"
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/4975/20260205_4975_ＪＣＵ_決算短信_2026年３月期第３四半期決算短信〔日本基準〕(連結)_140120260205548282.pdf",
+  "_source_doc_id": "140120260205548282",
+  "_generated_at": "2026-04-30T23:07:52.027795+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

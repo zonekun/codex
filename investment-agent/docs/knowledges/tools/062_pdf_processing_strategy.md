@@ -78,7 +78,7 @@ PyPDF2 を 1st、`len(text) < 50` のとき pdfminer にフォールバック、
 
 - `scripts/tdnet_load_parallel.py` — 今回の main
 - `scripts/extract_monthly_data.py` / `build_monthly_extractor.py` — 既に pdfplumber / PyMuPDF ベースで別系統（本項目の影響なし）
-- `scripts/earnings_compare/pdf_loader.py` — pdfplumber 単独（4K字制限、影響なし）
+- ~~`scripts/earnings_compare/pdf_loader.py`~~ — 削除済み（Ollama PoC 廃止）
 - `scripts/update_conse_rakuten*.py` — PDF 未使用
 
 ### 優先度
@@ -133,5 +133,5 @@ P1（次の backfill phase = 2022/2021/2020 開始前に対応）。E/F/G 2023 b
 |-----------|-----|-------------|---------|
 | `tdnet_load_parallel.py` | 分類/Embedding 用テキスト抽出 | PyPDF2 1st → pdfminer 2nd | 大（§3 P1 改訂対象） |
 | `build_monthly_extractor.py` / `extract_monthly_data.py` | 月次の**表からの数値抽出** | pdfplumber + PyMuPDF | 中（Camelot 救済層の追加） |
-| `earnings_compare/pdf_loader.py` | Ollama 向けテキスト（4K字制限） | pdfplumber | 小 |
+| ~~`earnings_compare/pdf_loader.py`~~ | 削除済み（Ollama PoC廃止） | — | — |
 | `investigate_monthly_ng.py` | NG銘柄の画像分析 | pdfplumber + Gemini画像 | 小（Camelot 併用検討） |

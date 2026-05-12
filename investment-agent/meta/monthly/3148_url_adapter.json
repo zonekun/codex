@@ -1,0 +1,12 @@
+{
+  "ticker": "3148",
+  "company_name": "(株)クリエイトＳＤホールディングス",
+  "ir_page_url": "http://www.createsdhd.co.jp/ir/monthly/",
+  "updated_at": "2026-04-21T09:38:14.626884+09:00",
+  "last_checked": "2026-04-21",
+  "status": "active",
+  "type": "html_table",
+  "css_selector": null,
+  "table_selector": null,
+  "note": "HTML表に月次データ検出。table_selector要調整"
+}

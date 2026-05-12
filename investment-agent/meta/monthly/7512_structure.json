@@ -1,0 +1,28 @@
+{
+  "ticker": "7512",
+  "company_name": "7512",
+  "metrics": [
+    {
+      "name": "住居余暇 既存計（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "全社 売上（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "既存店 売上（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "衣料 既存計（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "食品 既存計（前年同月比）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

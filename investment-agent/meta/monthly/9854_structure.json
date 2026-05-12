@@ -1,0 +1,20 @@
+{
+  "ticker": "9854",
+  "company_name": "9854",
+  "metrics": [
+    {
+      "name": "眼鏡小売 全店 売上（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "眼鏡小売 全店 店舗数",
+      "source": "bc"
+    },
+    {
+      "name": "眼鏡小売 既存店 売上（前年同月比）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

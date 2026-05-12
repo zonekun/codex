@@ -1,0 +1,18 @@
+{
+  "ticker": "7603",
+  "company_name": "ジーイエット",
+  "updated_at": "2026-04-24",
+  "last_checked": "2026-04-24",
+  "ir_page_url": "https://gyet.co.jp/ir/library/#index5",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": "前年比速報|月次売上",
+  "link_href_pattern": "/wp/wp\\-content/uploads/\\d{4}/\\d{2}/.*\\.(pdf)",
+  "table_selector": null,
+  "status": "active",
+  "skip_reason": null,
+  "playwright_required": false,
+  "follow_links": false,
+  "note": "前年比速報（月次売上高）PDFあり。URL: /wp/wp-content/uploads/YYYY/MM/YYYYMM前年比速報.pdf。link_text_patternで「前年比速報」のみに絞り（適時開示・決算・減損等を除外）。旧adapterは /wp/wp-content/uploads/2026.*\\.pdf で年固定かつ全2026PDF取得",
+  "url_source": "manual_fix_20260424"
+}

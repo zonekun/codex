@@ -1,0 +1,64 @@
+{
+  "ticker": "1887",
+  "company_name": "日本国土開発",
+  "current_version": "2026-04",
+  "versions": [
+    {
+      "valid_from": "2026-04",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "個別ベースの受注高合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "繰越高",
+          "type": "backlog",
+          "description": "個別ベースの繰越高合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "建設事業受注予想",
+          "type": "order_intake",
+          "description": "個別ベースの建設事業（土木・建築）における通期の受注高予想",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "決算短信の補足情報として、個別ベースの受注高、売上高、繰越高の状況が、事業別（土木・建築・開発）および顧客別（国内官庁・国内民間・海外）の多段構成の表で詳細に開示されています。また、次期の建設事業受注予想についても事業別の内訳が含まれています。"
+    }
+  ],
+  "_source_pdf": "tdnet/1887/20260414_1887_日本国土開発_決算短信_2026年５月期第３四半期決算短信〔日本基準〕(連結)_140120260414503218.pdf",
+  "_source_doc_id": "140120260414503218",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T16:59:24.388608+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      5,
+      9,
+      16,
+      17,
+      18
+    ],
+    "table_count": 6,
+    "max_rows": 43,
+    "max_cols": 10,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 6"
+    ]
+  }
+}

@@ -30,6 +30,12 @@ def append_entry(
 ) -> None:
     """データカタログにエントリを追加する.
 
+    .. deprecated::
+        data_catalog.md がインデックス化されたため、本関数でファイル末尾に
+        追記するとサマリテーブル外に行が漏れる。使用禁止。
+        新規テーブル追加は data_catalog.md サマリテーブルに1行 +
+        docs/data_catalog/bq_xxx.md を手動作成すること。
+
     Args:
         storage_type: "bigquery" | "gcs" | "local_csv" | "api_cache"
         location: テーブル名, GCSパス, ローカルパス等

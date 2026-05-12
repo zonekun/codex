@@ -1,0 +1,53 @@
+{
+  "ticker": "6272",
+  "company_name": "レオン自機",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "食品加工機械製造販売事業における受注高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残",
+          "type": "backlog",
+          "description": "食品加工機械製造販売事業における受注残高（期首または期中時点）",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "ppt_chart",
+      "notes": "食品加工機械製造販売事業の受注高、売上高、受注残の推移。2026年3月期については、受注残は4/1時点と1/1時点、受注高は1Q-3Q実績、売上高は1Q-3Q実績と通期予想の数値が記載されている。"
+    }
+  ],
+  "_source_pdf": "tdnet/6272/20260210_6272_レオン自機_決算説明資料_2026年3月期 第３四半期決算補足説明資料_140120260209551900.pdf",
+  "_source_doc_id": "140120260209551900",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T18:56:10.144438+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      10
+    ],
+    "table_count": 4,
+    "max_rows": 4,
+    "max_cols": 2,
+    "broken_col0": true,
+    "unit_mixed": true,
+    "notes": [
+      "first-column labels appear merged",
+      "multiple units appear in relevant pages",
+      "many tables: 4"
+    ]
+  }
+}

@@ -7,6 +7,21 @@ steps:
       - -t
       - us-west1-docker.pkg.dev/gmailpj-357912/tdnet/tdnet-load-daily:latest
       - .
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - push
+      - us-west1-docker.pkg.dev/gmailpj-357912/tdnet/tdnet-load-daily:latest
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        set -e
+        for job in tdnet-load-daily tdnet-ai-prepare tdnet-ai-finalize; do
+          echo "Updating job: $$job"
+          gcloud run jobs update "$$job" --region=us-west1 \
+            --image=us-west1-docker.pkg.dev/gmailpj-357912/tdnet/tdnet-load-daily:latest
+        done
 
 images:
   - us-west1-docker.pkg.dev/gmailpj-357912/tdnet/tdnet-load-daily:latest

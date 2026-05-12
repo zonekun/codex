@@ -1,0 +1,117 @@
+{
+  "ticker": "3768",
+  "company_name": "リスクモンスター",
+  "current_version": "2025-08",
+  "versions": [
+    {
+      "valid_from": "2025-08",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "当第1四半期連結累計期間の連結売上高",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "法人会員向けビジネス売上高合計",
+          "type": "completed",
+          "description": "法人会員向けビジネス全体の売上高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "与信管理サービス事業 売上高合計",
+          "type": "completed",
+          "description": "与信管理サービス事業の売上高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "法人会員向けビジネス売上高合計"
+        },
+        {
+          "name": "ビジネスポータルサイト事業 売上高合計",
+          "type": "completed",
+          "description": "ビジネスポータルサイト事業（グループウェアサービス等）の売上高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "法人会員向けビジネス売上高合計"
+        },
+        {
+          "name": "教育関連売上高合計",
+          "type": "completed",
+          "description": "教育関連事業の売上高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "法人会員向けビジネス売上高合計"
+        },
+        {
+          "name": "その他ビジネス売上高合計",
+          "type": "completed",
+          "description": "その他ビジネスセグメント全体の売上高",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "ＢＰＯサービス売上高合計",
+          "type": "completed",
+          "description": "ＢＰＯサービス事業の売上高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "その他ビジネス売上高合計"
+        },
+        {
+          "name": "その他サービス売上高合計",
+          "type": "completed",
+          "description": "その他サービスの売上高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "その他ビジネス売上高合計"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "サービス分野",
+          "items": [
+            "教育関連事業",
+            "ビジネスポータルサイト事業",
+            "与信管理サービス事業",
+            "ＢＰＯサービス事業",
+            "その他サービス"
+          ]
+        },
+        {
+          "dimension_name": "ビジネス分類",
+          "items": [
+            "法人会員向けビジネス",
+            "その他ビジネス"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "「その他サービス」の本文中において、中国における信用調査レポートの受注残が積み上がっている旨の定性的な記載があるが、具体的な数値データは示されていないため、売上高（完成高）のみを抽出した。 pages 5-7に連結売上高、法人会員向けビジネス、主要サービス分野の売上高が記載されているため、completed metricを追加。中国の受注残は定性記載のみで数値なし。"
+    }
+  ],
+  "_source_pdf": "tdnet/3768/20250808_3768_リスクモンスター_決算短信_2026年3月期第1四半期決算短信〔日本基準〕（連結）_140120250729522654.pdf",
+  "_source_doc_id": "140120250729522654",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:50:28.053186+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      7
+    ],
+    "table_count": 3,
+    "max_rows": 3,
+    "max_cols": 4,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

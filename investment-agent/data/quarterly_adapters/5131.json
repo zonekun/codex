@@ -1,0 +1,34 @@
+{
+  "ticker": "5131",
+  "company_name": "Ｇ－リンカーズ",
+  "current_version": "2026-03",
+  "versions": [
+    {
+      "valid_from": "2026-03",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "no_relevant_pages",
+      "notes": "Gemini skipped; complexity-only dry run output."
+    }
+  ],
+  "_source_pdf": "tdnet/5131/20260316_5131_Ｇ－リンカーズ_決算説明資料_2026年7月期第２四半期 決算説明資料_140120260316582813.pdf",
+  "_source_doc_id": "140120260316582813",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T18:22:53.262660+09:00",
+  "_model_used": null,
+  "_complexity_report": {
+    "complexity": "no_relevant_pages",
+    "relevant_pages": [],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": false,
+    "notes": [
+      "keyword scan found no relevant pages"
+    ]
+  }
+}

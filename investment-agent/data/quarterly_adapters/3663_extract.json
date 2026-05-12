@@ -1,0 +1,28 @@
+{
+  "ticker": "3663",
+  "company_name": "セルシス",
+  "current_version": "2025-11",
+  "versions": [
+    {
+      "valid_from": "2025-11",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "presentation",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/3663/20251114_3663_セルシス_決算説明資料_2025年12月期 第３四半期決算説明補足資料_140120251107592772.pdf",
+  "_source_doc_id": "140120251107592772",
+  "_generated_at": "2026-04-30T17:47:08.101992+09:00",
+  "_model_used": null
+}

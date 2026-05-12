@@ -1,0 +1,33 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "doc_title_pattern": "(\\\\d{4})年(\\\\d{1,2})月期\\s*第(\\\\d)四半期決算補足資料",
+  "year_from_title_regex": "(\\\\d{4})年",
+  "month_from_title_regex": "(\\\\d{1,2})月",
+  "fields": [
+    {
+      "key": "再生可能エネ 売電量（kWh）",
+      "name": "再生可能エネ 売電量（kWh）",
+      "value_type": "integer",
+      "bc_key": "再生可能エネ 売電量（kWh）"
+    }
+  ],
+  "extraction_notes": "「再生可能エネ 売電量（kWh）」は、文書中の「（単位： MWh*1）」セクションに記載されている最新のMWh値を抽出します。2026年3月期第3四半期決算補足資料の場合、2025年12月時点のMWh値が該当します。",
+  "ticker": "9519",
+  "company_name": "9519",
+  "created_at": "2026-03-21T20:03:20.988838+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2026年3月期　第3四半期決算補足資料",
+  "sample_submission_date": "2026-02-06",
+  "fields_count": 1,
+  "updated_at": "2026-03-24",
+  "updated_by": "round9_batch_fix",
+  "custom_prompt": "売電量テーブル: 列=[発電所数, 発電出力(MW), 計画売電量(kWh), 実績売電量(kWh), 計画比]\n「再生可能エネ 売電量（kWh）」→ 「実績売電量（kWh）」列または「速報値(kWh)」列の合計行。\n値は非常に大きい（数億kWh台、例: 289,714,857）。\n比率（0.9等）や出力(MW)を売電量として返さないでください。\n「計画比」列の値（0.9等）は売電量ではありません。",
+  "manual_override": true,
+  "manual_override_note": "Gemini化: 複雑テーブルでregex不適(2026-05-05)",
+  "manual_override_at": "2026-05-05T18:24:12.610448+09:00",
+  "extraction_method": "gemini",
+  "gemini_multi_month": true,
+  "overwrite_past_months": true,
+  "gemini_custom_prompt": "月別の「実績売電量（kWh）」を抽出してください。各月（4月〜3月）の実績売電量の数値のみ。「計画売電量」「通期」は含めないでください。"
+}

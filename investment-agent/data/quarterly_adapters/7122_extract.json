@@ -1,0 +1,29 @@
+{
+  "ticker": "7122",
+  "company_name": "近畿車輌",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注実績",
+        "販売実績",
+        "セグメントの名称",
+        "受注高",
+        "受注残高",
+        "販売高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "以下の3つの指標を抽出してください。\n1. 「②受注実績」テーブルの「合計」行にある「受注高(百万円)」の値\n2. 「②受注実績」テーブルの「合計」行にある「受注残高(百万円)」の値\n3. 「③販売実績」テーブルの「合計」行にある「販売高(百万円)」の値",
+      "notes": "同一ページ内に「受注実績」と「販売実績」の2つの異なる表が存在し、いずれも「合計」という行ラベルを使用しているため、誤抽出を避けるためにGemini Visionによる抽出を選択しました。"
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/7122/20260210_7122_近畿車輌_決算短信_2026年３月期 第３四半期決算短信〔日本基準〕(連結)_140120260210553368.pdf",
+  "_source_doc_id": "140120260210553368",
+  "_generated_at": "2026-04-30T23:34:57.043752+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

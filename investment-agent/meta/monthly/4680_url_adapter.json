@@ -1,0 +1,11 @@
+{
+  "ticker": "4680",
+  "company_name": "ラウンドワン",
+  "ir_page_url": "https://www.round1.co.jp/ir/monthly/",
+  "updated_at": "2026-04-21T17:09:33.419354+09:00",
+  "last_checked": "2026-04-21",
+  "status": "skip",
+  "type": null,
+  "skip_reason": "月次開示ページ・ダウンロードリンク未発見",
+  "note": "no_links_confirmed"
+}

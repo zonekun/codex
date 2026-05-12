@@ -20,7 +20,7 @@ logger = structlog.get_logger()
 PROJECT_ROOT = Path("C:/gdrive/claude/investment-agent")
 KEYS_PATH = PROJECT_ROOT / "keys" / "gcp-service-account.json"
 BUCKET_NAME = "stock_data_1930932"
-ADAPTER_DIR = PROJECT_ROOT / "data" / "monthly_adapters"
+ADAPTER_DIR = PROJECT_ROOT / "meta" / "monthly"
 
 
 def get_gcs_client() -> storage.Client:
@@ -235,7 +235,7 @@ def main() -> None:
     candidates: list[str] = []
 
     for ticker in sorted(ng_data.keys()):
-        adapter_path = ADAPTER_DIR / f"{ticker}.json"
+        adapter_path = ADAPTER_DIR / f"{ticker}_extract_adapter.json"
 
         # adapter確認
         has_overwrite = False

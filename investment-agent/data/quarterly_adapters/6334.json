@@ -1,0 +1,36 @@
+{
+  "ticker": "6334",
+  "company_name": "明治機",
+  "current_version": "2025-11",
+  "versions": [
+    {
+      "valid_from": "2025-11",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "breakdown_dimensions": [],
+      "presentation_format": "text",
+      "complexity": "no_table",
+      "notes": "当該ページには企業結合（株式会社デジサインの株式取得）に伴う暫定的な会計処理の確定に関する説明があり、その中で「受注残」という項目が資産の調整額として言及されていますが、これはPPA（取得原価の配分）における無形資産等の評価額に関する記述であり、企業の事業活動としての受注高や受注残高の統計データ（実績値）は記載されていません。"
+    }
+  ],
+  "_source_pdf": "tdnet/6334/20251113_6334_明治機_決算短信_2026年３月期 第２四半期（中間期）決算短信〔日本基準〕（連結）_140120251113599189.pdf",
+  "_source_doc_id": "140120251113599189",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:04:08.489914+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "no_table",
+    "relevant_pages": [
+      13
+    ],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "pdfplumber found no tables on relevant pages"
+    ]
+  }
+}

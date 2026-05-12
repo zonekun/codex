@@ -1,0 +1,13 @@
+{
+  "ticker": "2791",
+  "company_name": "大黒天物産",
+  "ir_page_url": "https://www.e-dkt.co.jp/ir/index.html",
+  "type": "html_table",
+  "status": "active",
+  "css_selector": "#collapse4 table",
+  "table_selector": "#collapse4 table",
+  "playwright_required": false,
+  "manual_override": true,
+  "note": "2026-04-24: IRページ内HTML表「月次情報（全店）」。前年比: 売上高/客数/客単価/一品単価/買上点数。#label02 → #collapse4",
+  "updated_at": "2026-04-24T19:30:00+09:00"
+}

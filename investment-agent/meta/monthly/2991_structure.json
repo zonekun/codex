@@ -1,0 +1,28 @@
+{
+  "ticker": "2991",
+  "company_name": "2991",
+  "metrics": [
+    {
+      "name": "不動産売買 取引件数（件）",
+      "source": "bc"
+    },
+    {
+      "name": "不動産売買 売上（億円）",
+      "source": "bc"
+    },
+    {
+      "name": "不動産売買 売上（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "不動産賃貸管理 入居率（%）",
+      "source": "bc"
+    },
+    {
+      "name": "不動産賃貸管理 管理戸数（戸）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

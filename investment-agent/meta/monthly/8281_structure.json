@@ -1,0 +1,24 @@
+{
+  "ticker": "8281",
+  "company_name": "8281",
+  "metrics": [
+    {
+      "name": "ゼビオ 全店 売上（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "ゼビオ 既存店 売上（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "ヴィクトリア 全店 売上（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "ヴィクトリア 既存店 売上（前年同月比）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

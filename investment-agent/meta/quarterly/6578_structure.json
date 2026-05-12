@@ -1,0 +1,71 @@
+{
+  "ticker": "6578",
+  "company_name": "コレックＨＤ",
+  "current_version": "2026-04",
+  "versions": [
+    {
+      "valid_from": "2026-04",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注残",
+          "type": "backlog",
+          "description": "エネルギーセグメントにおける契約済・未完工案件の残高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "Aoie 受注残",
+          "type": "backlog",
+          "description": "エネルギーセグメントの受注残のうち、Aoie社に関連する案件",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残"
+        },
+        {
+          "name": "C-clamp 受注残",
+          "type": "backlog",
+          "description": "エネルギーセグメントの受注残のうち、C-clamp社に関連する案件",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "受注残内訳",
+          "items": [
+            "Aoie",
+            "C-clamp"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "ppt_chart",
+      "notes": "エネルギーセグメントの受注残高（Aoie社、C-clamp社の内訳を含む）および全社の売上高推移がグラフ形式で開示されています。26/2期4Q時点の受注残合計は58百万円（Aoie: 8百万円、C-clamp: 50百万円）と記載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/6578/20260414_6578_コレックＨＤ_決算説明資料_2026年2月期 通期決算説明資料_140120260414503803.pdf",
+  "_source_doc_id": "140120260414503803",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T19:21:16.163877+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      17,
+      28
+    ],
+    "table_count": 12,
+    "max_rows": 11,
+    "max_cols": 14,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 12",
+      "wide table: 14 columns"
+    ]
+  }
+}

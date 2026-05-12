@@ -1,0 +1,39 @@
+{
+  "ticker": "4539",
+  "company_name": "日ケミファ",
+  "current_version": "2025-05",
+  "versions": [
+    {
+      "valid_from": "2025-05",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "breakdown_dimensions": [],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "提供された資料（貸借対照表および株主資本等変動計算書）には、受注高、完成工事高、受注残高、または売上高に関する数値データは含まれていません。"
+    }
+  ],
+  "_source_pdf": "tdnet/4539/20250514_4539_日ケミファ_決算短信_2025年3月期 決算短信〔日本基準〕（連結）_140120250513546632.pdf",
+  "_source_doc_id": "140120250513546632",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:10:13.441570+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      27,
+      29,
+      30
+    ],
+    "table_count": 5,
+    "max_rows": 45,
+    "max_cols": 7,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 5"
+    ]
+  }
+}

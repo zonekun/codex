@@ -1,0 +1,27 @@
+{
+  "ticker": "4709",
+  "company_name": "ＩＤホールディングス",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "presentation",
+      "page_keywords": [
+        "サービス別受注残高",
+        "受注残高",
+        "累計",
+        "2025.12"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "2025.12（緑色の棒グラフ）の数値を抽出してください。対象項目は以下の通りです：合計（受注残高）、システムマネジメント 受注残高、アプリケーション開発 受注残高、ITインフラ 受注残高、サイバーセキュリティ 受注残高、コンサルティング・教育 受注残高、その他 受注残高。",
+      "notes": "structure.jsonにてppt_chartと指定されており、棒グラフ形式でデータが提示されているため、gemini_visionによる抽出を行います。"
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/4709/20260206_4709_ＩＤホールディングス_決算説明資料_2026年３月期 第３四半期 決算説明資料_140120260206550131.pdf",
+  "_source_doc_id": "140120260206550131",
+  "_generated_at": "2026-04-30T23:04:53.527836+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

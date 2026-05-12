@@ -1,0 +1,56 @@
+{
+  "ticker": "9202",
+  "company_name": "ANAホールディングス",
+  "source": "non-tdnet(pdf)",
+  "extraction_method": "gemini",
+  "gemini_multi_month": true,
+  "overwrite_past_months": true,
+  "custom_prompt": "このPDFはANAグループの月次輸送実績です。国内線・国際線それぞれの旅客数・有償旅客キロ(RPK)・有効座席キロ(ASK)の前年同月比(%)を抽出してください。各月のデータを個別に返してください。",
+  "fields": [
+    {
+      "key": "国内線 旅客数（前年同月比）",
+      "bc_key": "国内線 旅客数（前年同月比）",
+      "description": "国内線 旅客数 前年同月比(%)",
+      "value_type": "percentage",
+      "yoy_offset": 100
+    },
+    {
+      "key": "国内線 有償旅客キロ（前年同月比）",
+      "bc_key": "国内線 有償旅客キロ（前年同月比）",
+      "description": "国内線 RPK 前年同月比(%)",
+      "value_type": "percentage",
+      "yoy_offset": 100
+    },
+    {
+      "key": "国内線 有効座席キロ（前年同月比）",
+      "bc_key": "国内線 有効座席キロ（前年同月比）",
+      "description": "国内線 ASK 前年同月比(%)",
+      "value_type": "percentage",
+      "yoy_offset": 100
+    },
+    {
+      "key": "国際線 旅客数（前年同月比）",
+      "bc_key": "国際線 旅客数（前年同月比）",
+      "description": "国際線 旅客数 前年同月比(%)",
+      "value_type": "percentage",
+      "yoy_offset": 100
+    },
+    {
+      "key": "国際線 有償旅客キロ（前年同月比）",
+      "bc_key": "国際線 有償旅客キロ（前年同月比）",
+      "description": "国際線 RPK 前年同月比(%)",
+      "value_type": "percentage",
+      "yoy_offset": 100
+    },
+    {
+      "key": "国際線 有効座席キロ（前年同月比）",
+      "bc_key": "国際線 有効座席キロ（前年同月比）",
+      "description": "国際線 ASK 前年同月比(%)",
+      "value_type": "percentage",
+      "yoy_offset": 100
+    }
+  ],
+  "extraction_notes": "月次輸送実績PDFはeir-parts.net経由（年度1PDF累積型）。現状html_table型DLでPDF未取得のため抽出不可。url_adapterをscrape_links+playwright型に変更してPDF取得する必要あり",
+  "manual_override": true,
+  "manual_override_at": "2026-05-08T14:00:00+09:00"
+}

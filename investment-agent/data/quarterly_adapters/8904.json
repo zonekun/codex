@@ -1,0 +1,92 @@
+{
+  "ticker": "8904",
+  "company_name": "ＡＶＡＮＴＩＡ",
+  "current_version": "2026-04",
+  "versions": [
+    {
+      "valid_from": "2026-04",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "生産実績",
+          "type": "completed",
+          "description": "セグメント別の生産実績金額",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "生産実績 合計"
+        },
+        {
+          "name": "生産実績 合計",
+          "type": "completed",
+          "description": "生産実績の総額",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "セグメント別の受注高金額",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注高 合計"
+        },
+        {
+          "name": "受注高 合計",
+          "type": "order_intake",
+          "description": "受注高の総額",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "セグメント別の受注残高金額",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注残高 合計"
+        },
+        {
+          "name": "受注残高 合計",
+          "type": "backlog",
+          "description": "受注残高の総額",
+          "unit": "千円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "事業セグメント",
+          "items": [
+            "分譲事業",
+            "請負事業",
+            "不動産流通事業",
+            "その他の事業"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "生産実績、受注高、受注残高について、事業セグメント別の金額および合計金額が表形式で記載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/8904/20260414_8904_ＡＶＡＮＴＩＡ_決算短信_2026年8月期 第2四半期（中間期）決算短信〔日本基準〕（連結）_140120260408500325.pdf",
+  "_source_doc_id": "140120260408500325",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T20:10:51.531915+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      13
+    ],
+    "table_count": 3,
+    "max_rows": 7,
+    "max_cols": 3,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "ticker": "4880",
+  "company_name": "4880",
+  "metrics": [
+    {
+      "name": "加⼯受託件数 ⾃費診療特化型整形向け（件）",
+      "source": "bc"
+    },
+    {
+      "name": "加⼯受託件数 ハイブリッド型整形向け（件）",
+      "source": "bc"
+    },
+    {
+      "name": "平均加工受託件数（件／日）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

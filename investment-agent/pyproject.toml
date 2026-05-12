@@ -51,7 +51,6 @@ dependencies = [
     "openpyxl>=3.1.5",
     "pypdf>=6.8.0",
     "pdfminer-six>=20231228",
-    "google-cloud-aiplatform>=1.141.0",
     "jquants-api-client>=2.0.1",
     "mcp>=1.26.0",
     "playwright-stealth>=2.0.2",

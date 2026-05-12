@@ -1,0 +1,71 @@
+{
+  "ticker": "6332",
+  "company_name": "月島ＨＤ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注実績",
+          "type": "order_intake",
+          "description": "当四半期連結累計期間におけるセグメント別の受注高の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当四半期連結会計期間末におけるセグメント別の受注残高の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "海外受注高",
+          "type": "order_intake",
+          "description": "受注実績のうち、海外顧客からの受注額",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注実績"
+        },
+        {
+          "name": "海外受注残高",
+          "type": "backlog",
+          "description": "受注残高のうち、海外顧客向けの残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "決算短信の補足情報（13ページ）に、セグメント別の受注実績、売上実績、受注残高、およびそれぞれの海外内訳が詳細な表形式で記載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/6332/20260206_6332_月島ＨＤ_決算短信_2026年３月期　第３四半期決算短信〔日本基準〕（連結）_140120260205548918.pdf",
+  "_source_doc_id": "140120260205548918",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:03:57.137827+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      3,
+      4,
+      5,
+      6,
+      15
+    ],
+    "table_count": 3,
+    "max_rows": 9,
+    "max_cols": 6,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

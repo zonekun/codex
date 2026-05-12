@@ -1,0 +1,44 @@
+{
+  "ticker": "1417",
+  "company_name": "ミライト・ワン",
+  "current_version": "2025-11",
+  "versions": [
+    {
+      "valid_from": "2025-11",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当第2四半期連結累計期間における受注高の合計額",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "text",
+      "complexity": "no_table",
+      "notes": "本文末尾に受注高および売上高の連結合計数値が記載されています。受注残高（繰越工事高）の具体的な数値、および各セグメント別の数値内訳はこのページには記載されていません。"
+    }
+  ],
+  "_source_pdf": "tdnet/1417/20251113_1417_ミライト・ワン_決算短信_2026年3月期 第2四半期（中間期）決算短信[日本基準]（連結）_140120251112598616.pdf",
+  "_source_doc_id": "140120251112598616",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T16:26:06.955497+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "no_table",
+    "relevant_pages": [
+      4
+    ],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "pdfplumber found no tables on relevant pages"
+    ]
+  }
+}

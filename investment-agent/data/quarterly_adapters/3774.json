@@ -1,0 +1,114 @@
+{
+  "ticker": "3774",
+  "company_name": "ＩＩＪ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "システムインテグレーション（含む機器販売）売上高",
+          "type": "completed",
+          "description": "システムインテグレーション事業全体の売上高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "システム構築及び機器販売 売上高",
+          "type": "completed",
+          "description": "システム構築及び機器販売による一時的な売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "システムインテグレーション（含む機器販売）売上高"
+        },
+        {
+          "name": "システム運用保守 売上高",
+          "type": "completed",
+          "description": "システム運用保守による継続的な売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "システムインテグレーション（含む機器販売）売上高"
+        },
+        {
+          "name": "システムインテグレーション（含む機器販売）受注高",
+          "type": "order_intake",
+          "description": "システムインテグレーション事業全体の受注高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "システム構築及び機器販売 受注高",
+          "type": "order_intake",
+          "description": "システム構築及び機器販売に関する受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "システムインテグレーション（含む機器販売）受注高"
+        },
+        {
+          "name": "システム運用保守 受注高",
+          "type": "order_intake",
+          "description": "システム運用保守に関する受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "システムインテグレーション（含む機器販売）受注高"
+        },
+        {
+          "name": "システムインテグレーション（含む機器販売）受注残高",
+          "type": "backlog",
+          "description": "システムインテグレーション事業全体の受注残高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "システム構築及び機器販売 受注残高",
+          "type": "backlog",
+          "description": "システム構築及び機器販売に関する受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "システムインテグレーション（含む機器販売）受注残高"
+        },
+        {
+          "name": "システム運用保守 受注残高",
+          "type": "backlog",
+          "description": "システム運用保守に関する受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "システムインテグレーション（含む機器販売）受注残高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "サービス区分",
+          "items": [
+            "システム構築及び機器販売",
+            "システム運用保守"
+          ]
+        }
+      ],
+      "presentation_format": "text",
+      "complexity": "no_table",
+      "notes": "システムインテグレーション事業における売上高、受注高、受注残高の数値およびその内訳（システム構築及び機器販売、システム運用保守）が本文中に記載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/3774/20260206_3774_ＩＩＪ_決算短信_2026年3月期第3四半期決算短信〔ＩＦＲＳ〕(連結)_140120260129541668.pdf",
+  "_source_doc_id": "140120260129541668",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:51:02.556553+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "no_table",
+    "relevant_pages": [
+      7
+    ],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "pdfplumber found no tables on relevant pages"
+    ]
+  }
+}

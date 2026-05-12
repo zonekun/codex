@@ -1,0 +1,28 @@
+{
+  "ticker": "6395",
+  "company_name": "タダノ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "presentation",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Vision extraction selected because structure is complex or data is unavailable."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/6395/20260226_6395_タダノ_決算説明資料_2025年12月期(1-12月)決算説明会_140120260226569432.pdf",
+  "_source_doc_id": "140120260226569432",
+  "_generated_at": "2026-04-30T19:11:25.963819+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

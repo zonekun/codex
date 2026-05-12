@@ -1,0 +1,11 @@
+{
+  "ticker": "7269",
+  "company_name": "スズキ",
+  "ir_page_url": "https://www.konami.com/sportsclub/riyo/monthly_plan.html",
+  "updated_at": "2026-04-21T12:55:55.199072+09:00",
+  "last_checked": "2026-04-21",
+  "status": "skip",
+  "type": null,
+  "skip_reason": "subpage_no_links",
+  "note": "月次ページリンク 1 件検出、サブページ踏み込み後にDLリンク無し（best=https://www.konami.com/sportsclub/riyo/monthly_plan.html）"
+}

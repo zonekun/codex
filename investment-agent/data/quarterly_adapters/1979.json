@@ -1,0 +1,90 @@
+{
+  "ticker": "1979",
+  "company_name": "大気社",
+  "current_version": "2025-05",
+  "versions": [
+    {
+      "valid_from": "2025-05",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注工事高",
+          "type": "order_intake",
+          "description": "当連結会計年度における建設工事の受注総額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "完成工事高",
+          "type": "completed",
+          "description": "当連結会計年度に完成した工事の総額（損益計算書の売上高に相当）",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "次期繰越工事高",
+          "type": "backlog",
+          "description": "当連結会計年度末時点における未完成工事の受注残高",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "事業部門",
+          "items": [
+            "環境システム事業",
+            "塗装システム事業"
+          ]
+        },
+        {
+          "dimension_name": "環境システム事業内訳",
+          "items": [
+            "ビル空調",
+            "産業空調"
+          ]
+        },
+        {
+          "dimension_name": "地域",
+          "items": [
+            "国内",
+            "海外"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "連結および個別の「部門別受注工事高・完成工事高・次期繰越工事高明細表」に詳細なデータが記載されている。環境システム事業はビル空調と産業空調に細分化され、各項目について「うち海外」の数値も開示されている。"
+    }
+  ],
+  "_source_pdf": "tdnet/1979/20250515_1979_大気社_決算短信_2025年３月期決算短信〔日本基準〕(連結)_140120250513547190.pdf",
+  "_source_doc_id": "140120250513547190",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:12:50.620684+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      5,
+      6,
+      10,
+      27,
+      28,
+      30,
+      31,
+      34,
+      35
+    ],
+    "table_count": 10,
+    "max_rows": 45,
+    "max_cols": 9,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 10"
+    ]
+  }
+}

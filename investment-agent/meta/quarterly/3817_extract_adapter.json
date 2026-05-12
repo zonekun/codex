@@ -1,0 +1,115 @@
+{
+  "ticker": "3817",
+  "company_name": "ＳＲＡＨＤ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "extraction_method": "regex",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注状況",
+        "販売実績",
+        "補足情報"
+      ],
+      "fields": [
+        {
+          "key": "受注高",
+          "row_label_regex": "^開発事業\\s+([\\d,]+)",
+          "value_type": "integer",
+          "unit": "百万円",
+          "group": 1
+        },
+        {
+          "key": "受注高",
+          "row_label_regex": "^運用・構築事業\\s+([\\d,]+)",
+          "value_type": "integer",
+          "unit": "百万円",
+          "group": 1
+        },
+        {
+          "key": "受注高",
+          "row_label_regex": "^販売事業\\s+([\\d,]+)",
+          "value_type": "integer",
+          "unit": "百万円",
+          "group": 1
+        },
+        {
+          "key": "受注高 合計",
+          "row_label_regex": "^合計\\s+([\\d,]+)",
+          "value_type": "integer",
+          "unit": "百万円",
+          "group": 1
+        },
+        {
+          "key": "受注残高",
+          "row_label_regex": "^開発事業\\s+[\\d,]+\\s+\\S+\\s+([\\d,]+)",
+          "value_type": "integer",
+          "unit": "百万円",
+          "group": 1
+        },
+        {
+          "key": "受注残高",
+          "row_label_regex": "^運用・構築事業\\s+[\\d,]+\\s+\\S+\\s+([\\d,]+)",
+          "value_type": "integer",
+          "unit": "百万円",
+          "group": 1
+        },
+        {
+          "key": "受注残高",
+          "row_label_regex": "^販売事業\\s+[\\d,]+\\s+\\S+\\s+([\\d,]+)",
+          "value_type": "integer",
+          "unit": "百万円",
+          "group": 1
+        },
+        {
+          "key": "受注残高 合計",
+          "row_label_regex": "^合計\\s+[\\d,]+\\s+\\S+\\s+([\\d,]+)",
+          "value_type": "integer",
+          "unit": "百万円",
+          "group": 1
+        },
+        {
+          "key": "販売実績",
+          "row_label_regex": "^開発事業（百万円）\\s+([\\d,]+)",
+          "value_type": "integer",
+          "unit": "百万円",
+          "group": 1,
+          "use_last_number": true
+        },
+        {
+          "key": "販売実績",
+          "row_label_regex": "^運用・構築事業（百万円）\\s+([\\d,]+)",
+          "value_type": "integer",
+          "unit": "百万円",
+          "group": 1,
+          "use_last_number": true
+        },
+        {
+          "key": "販売実績",
+          "row_label_regex": "^販売事業（百万円）\\s+([\\d,]+)",
+          "value_type": "integer",
+          "unit": "百万円",
+          "group": 1,
+          "use_last_number": true
+        },
+        {
+          "key": "販売実績 合計",
+          "row_label_regex": "^合計（百万円）\\s+([\\d,]+)",
+          "value_type": "integer",
+          "unit": "百万円",
+          "group": 1,
+          "use_last_number": true
+        }
+      ],
+      "gemini_custom_prompt": "",
+      "notes": "セグメント別の受注高、受注残高、販売実績を抽出。販売実績については仕入実績の表とラベルが重複するため、use_last_numberを使用して後続の表から抽出する。"
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/3817/20260212_3817_ＳＲＡＨＤ_決算短信_2026年３月期 第３四半期決算短信〔日本基準〕（連結）_140120260212557439.pdf",
+  "_source_doc_id": "140120260212557439",
+  "_generated_at": "2026-04-30T23:00:02.965457+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

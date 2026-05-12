@@ -45,7 +45,7 @@ gcloud run jobs execute beta-calc --region=us-west1 --project=gmailpj-357912
 
 ## 出力
 
-**GCS**: `gs://stock_data_1930932/earnings_model/beta_20d.csv`
+**GCS**: `gs://stock_data_1930932/earnings_model/zaraba_beta_20d/beta_20d.csv`
 
 | カラム | 型 | 説明 |
 |-------|----|------|

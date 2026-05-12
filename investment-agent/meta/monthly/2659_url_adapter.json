@@ -1,0 +1,17 @@
+{
+  "ticker": "2659",
+  "company_name": "サンエー",
+  "ir_page_url": "https://www.san-a.co.jp/ir/data/",
+  "updated_at": "2026-04-24T13:57:48.884197+09:00",
+  "last_checked": "2026-04-21",
+  "status": "active",
+  "type": "html_table",
+  "css_selector": null,
+  "link_text_pattern": null,
+  "link_href_pattern": "/common/uploads.*\\.(pdf)",
+  "note": "IRデータ一覧ページ。月次売上情報含む。JS描画あり (2026-04-24 URL修正)。",
+  "playwright_required": true,
+  "manual_override": true,
+  "manual_override_at": "2026-04-24T13:57:48.884197+09:00",
+  "manual_override_note": "URL修正 (2026-04-24)"
+}

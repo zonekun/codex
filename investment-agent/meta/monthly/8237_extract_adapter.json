@@ -1,0 +1,37 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "doc_title_pattern": "(\\d{4})年(\\d{1,2})月売上速報",
+  "year_from_title_regex": "(\\d{4})年",
+  "month_from_title_regex": "(\\d{1,2})月",
+  "fields": [
+    {
+      "key": "銀座本店 売上（前年同月比）",
+      "name": "銀座本店 売上（前年同月比）",
+      "row_label_regex": "銀座店\\s*(\\d+\\.\\d+)",
+      "value_type": "percentage",
+      "notes": "「-4.7銀座店 2.7」という表記から「2.7」を抽出。注釈「※「銀座店」のみの売上高対前年増減率（％）を表記しております。」に基づき、銀座店の売上高前年比と判断。",
+      "yoy_offset": 100,
+      "bc_ignore": true,
+      "_bc_ignore_reason": "extraction discrepancy: our=15.8 vs bc=84.2"
+    },
+    {
+      "key": "銀座本店 客数（前年同月比）",
+      "name": "銀座本店 客数（前年同月比）",
+      "bc_ignore": true,
+      "bc_ignore_reason": "BC値95.6あり。月次売上速報テキストに銀座本店全体の客数前年比の記載なし（免税客数の部分記述のみ）",
+      "bc_key": "銀座本店 客数（前年同月比）"
+    }
+  ],
+  "extraction_notes": "「銀座本店 客数（前年同月比）」については、文書中に銀座本店全体の客数に関する明確な前年同月比の記載がないため、抽出対象外としました。免税売上高における中国からの客数減に関する記述はありますが、全体のものではありません。",
+  "ticker": "8237",
+  "company_name": "松屋",
+  "created_at": "2026-03-24T08:16:12.704349+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2026年2月売上速報",
+  "sample_submission_date": "2026-03-02",
+  "fields_count": 1,
+  "manual_override": true,
+  "manual_override_at": "2026-04-25T06:10:00+09:00",
+  "manual_override_note": "Phase 2-3: bc_ignore for fields with persistent extraction mismatch"
+}

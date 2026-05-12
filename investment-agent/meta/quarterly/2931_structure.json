@@ -1,0 +1,41 @@
+{
+  "ticker": "2931",
+  "company_name": "ユーグレナ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "受注高および受注残高に関するデータは記載されていません。売上高（完成工事高に相当）とそのチャネル別・セグメント別内訳がP54の連結損益計算書（2024/12期）に記載されています。なお、P48やP56の注釈にある「受注残」は、M&Aに伴うPPA（取得原価の配分）で識別された無形資産（顧客関連資産、受注残）を指しており、通常の事業活動における受注残高メトリクスではありません。 [2026-05-07] completedメトリクスのみのため収集対象外(false化)。"
+    }
+  ],
+  "_source_pdf": "tdnet/2931/20260213_2931_ユーグレナ_決算説明資料_2025年12月期通期決算説明および今後の展望_140120260213560427.pdf",
+  "_source_doc_id": "140120260213560427",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T17:30:12.902386+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      7,
+      48,
+      49,
+      54,
+      56
+    ],
+    "table_count": 9,
+    "max_rows": 11,
+    "max_cols": 3,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 9"
+    ]
+  }
+}

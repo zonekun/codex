@@ -1,0 +1,68 @@
+{
+  "ticker": "6292",
+  "company_name": "カワタ",
+  "current_version": "2026-01",
+  "versions": [
+    {
+      "valid_from": "2026-01",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当第３四半期連結累計期間における受注実績の合計",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当第３四半期連結累計期間末における受注残高の合計",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "セグメント別受注高",
+          "type": "order_intake",
+          "description": "各セグメント（日本、東アジア、東南アジア、北中米）ごとの受注高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "セグメント別受注残高",
+          "type": "backlog",
+          "description": "各セグメント（日本、東アジア、東南アジア、北中米）ごとの受注残高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "決算短信の「3. その他 (1) 生産、受注及び販売の状況」に、セグメント別の受注高、受注残高、販売高が詳細な表形式で記載されています。また、定性的情報（1ページ目）にも主要な数値の言及があります。"
+    }
+  ],
+  "_source_pdf": "tdnet/6292/20260130_6292_カワタ_決算短信_2026年３月期 第３四半期決算短信〔日本基準〕(連結)_140120260127539557.pdf",
+  "_source_doc_id": "140120260127539557",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:58:36.265468+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      11
+    ],
+    "table_count": 3,
+    "max_rows": 6,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

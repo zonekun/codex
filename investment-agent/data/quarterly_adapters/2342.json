@@ -1,0 +1,68 @@
+{
+  "ticker": "2342",
+  "company_name": "Ｇ－トランスＧＧ",
+  "current_version": "2024-11",
+  "versions": [
+    {
+      "valid_from": "2024-11",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "当中間連結会計期間における連結売上高",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "創薬支援事業 売上高",
+          "type": "completed",
+          "description": "創薬支援事業セグメントの売上高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "投資・コンサルティング事業 売上高",
+          "type": "completed",
+          "description": "投資・コンサルティング事業セグメントの売上高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント別",
+          "items": [
+            "創薬支援事業",
+            "投資・コンサルティング事業"
+          ]
+        }
+      ],
+      "presentation_format": "text",
+      "complexity": "no_table",
+      "notes": "本文中に売上高（完成高に相当）の数値は記載されているが、受注高および受注残高の具体的な金額データは記載されていない。受注高については「前期比で増加した」との定性的な言及に留まっている。"
+    }
+  ],
+  "_source_pdf": "tdnet/2342/20241112_2342_Ｇ－トランスＧＧ_決算短信_2025年3月期 第2四半期（中間期）決算短信〔日本基準〕（連結）_140120241008595171.pdf",
+  "_source_doc_id": "140120241008595171",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:21:33.350680+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "no_table",
+    "relevant_pages": [
+      4
+    ],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "pdfplumber found no tables on relevant pages"
+    ]
+  }
+}

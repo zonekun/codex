@@ -1,0 +1,77 @@
+{
+  "ticker": "1934",
+  "company_name": "ユアテック",
+  "current_version": "2025-04",
+  "versions": [
+    {
+      "valid_from": "2025-04",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "連結会計年度における売上高合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "売上高（設備工事業）",
+          "type": "completed",
+          "description": "設備工事業セグメントの外部顧客への売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "売上高（その他）",
+          "type": "completed",
+          "description": "その他セグメントの外部顧客への売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "完成工事高",
+          "type": "completed",
+          "description": "個別損益計算書における完成工事高",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "設備工事業",
+            "その他"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "連結売上高およびセグメント別の売上高は、1ページ目の「経営成績等の概況」テキストより抽出。3ページ目の損益計算書には個別ベースの完成工事高が記載されている。受注高および手持工事高（受注残高）については、テキスト内で言及はあるものの、具体的な数値を含む表は提供された画像範囲内（1-3ページ）には含まれていない（事前判定の通り、通常は23-24ページ等の補足資料に記載される）。"
+    }
+  ],
+  "_source_pdf": "tdnet/1934/20250428_1934_ユアテック_決算短信_2025年３月期　決算短信〔日本基準〕（連結）_140120250424523003.pdf",
+  "_source_doc_id": "140120250424523003",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:04:45.692132+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      5,
+      23,
+      24
+    ],
+    "table_count": 2,
+    "max_rows": 38,
+    "max_cols": 7,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

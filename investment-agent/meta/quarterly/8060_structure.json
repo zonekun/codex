@@ -1,0 +1,37 @@
+{
+  "ticker": "8060",
+  "company_name": "キヤノンＭＪ",
+  "current_version": "2026-01",
+  "versions": [
+    {
+      "valid_from": "2026-01",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "エンタープライズセグメントおよび主要子会社の売上高（金額）が記載されています。受注高および受注残高については、キヤノンITソリューションズの対前年伸び率（％）のみの記載であり、金額データが存在しないため、ルールに基づきメトリクスには含めていません。 [2026-05-07] completedメトリクスのみのため収集対象外(false化)。"
+    }
+  ],
+  "_source_pdf": "tdnet/8060/20260128_8060_キヤノンＭＪ_決算説明資料_2025年度決算説明資料_140120260122537346.pdf",
+  "_source_doc_id": "140120260122537346",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T20:04:21.678459+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      11
+    ],
+    "table_count": 5,
+    "max_rows": 8,
+    "max_cols": 10,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 5"
+    ]
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "ticker": "417A",
+  "company_name": "ブルーゾーンホールディングス",
+  "ir_page_url": "https://www.bluezonesholdings.co.jp/ir/finance/monthly.html",
+  "status": "active",
+  "type": "html_table",
+  "playwright_required": true,
+  "note": "月次テーブルは xj-storage.jp の外部 JS（document.write で挿入）で描画。Playwright レンダリング後の HTML を保存し、テーブル変換は build_monthly_extractor.py が担う (2026-04-24 D2 対応)。",
+  "updated_at": "2026-04-24T11:36:55.146931+09:00",
+  "last_checked": "2026-04-24",
+  "manual_override": true,
+  "manual_override_at": "2026-04-24T11:36:55.146931+09:00",
+  "manual_override_note": "23NG D1-D4 コード改修で修正 (2026-04-24)"
+}

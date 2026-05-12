@@ -1,0 +1,140 @@
+{
+  "ticker": "6226",
+  "company_name": "守谷輸送機工業",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当第３四半期累計期間における受注高の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "エレベーター（船舶用を除く）受注高",
+          "type": "order_intake",
+          "description": "エレベーター（船舶用を除く）の受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "船舶用エレベーター受注高",
+          "type": "order_intake",
+          "description": "船舶用エレベーターの受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "保守・修理受注高",
+          "type": "order_intake",
+          "description": "保守・修理の受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "販売高",
+          "type": "completed",
+          "description": "当第３四半期累計期間における販売高の合計（生産・販売実績表より）",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "エレベーター（船舶用を除く）販売高",
+          "type": "completed",
+          "description": "エレベーター（船舶用を除く）の販売高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "販売高"
+        },
+        {
+          "name": "船舶用エレベーター販売高",
+          "type": "completed",
+          "description": "船舶用エレベーターの販売高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "販売高"
+        },
+        {
+          "name": "保守・修理販売高",
+          "type": "completed",
+          "description": "保守・修理の販売高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "販売高"
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当第３四半期会計期間末における受注残高の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "エレベーター（船舶用を除く）受注残高",
+          "type": "backlog",
+          "description": "エレベーター（船舶用を除く）の受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        },
+        {
+          "name": "船舶用エレベーター受注残高",
+          "type": "backlog",
+          "description": "船舶用エレベーターの受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        },
+        {
+          "name": "保守・修理受注残高",
+          "type": "backlog",
+          "description": "保守・修理の受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "売上種類",
+          "items": [
+            "エレベーター（船舶用を除く）",
+            "船舶用エレベーター",
+            "保守・修理"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "9ページの「生産、受注及び販売の状況」にある各表より、受注高、販売高、受注残高およびその内訳を抽出。1ページ目の本文には「売上高」の記載もあるが、内訳の整合性を考慮し、9ページの表中の「販売高」を完成工事高・売上高相当のメトリクスとして採用した。"
+    }
+  ],
+  "_source_pdf": "tdnet/6226/20260210_6226_守谷輸送機工業_決算短信_2026年３月期　第３四半期決算短信[日本基準]（非連結）_140120260210553584.pdf",
+  "_source_doc_id": "140120260210553584",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:49:47.868648+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      11
+    ],
+    "table_count": 2,
+    "max_rows": 6,
+    "max_cols": 8,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

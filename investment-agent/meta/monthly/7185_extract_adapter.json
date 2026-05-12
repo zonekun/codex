@@ -1,0 +1,52 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "doc_title_pattern": ".*月次概況.*",
+  "year_from_title_regex": "(\\d{4})年",
+  "month_from_title_regex": "(\\d{1,2})月",
+  "fields": [
+    {
+      "key": "連結 営業収益（円）",
+      "name": "連結 営業収益（円）",
+      "row_label_regex": "連結.*?営業収益\\s*\\(単位：百万円\\s*\\)\\s*([\\d,]+)",
+      "value_type": "integer",
+      "group": 1,
+      "use_last_number": true,
+      "notes": "単位が百万円のため、100倍して円に変換",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "definition mismatch: our=1026, bc=1274000000.0, diff=1273998974.0"
+    },
+    {
+      "key": "連結 顧客口座数（口座）",
+      "name": "連結 顧客口座数（口座）",
+      "row_label_regex": "連結.*?顧客口座数\\s*\\(単位：口座\\s*\\)\\s*([\\d,]+)",
+      "value_type": "integer",
+      "group": 1,
+      "use_last_number": true,
+      "bc_ignore": true,
+      "_bc_ignore_reason": "definition mismatch: our=555703, bc=450713.0, diff=104990.0"
+    },
+    {
+      "key": "連結 顧客預り証拠金（円）",
+      "name": "連結 顧客預り証拠金（円）",
+      "row_label_regex": "連結.*?顧客預り証拠金\\s*\\(単位：百万円\\s*\\)\\s*([\\d,]+)",
+      "value_type": "integer",
+      "group": 1,
+      "use_last_number": true,
+      "notes": "単位が百万円のため、100倍して円に変換",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "definition mismatch: our=77207, bc=88359000000.0, diff=88358922793.0"
+    }
+  ],
+  "extraction_notes": "「連結」セクションの最新月のデータを抽出。単位が百万円のものは円に換算。",
+  "ticker": "7185",
+  "company_name": "7185",
+  "created_at": "2026-03-29T15:52:14.341567+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2026年１月度　月次概況（速報）に関するお知らせ",
+  "sample_submission_date": "2026-02-13",
+  "fields_count": 3,
+  "manual_override": true,
+  "manual_override_at": "2026-04-25T06:00:00+09:00",
+  "manual_override_note": "Phase 2: bc_ignore for definition/unit mismatch fields"
+}

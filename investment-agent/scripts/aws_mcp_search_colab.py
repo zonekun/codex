@@ -17,7 +17,7 @@ MCP の生レスポンスをそのまま Gemini に渡し、自然な日本語�
 # =============================================================================
 # セル 1: パッケージインストール（初回のみ）
 # =============================================================================
-# !pip install -q mcp google-auth google-auth-httplib2 nest_asyncio google-cloud-aiplatform
+# !pip install -q mcp google-auth google-auth-httplib2 nest_asyncio google-genai
 
 # =============================================================================
 # セル 2: 初期設定
@@ -155,45 +155,36 @@ _CONTINUE_PROMPT = """
 
 
 def _gemini_step(history: list[dict]) -> dict:
-    import vertexai
-    from vertexai.generative_models import GenerativeModel, Content, Part, GenerationConfig
+    from google import genai
+    from google.genai import types
 
     key_info = _load_sa_key()
     creds = service_account.Credentials.from_service_account_info(
         key_info, scopes=["https://www.googleapis.com/auth/cloud-platform"]
     )
-    vertexai.init(project=GCP_PROJECT, location=GCP_LOCATION, credentials=creds)
+    client = genai.Client(vertexai=True, project=GCP_PROJECT, location=GCP_LOCATION, credentials=creds)
 
-    # thinking_budget=0 で思考トークンを無効化（Gemini 2.5 の thinking が JSON に混入するのを防ぐ）
-    generation_config = GenerationConfig(response_mime_type="application/json")
-    try:
-        from vertexai.generative_models import ThinkingConfig  # SDK >= 1.71 で利用可能
-        generation_config = GenerationConfig(
-            response_mime_type="application/json",
-            thinking_config=ThinkingConfig(thinking_budget=0),
-        )
-    except (ImportError, TypeError):
-        pass  # 古い SDK では thinking_config 未対応 → response_mime_type のみで継続
-
-    model = GenerativeModel(
-        "gemini-2.5-flash",
+    config = types.GenerateContentConfig(
+        response_mime_type="application/json",
         system_instruction=_AGENT_SYSTEM_PROMPT,
-        generation_config=generation_config,
+        thinking_config=types.ThinkingConfig(thinking_budget=0),
     )
-    contents = [Content(role=m["role"], parts=[Part.from_text(m["text"])]) for m in history]
+    contents = [types.Content(role=m["role"], parts=[types.Part.from_text(text=m["text"])]) for m in history]
 
-    response = model.generate_content(contents)
+    response = client.models.generate_content(
+        model="gemini-2.5-flash", contents=contents, config=config,
+    )
 
     # テキスト抽出: thinking パートを除外して output テキストのみ結合
     raw_parts = []
     try:
         for part in response.candidates[0].content.parts:
-            if not getattr(part, "thought", False):  # thought=True は thinking パート
+            if not getattr(part, "thought", False):
                 if hasattr(part, "text") and part.text:
                     raw_parts.append(part.text)
         raw = "".join(raw_parts).strip()
     except Exception:
-        raw = response.text.strip()  # フォールバック
+        raw = response.text.strip()
 
     raw = re.sub(r"```(?:json)?\s*", "", raw).strip("`").strip()
 

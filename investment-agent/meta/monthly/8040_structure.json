@@ -1,0 +1,24 @@
+{
+  "ticker": "8040",
+  "company_name": "8040",
+  "metrics": [
+    {
+      "name": "全店 売上（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "既存店 売上 EC（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "既存店 売上 店舗（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "既存店 売上（前年同月比）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

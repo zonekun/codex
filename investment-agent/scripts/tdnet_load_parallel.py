@@ -236,16 +236,11 @@ VALID_CATEGORIES_STR = ", ".join(VALID_CATEGORIES)
 # ============================================================
 
 _AMBIGUOUS_OVERWRITE: set[str] = {"その他（未分類）"}
-_AMBIGUOUS_SUBCATEGORY: set[str] = {
-    "業績予想",
-    "大型受注・契約",
-    "受注・契約",
-    "業績の重要な先行指標",
-}
-_MONTHLY_SUB_CATEGORIES: set[str] = _AMBIGUOUS_SUBCATEGORY | {"受注高/受注残高"}
 _NEEDS_SUB_CATEGORIES: set[str] = {"決算短信", "決算説明資料"}
 _NEEDS_GEMINI_ANALYSIS: set[str] = (
-    _AMBIGUOUS_OVERWRITE | _MONTHLY_SUB_CATEGORIES | _NEEDS_SUB_CATEGORIES
+    _AMBIGUOUS_OVERWRITE | _NEEDS_SUB_CATEGORIES | {
+        "業績予想", "大型受注・契約", "業績の重要な先行指標", "受注高/受注残高",
+    }
 )
 
 # ============================================================
@@ -310,6 +305,7 @@ _MONTHLY_DOC_PATTERN = re.compile(
 # key=ticker, value=compiled regex
 _TICKER_SPECIFIC_MONTHLY = {
     "3086": re.compile(r"連結売上収益報告"),  # J.フロントリテイリング月次連結売上（IFRS）
+    "6577": re.compile(r"月間予約受注額"),  # ベストワンドットコム月間予約受注額
 }
 
 
@@ -371,10 +367,12 @@ def _content_length(text: str) -> int:
 # ページ内の連続空白（タブ・スペース）のみ圧縮する正規表現
 # 改行(\n) は保持する必要があるため [ \t]+ のみ対象にする
 _INLINE_WS_PATTERN = re.compile(r"[ \t]+")
+_SURROGATE_RE = re.compile(r'[\ud800-\udfff]')
 
 
 def _normalize_page_text(page_text: str) -> str:
     """ページ内の連続する空白・タブを単一スペースに圧縮。改行は保持する。"""
+    page_text = _SURROGATE_RE.sub('', page_text)
     lines = []
     for line in page_text.split("\n"):
         collapsed = _INLINE_WS_PATTERN.sub(" ", line).strip()
@@ -1056,12 +1054,6 @@ def _phase3_poll_and_apply(
             )
             doc.main_category = "月次開示"
 
-        # 月次性カテゴリで月次判定 → サブカテゴリに月次開示を追加
-        if doc.main_category in _MONTHLY_SUB_CATEGORIES and doc.is_monthly:
-            if "月次開示" not in doc.sub_categories:
-                doc.sub_categories.append("月次開示")
-                logger.log(f"  サブカテゴリ追加（{doc.main_category} → 月次開示）: {doc.blob_name}")
-
     logger.log("Phase 3 完了")
 
 
@@ -1115,10 +1107,6 @@ def _phase3_poll_and_apply_legacy(
     for doc in analysis_docs:
         if doc.main_category in _AMBIGUOUS_OVERWRITE and doc.is_monthly:
             doc.main_category = "月次開示"
-        if doc.main_category in _MONTHLY_SUB_CATEGORIES and doc.is_monthly:
-            if "月次開示" not in doc.sub_categories:
-                doc.sub_categories.append("月次開示")
-
     logger.log("Phase 3 完了 (legacy format)")
 
 
@@ -1829,9 +1817,6 @@ def _apply_gemma_results(docs: list[DocInfo], gemma_results: dict[str, dict],
 
     SUB 決定:
       - Gemma 出力 sub_categories を採用（VALID_CATEGORIES でフィルタ）
-      - doc.main_category in _MONTHLY_SUB_CATEGORIES かつ is_monthly=True
-        → sub に「月次開示」を追加（旧 _phase3_poll_and_apply と同じ）
-
     Returns:
         missing_count: Gemma 結果が無かった doc 数。TPU preempt 等による
         部分失敗を検知するシグナル（G-2 対応、呼び出し側で errors に加算する）。
@@ -1852,10 +1837,8 @@ def _apply_gemma_results(docs: list[DocInfo], gemma_results: dict[str, dict],
         else:
             doc.main_category = pre_main
 
-        # SUB 決定（Gemma 結果 + 月次系カテゴリ補正）
+        # SUB 決定（Gemma 結果）
         final_sub = set(subs)
-        if doc.main_category in _MONTHLY_SUB_CATEGORIES and is_monthly:
-            final_sub.add("月次開示")
         doc.sub_categories = sorted(final_sub)
         doc.sub_categories_gemma = sorted(final_sub)  # Gemini受注マージの際のバックアップ
         doc.is_monthly = is_monthly

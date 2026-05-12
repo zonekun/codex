@@ -1,0 +1,77 @@
+{
+  "ticker": "6370",
+  "company_name": "栗田工",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当四半期累計期間における受注高の合計額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "当四半期累計期間における売上高の合計額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "セグメント別受注高",
+          "type": "order_intake",
+          "description": "各セグメント（電子市場、一般水処理市場）における受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "セグメント別売上高",
+          "type": "completed",
+          "description": "各セグメント（電子市場、一般水処理市場）における売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "電子市場",
+            "一般水処理市場"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "ppt_chart",
+      "notes": "資料内には受注高および売上高の全体数値と、セグメント別（電子市場、一般水処理市場）の数値がグラフおよび本文中に明記されています。受注残高（バックログ）に関する具体的な数値の記載は、提示されたページ内には確認できません。"
+    }
+  ],
+  "_source_pdf": "tdnet/6370/20260205_6370_栗田工_決算短信_2026年３月期 第３四半期決算短信〔ＩＦＲＳ〕（連結）_140120260204547115.pdf",
+  "_source_doc_id": "140120260204547115",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:08:35.847661+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "no_table",
+    "relevant_pages": [
+      4,
+      5,
+      6
+    ],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "pdfplumber found no tables on relevant pages"
+    ]
+  }
+}

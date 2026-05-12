@@ -1,0 +1,92 @@
+{
+  "ticker": "7518",
+  "company_name": "ネットワン",
+  "current_version": "2024-11",
+  "versions": [
+    {
+      "valid_from": "2024-11",
+      "valid_until": null,
+      "extraction_method": "regex",
+      "source": "tanshin",
+      "page_keywords": [
+        "セグメント別",
+        "商品群別",
+        "受注高",
+        "売上高",
+        "受注残高"
+      ],
+      "fields": [
+        {
+          "key": "受注高",
+          "row_label_regex": "^合計",
+          "value_type": "integer",
+          "unit": "百万円",
+          "group": 1
+        },
+        {
+          "key": "売上高",
+          "row_label_regex": "^合計",
+          "value_type": "integer",
+          "unit": "百万円",
+          "group": 2
+        },
+        {
+          "key": "受注残高",
+          "row_label_regex": "^合計",
+          "value_type": "integer",
+          "unit": "百万円",
+          "group": 3
+        },
+        {
+          "key": "セグメント別受注高",
+          "row_label_regex": "^(エンタープライズ事業|通信事業者事業|パブリック事業|パートナー事業)",
+          "value_type": "integer",
+          "unit": "百万円",
+          "group": 1
+        },
+        {
+          "key": "セグメント別売上高",
+          "row_label_regex": "^(エンタープライズ事業|通信事業者事業|パブリック事業|パートナー事業)",
+          "value_type": "integer",
+          "unit": "百万円",
+          "group": 2
+        },
+        {
+          "key": "セグメント別受注残高",
+          "row_label_regex": "^(エンタープライズ事業|通信事業者事業|パブリック事業|パートナー事業)",
+          "value_type": "integer",
+          "unit": "百万円",
+          "group": 3
+        },
+        {
+          "key": "商品群別受注高",
+          "row_label_regex": "^(機器商品群|サービス商品群)",
+          "value_type": "integer",
+          "unit": "百万円",
+          "group": 1
+        },
+        {
+          "key": "商品群別売上高",
+          "row_label_regex": "^(機器商品群|サービス商品群)",
+          "value_type": "integer",
+          "unit": "百万円",
+          "group": 2
+        },
+        {
+          "key": "商品群別受注残高",
+          "row_label_regex": "^(機器商品群|サービス商品群)",
+          "value_type": "integer",
+          "unit": "百万円",
+          "group": 3
+        }
+      ],
+      "gemini_custom_prompt": "",
+      "notes": "The document contains two tables: one for business segments and one for product groups. Both tables include order intake (受注高), net sales (売上高), and order backlog (受注残高). The 'Total' (合計) row is present in both tables and represents the consolidated figures."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/7518/20241106_7518_ネットワン_決算短信_2025年3月期 第2四半期決算短信〔日本基準〕（連結）_140120241106512124.pdf",
+  "_source_doc_id": "140120241106512124",
+  "_generated_at": "2026-04-30T23:36:18.871564+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

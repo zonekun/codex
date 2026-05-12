@@ -92,13 +92,13 @@ def list_tickers_with_records(gcs: storage.Client) -> list[str]:
 
     # inactive_reason があるアダプターを除外
     inactive: set[str] = set()
-    adapters_dir = Path("data/monthly_adapters")
+    adapters_dir = Path("meta/monthly")
     if adapters_dir.exists():
-        for p in adapters_dir.glob("*.json"):
+        for p in adapters_dir.glob("*_extract_adapter.json"):
             try:
                 d = _json.loads(p.read_text(encoding="utf-8"))
                 if d.get("inactive_reason"):
-                    inactive.add(p.stem)
+                    inactive.add(p.name.removesuffix("_extract_adapter.json"))
             except Exception:
                 pass
 
@@ -349,6 +349,15 @@ def main() -> None:
                 time.sleep(long_wait)
 
     finally:
+        fh.flush()
+        try:
+            gcs = get_gcs()
+            bucket = gcs.bucket(GCS_BUCKET)
+            blob = bucket.blob("csv/bc_monthly_kpi.csv")
+            blob.upload_from_filename(str(OUT_CSV), content_type="text/csv")
+            log("GCS最終保存完了")
+        except Exception as e:
+            log(f"GCS最終保存失敗: {e}")
         fh.close()
         driver.quit()
 

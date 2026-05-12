@@ -1,0 +1,13 @@
+{
+  "ticker": "8278",
+  "company_name": "フジ",
+  "ir_page_url": "https://www.the-fuji.com/company/ir/monthly/",
+  "updated_at": "2026-04-24T07:31:16.106544+09:00",
+  "last_checked": "2026-04-24",
+  "status": "active",
+  "type": "html_table",
+  "css_selector": null,
+  "table_selector": null,
+  "note": "HTML表に月次データ検出。table_selector要調整",
+  "manual_override": true
+}

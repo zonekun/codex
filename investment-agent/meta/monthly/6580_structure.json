@@ -1,0 +1,28 @@
+{
+  "ticker": "6580",
+  "company_name": "6580",
+  "metrics": [
+    {
+      "name": "JDネット 支援社数",
+      "source": "bc"
+    },
+    {
+      "name": "Jコンサル 完了社数",
+      "source": "bc"
+    },
+    {
+      "name": "Jコンサル 申請完了数",
+      "source": "bc"
+    },
+    {
+      "name": "Jシステム 受注件数",
+      "source": "bc"
+    },
+    {
+      "name": "パートナー数",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

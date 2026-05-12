@@ -1,0 +1,20 @@
+{
+  "ticker": "2501",
+  "company_name": "2501",
+  "metrics": [
+    {
+      "name": "ビール 販売数量（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "新ジャンル 販売数量（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "発泡酒 販売数量（前年同月比）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

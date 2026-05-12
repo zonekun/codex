@@ -1,0 +1,121 @@
+{
+  "ticker": "1832",
+  "company_name": "北海電工",
+  "current_version": "2025-10",
+  "versions": [
+    {
+      "valid_from": "2025-10",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当期における受注工事の総額（連結および個別）",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "完成工事高",
+          "type": "completed",
+          "description": "当期に完成した工事の売上高（連結および個別）",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "期末繰越受注高",
+          "type": "backlog",
+          "description": "期末時点における未完成工事の受注残高（個別）",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "部門別受注高",
+          "type": "order_intake",
+          "description": "工事部門別の受注高内訳",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "部門別売上高",
+          "type": "completed",
+          "description": "工事部門別の完成工事高内訳",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "完成工事高"
+        },
+        {
+          "name": "部門別期末繰越受注高",
+          "type": "backlog",
+          "description": "工事部門別の期末繰越受注高内訳",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "期末繰越受注高"
+        },
+        {
+          "name": "得意先別受注高",
+          "type": "order_intake",
+          "description": "主要得意先別の受注高内訳",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "得意先別売上高",
+          "type": "completed",
+          "description": "主要得意先別の完成工事高内訳",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "完成工事高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "部門",
+          "items": [
+            "配電線工事",
+            "発送変電工事",
+            "地中線工事",
+            "通信工事",
+            "屋内配線工事",
+            "その他工事"
+          ]
+        },
+        {
+          "dimension_name": "得意先",
+          "items": [
+            "北海道電力関係",
+            "一般得意先"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "連結業績の概要に加え、個別業績における部門別および得意先別の受注高、売上高、受注残高（繰越受注高）の詳細な内訳表が含まれています。"
+    }
+  ],
+  "_source_pdf": "tdnet/1832/20251029_1832_北海電工_決算短信_2026年3月期　第2四半期（中間期）決算短信〔日本基準〕（連結）_140120251027579222.pdf",
+  "_source_doc_id": "140120251027579222",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T16:50:25.009614+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      5,
+      8,
+      11,
+      12
+    ],
+    "table_count": 9,
+    "max_rows": 23,
+    "max_cols": 9,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 9"
+    ]
+  }
+}

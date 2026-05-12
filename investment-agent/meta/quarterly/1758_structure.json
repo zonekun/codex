@@ -1,0 +1,59 @@
+{
+  "ticker": "1758",
+  "company_name": "太洋基礎",
+  "current_version": "2026-03",
+  "versions": [
+    {
+      "valid_from": "2026-03",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "セグメント情報における受注高の合計値",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "セグメント情報における受注残高の合計値",
+          "unit": "千円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "決算短信の「(5) 財務諸表に関する注記事項」内のセグメント情報において、セグメント別の売上高、受注高、受注残高の詳細な表が掲載されています。また、官公庁・民間別の売上高内訳も開示されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/1758/20260313_1758_太洋基礎_決算短信_2026年１月期　決算短信〔日本基準〕(非連結)_140120260313581078.pdf",
+  "_source_doc_id": "140120260313581078",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T16:37:31.309961+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      5,
+      7,
+      10,
+      11,
+      14,
+      15,
+      18,
+      19
+    ],
+    "table_count": 11,
+    "max_rows": 38,
+    "max_cols": 10,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 11"
+    ]
+  }
+}

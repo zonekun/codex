@@ -1,0 +1,36 @@
+{
+  "ticker": "8572",
+  "company_name": "8572",
+  "metrics": [
+    {
+      "name": "1口座当たり貸付単価（千円）",
+      "source": "bc"
+    },
+    {
+      "name": "クレカ事業 債権残高（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "クレカ利用者数（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "ローン事業 債権残高（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "ローン事業 店舗数",
+      "source": "bc"
+    },
+    {
+      "name": "ローン利用者数（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "ローン新規申込数（件）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

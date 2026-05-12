@@ -1,0 +1,28 @@
+{
+  "ticker": "1717",
+  "company_name": "明豊ファシリティ",
+  "current_version": "2025-11",
+  "versions": [
+    {
+      "valid_from": "2025-11",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Vision extraction selected because structure is complex or data is unavailable."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/1717/20251107_1717_明豊ファシリティ_決算短信_2026年３月期第２四半期（中間期）決算短信〔日本基準〕(非連結)_140120251107592002.pdf",
+  "_source_doc_id": "140120251107592002",
+  "_generated_at": "2026-04-30T16:32:39.267701+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

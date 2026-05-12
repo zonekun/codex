@@ -1,0 +1,28 @@
+{
+  "ticker": "3446",
+  "company_name": "ＪＴＥＣＣＯＲＰ",
+  "current_version": "2025-02",
+  "versions": [
+    {
+      "valid_from": "2025-02",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/3446/20250212_3446_ＪＴＥＣＣＯＲＰ_決算短信_2025年6月期　第２四半期（中間期）決算短信〔日本基準〕（連結）_140120250212569495.pdf",
+  "_source_doc_id": "140120250212569495",
+  "_generated_at": "2026-04-30T17:41:12.815073+09:00",
+  "_model_used": null
+}

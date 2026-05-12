@@ -1,0 +1,80 @@
+{
+  "ticker": "290A",
+  "company_name": "Ｇ－Ｓｙｎｓ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "期末時点の受注残高。契約合計金額のうち将来の売上高または補助金収入に計上されると想定される額。",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "損益計算書上の売上高。",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "総収入",
+          "type": "other",
+          "description": "売上高に政府からの補助金収入を加算して算出した、同社が主要な経営指標とする数値。",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "契約・案件",
+          "items": [
+            "SAR衛星の宇宙実証",
+            "令和6年度 内閣府実証",
+            "経産省SBIR",
+            "宇宙戦略基金 第1期",
+            "令和7年度 内閣府実証",
+            "防衛省情報本部",
+            "令和8年度 内閣府実証",
+            "防衛省 衛星コンステ",
+            "宇宙戦略基金 第2期～"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "受注残高には将来の売上高だけでなく補助金収入も含まれる。スライド9にて、主要な契約・案件ごとの計上時期パイプラインが詳細に示されている。"
+    }
+  ],
+  "_source_pdf": "tdnet/290A/20260213_290A_Ｇ－Ｓｙｎｓ_決算説明資料_2025年12月期通期決算説明資料_140120260213561229.pdf",
+  "_source_doc_id": "140120260213561229",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T17:29:17.031458+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      3,
+      5,
+      9,
+      24,
+      25,
+      28
+    ],
+    "table_count": 11,
+    "max_rows": 19,
+    "max_cols": 15,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 11",
+      "wide table: 15 columns"
+    ]
+  }
+}

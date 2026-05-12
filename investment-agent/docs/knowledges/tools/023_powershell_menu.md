@@ -28,24 +28,77 @@ bat ファイルをダブルクリックするだけで PowerShell メニュー�
 
 `claude-investment-agent.bat` をダブルクリック（またはコマンドプロンプトから実行）。
 
-## メニュー項目（2026-04-06時点）
+## メニュー項目
 
-| 番号 | 内容 | スクリプト | 引数 | 備考 |
-|------|------|-----------|------|------|
-| 1 | BB_債券履歴_new 取り込み更新 | `menu_bond_update.py` | — | |
-| 2 | テールリスクシグナル 直近10日チェック | `menu_signal_check.py` | — | |
-| 3 | 楽天証券コンセンサス取得 → BQ（通常/自動再開） | `update_conse_rakuten.py` | — | |
-| 4 | 楽天証券コンセンサス取得 → BQ（強制新規） | `update_conse_rakuten.py` | `--fresh` | |
-| 5 | 地方証券取引所銘柄 BQ更新 | `update_regional_codes.py` | — | |
-| 6 | ザラ場ツール（決算リアルタイム監視） | `zaraba_earnings.py` | サブコマンド選択式 | `IsZaraba` 専用ハンドラ |
-| 7 | 株式市場4局面判定 | `menu_phase_analyzer.ipynb` | — | JupyterLab 起動 |
+キーは 1-9, A, B, C… の順で自動採番（PS1 の `Get-MenuKey` / `Resolve-MenuIndex` で変換）。項目の追加・削除で後続キーがずれるため、**番号をドキュメントにハードコードしない**。正本は PS1 の `$MENU` 配列。
 
-### ザラ場ツール専用ハンドラ
+| 内容 | スクリプト | 引数 | 備考 |
+|------|-----------|------|------|
+| BB_債券履歴_new 取り込み更新 | `menu_bond_update.py` | — | |
+| テールリスクシグナル 直近10日チェック | `menu_signal_check.py` | — | |
+| IFISコンセンサス取得 → BQ（通常/自動再開） | `update_conse_ifis.py` | — | |
+| IFISコンセンサス取得 → BQ（強制新規） | `update_conse_ifis.py` | `--fresh` | |
+| QUICKコンセンサス取得 → BQ（通常/自動再開） | `update_conse_quick.py` | — | 松井証券リサーチネット経由 |
+| QUICKコンセンサス取得 → BQ（強制新規） | `update_conse_quick.py` | `--fresh` | |
+| 地方証券取引所銘柄 BQ更新 | `update_regional_codes.py` | — | |
+| ザラ場ツール（決算リアルタイム監視） | `zaraba_earnings.py` | サブコマンド選択式 | `IsZaraba` 専用ハンドラ |
+| 最新決算表示（XBRL + BQ 四半期推移） | `xbrl_lookup.py` | 銘柄コード入力 | `IsXbrlLookup` 専用ハンドラ |
+| 決算未発表会社一覧 | `menu_earnings_undisclosed.py` | — | BQ予定 vs TDNet実績突合。実行時刻まで |
+| 株式市場4局面判定 | `menu_phase_analyzer.ipynb` | — | JupyterLab 起動 |
+| 決算反応予測（predict + 答え合わせ） | `earnings_model\predict.py` | モード選択式 | `IsPredict` 専用ハンドラ |
+| 株主優待情報取得（全銘柄走査 → JSONL） | `update_yutai.py` | — | 松井証券リサーチネット経由。再開対応 |
 
-メニュー6番選択後、サブコマンド（prepare/watch/catchup）と対象日を対話入力する。
-対象日は `YYYYMMDD` の直接入力に加え、ショートカット `t=今日 / p=前取引日 / n=次取引日` に対応（Python 側 `resolve_date` で変換）。
+### 専用ハンドラ一覧
 
-**CLI引数を変更したらPS1側の入力プロンプト・バリデーションも同期すること。**
+PS1メニューには、対話型サブメニューが必要なスクリプト用の **専用ハンドラ**（`IsXxx` フラグ）が存在する。
+
+#### IsZaraba — ザラ場ツール
+
+サブコマンドと対象日を対話入力する。対象日は `YYYYMMDD` 直接入力 + ショートカット `t/p/n` に対応（Python 側 `resolve_date` で変換）。
+
+| PS1番号 | CLI サブコマンド | 内容 |
+|---------|-----------------|------|
+| 1 | `prepare` | 事前準備（BQキャッシュ取得） |
+| 2 | `watch` | ザラバ監視（リアルタイムスコアリング） |
+| 3 | `catchup` | キャッチアップ（中断後の再開用） |
+| 4 | `review` | ローカル結果表示（results.csv 時系列） |
+| 5 | `upload` | 結果保存（results.csv → GCS） |
+| 6 | `gcs-review` | GCS 結果表示（watch レイアウト） |
+| Z | `backup` | キャッシュ保管（全キャッシュを zip スナップショット） |
+
+#### IsPredict — 決算反応予測
+
+モード選択と日付を対話入力する。
+
+| PS1モード | CLI サブコマンド | 内容 |
+|----------|-----------------|------|
+| default → t | `today --actual-date <今日>` | 当日の予測 + 答え合わせ |
+| default → range | `backfill --from <答え合わせ日> --to <答え合わせ日>` | 答え合わせ日の範囲で期間指定バッチ |
+| rbld | `backfill` | 全期間リビルド |
+| （PS1非公開） | `predict` | 予測のみ実行。CLI直接実行用 |
+| （PS1非公開） | `accuracy` | 精度集計。CLI直接実行用 |
+
+### 専用ハンドラ（IsXxx）同期義務
+
+専用ハンドラ付きスクリプトのサブコマンドを追加・改修・削除した場合、**対応する全箇所を同一作業で更新**すること。1箇所だけ更新して他を忘れる事故が繰り返し発生している。
+
+#### 対象一覧
+
+| IsXxx | スクリプト（argparse 正本） | ラッパー | PS1 ハンドラ |
+|-------|--------------------------|---------|-------------|
+| `IsZaraba` | `scripts/zaraba_earnings.py` | `zara.py` | PS1 `if ($item.IsZaraba)` ブロック |
+| `IsPredict` | `scripts/earnings_model/predict.py` | なし | PS1 `elseif ($item.IsPredict)` ブロック |
+
+> 新規 `IsXxx` ハンドラを追加した場合は本テーブルと上記の専用ハンドラ一覧にも行を追加すること。
+
+**更新対象（4箇所）**:
+1. スクリプト本体（CLI argparse）
+2. ラッパー（`zara.py` 等、存在する場合）
+3. PS1 サブメニュー + switch ハンドラ
+4. **追加する側の機能MD**（例: `066_zaraba_tool.md`）にも同じ同期義務を記載
+
+**発火タイミング**: 上記スクリプトの argparse 定義を変更したとき（サブコマンドの追加・削除・引数変更）
+**検証**: 各 IsXxx について、PS1 の分岐ケース数 = ラッパーの分岐数（ラッパーがある場合） = argparse の add_parser 数 が一致することを目視確認。一部サブコマンドを PS1 で意図的に非公開にする場合は、上記一覧に「PS1非公開」と明記する
 
 ## 構成の設計ポイント
 
@@ -150,6 +203,8 @@ Args = "--fresh"           # ❌ 文字列で定義（Split で分割しても�
 
 ## メニュー項目の追加方法
 
+### 通常項目（引数固定・対話なし）
+
 ps1 の `$MENU` 配列に追記するだけ:
 
 ```powershell
@@ -160,6 +215,15 @@ ps1 の `$MENU` 配列に追記するだけ:
     Note   = "補足説明"
 }
 ```
+
+### 専用ハンドラ付き項目（対話型サブメニューが必要な場合）
+
+1. `$MENU` 配列に `IsXxx = $true` フラグ付きでエントリ追加
+2. メインループの `if/elseif` に対話型分岐を追加（既存の `IsZaraba` / `IsPredict` ブロックを参考に）
+3. 上記「専用ハンドラ（IsXxx）同期義務」セクションの対象一覧テーブルにエントリ追加
+4. 本MDの専用ハンドラ一覧にサブコマンド表を追加
+
+### 共通
 
 追記後は BOM付きUTF-8 で再保存する（上記の保存コマンドを使うこと）。
 

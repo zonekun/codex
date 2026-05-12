@@ -1,0 +1,14 @@
+{
+  "ticker": "4666",
+  "company_name": "パーク24",
+  "ir_page_url": "https://www.park24.co.jp/ir/financial/monthly.html",
+  "status": "active",
+  "type": "html_table",
+  "playwright_required": true,
+  "note": "月次データはHTMLページ上に表示（PDFなし）。JS動的ロードのためPlaywright必須。html_table型で保存 (2026-04-24)",
+  "updated_at": "2026-04-24T14:57:33.488197+09:00",
+  "last_checked": "2026-04-24",
+  "manual_override": true,
+  "manual_override_at": "2026-04-24T14:57:33.488197+09:00",
+  "manual_override_note": "D群HAS_PDF→html_table+playwright型に変更 (2026-04-24)"
+}

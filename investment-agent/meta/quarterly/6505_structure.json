@@ -1,0 +1,69 @@
+{
+  "ticker": "6505",
+  "company_name": "東洋電",
+  "current_version": "2026-04",
+  "versions": [
+    {
+      "valid_from": "2026-04",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当第３四半期連結累計期間における受注高の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当第３四半期連結会計期間末における受注残高の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "セグメント別受注高",
+          "type": "order_intake",
+          "description": "事業セグメント別の受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "セグメント別受注残高",
+          "type": "backlog",
+          "description": "事業セグメント別の受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "決算短信の「3. その他 (1) 生産、受注及び販売の状況」において、セグメント別の受注高、受注残高、売上高が詳細な表形式で記載されています。また、本文中にも主要な数値の言及があります。"
+    }
+  ],
+  "_source_pdf": "tdnet/6505/20260413_6505_東洋電_決算短信_2026年５月期 第３四半期決算短信〔日本基準〕(連結)_140120260413502423.pdf",
+  "_source_doc_id": "140120260413502423",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:17:38.711816+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      5,
+      13
+    ],
+    "table_count": 3,
+    "max_rows": 7,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

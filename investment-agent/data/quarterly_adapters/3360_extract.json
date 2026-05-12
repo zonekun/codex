@@ -1,0 +1,28 @@
+{
+  "ticker": "3360",
+  "company_name": "シップＨＤ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "presentation",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/3360/20260206_3360_シップＨＤ_決算説明資料_2026年３月期第３四半期決算説明資料_140120260206550353.pdf",
+  "_source_doc_id": "140120260206550353",
+  "_generated_at": "2026-04-30T17:38:29.050715+09:00",
+  "_model_used": null
+}

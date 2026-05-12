@@ -1,0 +1,31 @@
+{
+  "source": "non-tdnet(pdf)",
+  "format": "pdf",
+  "fields": [
+    {
+      "key": "ファンド 資産残高（百万円）",
+      "name": "ファンド 資産残高（百万円）",
+      "value_type": "integer",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "url_adapterのURL(fcg-r.co.jp)はエフシージー総合研究所で別会社。GCS docsも食品AI関連ニュースリリースのみで月次ファンド資産残高の記載なし"
+    },
+    {
+      "key": "不動産等受託 資産残高（百万円）",
+      "name": "不動産等受託 資産残高（百万円）",
+      "value_type": "integer",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "同上。月次開示文書なし"
+    }
+  ],
+  "extraction_notes": "ファンドクリエーショングループ。url_adapter URL(fcg-r.co.jp)はエフシージー総合研究所の企業ページで別会社の可能性。GCSの文書も食品表示AI等のニュースリリースで月次資産残高データなし。全field bc_ignore。",
+  "ticker": "3266",
+  "company_name": "ファンドクリエーショングループ",
+  "created_at": "2026-04-04T01:48:38.462907+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "",
+  "sample_submission_date": "",
+  "extraction_method": "gemini",
+  "manual_override": true,
+  "manual_override_note": "Codex成果物を自ら検証・再作成。URL不一致・月次文書不在のためbc_ignore",
+  "manual_override_at": "2026-05-08T00:15:00+09:00"
+}

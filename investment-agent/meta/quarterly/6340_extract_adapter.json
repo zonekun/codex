@@ -1,0 +1,26 @@
+{
+  "ticker": "6340",
+  "company_name": "渋谷工",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注の状況",
+        "セグメント別の受注高",
+        "セグメント別の受注残高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "「3. その他 受注の状況」の表から、以下の項目を抽出してください。1. 「① セグメント別の受注高」の「合計」行における「当中間連結会計期間」の値（単位：百万円）。2. 「② セグメント別の受注残高」の「合計」行における「当中間連結会計期間」の値（単位：百万円）。",
+      "notes": "structure.jsonにおいてcomplexityがcomplex_tableと定義されているため、gemini_visionによる抽出を選択しました。受注高および受注残高の合計値を抽出対象としています。"
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/6340/20260213_6340_渋谷工_決算短信_2026年6月期　第2四半期(中間期)決算短信〔日本基準〕(連結)_140120260131544048.pdf",
+  "_source_doc_id": "140120260131544048",
+  "_generated_at": "2026-04-30T23:22:52.262183+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

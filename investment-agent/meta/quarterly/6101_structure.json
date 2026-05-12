@@ -1,0 +1,61 @@
+{
+  "ticker": "6101",
+  "company_name": "ツガミ",
+  "current_version": "2025-11",
+  "versions": [
+    {
+      "valid_from": "2025-11",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "四半期ごとの受注高の推移",
+          "unit": "億円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "四半期末時点の受注残高の推移",
+          "unit": "億円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "需要区分",
+          "items": [
+            "内需",
+            "外需"
+          ]
+        }
+      ],
+      "presentation_format": "chart",
+      "complexity": "ppt_chart",
+      "notes": "資料の11ページ（スライド番号4-(4)）に「受注高」および「受注残高」の推移がグラフ形式で掲載されています。各指標について内需と外需の内訳が示されています。具体的な数値ラベルはグラフ内に記載されていませんが、Y軸の目盛りからデータを確認することが可能です。"
+    }
+  ],
+  "_source_pdf": "tdnet/6101/20251113_6101_ツガミ_決算説明資料_2026年3月期第2四半期（中間期） 決算説明資料_140120251111595791.pdf",
+  "_source_doc_id": "140120251111595791",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T18:40:36.575914+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      2,
+      12
+    ],
+    "table_count": 1,
+    "max_rows": 4,
+    "max_cols": 59,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "wide table: 59 columns"
+    ]
+  }
+}

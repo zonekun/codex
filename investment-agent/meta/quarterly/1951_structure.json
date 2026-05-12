@@ -1,0 +1,53 @@
+{
+  "ticker": "1951",
+  "company_name": "エクシオグループ",
+  "current_version": "2025-05",
+  "versions": [
+    {
+      "valid_from": "2025-05",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当連結会計年度における受注高の合計値",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "セグメント別受注高",
+          "type": "order_intake",
+          "description": "報告セグメント別の受注高（外部顧客への取引高）",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "資料内には受注高および売上高の連結合計値とセグメント別内訳が記載されている。受注残高（繰越工事高）に関する具体的な数値データは、提示されたページ内には確認できない。"
+    }
+  ],
+  "_source_pdf": "tdnet/1951/20250509_1951_エクシオグループ_決算短信_2025年３月期決算短信〔日本基準〕(連結)_140120250507532469.pdf",
+  "_source_doc_id": "140120250507532469",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:08:01.049810+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      7
+    ],
+    "table_count": 1,
+    "max_rows": 5,
+    "max_cols": 7,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

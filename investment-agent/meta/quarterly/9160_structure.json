@@ -1,0 +1,51 @@
+{
+  "ticker": "9160",
+  "company_name": "ノバレーゼ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注組数",
+          "type": "order_intake",
+          "description": "ブライダル事業における婚礼プロデュース部門の受注組数",
+          "unit": "組",
+          "is_total": false
+        },
+        {
+          "name": "受注残組数",
+          "type": "backlog",
+          "description": "ブライダル事業における婚礼プロデュース部門の受注残組数",
+          "unit": "組",
+          "is_total": false
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "本文中にブライダル事業の受注組数および受注残組数が「組」単位で記載されています。売上収益については連結合計およびセグメント別の金額（百万円）が記載されています。また、セグメント別の店舗数内訳が表形式で示されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/9160/20260213_9160_ノバレーゼ_決算短信_2025年12月期 決算短信〔IFRS〕（連結）_140120260213560271.pdf",
+  "_source_doc_id": "140120260213560271",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T20:14:07.477870+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      5
+    ],
+    "table_count": 1,
+    "max_rows": 4,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

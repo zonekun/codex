@@ -1,0 +1,86 @@
+{
+  "ticker": "6926",
+  "company_name": "ＯＫＡＹＡ",
+  "current_version": "2025-11",
+  "versions": [
+    {
+      "valid_from": "2025-11",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "当中間連結会計期間における連結売上高の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "コンデンサ製品 売上高",
+          "type": "completed",
+          "description": "コンデンサ製品セグメントの売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "ノイズ・サージ対策製品 売上高",
+          "type": "completed",
+          "description": "ノイズ・サージ対策製品セグメントの売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "表示・照明製品 売上高",
+          "type": "completed",
+          "description": "表示・照明製品セグメントの売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "センサ製品 売上高",
+          "type": "completed",
+          "description": "センサ製品セグメントの売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "製品セグメント",
+          "items": [
+            "コンデンサ製品",
+            "ノイズ・サージ対策製品",
+            "表示・照明製品",
+            "センサ製品"
+          ]
+        }
+      ],
+      "presentation_format": "text",
+      "complexity": "no_table",
+      "notes": "本文中にセグメント別の売上高の数値記載がありますが、受注高および受注残高については具体的な数値の記載がなく、定性的な説明にとどまっています。"
+    }
+  ],
+  "_source_pdf": "tdnet/6926/20251113_6926_ＯＫＡＹＡ_決算短信_2026年３月期 第２四半期（中間期）決算短信〔日本基準〕（連結）_140120251112598407.pdf",
+  "_source_doc_id": "140120251112598407",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:35:11.513011+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "no_table",
+    "relevant_pages": [
+      4
+    ],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "pdfplumber found no tables on relevant pages"
+    ]
+  }
+}

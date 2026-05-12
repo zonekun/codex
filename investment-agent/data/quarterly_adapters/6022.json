@@ -1,0 +1,72 @@
+{
+  "ticker": "6022",
+  "company_name": "赤阪鉄",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "第3四半期累計期間における受注高",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "販売高",
+          "type": "completed",
+          "description": "第3四半期累計期間における販売高",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "第3四半期累計期間末における受注残高",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "生産高",
+          "type": "other",
+          "description": "第3四半期累計期間における生産高",
+          "unit": "千円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "内燃機関関連事業"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "単一セグメント（内燃機関関連事業）の生産、受注、販売状況が表形式で記載されている。"
+    }
+  ],
+  "_source_pdf": "tdnet/6022/20260212_6022_赤阪鉄_決算短信_2026年３月期第３四半期決算短信〔日本基準〕（非連結）_140120260209551640.pdf",
+  "_source_doc_id": "140120260209551640",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:37:38.587265+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      9
+    ],
+    "table_count": 3,
+    "max_rows": 2,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

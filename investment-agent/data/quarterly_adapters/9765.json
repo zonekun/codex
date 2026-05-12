@@ -1,0 +1,142 @@
+{
+  "ticker": "9765",
+  "company_name": "オオバ",
+  "current_version": "2026-04",
+  "versions": [
+    {
+      "valid_from": "2026-04",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当第３四半期連結累計期間における受注高の合計",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "建設コンサルタント業務 地理空間情報業務 受注高",
+          "type": "order_intake",
+          "description": "建設コンサルタント業務 地理空間情報業務における受注高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "環境業務 受注高",
+          "type": "order_intake",
+          "description": "環境業務における受注高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "まちづくり業務 受注高",
+          "type": "order_intake",
+          "description": "まちづくり業務における受注高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "設計業務 受注高",
+          "type": "order_intake",
+          "description": "設計業務における受注高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "事業ソリューション業務 受注高",
+          "type": "order_intake",
+          "description": "事業ソリューション業務における受注高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "手持受注高",
+          "type": "backlog",
+          "description": "当第３四半期連結会計期間末における手持受注高の合計",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "建設コンサルタント業務 地理空間情報業務 手持受注高",
+          "type": "backlog",
+          "description": "建設コンサルタント業務 地理空間情報業務における手持受注高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "手持受注高"
+        },
+        {
+          "name": "環境業務 手持受注高",
+          "type": "backlog",
+          "description": "環境業務における手持受注高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "手持受注高"
+        },
+        {
+          "name": "まちづくり業務 手持受注高",
+          "type": "backlog",
+          "description": "まちづくり業務における手持受注高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "手持受注高"
+        },
+        {
+          "name": "設計業務 手持受注高",
+          "type": "backlog",
+          "description": "設計業務における手持受注高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "手持受注高"
+        },
+        {
+          "name": "事業ソリューション業務 手持受注高",
+          "type": "backlog",
+          "description": "事業ソリューション業務における手持受注高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "手持受注高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "業務の区分",
+          "items": [
+            "建設コンサルタント業務 地理空間情報業務",
+            "環境業務",
+            "まちづくり業務",
+            "設計業務",
+            "事業ソリューション業務"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "受注高実績および手持受注高について、業務区分別の内訳表が掲載されている。"
+    }
+  ],
+  "_source_pdf": "tdnet/9765/20260409_9765_オオバ_決算短信_2026年５月期 第３四半期決算短信〔日本基準〕（連結）_140120260408500430.pdf",
+  "_source_doc_id": "140120260408500430",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T20:28:43.902390+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      11
+    ],
+    "table_count": 2,
+    "max_rows": 7,
+    "max_cols": 4,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

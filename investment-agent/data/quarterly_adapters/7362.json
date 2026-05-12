@@ -1,0 +1,34 @@
+{
+  "ticker": "7362",
+  "company_name": "Ｇ－Ｔ．Ｓ．Ｉ",
+  "current_version": "2025-02",
+  "versions": [
+    {
+      "valid_from": "2025-02",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "breakdown_dimensions": [],
+      "presentation_format": "text",
+      "complexity": "no_table",
+      "notes": "当該ページには不動産事業の受注残について「1案件」という件数の記載はあるが、金額（円）の数値データが存在しないため、ルールに基づきdata_availableをfalseとした。"
+    }
+  ],
+  "_source_pdf": "tdnet/7362/20250214_7362_Ｇ－Ｔ．Ｓ．Ｉ_決算説明資料_2024年12月期決算説明資料_140120250214575180.pdf",
+  "_source_doc_id": "140120250214575180",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T19:47:47.987901+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "simple_table",
+    "relevant_pages": [
+      11
+    ],
+    "table_count": 3,
+    "max_rows": 5,
+    "max_cols": 4,
+    "broken_col0": false,
+    "unit_mixed": false,
+    "notes": []
+  }
+}

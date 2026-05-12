@@ -1,0 +1,52 @@
+{
+  "ticker": "6312",
+  "company_name": "フロイント",
+  "current_version": "2025-10",
+  "versions": [
+    {
+      "valid_from": "2025-10",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "機械部門における受注実績。化成品部門は見込生産のため記載なし。",
+          "unit": "千円",
+          "is_total": false
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "機械部門における受注残高。化成品部門は見込生産のため記載なし。",
+          "unit": "千円",
+          "is_total": false
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "受注高および受注残高については、化成品部門が見込生産方式を採用しているため機械部門のみが記載されている。販売実績については、機械部門と化成品部門の両セグメントおよび連結合計の数値が提供されている。"
+    }
+  ],
+  "_source_pdf": "tdnet/6312/20251010_6312_フロイント_決算短信_2026年２月期第２四半期（中間期）決算短信〔日本基準〕(連結)_140120251010571581.pdf",
+  "_source_doc_id": "140120251010571581",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:01:00.150861+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      15
+    ],
+    "table_count": 3,
+    "max_rows": 5,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

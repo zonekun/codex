@@ -1,0 +1,169 @@
+{
+  "ticker": "208A",
+  "company_name": "構造計画ＨＤ",
+  "current_version": "2025-11",
+  "versions": [
+    {
+      "valid_from": "2025-11",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当四半期累計期間における受注の総額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "当四半期累計期間における売上高の総額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当四半期末時点における未消化の受注残高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注高（エンジニアリングコンサルティング）",
+          "type": "order_intake",
+          "description": "当第1四半期連結累計期間におけるエンジニアリングコンサルティングの受注高",
+          "unit": "千円",
+          "period": "current_period",
+          "is_total": false,
+          "parent_metric": "受注高",
+          "breakdown_dimension": "セグメント",
+          "breakdown_item": "エンジニアリングコンサルティング"
+        },
+        {
+          "name": "受注高（プロダクツサービス）",
+          "type": "order_intake",
+          "description": "当第1四半期連結累計期間におけるプロダクツサービスの受注高",
+          "unit": "千円",
+          "period": "current_period",
+          "is_total": false,
+          "parent_metric": "受注高",
+          "breakdown_dimension": "セグメント",
+          "breakdown_item": "プロダクツサービス"
+        },
+        {
+          "name": "受注高（その他）",
+          "type": "order_intake",
+          "description": "当第1四半期連結累計期間におけるその他の受注高",
+          "unit": "千円",
+          "period": "current_period",
+          "is_total": false,
+          "parent_metric": "受注高",
+          "breakdown_dimension": "セグメント",
+          "breakdown_item": "その他"
+        },
+        {
+          "name": "受注残高（エンジニアリングコンサルティング）",
+          "type": "backlog",
+          "description": "当第1四半期連結累計期間におけるエンジニアリングコンサルティングの受注残高",
+          "unit": "千円",
+          "period": "current_period",
+          "is_total": false,
+          "parent_metric": "受注残高",
+          "breakdown_dimension": "セグメント",
+          "breakdown_item": "エンジニアリングコンサルティング"
+        },
+        {
+          "name": "受注残高（プロダクツサービス）",
+          "type": "backlog",
+          "description": "当第1四半期連結累計期間におけるプロダクツサービスの受注残高",
+          "unit": "千円",
+          "period": "current_period",
+          "is_total": false,
+          "parent_metric": "受注残高",
+          "breakdown_dimension": "セグメント",
+          "breakdown_item": "プロダクツサービス"
+        },
+        {
+          "name": "受注残高（その他）",
+          "type": "backlog",
+          "description": "当第1四半期連結累計期間におけるその他の受注残高",
+          "unit": "千円",
+          "period": "current_period",
+          "is_total": false,
+          "parent_metric": "受注残高",
+          "breakdown_dimension": "セグメント",
+          "breakdown_item": "その他"
+        },
+        {
+          "name": "売上高（エンジニアリングコンサルティング）",
+          "type": "completed",
+          "description": "当第1四半期連結累計期間におけるエンジニアリングコンサルティングの販売高",
+          "unit": "千円",
+          "period": "current_period",
+          "is_total": false,
+          "parent_metric": "売上高",
+          "breakdown_dimension": "セグメント",
+          "breakdown_item": "エンジニアリングコンサルティング"
+        },
+        {
+          "name": "売上高（プロダクツサービス）",
+          "type": "completed",
+          "description": "当第1四半期連結累計期間におけるプロダクツサービスの販売高",
+          "unit": "千円",
+          "period": "current_period",
+          "is_total": false,
+          "parent_metric": "売上高",
+          "breakdown_dimension": "セグメント",
+          "breakdown_item": "プロダクツサービス"
+        },
+        {
+          "name": "売上高（その他）",
+          "type": "completed",
+          "description": "当第1四半期連結累計期間におけるその他の販売高",
+          "unit": "千円",
+          "period": "current_period",
+          "is_total": false,
+          "parent_metric": "売上高",
+          "breakdown_dimension": "セグメント",
+          "breakdown_item": "その他"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "エンジニアリングコンサルティング",
+            "プロダクツサービス",
+            "その他"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "第1ページに連結合計の要約表（単位：百万円）、第2ページにセグメント別の要約表（単位：百万円）、第12ページに詳細なセグメント別実績表（単位：千円）が掲載されています。売上高は補足情報内では販売高として記載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/208A/20251110_208A_構造計画ＨＤ_決算短信_2026年６月期  第１四半期決算短信〔日本基準〕（連結）_140120251110594546.pdf",
+  "_source_doc_id": "140120251110594546",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:15:09.945085+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      5,
+      14
+    ],
+    "table_count": 5,
+    "max_rows": 9,
+    "max_cols": 10,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 5"
+    ]
+  }
+}

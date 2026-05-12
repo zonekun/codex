@@ -1,0 +1,28 @@
+{
+  "ticker": "6653",
+  "company_name": "正興電機製作所",
+  "current_version": "2026-04",
+  "versions": [
+    {
+      "valid_from": "2026-04",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Vision extraction selected because structure is complex or data is unavailable."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/6653/20260422_6653_正興電機製作所_決算短信_2026年12月期第１四半期決算短信〔日本基準〕(連結)_140120260422507921.pdf",
+  "_source_doc_id": "140120260422507921",
+  "_generated_at": "2026-04-30T19:24:06.058305+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

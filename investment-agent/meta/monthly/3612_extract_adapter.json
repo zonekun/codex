@@ -1,0 +1,69 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "doc_title_pattern": "国内小売事業 \\d{4}年\\d{1,2}月期 月次売上概況(\\d{1,2}月度)",
+  "year_from_title_regex": "国内小売事業 (\\d{4})年\\d{1,2}月期",
+  "month_from_title_regex": "月次売上概況（(\\d{1,2})月度）",
+  "fields": [
+    {
+      "key": "国内小売 売上（前年同月比）",
+      "name": "国内小売 売上（前年同月比）",
+      "row_label_regex": "国内小売売上",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "persistent diff=9.0: our=98.7 vs bc=108.0"
+    },
+    {
+      "key": "小売 店舗数",
+      "name": "小売 店舗数",
+      "row_label_regex": "月末（期末）小売店舗数",
+      "value_type": "integer",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "records=0 (extract 破綻), 売上系は正常 → 店舗数のみ bc_ignore"
+    },
+    {
+      "key": "国内小売 既存店 売上（前年同月比）",
+      "name": "国内小売 既存店 売上（前年同月比）",
+      "row_label_regex": "既存店売上",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "persistent diff=6.5: our=102.8 vs bc=96.3"
+    },
+    {
+      "key": "Ｅコマース売上（前年同月比）",
+      "name": "Ｅコマース売上（前年同月比）",
+      "row_label_regex": "Eコマース売上",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "extraction discrepancy: our=102.8 vs bc=84.1"
+    }
+  ],
+  "extraction_notes": "月次売上概況の表形式データから、各指標の行ラベルを正規表現で特定し、対応する数値を抽出します。前年同月比はパーセンテージ、店舗数は整数として扱います。",
+  "ticker": "3612",
+  "company_name": "3612",
+  "created_at": "2026-03-17T18:37:08.885166+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "国内小売事業 2026年2月期　月次売上概況（2月度）",
+  "sample_submission_date": "2026-03-04",
+  "fields_count": 4,
+  "_doc_title_pattern_fixed_at": "2026-04-18T23:24:06.563858+09:00",
+  "_doc_title_pattern_fixed_from": "国内小売事業 \\d{4}年\\d{1,2}月期　月次売上概況（\\d{1,2}月度）",
+  "use_fy_history_correction": true,
+  "_agent_patched_at": "2026-04-20T07:01:05.728824+09:00",
+  "_agent_patch_history": [
+    {
+      "ts": "2026-04-19T19:10:59.519992+09:00",
+      "applied": [
+        "top-level: ['use_fy_history_correction']"
+      ]
+    }
+  ],
+  "extraction_method": "gemini",
+  "overwrite_past_months": true,
+  "custom_prompt": "あなたは ticker 3612 の月次開示 PDF から KPI を抽出するアシスタントです.\n\n抽出対象月: {year}年{month}月度\n\nPDF構造の説明:\n  - 表の左端に4行が縦に並ぶ:\n    行1「国内小売売上」= 国内小売事業全体の売上前年比\n    行2「店舗売上」= 店舗販売のみの売上前年比\n    行3「既存店売上」= 既存店のみの売上前年比（国内小売売上とは別の行・別の値）\n    行4「Eコマース売上」= EC販売の売上前年比\n  - 各行の右側に月別の数値が並ぶ（3月,4月,...,2月）\n  - 参考：前期実績セクションにも同じ構造の表がある\n\n重要ルール:\n  - 当月 (指定月) の列の値のみ採用\n  - 4つの行はそれぞれ異なる値を持つ。同じ値を返すのは間違い\n  - 「国内小売売上」行と「既存店売上」行は必ず別の値になる\n  - 四半期累計・上期累計(1H)・下期累計(2H)・通期(Full Term)列は絶対に拾わない\n  - 見つからない field は null\n\n出力形式: JSON\n{\n  \"国内小売 売上（前年同月比）\": 「国内小売売上」行の対象月列の値 (例 102.8),\n  \"小売 店舗数\": 「月末小売店舗数」行の対象月列の整数値,\n  \"国内小売 既存店 売上（前年同月比）\": 「既存店売上」行の対象月列の値 (例 96.3),\n  \"Ｅコマース売上（前年同月比）\": 「Eコマース売上」行の対象月列の値 (例 84.0)\n}\n",
+  "manual_override": true,
+  "regex_redesign_at": "2026-04-19T22:21:18.533207+09:00",
+  "regex_redesign_note": "Gemini 切替 (regex 限界 or 誤マッチのため).",
+  "manual_override_at": "2026-04-25T06:10:00+09:00",
+  "manual_override_note": "Phase 2-3: bc_ignore for fields with persistent extraction mismatch"
+}

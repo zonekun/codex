@@ -1,0 +1,27 @@
+{
+  "ticker": "3670",
+  "company_name": "協立情報通信",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "presentation",
+      "page_keywords": [
+        "ソリューション事業",
+        "受注高",
+        "受注残高",
+        "推移"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "ソリューション事業の「受注高」と「受注残高」の数値を抽出してください。受注高は2025年3月期(1Q, 2Q, 3Q, 4Q, 累計)と2026年3月期(1Q, 2Q, 3Q, 累計)を、受注残高は2025年3月期(1Q, 2Q, 3Q, 4Q)と2026年3月期(1Q, 2Q, 3Q)を対象としてください。単位は百万円です。",
+      "notes": "スライド内の棒グラフから受注高（四半期別・累計）および受注残高の推移を抽出する。グラフ形式のためgemini_visionを採用。"
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/3670/20260213_3670_協立情報通信_決算説明資料_2026年３月期　第３四半期決算説明資料_140120260213561964.pdf",
+  "_source_doc_id": "140120260213561964",
+  "_generated_at": "2026-04-30T17:47:32.228556+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

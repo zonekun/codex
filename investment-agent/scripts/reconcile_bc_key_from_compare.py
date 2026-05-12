@@ -9,7 +9,7 @@ BC 全フィールド × 誤差調整（yoy+100, ×N, ÷N, 符号反転, round/f
   PYTHONUTF8=1 python scripts/reconcile_bc_key_from_compare.py \
     --compare-csv C:/tmp/buffett_compare_20260418_221847.csv \
     [--bc-csv data/csv/bc_monthly_kpi.csv] \
-    [--adapter-index data/monthly_adapter_index.csv] \
+    [--adapter-index meta/_index/monthly_adapter_index.csv] \
     [--output data/logs/bc_key_reverse_mapping_<ts>.csv] \
     [--min-ratio 0.5]
 
@@ -271,7 +271,7 @@ def main() -> None:
                         help="compare_monthly_buffett.py の出力 CSV")
     parser.add_argument("--bc-csv", default="data/csv/bc_monthly_kpi.csv",
                         help="BC 月次 KPI キャッシュ (デフォルト: data/csv/bc_monthly_kpi.csv)")
-    parser.add_argument("--adapter-index", default="data/monthly_adapter_index.csv",
+    parser.add_argument("--adapter-index", default="meta/_index/monthly_adapter_index.csv",
                         help="non-tdnet URL ルックアップ用")
     parser.add_argument("--output", default="",
                         help="出力 CSV パス（省略時 data/logs/bc_key_reverse_mapping_<ts>.csv）")
@@ -440,16 +440,16 @@ def main() -> None:
     # 5.4) 既に apply 済 (adapter.bc_key 設定済) の (ticker, our_key) を除外
     if args.exclude_applied:
         from pathlib import Path as _Path
-        adapter_dir = _Path("data/monthly_adapters")
+        adapter_dir = _Path("meta/monthly")
         applied_set: set[tuple[str, str]] = set()
         if adapter_dir.exists():
             import json as _j
-            for p in adapter_dir.glob("*.json"):
+            for p in adapter_dir.glob("*_extract_adapter.json"):
                 try:
                     adp = _j.loads(p.read_text(encoding="utf-8"))
                 except Exception:
                     continue
-                ticker_ = p.stem
+                ticker_ = p.name.removesuffix("_extract_adapter.json")
                 for fld in adp.get("fields", []):
                     key = fld.get("key") or fld.get("name", "")
                     bc_key = fld.get("bc_key")

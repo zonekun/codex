@@ -1,0 +1,93 @@
+{
+  "ticker": "7901",
+  "company_name": "マツモト",
+  "current_version": "2026-03",
+  "versions": [
+    {
+      "valid_from": "2026-03",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当四半期累計期間における受注高の合計",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当四半期末時点における受注残高の合計",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "学校アルバム 受注高",
+          "type": "order_intake",
+          "description": "学校アルバム部門の受注高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "一般商業印刷 受注高",
+          "type": "order_intake",
+          "description": "一般商業印刷部門の受注高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "学校アルバム 受注残高",
+          "type": "backlog",
+          "description": "学校アルバム部門の受注残高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        },
+        {
+          "name": "一般商業印刷 受注残高",
+          "type": "backlog",
+          "description": "一般商業印刷部門の受注残高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "部門",
+          "items": [
+            "学校アルバム",
+            "一般商業印刷"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "決算短信の補足情報（9ページ）に、部門別の売上高、受注高、受注残高が詳細な表形式で記載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/7901/20260316_7901_マツモト_決算短信_2026年4月期第3四半期決算短信〔日本基準〕（非連結）_140120260220566695.pdf",
+  "_source_doc_id": "140120260220566695",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T20:00:57.163225+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      3,
+      4,
+      11
+    ],
+    "table_count": 2,
+    "max_rows": 4,
+    "max_cols": 9,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

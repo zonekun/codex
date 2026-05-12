@@ -1,0 +1,24 @@
+{
+  "ticker": "4732",
+  "company_name": "4732",
+  "metrics": [
+    {
+      "name": "オークション回数",
+      "source": "bc"
+    },
+    {
+      "name": "出品台数（台）",
+      "source": "bc"
+    },
+    {
+      "name": "成約率（%）",
+      "source": "bc"
+    },
+    {
+      "name": "成約車両単価（千円）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

@@ -1,0 +1,16 @@
+{
+  "ticker": "3979",
+  "company_name": "3979",
+  "metrics": [
+    {
+      "name": "MRR（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "MRR（千円）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

@@ -1,0 +1,69 @@
+{
+  "ticker": "3407",
+  "company_name": "旭化成",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "建築請負事業 受注高",
+          "type": "order_intake",
+          "description": "建築請負事業における受注高の合計値",
+          "unit": "億円",
+          "is_total": true
+        },
+        {
+          "name": "戸建系 受注高",
+          "type": "order_intake",
+          "description": "建築請負事業のうち、戸建住宅に関連する受注高",
+          "unit": "億円",
+          "is_total": false,
+          "parent_metric": "建築請負事業 受注高"
+        },
+        {
+          "name": "集合系 受注高",
+          "type": "order_intake",
+          "description": "建築請負事業のうち、集合住宅に関連する受注高",
+          "unit": "億円",
+          "is_total": false,
+          "parent_metric": "建築請負事業 受注高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "建築請負事業セグメント内訳",
+          "items": [
+            "戸建系",
+            "集合系"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "ppt_chart",
+      "notes": "29ページ右下の「建築請負事業の受注高推移」グラフより、受注高の合計および戸建系・集合系の内訳が取得可能。2025年度は予想値として示されている。"
+    }
+  ],
+  "_source_pdf": "tdnet/3407/20260204_3407_旭化成_決算説明資料_2025年度第３半期決算説明会資料_140120260204546551.pdf",
+  "_source_doc_id": "140120260204546551",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T17:39:05.200440+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      29
+    ],
+    "table_count": 15,
+    "max_rows": 4,
+    "max_cols": 3,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 15"
+    ]
+  }
+}

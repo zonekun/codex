@@ -1,0 +1,131 @@
+{
+  "ticker": "3636",
+  "company_name": "三菱総研",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当第１四半期連結累計期間における受注高の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当第１四半期連結会計期間末における受注残高の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "シンクタンク・コンサルティングサービス 受注高",
+          "type": "order_intake",
+          "description": "シンクタンク・コンサルティングサービスセグメントの受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "ITサービス 受注高",
+          "type": "order_intake",
+          "description": "ITサービスセグメントの受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "システム開発 受注高",
+          "type": "order_intake",
+          "description": "ITサービスセグメント内のシステム開発における受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "ITサービス 受注高"
+        },
+        {
+          "name": "アウトソーシングサービス 受注高",
+          "type": "order_intake",
+          "description": "ITサービスセグメント内のアウトソーシングサービスにおける受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "ITサービス 受注高"
+        },
+        {
+          "name": "シンクタンク・コンサルティングサービス 受注残高",
+          "type": "backlog",
+          "description": "シンクタンク・コンサルティングサービスセグメントの受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        },
+        {
+          "name": "ITサービス 受注残高",
+          "type": "backlog",
+          "description": "ITサービスセグメントの受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        },
+        {
+          "name": "システム開発 受注残高",
+          "type": "backlog",
+          "description": "ITサービスセグメント内のシステム開発における受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "ITサービス 受注残高"
+        },
+        {
+          "name": "アウトソーシングサービス 受注残高",
+          "type": "backlog",
+          "description": "ITサービスセグメント内のアウトソーシングサービスにおける受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "ITサービス 受注残高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "シンクタンク・コンサルティングサービス",
+            "ITサービス"
+          ]
+        },
+        {
+          "dimension_name": "ITサービス内訳",
+          "items": [
+            "システム開発",
+            "アウトソーシングサービス"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "決算短信の補足情報として、受注状況（受注高・受注残高）および販売実績のセグメント別・内訳別データが詳細な表形式で提供されています。ITサービスセグメントについては、システム開発とアウトソーシングサービスの内訳も開示されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/3636/20260205_3636_三菱総研_決算短信_2026年９月期 第１四半期決算短信〔日本基準〕(連結)_140120260128540588.pdf",
+  "_source_doc_id": "140120260128540588",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:45:52.863482+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      5,
+      12
+    ],
+    "table_count": 2,
+    "max_rows": 6,
+    "max_cols": 6,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "ticker": "2183",
+  "company_name": "リニカル",
+  "current_version": "2025-05",
+  "versions": [
+    {
+      "valid_from": "2025-05",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "期末または特定時点における未消化の受注案件の残高合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "地域別受注残高",
+          "type": "backlog",
+          "description": "地域別の受注残高の内訳",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "地域",
+          "items": [
+            "日本",
+            "米国",
+            "欧州",
+            "アジア"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "「受注残高の推移」表において、2024年3月末、2025年3月末、および2025年5月15日時点の受注残高が、地域別（日本、米国、欧州、アジア）に開示されています。受注高および売上高の実績値に関する表はこのページには含まれていません。"
+    }
+  ],
+  "_source_pdf": "tdnet/2183/20250515_2183_リニカル_決算短信_2025年３月期 決算短信〔日本基準〕（連結）_140120250515555116.pdf",
+  "_source_doc_id": "140120250515555116",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:16:59.511685+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      5,
+      6
+    ],
+    "table_count": 1,
+    "max_rows": 6,
+    "max_cols": 6,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

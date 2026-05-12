@@ -1,0 +1,68 @@
+{
+  "ticker": "9716",
+  "company_name": "乃村工芸",
+  "current_version": "2026-04",
+  "versions": [
+    {
+      "valid_from": "2026-04",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高 合計",
+          "type": "order_intake",
+          "description": "市場分野別の受注高の合計値",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "市場分野別の受注高の内訳",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高 合計"
+        },
+        {
+          "name": "受注残高 合計",
+          "type": "backlog",
+          "description": "市場分野別の受注残高の合計値",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "市場分野別の受注残高の内訳",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高 合計"
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "決算短信の14ページに「市場分野別の生産高、受注高および受注残高の実績」として、詳細な内訳表が記載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/9716/20260414_9716_乃村工芸_決算短信_2026年２月期 決算短信〔日本基準〕（連結）_140120260413503027.pdf",
+  "_source_doc_id": "140120260413503027",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T20:25:50.576293+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      3,
+      16
+    ],
+    "table_count": 2,
+    "max_rows": 4,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

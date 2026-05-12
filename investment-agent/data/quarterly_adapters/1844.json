@@ -1,0 +1,94 @@
+{
+  "ticker": "1844",
+  "company_name": "大盛工",
+  "current_version": "2026-03",
+  "versions": [
+    {
+      "valid_from": "2026-03",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "売上高合計",
+          "type": "completed",
+          "description": "連結損益計算書における売上高の合計値",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "建設事業における受注高（本文中に記載）",
+          "unit": "千円",
+          "is_total": false
+        },
+        {
+          "name": "完成工事高",
+          "type": "completed",
+          "description": "建設事業における売上高（完成工事高）",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "売上高合計"
+        },
+        {
+          "name": "不動産事業売上高",
+          "type": "completed",
+          "description": "不動産事業における売上高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "売上高合計"
+        },
+        {
+          "name": "OLY事業売上高",
+          "type": "completed",
+          "description": "OLY事業における売上高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "売上高合計"
+        },
+        {
+          "name": "通信関連売上高",
+          "type": "completed",
+          "description": "通信関連事業における売上高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "売上高合計"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "建設事業",
+            "不動産事業",
+            "OLY事業",
+            "通信関連事業"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "受注高については建設事業のみ本文中に数値の記載があります。受注残高（繰越工事高）に関する具体的な数値データは、提示されたページ内には含まれていません。"
+    }
+  ],
+  "_source_pdf": "tdnet/1844/20260312_1844_大盛工_決算短信_2026年７月期 第２四半期（中間期）決算短信【日本基準】（連結）_140120260206550847.pdf",
+  "_source_doc_id": "140120260206550847",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T16:52:04.587324+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      8
+    ],
+    "table_count": 1,
+    "max_rows": 44,
+    "max_cols": 3,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

@@ -1,0 +1,165 @@
+{
+  "ticker": "6905",
+  "company_name": "コーセル",
+  "current_version": "2026-03",
+  "versions": [
+    {
+      "valid_from": "2026-03",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当第３四半期連結累計期間における受注高の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注高（ユニット電源）",
+          "type": "order_intake",
+          "description": "コーセル製品のうちユニット電源の受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "受注高（オンボード電源）",
+          "type": "order_intake",
+          "description": "コーセル製品のうちオンボード電源の受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "受注高（ノイズフィルタ）",
+          "type": "order_intake",
+          "description": "コーセル製品のうちノイズフィルタの受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "受注高（ＰＲＢＸ製品）",
+          "type": "order_intake",
+          "description": "ＰＲＢＸ製品の受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当第３四半期連結会計期間末における受注残高の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高（ユニット電源）",
+          "type": "backlog",
+          "description": "コーセル製品のうちユニット電源の受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        },
+        {
+          "name": "受注残高（オンボード電源）",
+          "type": "backlog",
+          "description": "コーセル製品のうちオンボード電源の受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        },
+        {
+          "name": "受注残高（ノイズフィルタ）",
+          "type": "backlog",
+          "description": "コーセル製品のうちノイズフィルタの受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        },
+        {
+          "name": "受注残高（ＰＲＢＸ製品）",
+          "type": "backlog",
+          "description": "ＰＲＢＸ製品の受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "当第３四半期連結累計期間における売上高の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "売上高（ユニット電源）",
+          "type": "completed",
+          "description": "コーセル製品のうちユニット電源の売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "売上高（オンボード電源）",
+          "type": "completed",
+          "description": "コーセル製品のうちオンボード電源の売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "売上高（ノイズフィルタ）",
+          "type": "completed",
+          "description": "コーセル製品のうちノイズフィルタの売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "売上高（ＰＲＢＸ製品）",
+          "type": "completed",
+          "description": "ＰＲＢＸ製品の売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "製品別",
+          "items": [
+            "ユニット電源",
+            "オンボード電源",
+            "ノイズフィルタ",
+            "ＰＲＢＸ製品"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "決算短信の「受注高及び受注残高」および「売上高」のセクションに、製品別の詳細な実績値と前年同期比増減率が表形式で記載されています。コーセル製品はさらに3つの製品群に細分化されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/6905/20260323_6905_コーセル_決算短信_2026年５月期 第３四半期決算短信〔日本基準〕（連結）_140120260319585596.pdf",
+  "_source_doc_id": "140120260319585596",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:34:47.265574+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      5
+    ],
+    "table_count": 2,
+    "max_rows": 5,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

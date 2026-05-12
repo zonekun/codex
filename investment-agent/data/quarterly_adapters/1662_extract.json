@@ -1,0 +1,28 @@
+{
+  "ticker": "1662",
+  "company_name": "石油資源",
+  "current_version": "2025-08",
+  "versions": [
+    {
+      "valid_from": "2025-08",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "presentation",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/1662/20250807_1662_石油資源_決算説明資料_2026年3月期第1四半期決算説明資料_140120250807534091.pdf",
+  "_source_doc_id": "140120250807534091",
+  "_generated_at": "2026-04-30T16:31:47.638574+09:00",
+  "_model_used": null
+}

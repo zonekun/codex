@@ -1,0 +1,20 @@
+{
+  "ticker": "6264",
+  "company_name": "6264",
+  "metrics": [
+    {
+      "name": "月末受注残高 FPD分野（円）",
+      "source": "bc"
+    },
+    {
+      "name": "月末受注残高 その他分野（円）",
+      "source": "bc"
+    },
+    {
+      "name": "月末受注残高 半導体分野（円）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

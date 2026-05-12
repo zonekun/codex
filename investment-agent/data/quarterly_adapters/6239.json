@@ -1,0 +1,87 @@
+{
+  "ticker": "6239",
+  "company_name": "ナガオカ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当中間連結会計期間におけるセグメント別の受注実績合計",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当中間連結会計期間末におけるセグメント別の受注残高合計",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "当中間連結会計期間におけるセグメント別の売上高合計",
+          "unit": "千円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "エネルギー関連事業",
+            "水関連事業"
+          ]
+        },
+        {
+          "dimension_name": "地域",
+          "items": [
+            "日本",
+            "中国",
+            "アジア（中国を除く）",
+            "米州",
+            "欧州",
+            "中東",
+            "アフリカ"
+          ]
+        },
+        {
+          "dimension_name": "プロジェクト種別",
+          "items": [
+            "新設プラント向け",
+            "既設プラント向け"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "受注高、受注残高、売上高のセグメント別データに加え、売上高については地域別およびエネルギー関連事業におけるプロジェクト種別（新設・既設）の内訳が詳細な表形式で記載されています。なお、2026年2月9日付で公表された子会社による大口受注（約6億円）は、期間後のため受注残高には含まれていない旨の注記があります。"
+    }
+  ],
+  "_source_pdf": "tdnet/6239/20260212_6239_ナガオカ_決算短信_2026年６月期 第２四半期（中間期）決算短信〔日本基準〕（連結）_140120260210555005.pdf",
+  "_source_doc_id": "140120260210555005",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:52:14.993516+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      12
+    ],
+    "table_count": 4,
+    "max_rows": 10,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 4"
+    ]
+  }
+}

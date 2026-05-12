@@ -1,0 +1,28 @@
+{
+  "ticker": "6596",
+  "company_name": "Ｐ－筑波精工",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "other",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/6596/20260212_6596_Ｐ－筑波精工_受注・契約_大口受注に関するお知らせ_140120260212556172.pdf",
+  "_source_doc_id": "140120260212556172",
+  "_generated_at": "2026-04-30T19:21:39.211060+09:00",
+  "_model_used": null
+}

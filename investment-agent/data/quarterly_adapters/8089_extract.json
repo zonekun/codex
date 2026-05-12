@@ -1,0 +1,28 @@
+{
+  "ticker": "8089",
+  "company_name": "ナイス",
+  "current_version": "2025-08",
+  "versions": [
+    {
+      "valid_from": "2025-08",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "presentation",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/8089/20250808_8089_ナイス_決算説明資料_2026年３月期　第１四半期　決算補足説明資料_140120250807535465.pdf",
+  "_source_doc_id": "140120250807535465",
+  "_generated_at": "2026-04-30T20:04:49.655369+09:00",
+  "_model_used": null
+}

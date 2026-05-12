@@ -1,0 +1,12 @@
+{
+  "ticker": "7678",
+  "company_name": "あさくま",
+  "ir_page_url": "https://diamond.jp/zai/articles/-/1066028#:~:text=%E3%81%82%E3%81%95%E3%81%8F%E3%81%BE%E3%81%AE%E6%A0%AA%E4%B8%BB%E5%84%AA%E5%BE%85%E3%81%AF,%E3%82%92%E8%B4%88%E5%91%88%EF%BC%89%E3%80%8D%E3%81%A8%E3%81%84%E3%81%86%E3%82%82%E3%81%AE%E3%80%82",
+  "updated_at": "2026-04-21T17:14:28.224969+09:00",
+  "last_checked": "2026-04-21",
+  "status": "active",
+  "type": "html_table",
+  "css_selector": null,
+  "table_selector": null,
+  "note": "HTML表に月次データ検出。table_selector要調整"
+}

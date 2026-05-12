@@ -1,0 +1,12 @@
+{
+  "ticker": "9948",
+  "company_name": "アークス",
+  "ir_page_url": "http://www.arcs-g.co.jp/ir/monthly-performance/index.html",
+  "updated_at": "2026-04-21T10:26:36.978727+09:00",
+  "last_checked": "2026-04-21",
+  "status": "active",
+  "type": "html_table",
+  "css_selector": null,
+  "table_selector": null,
+  "note": "HTML表に月次データ検出。table_selector要調整"
+}

@@ -1,0 +1,68 @@
+{
+  "ticker": "4707",
+  "company_name": "キタック",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当第１四半期連結累計期間におけるグループ全体の受注高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "当第１四半期連結累計期間におけるグループ全体の売上高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "完成業務収入",
+          "type": "completed",
+          "description": "セグメント別の売上高に相当する完成業務収入（不動産賃貸等事業は不動産賃貸等収入）",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "建設コンサルタント事業",
+            "WEBソリューション事業",
+            "不動産賃貸等事業"
+          ]
+        }
+      ],
+      "presentation_format": "text",
+      "complexity": "no_table",
+      "notes": "本文中に受注高およびセグメント別の完成業務収入（売上高）の数値が記載されています。受注残高（繰越業務）については言及がありますが、具体的な金額の記載はこのページ内にはありません。"
+    }
+  ],
+  "_source_pdf": "tdnet/4707/20260227_4707_キタック_決算短信_令和８年10月期第１四半期決算短信〔日本基準〕(連結)_140120260204547424.pdf",
+  "_source_doc_id": "140120260204547424",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:12:31.069343+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "no_table",
+    "relevant_pages": [
+      4
+    ],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "pdfplumber found no tables on relevant pages"
+    ]
+  }
+}

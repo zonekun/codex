@@ -1,0 +1,36 @@
+{
+  "ticker": "9663",
+  "company_name": "ナガワ",
+  "current_version": "2024-10",
+  "versions": [
+    {
+      "valid_from": "2024-10",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "breakdown_dimensions": [],
+      "presentation_format": "table",
+      "complexity": "simple_table",
+      "notes": "手動レビューで受注関連の数値指標なしと確認済み。"
+    }
+  ],
+  "_source_pdf": "tdnet/9663/20241028_9663_ナガワ_決算短信_2025年３月期第２四半期（中間期）決算短信〔日本基準〕(連結)_140120241025502590.pdf",
+  "_source_doc_id": "140120241025502590",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T20:24:52.155356+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4
+    ],
+    "table_count": 2,
+    "max_rows": 4,
+    "max_cols": 7,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

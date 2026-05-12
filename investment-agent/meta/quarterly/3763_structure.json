@@ -1,0 +1,51 @@
+{
+  "ticker": "3763",
+  "company_name": "プロシップ",
+  "current_version": "2025-11",
+  "versions": [
+    {
+      "valid_from": "2025-11",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当中間連結会計期間における品目別の受注高合計",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当中間連結会計期間末における品目別の受注残高合計",
+          "unit": "千円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "受注高、受注残高、売上高について、パッケージ、保守、運用管理等の品目別内訳が表形式で詳細に記載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/3763/20251114_3763_プロシップ_決算短信_2026年３月期 第２四半期（中間期）決算短信〔日本基準〕（連結）_140120251114503598.pdf",
+  "_source_doc_id": "140120251114503598",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:50:14.762895+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      14
+    ],
+    "table_count": 2,
+    "max_rows": 6,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

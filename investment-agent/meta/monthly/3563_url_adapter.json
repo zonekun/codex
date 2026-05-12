@@ -1,0 +1,17 @@
+{
+  "ticker": "3563",
+  "company_name": "ＦＯＯＤ　＆　ＬＩＦＥ　ＣＯＭＰＡＮＩＥＳ",
+  "ir_page_url": "https://www.food-and-life.co.jp/en/investor/monthly-information/",
+  "updated_at": "2026-04-24T13:57:48.884197+09:00",
+  "last_checked": "2026-04-21",
+  "status": "active",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": "Monthly|月次",
+  "link_href_pattern": "Monthly.*\\.pdf",
+  "note": "月次PDF (Monthly-Information-FY*-*.pdf)。URL移行 (2026-04-24)。",
+  "playwright_required": false,
+  "manual_override": true,
+  "manual_override_at": "2026-04-24T13:57:48.884197+09:00",
+  "manual_override_note": "URL修正 (2026-04-24)"
+}

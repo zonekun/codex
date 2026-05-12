@@ -13,8 +13,9 @@
   record/{ticker}/monthly_records.json  → 抽出結果（year_month × metrics）（本スクリプトが生成）
 
 【使い方】
+  PYTHONUTF8=1 uv run python scripts/extract_monthly_data.py --all --since 2020       # 本運用（全社）
   PYTHONUTF8=1 uv run python scripts/extract_monthly_data.py --tickers 3097 --since 2024
-  PYTHONUTF8=1 uv run python scripts/extract_monthly_data.py --sample 30 --since 2020
+  PYTHONUTF8=1 uv run python scripts/extract_monthly_data.py --sample 30 --since 2020  # デフォルト（テスト用）
   PYTHONUTF8=1 uv run python scripts/extract_monthly_data.py --no-gcs
 """
 
@@ -25,6 +26,7 @@ import logging
 import os
 import re
 import sys
+import time
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Optional
@@ -111,9 +113,13 @@ GCS_BUCKET = "stock_data_1930932"
 GCS_META = "monthly/meta"
 GCS_RECORD = "monthly/record"
 GCS_DOCS = "monthly/docs"
+GCS_LOG = "monthly/log"
 BQ_DATASET = "STOCK"
-VERTEXAI_REGION = "us-central1"
-GEMINI_MODEL = "gemini-2.5-flash"
+VERTEXAI_REGION = "global"
+GEMINI_MODEL = "gemini-3-flash-preview"
+
+GCS_BATCH_MONTHLY = "batch_prediction/monthly_extract"
+BATCH_POLL_INTERVAL_MONTHLY = 30
 
 KEY_FILE = PROJECT_ROOT / "keys" / "gcp-service-account.json"
 INDEX_CSV = PROJECT_ROOT / "data" / "monthly_adapter_index.csv"
@@ -139,7 +145,8 @@ def setup_logging() -> logging.Logger:
     logger.addHandler(sh)
 
     log_file = LOG_DIR / f"extract_monthly_data_{datetime.now(JST).strftime('%Y%m%d_%H%M%S')}.log"
-    fh = logging.FileHandler(log_file, encoding="utf-8")
+    from logging.handlers import RotatingFileHandler
+    fh = RotatingFileHandler(log_file, encoding="utf-8", maxBytes=50 * 1024 * 1024, backupCount=3)
     fh.setFormatter(fmt)
     fh.setLevel(logging.DEBUG)
     logger.addHandler(fh)
@@ -180,7 +187,11 @@ def gcs_read_json(gcs: storage.Client, path: str) -> Optional[dict]:
         if not blob.exists():
             return None
         return json.loads(blob.download_as_text(encoding="utf-8"))
-    except Exception:
+    except Exception as e:
+        import logging as _log
+        _log.getLogger("extract_monthly_data").warning(
+            "[?] gcs_read_json 失敗: %s | path=%s", e, path,
+        )
         return None
 
 
@@ -197,11 +208,10 @@ def gcs_write_json(gcs: storage.Client, path: str, data: dict) -> None:
 # ====================================================
 
 def get_gemini():
-    """Vertex AI Gemini モデルを初期化して返す."""
-    import vertexai
-    from vertexai.generative_models import GenerativeModel, GenerationConfig
-    vertexai.init(project=GCP_PROJECT, location=VERTEXAI_REGION, credentials=get_credentials())
-    return GenerativeModel(GEMINI_MODEL), GenerationConfig
+    """Vertex AI Gemini クライアントを初期化して返す."""
+    from google import genai
+    client = genai.Client(vertexai=True, project=GCP_PROJECT, location=VERTEXAI_REGION, credentials=get_credentials())
+    return client
 
 
 def extract_from_text_gemini(
@@ -228,7 +238,7 @@ def extract_from_text_gemini(
     Returns:
         抽出結果 dict（year_month, fields 等）または None
     """
-    from vertexai.generative_models import GenerationConfig, Part
+    from google.genai import types
 
     fields = adapter.get("fields", [])
     if not fields:
@@ -279,7 +289,7 @@ def extract_from_text_gemini(
 
     # PDF モード: 生 PDF を直接 Gemini に送信（表構造を保持）
     if pdf_bytes:
-        pdf_part = Part.from_data(data=pdf_bytes, mime_type="application/pdf")
+        pdf_part = types.Part.from_bytes(data=pdf_bytes, mime_type="application/pdf")
         contents = [pdf_part, prompt]
     else:
         # テキストモード（フォールバック）
@@ -304,9 +314,10 @@ def extract_from_text_gemini(
 
     try:
         resp = _call_with_timeout(
-            lambda: gemini_model.generate_content(
-                contents,
-                generation_config=GenerationConfig(
+            lambda: gemini_model.models.generate_content(
+                model=GEMINI_MODEL,
+                contents=contents,
+                config=types.GenerateContentConfig(
                     response_mime_type="application/json",
                     response_schema=response_schema,
                     temperature=0,
@@ -315,9 +326,25 @@ def extract_from_text_gemini(
             timeout=90.0,
         )
         if resp is None:
+            import logging as _log
+            _log.getLogger("extract_monthly_data").warning(
+                "[%s] extract_from_text_gemini タイムアウト(90s): doc=%s | prompt_len=%d",
+                adapter.get("ticker", "?"), doc_title, len(prompt),
+            )
             return None
         data = json.loads(resp.text)
     except Exception as e:
+        resp_text_preview = ""
+        try:
+            resp_text_preview = resp.text[:500] if resp is not None else ""
+        except Exception:
+            pass
+        import logging as _log
+        _log.getLogger("extract_monthly_data").warning(
+            "[%s] extract_from_text_gemini 失敗: %s | doc=%s | prompt_len=%d | resp_len=%d | resp_preview=%s",
+            adapter.get("ticker", "?"), e, doc_title, len(prompt),
+            len(resp_text_preview), resp_text_preview,
+        )
         return None
 
     # Gemini が返した year_month を解析。失敗時は _parse_year_month ヒントで補完
@@ -368,6 +395,347 @@ def extract_from_text_gemini(
         "submission_date": str(submission_date),
         "fields": fields_data,
     }
+
+
+# ====================================================
+# Gemini Batch Prediction ヘルパー（月次抽出用）
+# ====================================================
+
+
+def _build_extract_prompt(
+    adapter: dict,
+    doc_title: str,
+    submission_date: str,
+    full_text: str = "",
+    is_multi_month: bool = False,
+) -> str:
+    """Gemini 抽出用プロンプトを構築する（同期/バッチ共通）."""
+    fields = adapter.get("fields", [])
+    ym_hint = _parse_year_month(adapter, doc_title, submission_date)
+    ym_hint_str = f"{ym_hint[0]:04d}-{ym_hint[1]:02d}" if ym_hint else "不明"
+
+    if is_multi_month:
+        field_lines = [
+            f'- {f["key"]}: type={f.get("value_type", "number")}'
+            for f in fields
+        ]
+        field_desc = "\n".join(field_lines)
+        custom_prompt = adapter.get("gemini_custom_prompt", "")
+        custom_block = f"\n【補足】\n{custom_prompt}\n" if custom_prompt else ""
+        return (
+            "この月次開示PDFから、掲載されている全会計年度・全月の月次データを抽出してください。\n\n"
+            f"文書: {doc_title}\n提出日: {submission_date}\n\n"
+            f"【抽出フィールド】\n{field_desc}\n"
+            f"{custom_block}\n"
+            "【出力形式】JSON配列のみ。説明不要。空欄・未発表の月はスキップ。\n"
+            '[\n  {"year_month": "YYYY-MM", "fields": {"フィールド名": 数値, ...}},\n  ...\n]\n'
+            "数値は %記号除去、カンマ除去。▲/△ は負の数に変換。"
+        )
+
+    field_lines = [
+        f'- {f["key"]}: {f.get("description", f["key"])} (type: {f.get("value_type", "number")})'
+        for f in fields
+    ]
+    field_desc = "\n".join(field_lines)
+    target_month_str = f"{ym_hint[1]}月" if ym_hint else "当該月"
+
+    return (
+        f"以下の月次開示文書から、指定フィールドの **{target_month_str}** の値を抽出してください。\n\n"
+        f"文書タイトル: {doc_title}\n"
+        f"提出日: {submission_date}\n"
+        f"対象年月: {ym_hint_str}\n\n"
+        f"⚠️【絶対禁止事項】(全フィールド共通・最優先・違反厳禁)\n"
+        f"1. **集計列を絶対に取らない**: 1Q/2Q/3Q/4Q/第1四半期/第2四半期/第3四半期/第4四半期/"
+        f"上期/下期/累計/通期/年度合計/YTD/合計/年計/期計 等の集計列の値は絶対に返さない。"
+        f"必ず**月別の単月列**（4月,5月,…,3月 のような12個並んだ月別列）から取得すること\n"
+        f"2. **対象月厳守**: 月別列が横並びになっている場合、**{target_month_str} の列のみ**から取る。"
+        f"隣の月や末尾の累計列を絶対に取らない。{target_month_str}列が見つからなければ null を返す\n"
+        f"3. **当年/前年の取り違え禁止**: 「当年/前年」「今期/前期」「2026年5月期/2025年5月期」等の"
+        f"年度比較表が並ぶ場合、対象年月 {ym_hint_str} に該当する**当年（最新期）の行/列**から取る。"
+        f"前年の値を当年として返さない\n"
+        f"4. **全店/既存店の取り違え禁止**: 「全店」「既存店」「全社」「グループ合計」「単体」等が並ぶ場合、"
+        f"フィールドの description で指定された行のみ選ぶ\n"
+        f"5. **サブカテゴリ/業態の取り違え禁止**: 「直営/FC/合計」「国内/海外」「戸建/集合/分譲」"
+        f"「電気/ガス/水道」「商品/サービス」等のサブカテゴリが並ぶ場合、descriptionで指定されたものだけを選ぶ。"
+        f"カテゴリ間で値をコピーしない\n"
+        f"6. **パーセント値の形式**: 「前年同月比」「成長率」等は **100前後の水準値**"
+        f"（100=据え置き、110=10%増、95=5%減）で返す。「+5」「-3」のような差分形式に変換しない\n"
+        f"7. **年度数字を値として返さない**: 2015〜2035 の年の数字（例: 「2026年5月期」の2026）を"
+        f"フィールド値として返さない。年度表記であり、求める数値ではない\n\n"
+        f"【抽出フィールド】\n{field_desc}\n\n"
+        f"【自己検証】返答前に各値について「対象月 {target_month_str} の単月列・description指定の行/カテゴリ」から"
+        f"取った値か再確認。不安なら null を返す。\n\n"
+        f"【出力形式】JSON のみ。説明不要。\n"
+        f'{{"year_month": "{ym_hint_str}", "フィールド名": 数値またはnull, ...}}\n'
+        f"- year_month: {ym_hint_str} を返すこと\n"
+        f"- 値が見つからない場合は null を返すこと"
+    )
+
+
+def _build_extract_response_schema(adapter: dict) -> dict:
+    """adapter の fields 定義から response_schema を構築する."""
+    fields = adapter.get("fields", [])
+    return {
+        "type": "object",
+        "properties": {
+            "year_month": {"type": "string"},
+            **{
+                f["key"]: {
+                    "type": "number" if f.get("value_type") in ("integer", "float", "percentage") else "string",
+                    "nullable": True,
+                }
+                for f in fields
+            },
+        },
+        "required": ["year_month"],
+    }
+
+
+def _build_batch_request_obj(
+    key: str,
+    prompt: str,
+    pdf_gcs_uri: Optional[str] = None,
+    full_text: Optional[str] = None,
+    is_multi_month: bool = False,
+) -> dict:
+    """バッチJSONL の1行分のリクエストオブジェクトを構築する.
+
+    response_schema は Batch JSONL では使用しない（TDnet load と同じパターン）。
+    プロンプト側で JSON 形式を指示し、response_mime_type のみ設定する。
+    """
+    parts: list[dict] = []
+
+    if pdf_gcs_uri:
+        parts.append({
+            "fileData": {"fileUri": pdf_gcs_uri, "mimeType": "application/pdf"},
+        })
+        parts.append({"text": prompt})
+    elif full_text:
+        cleaned_text = re.sub(r"文書タイトル:\s*\S[^\n]*", " ", full_text)
+        parts.append({"text": prompt + f"\n\n【文書テキスト】\n{cleaned_text[:20000]}"})
+    else:
+        parts.append({"text": prompt})
+
+    gen_config: dict = {
+        "temperature": 0,
+        "response_mime_type": "application/json",
+    }
+
+    return {
+        "key": key,
+        "request": {
+            "contents": [{"role": "user", "parts": parts}],
+            "generation_config": gen_config,
+        },
+    }
+
+
+def _upload_monthly_batch_jsonl(
+    bucket, lines: list[str], label: str = "extract",
+) -> tuple[str, str]:
+    """月次抽出バッチ用 JSONL を GCS にアップロードし、(input_uri, output_prefix) を返す."""
+    timestamp = datetime.now(JST).strftime("%Y%m%d_%H%M%S")
+    input_path = f"{GCS_BATCH_MONTHLY}/{label}_{timestamp}_input.jsonl"
+    output_path = f"{GCS_BATCH_MONTHLY}/{label}_{timestamp}_output/"
+
+    content = "\n".join(lines)
+    bucket.blob(input_path).upload_from_string(
+        content.encode("utf-8"), content_type="application/jsonl",
+    )
+    return f"gs://{GCS_BUCKET}/{input_path}", output_path
+
+
+def _poll_monthly_batch(
+    client, job_name: str, logger: logging.Logger, label: str = "extract",
+    max_wait_sec: int = 7200,
+) -> bool:
+    """バッチジョブをポーリングする. 成功なら True."""
+    t0 = time.monotonic()
+    while True:
+        job = client.batches.get(name=job_name)
+        state = job.state.name if hasattr(job.state, "name") else str(job.state)
+        logger.info(f"  [batch:{label}] ジョブ状態: {state}")
+
+        if state in ("JOB_STATE_SUCCEEDED", "SUCCEEDED", "completed"):
+            return True
+        if state in ("JOB_STATE_FAILED", "FAILED", "JOB_STATE_CANCELLED", "CANCELLED",
+                     "failed", "cancelled"):
+            logger.warning(f"  [batch:{label}] ジョブ失敗: {state}")
+            return False
+
+        elapsed = time.monotonic() - t0
+        if elapsed > max_wait_sec:
+            logger.warning(f"  [batch:{label}] ポーリングタイムアウト ({max_wait_sec}s超過)")
+            return False
+
+        time.sleep(BATCH_POLL_INTERVAL_MONTHLY)
+
+
+def _download_monthly_batch_results(bucket, output_prefix: str) -> dict[str, dict]:
+    """バッチ出力 JSONL を GCS からダウンロードし、key → response obj の辞書を返す."""
+    results: dict[str, dict] = {}
+    blobs = list(bucket.list_blobs(prefix=output_prefix))
+    for blob in blobs:
+        if not blob.name.endswith(".jsonl"):
+            continue
+        content = blob.download_as_string().decode("utf-8")
+        for line in content.strip().split("\n"):
+            if not line.strip():
+                continue
+            try:
+                obj = json.loads(line)
+                key = obj.get("key", "")
+                results[key] = obj
+            except json.JSONDecodeError:
+                continue
+    return results
+
+
+def _parse_batch_result_single(
+    resp_obj: dict, adapter: dict, doc_title: str, submission_date: str,
+    source_label: str = "tdnet",
+) -> Optional[dict]:
+    """バッチ結果1件を record dict にパースする（単月抽出用）."""
+    try:
+        text_resp = resp_obj["response"]["candidates"][0]["content"]["parts"][0]["text"]
+        data = json.loads(text_resp)
+        if isinstance(data, list):
+            data = data[0] if data else {}
+    except (KeyError, IndexError, json.JSONDecodeError):
+        return None
+
+    fields = adapter.get("fields", [])
+    ym_hint = _parse_year_month(adapter, doc_title, submission_date)
+
+    try:
+        ym_str = data.get("year_month", "")
+        parts = str(ym_str).split("-")
+        report_year = int(parts[0])
+        report_month = int(parts[1])
+        if not (2010 <= report_year <= 2035 and 1 <= report_month <= 12):
+            raise ValueError(f"year_month out of range: {ym_str}")
+        year_month = f"{report_year:04d}-{report_month:02d}"
+    except (ValueError, IndexError, AttributeError):
+        if ym_hint:
+            report_year, report_month = ym_hint
+            year_month = f"{report_year:04d}-{report_month:02d}"
+        else:
+            return None
+
+    fields_data: dict = {}
+    for f in fields:
+        key = f["key"]
+        val = data.get(key)
+        if val is None:
+            continue
+        val_type = f.get("value_type", "float")
+        try:
+            num = float(val)
+            if 2015 <= num <= 2035:
+                continue
+            if val_type == "integer":
+                fields_data[key] = int(num)
+            else:
+                fields_data[key] = num
+        except (ValueError, TypeError):
+            pass
+
+    if not fields_data:
+        return None
+
+    return {
+        "year": report_year,
+        "month": report_month,
+        "year_month": year_month,
+        "source": source_label,
+        "extraction_method": "gemini",
+        "doc_title": doc_title,
+        "submission_date": str(submission_date),
+        "fields": fields_data,
+    }
+
+
+def _parse_batch_result_multi_month(
+    resp_obj: dict, adapter: dict, doc_title: str, submission_date: str,
+    since: int = 2020,
+    source_label: str = "pdf_gemini_all",
+) -> list[dict]:
+    """バッチ結果1件を record dict リストにパースする（複数月抽出用）."""
+    try:
+        text_resp = resp_obj["response"]["candidates"][0]["content"]["parts"][0]["text"]
+        # JSON 配列を抽出
+        json_m = re.search(r"\[.*\]", text_resp, re.DOTALL)
+        if not json_m:
+            return []
+        items = json.loads(json_m.group())
+    except (KeyError, IndexError, json.JSONDecodeError):
+        return []
+
+    fields = adapter.get("fields", [])
+    records: list[dict] = []
+    for item in items:
+        if not isinstance(item, dict):
+            continue
+        ym = item.get("year_month", "")
+        fm = re.match(r"(\d{4})-(\d{1,2})", str(ym))
+        if not fm:
+            continue
+        y_i = int(fm.group(1))
+        m_i = int(fm.group(2))
+        if y_i < since:
+            continue
+        flds = item.get("fields", {})
+        if not isinstance(flds, dict) or not flds:
+            continue
+        flds_clean: dict = {}
+        for k, v in flds.items():
+            if isinstance(v, (int, float)):
+                flds_clean[k] = v
+        if not flds_clean:
+            continue
+        records.append({
+            "year": y_i,
+            "month": m_i,
+            "year_month": f"{y_i:04d}-{m_i:02d}",
+            "source": source_label,
+            "extraction_method": "gemini",
+            "doc_title": doc_title,
+            "submission_date": str(submission_date),
+            "fields": flds_clean,
+        })
+    return records
+
+
+def _submit_and_poll_extract_batch(
+    batch_lines: list[str],
+    gcs: storage.Client,
+    logger: logging.Logger,
+) -> dict[str, dict]:
+    """バッチJSONL をサブミット → ポーリング → 結果辞書を返す."""
+    from google import genai
+
+    bucket = gcs.bucket(GCS_BUCKET)
+    input_uri, output_prefix = _upload_monthly_batch_jsonl(bucket, batch_lines)
+    logger.info(f"  [batch] JSONL アップロード完了: {input_uri} ({len(batch_lines)} 件)")
+
+    client = get_gemini()
+    job = client.batches.create(
+        model=GEMINI_MODEL,
+        src=input_uri,
+        config=genai.types.CreateBatchJobConfig(
+            dest=f"gs://{GCS_BUCKET}/{output_prefix}",
+        ),
+    )
+    logger.info(f"  [batch] ジョブ投入: {job.name}")
+
+    success = _poll_monthly_batch(client, job.name, logger)
+    if not success:
+        logger.warning("  [batch] バッチジョブ失敗")
+        return {}
+
+    results = _download_monthly_batch_results(bucket, output_prefix)
+    logger.info(f"  [batch] 結果取得: {len(results)} 件")
+    return results
 
 
 # ====================================================
@@ -514,12 +882,12 @@ def _parse_year_month(adapter: dict, doc_title: str, submission_date: str) -> Op
                 return y, m - 1
         except Exception:
             pass
-    year_re = adapter.get("year_from_title_regex", r"(?P<year>\d{4})年")
+    year_re = adapter.get("year_from_title_regex") or r"(?P<year>\d{4})年"
 
     # 月抽出: まず「X月度」（実報告月）を優先、なければアダプターの regex を使用
     month_m = re.search(r"(?P<month>\d{1,2})月度", doc_title)
     if not month_m:
-        month_re = adapter.get("month_from_title_regex", r"(?P<month>\d{1,2})月[度期]")
+        month_re = adapter.get("month_from_title_regex") or r"(?P<month>\d{1,2})月[度期]"
         # Gemini が (?<name>...) を生成することがある → Python 用 (?P<name>..>) に正規化
         month_re = re.sub(r'\(\?<([a-zA-Z_][a-zA-Z0-9_]*)>', r'(?P<\1>', month_re)
         try:
@@ -901,11 +1269,17 @@ def _extract_html_gemini_personal(
     year_val, month_val = ym
     ym_str = f"{year_val:04d}-{month_val:02d}"
 
-    field_lines = [
-        f'- {f["key"]}: type={f.get("value_type", "number")}'
-        for f in fields
-    ]
+    field_lines = []
+    for f in fields:
+        desc = f.get("description", "")
+        line = f'- {f["key"]}: type={f.get("value_type", "number")}'
+        if desc:
+            line += f" ({desc})"
+        field_lines.append(line)
     field_desc = "\n".join(field_lines)
+
+    custom_prompt = adapter.get("custom_prompt") or adapter.get("gemini_custom_prompt", "")
+    custom_section = f"\n\n【補足情報】\n{custom_prompt}" if custom_prompt else ""
 
     prompt = (
         f"以下の月次開示HTMLから、指定フィールドの {month_val}月 の値を抽出してください。\n\n"
@@ -914,6 +1288,7 @@ def _extract_html_gemini_personal(
         f"【出力形式】JSON のみ。説明不要。\n"
         f'{{"year_month": "{ym_str}", "fields": {{"フィールド名": 数値, ...}}}}\n'
         f"数値は %記号除去、カンマ除去。▲/△ は負の数に変換。"
+        f"{custom_section}"
         f"\n\n【HTMLテキスト】\n{html_text[:20000]}"
     )
 
@@ -923,11 +1298,11 @@ def _extract_html_gemini_personal(
                 model=model_name,
                 contents=[prompt],
             ),
-            timeout=90.0,
+            timeout=180.0,
         )
         if response is None:
             if logger:
-                logger.warning(f"  [gemini] {doc_title}: HTML timeout(90s) でスキップ")
+                logger.warning(f"  [gemini] {doc_title}: HTML timeout(180s) でスキップ")
             return None
         resp_text = response.text.strip()
         # JSON 部分を抽出
@@ -949,6 +1324,247 @@ def _extract_html_gemini_personal(
             logger.debug(f"  [gemini] HTML抽出エラー: {e}")
 
     return None
+
+
+def _extract_html_gemini_all_months(
+    html_text: str,
+    adapter: dict,
+    doc_title: str,
+    submission_date: str,
+    client,
+    model_name: str,
+    since: int = 2020,
+    logger: Optional[logging.Logger] = None,
+) -> list[dict]:
+    """HTML全体から複数月分のレコードを一括抽出する（Gemini HTML直接）。
+
+    累積型HTMLページ（1ページに複数月のデータが含まれる場合）向け。
+    adapter の ``extraction_method: gemini`` + ``gemini_multi_month: true`` で使用。
+    """
+    fields = adapter.get("fields", [])
+    if not fields:
+        return []
+
+    field_lines = [
+        f'- {f["key"]}: type={f.get("value_type", "number")}'
+        for f in fields
+    ]
+    field_desc = "\n".join(field_lines)
+
+    custom_prompt = adapter.get("custom_prompt") or adapter.get("gemini_custom_prompt", "")
+    custom_block = f"\n【補足】\n{custom_prompt}\n" if custom_prompt else ""
+
+    prompt = (
+        "この月次開示HTMLから、掲載されている全会計年度・全月の月次データを抽出してください。\n\n"
+        f"文書: {doc_title}\n提出日: {submission_date}\n\n"
+        f"【抽出フィールド】\n{field_desc}\n"
+        f"{custom_block}\n"
+        "【出力形式】JSON配列のみ。説明不要。空欄・未発表の月はスキップ。\n"
+        '[\n  {"year_month": "YYYY-MM", "fields": {"フィールド名": 数値, ...}},\n  ...\n]\n'
+        "数値は %記号除去、カンマ除去。▲/△ は負の数に変換。"
+        f"\n\n【HTMLテキスト】\n{html_text[:40000]}"
+    )
+
+    try:
+        response = _call_with_timeout(
+            lambda: client.models.generate_content(
+                model=model_name,
+                contents=[prompt],
+            ),
+            timeout=180.0,
+        )
+        if response is None:
+            if logger:
+                logger.warning(f"  [gemini_all_html] {doc_title}: timeout(180s) でスキップ")
+            return []
+        resp_text = response.text.strip()
+        json_m = re.search(r"\[.*\]", resp_text, re.DOTALL)
+        if not json_m:
+            if logger:
+                logger.debug(f"  [gemini_all_html] JSON配列が見つからない: {resp_text[:200]}")
+            return []
+        try:
+            items = json.loads(json_m.group())
+        except json.JSONDecodeError as e:
+            if logger:
+                logger.debug(f"  [gemini_all_html] JSONパース失敗: {e}")
+            return []
+
+        records = []
+        for item in items:
+            if not isinstance(item, dict):
+                continue
+            ym = item.get("year_month", "")
+            fm = re.match(r"(\d{4})-(\d{1,2})", str(ym))
+            if not fm:
+                continue
+            y_i = int(fm.group(1))
+            m_i = int(fm.group(2))
+            if y_i < since:
+                continue
+            flds = item.get("fields", {})
+            if not isinstance(flds, dict) or not flds:
+                continue
+            flds_clean: dict = {}
+            for k, v in flds.items():
+                if isinstance(v, (int, float)):
+                    flds_clean[k] = v
+            if not flds_clean:
+                continue
+            records.append({
+                "year": y_i,
+                "month": m_i,
+                "year_month": f"{y_i:04d}-{m_i:02d}",
+                "source": "html_gemini_all",
+                "doc_title": doc_title,
+                "submission_date": str(submission_date),
+                "fields": flds_clean,
+            })
+        if logger:
+            logger.debug(f"  [gemini_all_html] {doc_title}: {len(records)} months extracted")
+        return records
+    except Exception as e:
+        if logger:
+            logger.debug(f"  [gemini_all_html] 抽出エラー: {e}")
+        return []
+
+
+def _build_excel_gemini_prompt(
+    adapter: dict,
+    doc_title: str,
+    submission_date: str,
+    csv_text: str,
+) -> str:
+    """Excel→CSV テキストから月次メトリクスを抽出する Gemini プロンプトを構築する."""
+    fields = adapter.get("fields", [])
+    field_lines = [
+        f'- {f["key"]}: {f.get("description", f["key"])} (type: {f.get("value_type", "number")})'
+        for f in fields
+    ]
+    field_desc = "\n".join(field_lines)
+    custom_prompt = adapter.get("custom_prompt") or adapter.get("gemini_custom_prompt", "")
+    custom_block = f"\n【補足】\n{custom_prompt}\n" if custom_prompt else ""
+
+    return (
+        "以下のExcel/CSVから変換したテーブルデータから、掲載されている全月の月次データを抽出してください。\n\n"
+        f"文書: {doc_title}\n提出日: {submission_date}\n\n"
+        "⚠️【絶対禁止事項】\n"
+        "1. **集計列を絶対に取らない**: 1Q/2Q/3Q/4Q/上期/下期/累計/通期/年度合計/YTD/合計 等の"
+        "集計行・集計列の値は返さない。必ず月別の単月データから取得すること\n"
+        "2. **当年/前年の取り違え禁止**: 年度比較が並ぶ場合、最新期（当年）の値を取る\n"
+        "3. **全店/既存店の取り違え禁止**: フィールドの description で指定された区分のみ選ぶ\n"
+        "4. **サブカテゴリの取り違え禁止**: 「直営/FC/合計」「国内/海外」等が並ぶ場合、"
+        "description で指定されたものだけを選ぶ\n"
+        "5. **パーセント値の形式**: 前年同月比は100前後の水準値（100=据え置き、110=10%増）で返す\n"
+        "6. **年度数字を値として返さない**: 2015〜2035 の年の数字はフィールド値ではない\n\n"
+        f"【抽出フィールド】\n{field_desc}\n"
+        f"{custom_block}\n"
+        "【出力形式】JSON配列のみ。説明不要。空欄・未発表の月はスキップ。\n"
+        '[\n  {"year_month": "YYYY-MM", "fields": {"フィールド名": 数値, ...}},\n  ...\n]\n'
+        "数値は %記号除去、カンマ除去。▲/△ は負の数に変換。\n\n"
+        f"【CSVデータ】\n{csv_text[:20000]}"
+    )
+
+
+def _extract_xlsx_gemini_personal(
+    xlsx_path: Path,
+    adapter: dict,
+    doc_title: str,
+    submission_date: str,
+    client,
+    model_name: str,
+    logger: Optional[logging.Logger] = None,
+) -> list[dict]:
+    """pandas で XLSX/CSV を テキスト化し、Gemini で月次メトリクスを抽出する.
+
+    extraction_method=excel_gemini 用。複数月レコードのリストを返す。
+    XLSX と CSV の両方に対応（拡張子で自動判別）。
+    """
+    try:
+        if xlsx_path.suffix.lower() == ".csv":
+            enc = adapter.get("encoding", "utf-8-sig")
+            df = pd.read_csv(xlsx_path, header=None, encoding=enc)
+        else:
+            sheet_name = adapter.get("sheet_name", 0)
+            df = pd.read_excel(xlsx_path, sheet_name=sheet_name, header=None)
+    except Exception as e:
+        if logger:
+            logger.warning(f"  [excel_gemini] {xlsx_path.name} 読み込み失敗: {e}")
+        return []
+
+    csv_text = df.to_csv(index=False, header=False)
+    if not csv_text.strip():
+        if logger:
+            logger.debug(f"  [excel_gemini] {xlsx_path.name} CSVテキスト空")
+        return []
+
+    prompt = _build_excel_gemini_prompt(adapter, doc_title, submission_date, csv_text)
+
+    try:
+        response = _call_with_timeout(
+            lambda: client.models.generate_content(
+                model=model_name,
+                contents=[prompt],
+            ),
+            timeout=180.0,
+        )
+        if response is None:
+            if logger:
+                logger.warning(f"  [excel_gemini] {doc_title}: timeout(180s)")
+            return []
+        resp_text = response.text.strip()
+
+        json_arr_m = re.search(r"\[.*\]", resp_text, re.DOTALL)
+        if json_arr_m:
+            items = json.loads(json_arr_m.group())
+            records: list[dict] = []
+            for item in items:
+                if not isinstance(item, dict):
+                    continue
+                flds = item.get("fields", {})
+                if not isinstance(flds, dict) or not flds:
+                    continue
+                ym = item.get("year_month", "")
+                fm = re.match(r"(\d{4})-(\d{1,2})", str(ym))
+                if not fm:
+                    continue
+                records.append({
+                    "year": int(fm.group(1)),
+                    "month": int(fm.group(2)),
+                    "year_month": f"{int(fm.group(1)):04d}-{int(fm.group(2)):02d}",
+                    "source": "excel_gemini",
+                    "extraction_method": "excel_gemini",
+                    "doc_title": doc_title,
+                    "submission_date": str(submission_date),
+                    "fields": {k: v for k, v in flds.items() if isinstance(v, (int, float))},
+                })
+            if logger and records:
+                logger.debug(f"  [excel_gemini] {doc_title}: {len(records)} months extracted")
+            return records
+
+        json_obj_m = re.search(r"\{.*\}", resp_text, re.DOTALL)
+        if json_obj_m:
+            result = json.loads(json_obj_m.group())
+            flds = result.get("fields", {})
+            if isinstance(flds, dict) and flds:
+                ym = result.get("year_month", "")
+                fm = re.match(r"(\d{4})-(\d{1,2})", str(ym))
+                if fm:
+                    return [{
+                        "year": int(fm.group(1)),
+                        "month": int(fm.group(2)),
+                        "year_month": f"{int(fm.group(1)):04d}-{int(fm.group(2)):02d}",
+                        "source": "excel_gemini",
+                        "extraction_method": "excel_gemini",
+                        "doc_title": doc_title,
+                        "submission_date": str(submission_date),
+                        "fields": {k: v for k, v in flds.items() if isinstance(v, (int, float))},
+                    }]
+    except Exception as e:
+        if logger:
+            logger.debug(f"  [excel_gemini] 抽出エラー: {e}")
+
+    return []
 
 
 def _extract_pdf_text(pdf_bytes: bytes) -> str:
@@ -1288,7 +1904,12 @@ def _extract_pdf_by_column(
                                         fields_data[key] = float(val_str)
                                 except (ValueError, TypeError):
                                     pass
-    except Exception:
+    except Exception as e:
+        import logging as _log
+        _log.getLogger("extract_monthly_data").warning(
+            "[?] _extract_pdf_by_column 失敗: %s | doc=%s | pdf_size=%d | target=%04d-%02d",
+            e, doc_title, len(pdf_bytes), target_year, target_month,
+        )
         return None
 
     if not fields_data:
@@ -1463,7 +2084,12 @@ def _extract_pdf_single_month(
                                         pass
                                     break
                             break  # 最初のマッチで終了
-    except Exception:
+    except Exception as e:
+        import logging as _log
+        _log.getLogger("extract_monthly_data").warning(
+            "[?] _extract_pdf_single_month 失敗: %s | doc=%s | pdf_size=%d | target=%04d-%02d",
+            e, doc_title, len(pdf_bytes), target_year, target_month,
+        )
         return None
 
     if not fields_data:
@@ -1677,7 +2303,12 @@ def _extract_pdf_by_row(
                             if extracted:
                                 break
                     # テーブル跨ぎ: break しない → 次テーブルで残りフィールドを拾う
-    except Exception:
+    except Exception as e:
+        import logging as _log
+        _log.getLogger("extract_monthly_data").warning(
+            "[?] _extract_pdf_by_row 失敗: %s | doc=%s | pdf_size=%d | target=%04d-%02d",
+            e, doc_title, len(pdf_bytes), target_year, target_month,
+        )
         return None
 
     if not fields_data:
@@ -1755,7 +2386,12 @@ def _extract_pdf_all_months(
                         break
                 if month_cols:
                     break
-    except Exception:
+    except Exception as e:
+        import logging as _log
+        _log.getLogger("extract_monthly_data").warning(
+            "[?] _extract_pdf_all_months 失敗: %s | doc=%s | pdf_size=%d",
+            e, doc_title, len(pdf_bytes),
+        )
         return []
 
     if not month_cols:
@@ -1825,6 +2461,8 @@ def extract_from_tdnet_text(
             fields_data[key] = float(v)
 
     fields_data: dict[str, float | int] = {}
+    _matched_fields: list[str] = []
+    _failed_fields: list[str] = []
     for field in adapter.get("fields", []):
         val_type = field.get("value_type", "float")
         key = field.get("key") or field.get("name", "")
@@ -2032,8 +2670,32 @@ def extract_from_tdnet_text(
                     m = _safe_re_search(row_pattern_dense, _dense(text), re.IGNORECASE | re.DOTALL)
                 if m:
                     _extract_from_match(m, m.group(0))
-        except Exception:
-            pass
+        except Exception as e:
+            import logging as _log
+            _log.getLogger("extract_monthly_data").warning(
+                "[%s] extract_from_tdnet_text フィールド失敗: %s | field=%s | pattern_len=%d | text_len=%d",
+                adapter.get("ticker", "?"), e, key,
+                len(row_pattern) if row_pattern else 0, len(text),
+            )
+        if key in fields_data:
+            _matched_fields.append(key)
+        elif key:
+            _failed_fields.append(key)
+
+    _ticker = adapter.get("ticker", "?")
+    _total = len(_matched_fields) + len(_failed_fields)
+    _log = logging.getLogger("extract_monthly_data")
+    if _total > 0:
+        _log.info(
+            "[%s] field抽出: matched=%d/%d fields=[%s] | doc=%s",
+            _ticker, len(_matched_fields), _total,
+            ",".join(_matched_fields) if _matched_fields else "(none)", doc_title[:60],
+        )
+    if _failed_fields:
+        _log.warning(
+            "[%s] field未マッチ: [%s] | text_len=%d",
+            _ticker, ",".join(_failed_fields), len(text),
+        )
 
     if not fields_data:
         return None
@@ -2064,16 +2726,40 @@ def extract_from_xlsx(
         if file_path.suffix.lower() in (".xlsx", ".xls"):
             df = pd.read_excel(file_path, sheet_name=sheet, header=None)
         else:
-            df = pd.read_csv(file_path, header=None, encoding="utf-8-sig")
-    except Exception:
+            csv_enc = adapter.get("encoding", "utf-8-sig")
+            df = pd.read_csv(file_path, header=None, encoding=csv_enc)
+    except Exception as e:
+        import logging as _log
+        _log.getLogger("extract_monthly_data").warning(
+            "[?] extract_from_xlsx 読み込み失敗: %s | path=%s", e, file_path,
+        )
         return []
 
     label_col = adapter.get("label_col_index", 0)
+    label_col_count = adapter.get("label_col_count", 1)  # 複数ラベル列を結合
     data_start = adapter.get("data_start_row", 1)
     records = []
 
-    # ラベル列から各フィールドの行を特定
-    label_col_series = df.iloc[data_start:, label_col].astype(str).fillna("")
+    # ラベル列から各フィールドの行を特定（複数列結合対応）
+    if label_col_count > 1:
+        # 複数列を結合してラベル文字列を作成（セクションヘッダーを継承）
+        label_parts = []
+        section_label = ""
+        for ri in range(data_start, len(df)):
+            parts = []
+            for ci in range(label_col, label_col + label_col_count):
+                if ci < len(df.columns):
+                    val = str(df.iloc[ri, ci]) if pd.notna(df.iloc[ri, ci]) else ""
+                    parts.append(val.strip())
+            col0 = parts[0] if parts else ""
+            if col0 and col0 != "nan":
+                section_label = col0
+            elif section_label:
+                parts[0] = section_label
+            label_parts.append(" ".join(p for p in parts if p and p != "nan"))
+        label_col_series = pd.Series(label_parts, index=range(len(label_parts)))
+    else:
+        label_col_series = df.iloc[data_start:, label_col].astype(str).fillna("")
 
     for field in adapter.get("fields", []):
         row_pattern = field.get("row_label_regex", "")
@@ -2085,8 +2771,9 @@ def extract_from_xlsx(
         for idx, label in enumerate(label_col_series):
             if re.search(row_pattern, label, re.IGNORECASE):
                 row_idx = data_start + idx
-                # その行の数値を全列取得
-                row_vals = df.iloc[row_idx, label_col + 1:]
+                # その行の数値を全列取得（ラベル列の次から）
+                data_col_start = label_col + label_col_count
+                row_vals = df.iloc[row_idx, data_col_start:]
                 for col_offset, v in enumerate(row_vals):
                     try:
                         if isinstance(v, str):
@@ -2148,7 +2835,11 @@ def extract_from_html(
         with open(file_path, encoding="utf-8") as f:
             html = f.read()
         soup = BeautifulSoup(html, "html.parser")
-    except Exception:
+    except Exception as e:
+        import logging as _log
+        _log.getLogger("extract_monthly_data").warning(
+            "[?] extract_from_html 読み込み失敗: %s | path=%s", e, file_path,
+        )
         return []
 
     # table_selector があればそのテーブル、なければ月次キーワードを含む最初のテーブル
@@ -2652,6 +3343,42 @@ def load_active_companies(
 
 
 # ====================================================
+# P2-1: 構造化エラーサマリー JSON
+# ====================================================
+
+def _save_extract_error_log(
+    gcs: "storage.Client",
+    results: dict,
+    error_entries: list[dict],
+) -> None:
+    """抽出エラーサマリーを GCS に保存する。"""
+    ts = datetime.now(JST).strftime("%Y%m%d_%H%M%S")
+    gcs_path = f"{GCS_LOG}/extract_{ts}.json"
+    log_data = {
+        "run_at": datetime.now(JST).isoformat(),
+        "total_tickers": sum(len(v) for v in results.values()),
+        "success": len(results.get("success", [])),
+        "skip": len(results.get("skip", [])),
+        "failed": len(results.get("fail", [])),
+        "errors": error_entries,
+    }
+    try:
+        bucket = gcs.bucket(GCS_BUCKET)
+        blob = bucket.blob(gcs_path)
+        blob.upload_from_string(
+            json.dumps(log_data, ensure_ascii=False, indent=2),
+            content_type="application/json",
+        )
+        logging.getLogger("extract_monthly_data").info(
+            "エラーサマリーをGCSに保存: gs://%s/%s", GCS_BUCKET, gcs_path,
+        )
+    except Exception as e:
+        logging.getLogger("extract_monthly_data").warning(
+            "GCSエラーサマリー保存失敗: %s", e,
+        )
+
+
+# ====================================================
 # Phase 2: データ抽出
 # ====================================================
 
@@ -2662,13 +3389,22 @@ def phase_extract(
     since: int,
     no_gcs: bool,
     logger: logging.Logger,
+    batch_mode: bool = False,
 ) -> dict:
     results = {"success": [], "skip": [], "fail": []}
+
+    _error_entries: list[dict] = []
+
+    # Batch collection (batch_mode=True のとき使用)
+    _batch_lines: list[str] = []
+    _batch_meta: dict[str, dict] = {}
+    _deferred_companies: dict[str, dict] = {}
 
     for i, company in enumerate(companies, 1):
         ticker = company["ticker"]
         name = company.get("company_name", ticker)
         logger.info(f"[{i}/{len(companies)}] {ticker} {name}")
+        _company_t0 = time.perf_counter()
 
         # アダプター取得（GCS または ローカル TMP）
         adapter_gcs_path = f"{GCS_META}/{ticker}/extract_adapter.json"
@@ -2683,11 +3419,51 @@ def phase_extract(
             continue
 
         # 論理削除フラグ: _excluded=true の銘柄は管理外として処理しない
-        if adapter.get("_excluded"):
-            reason = adapter.get("_excluded_reason", "(reason 未記載)")
+        if adapter.get("_excluded") or adapter.get("excluded"):
+            reason = adapter.get("_excluded_reason") or adapter.get("excluded_reason", "(reason 未記載)")
             logger.info(f"  → _excluded=true → 管理対象外スキップ: {reason}")
             results.setdefault("excluded", []).append(ticker)
             continue
+
+        # adapter 必須フィールド検証: structure.json の metrics と突合
+        _adapter_fields = adapter.get("fields", [])
+        _adapter_field_keys = {
+            f.get("bc_key") or f.get("key") for f in _adapter_fields if isinstance(f, dict)
+        }
+        _structure_path = f"{GCS_META}/{ticker}/structure.json"
+        _structure = gcs_read_json(gcs, _structure_path)
+        if not _structure and no_gcs:
+            _local_struct = PROJECT_ROOT / "meta" / "monthly" / f"{ticker}_structure.json"
+            if _local_struct.exists():
+                _structure = json.loads(_local_struct.read_text(encoding="utf-8"))
+        _structure_metric_names = {
+            m.get("name") for m in (_structure or {}).get("metrics", [])
+            if isinstance(m, dict) and m.get("name") and m.get("source", "bc") != "original"
+        }
+        if not _adapter_fields:
+            _missing_detail = "adapter.fields が空リスト（抽出項目未定義）"
+            if _structure_metric_names:
+                _missing_detail += f"。structure.json に {len(_structure_metric_names)} メトリクス定義あり"
+            logger.warning("[%s] adapter fields=[] → %s", ticker, _missing_detail)
+            results["skip"].append(ticker)
+            _error_entries.append({
+                "ticker": ticker, "error_type": "adapter_no_fields",
+                "error_detail": _missing_detail, "elapsed": 0.0,
+            })
+            continue
+        elif _structure_metric_names:
+            _missing_metrics = _structure_metric_names - _adapter_field_keys
+            if _missing_metrics:
+                logger.warning(
+                    "[%s] adapter fields 不足（%d/%d）: %s",
+                    ticker, len(_missing_metrics), len(_structure_metric_names),
+                    sorted(_missing_metrics),
+                )
+                _error_entries.append({
+                    "ticker": ticker, "error_type": "adapter_fields_incomplete",
+                    "error_detail": f"不足{len(_missing_metrics)}件: {sorted(_missing_metrics)}",
+                    "elapsed": 0.0,
+                })
 
         records: list[dict] = []
         extraction_method = adapter.get("extraction_method", "regex")
@@ -2713,14 +3489,14 @@ def phase_extract(
                     if b.name.endswith(".pdf") and _MONTHLY_KW_re.search(Path(b.name).name):
                         stem = Path(b.name).stem
                         _pdf_blob_map[stem] = b
-            except Exception:
-                pass
+            except Exception as e:
+                logger.warning("[%s] GCS PDF blob 一覧取得失敗: %s", ticker, e)
 
-            if extraction_method == "gemini":
-                # Gemini 抽出パス: 初回のみ初期化
+            if extraction_method == "gemini" and not batch_mode:
+                # Gemini 抽出パス（同期モード）: 初回のみ初期化
                 if "_gemini_model" not in phase_extract.__dict__:
-                    logger.info("  Gemini モデル初期化中...")
-                    phase_extract._gemini_model, _ = get_gemini()
+                    logger.info("  Gemini クライアント初期化中...")
+                    phase_extract._gemini_model = get_gemini()
                 gemini_model = phase_extract._gemini_model
 
             # adapter.doc_title_pattern を inclusion filter として使用.
@@ -2767,15 +3543,34 @@ def phase_extract(
 
                 # --- extraction_method=gemini: Gemini PDF直接を最優先 ---
                 if extraction_method == "gemini":
-                    if matched_blob:
-                        try:
-                            _cached_pdf = matched_blob.download_as_bytes()
-                        except Exception:
-                            pass
-                    rec = extract_from_text_gemini(
-                        full_text, adapter, doc_title, sub_date, gemini_model,
-                        pdf_bytes=_cached_pdf,
-                    )
+                    if batch_mode:
+                        # バッチモード: リクエストを収集（Gemini呼び出しは後で一括）
+                        pdf_gcs_uri = f"gs://{GCS_BUCKET}/{matched_blob.name}" if matched_blob else None
+                        _key = f"{ticker}__tdnet__{len(_batch_lines)}"
+                        _prompt = _build_extract_prompt(adapter, doc_title, sub_date)
+                        _req = _build_batch_request_obj(
+                            _key, _prompt, pdf_gcs_uri=pdf_gcs_uri,
+                            full_text=full_text if not pdf_gcs_uri else None,
+                        )
+                        _batch_lines.append(json.dumps(_req, ensure_ascii=False))
+                        _batch_meta[_key] = {
+                            "ticker": ticker, "adapter": adapter,
+                            "doc_title": doc_title, "submission_date": sub_date,
+                            "source_label": "tdnet", "multi_month": False,
+                        }
+                    else:
+                        if matched_blob:
+                            try:
+                                _cached_pdf = matched_blob.download_as_bytes()
+                            except Exception as e:
+                                logger.warning(
+                                    "[%s] PDF download 失敗 (gemini): %s | blob=%s",
+                                    ticker, e, matched_blob.name if matched_blob else "?",
+                                )
+                        rec = extract_from_text_gemini(
+                            full_text, adapter, doc_title, sub_date, gemini_model,
+                            pdf_bytes=_cached_pdf,
+                        )
                 else:
                     # --- extraction_method=regex: PDF列指定抽出を優先 ---
                     if matched_blob:
@@ -2789,16 +3584,23 @@ def phase_extract(
                                 rec = _extract_pdf_by_column(
                                     _cached_pdf, adapter, month_val, year_val, doc_title, sub_date,
                                 )
-                        except Exception:
-                            pass
+                        except Exception as e:
+                            logger.warning(
+                                "[%s] PDF column/row 抽出失敗: %s | doc=%s | blob=%s",
+                                ticker, e, doc_title,
+                                matched_blob.name if matched_blob else "?",
+                            )
                         # 単月テーブルフォールバック
                         if not rec and _cached_pdf:
                             try:
                                 rec = _extract_pdf_single_month(
                                     _cached_pdf, adapter, month_val, year_val, doc_title, sub_date,
                                 )
-                            except Exception:
-                                pass
+                            except Exception as e:
+                                logger.warning(
+                                    "[%s] _extract_pdf_single_month フォールバック失敗: %s | doc=%s",
+                                    ticker, e, doc_title,
+                                )
 
                     # フォールバック + 補完マージ: BQ テキスト or PDF テキストから row_label_regex 抽出
                     # _extract_pdf_by_column が部分的 rec を返すケース (8914 稼働率 field 等) でも、
@@ -2814,7 +3616,11 @@ def phase_extract(
                         _pdf_text_for_regex = ""
                         try:
                             _pdf_text_for_regex = _extract_pdf_text(_cached_pdf) if _cached_pdf else ""
-                        except Exception:
+                        except Exception as e:
+                            logger.warning(
+                                "[%s] _extract_pdf_text 失敗 (regex補完): %s | doc=%s",
+                                ticker, e, doc_title,
+                            )
                             _pdf_text_for_regex = ""
                         _text_for_regex = (
                             _pdf_text_for_regex if _pdf_text_for_regex.strip() else full_text
@@ -2856,13 +3662,34 @@ def phase_extract(
                                 rec_map[new_rec["year_month"]] = new_rec
                             records = list(rec_map.values())
                             logger.info(f"  overwrite_past_months: {len(all_month_recs)} 月分で上書き")
-                    except Exception:
-                        pass
+                    except Exception as e:
+                        logger.warning(
+                            "[%s] overwrite_past_months 失敗: %s | blob=%s",
+                            ticker, e, latest_stem,
+                        )
 
         # --- ダウンロードソース ---
         elif adapter.get("source") == "download":
             ext = adapter.get("format", "xlsx")
             is_pdf = ext.lower() == "pdf"
+            _is_excel_gemini = extraction_method == "excel_gemini"
+
+            _gemini_xlsx_client = None
+            _gemini_xlsx_model = None
+            if _is_excel_gemini and not batch_mode:
+                try:
+                    from google import genai  # noqa: F811
+                    from dotenv import load_dotenv
+                    load_dotenv(PROJECT_ROOT / ".env")
+                    _gemini_api_key = os.environ.get("GEMINI_API_KEY", "")
+                    if _gemini_api_key:
+                        _gemini_xlsx_client = genai.Client(api_key=_gemini_api_key)
+                        _gemini_xlsx_model = "gemini-3-flash-preview"
+                        logger.info(f"  Gemini 個人APIキー初期化 (model={_gemini_xlsx_model})")
+                    else:
+                        logger.warning("  GEMINI_API_KEY 未設定 → excel_gemini スキップ")
+                except ImportError:
+                    logger.warning("  google-genai 未インストール → excel_gemini スキップ")
 
             def _process_download_pdf(pdf_bytes: bytes, fname_stem: str) -> None:
                 """monthlyir PDF を TDNET と同じロジックで抽出する。"""
@@ -2901,10 +3728,42 @@ def phase_extract(
             if patterns:
                 company_dir = patterns[0]
                 files = sorted(company_dir.glob(f"*.{ext}"))
-                logger.info(f"  ダウンロードファイル {len(files)} 件 → 抽出中")
+                logger.info(f"  ダウンロードファイル {len(files)} 件 → 抽出中 (method={extraction_method})")
                 for fpath in files:
                     if is_pdf:
                         _process_download_pdf(fpath.read_bytes(), fpath.stem)
+                    elif _is_excel_gemini:
+                        _fname = fpath.stem
+                        _sub = (
+                            f"{_fname[:4]}-{_fname[4:6]}-{_fname[6:8]}"
+                            if len(_fname) >= 8 and _fname[:8].isdigit()
+                            else ""
+                        )
+                        if batch_mode:
+                            try:
+                                if fpath.suffix.lower() == ".csv":
+                                    _df = pd.read_csv(fpath, header=None, encoding=adapter.get("encoding", "utf-8-sig"))
+                                else:
+                                    _df = pd.read_excel(fpath, sheet_name=adapter.get("sheet_name", 0), header=None)
+                                _csv = _df.to_csv(index=False, header=False)
+                                if _csv.strip():
+                                    _key = f"{ticker}__xlsx__{len(_batch_lines)}"
+                                    _prompt = _build_excel_gemini_prompt(adapter, _fname, _sub, _csv)
+                                    _req = _build_batch_request_obj(_key, _prompt)
+                                    _batch_lines.append(json.dumps(_req, ensure_ascii=False))
+                                    _batch_meta[_key] = {
+                                        "ticker": ticker, "adapter": adapter,
+                                        "doc_title": _fname, "submission_date": _sub,
+                                        "source_label": "excel_gemini", "multi_month": True, "since": since,
+                                    }
+                            except Exception as e:
+                                logger.debug(f"  [excel_gemini/batch] {fpath.name} 失敗: {e}")
+                        elif _gemini_xlsx_client:
+                            recs = _extract_xlsx_gemini_personal(
+                                fpath, adapter, _fname, _sub,
+                                _gemini_xlsx_client, _gemini_xlsx_model, logger,
+                            )
+                            records.extend(recs)
                     else:
                         recs = extract_from_xlsx(fpath, adapter)
                         records.extend(recs)
@@ -2915,7 +3774,7 @@ def phase_extract(
                 gcs_blobs = [b for b in bucket.list_blobs(prefix=f"{GCS_DOCS}/{ticker}/")
                              if b.name.endswith(f".{ext}")]
                 if gcs_blobs:
-                    logger.info(f"  GCS {GCS_DOCS}/{ticker}/ から {len(gcs_blobs)} 件 → 抽出中")
+                    logger.info(f"  GCS {GCS_DOCS}/{ticker}/ から {len(gcs_blobs)} 件 → 抽出中 (method={extraction_method})")
                     for blob in gcs_blobs:
                         if is_pdf:
                             try:
@@ -2923,12 +3782,56 @@ def phase_extract(
                                 _process_download_pdf(pdf_bytes, Path(blob.name).stem)
                             except Exception as e:
                                 logger.debug(f"  [download/pdf] {blob.name} 失敗: {e}")
+                        elif _is_excel_gemini and (batch_mode or _gemini_xlsx_client):
+                            try:
+                                with tempfile.NamedTemporaryFile(suffix=f".{ext}", delete=False) as tmp:
+                                    tmp_path = tmp.name
+                                blob.download_to_filename(tmp_path)
+                                _fname = Path(blob.name).stem
+                                _sub = (
+                                    f"{_fname[:4]}-{_fname[4:6]}-{_fname[6:8]}"
+                                    if len(_fname) >= 8 and _fname[:8].isdigit()
+                                    else ""
+                                )
+                                if batch_mode:
+                                    if Path(tmp_path).suffix.lower() == ".csv":
+                                        _df = pd.read_csv(tmp_path, header=None, encoding=adapter.get("encoding", "utf-8-sig"))
+                                    else:
+                                        _df = pd.read_excel(tmp_path, sheet_name=adapter.get("sheet_name", 0), header=None)
+                                    _csv = _df.to_csv(index=False, header=False)
+                                    if _csv.strip():
+                                        _key = f"{ticker}__xlsx__{len(_batch_lines)}"
+                                        _prompt = _build_excel_gemini_prompt(adapter, _fname, _sub, _csv)
+                                        _req = _build_batch_request_obj(_key, _prompt)
+                                        _batch_lines.append(json.dumps(_req, ensure_ascii=False))
+                                        _batch_meta[_key] = {
+                                            "ticker": ticker, "adapter": adapter,
+                                            "doc_title": _fname, "submission_date": _sub,
+                                            "source_label": "excel_gemini", "multi_month": True, "since": since,
+                                        }
+                                elif _gemini_xlsx_client:
+                                    recs = _extract_xlsx_gemini_personal(
+                                        Path(tmp_path), adapter, _fname, _sub,
+                                        _gemini_xlsx_client, _gemini_xlsx_model, logger,
+                                    )
+                                    records.extend(recs)
+                            except Exception as e:
+                                logger.debug(f"  [excel_gemini] {blob.name} 失敗: {e}")
+                            finally:
+                                try:
+                                    os.unlink(tmp_path)
+                                except (PermissionError, OSError):
+                                    pass
                         else:
                             with tempfile.NamedTemporaryFile(suffix=f".{ext}", delete=False) as tmp:
-                                blob.download_to_filename(tmp.name)
-                                recs = extract_from_xlsx(Path(tmp.name), adapter)
-                                records.extend(recs)
-                                os.unlink(tmp.name)
+                                tmp_path = tmp.name
+                            blob.download_to_filename(tmp_path)
+                            recs = extract_from_xlsx(Path(tmp_path), adapter)
+                            records.extend(recs)
+                            try:
+                                os.unlink(tmp_path)
+                            except PermissionError:
+                                pass  # Windows: file may still be locked
                 else:
                     logger.info(f"  → ダウンロードファイルなし（download_monthly.py を先に実行してください）")
             else:
@@ -2936,10 +3839,10 @@ def phase_extract(
 
         # --- HTML テーブルソース ---
         elif _src_norm == "non-tdnet(html_table)":
-            # Gemini 初期化（extraction_method=gemini の場合）
+            # Gemini 初期化（extraction_method=gemini かつ同期モードの場合のみ）
             _gemini_html_client = None
             _gemini_html_model = None
-            if extraction_method == "gemini":
+            if extraction_method == "gemini" and not batch_mode:
                 try:
                     from google import genai
                     from dotenv import load_dotenv
@@ -2960,30 +3863,61 @@ def phase_extract(
                 files = sorted(company_dir.glob("*_monthly_table.html"))
                 logger.info(f"  HTML テーブルファイル {len(files)} 件 → 抽出中 (method={extraction_method})")
                 for fpath in files:
-                    if extraction_method == "gemini" and _gemini_html_client:
+                    if extraction_method == "gemini" and (batch_mode or _gemini_html_client):
                         try:
                             html_text = fpath.read_text(encoding="utf-8")
                             fname_stem = fpath.stem
-                            # ファイル名から提出日ヒント生成（YYYYMM_ 形式）
                             sub_date = ""
                             if len(fname_stem) >= 6 and fname_stem[:6].isdigit():
                                 ym_prefix = fname_stem[:6]
                                 if ym_prefix != "000000":
                                     sub_date = f"{ym_prefix[:4]}-{ym_prefix[4:6]}-20"
                             if not sub_date:
-                                # 000000 プレフィックス等でYYYYMM不明 → 今日の日付で代替
                                 from datetime import datetime as _dt
                                 try:
                                     from zoneinfo import ZoneInfo as _ZI
                                     sub_date = _dt.now(_ZI("Asia/Tokyo")).strftime("%Y-%m-%d")
                                 except Exception:
                                     sub_date = _dt.now().strftime("%Y-%m-%d")
-                            rec = _extract_html_gemini_personal(
-                                html_text, adapter, fname_stem, sub_date,
-                                _gemini_html_client, _gemini_html_model, logger,
-                            )
-                            if rec:
-                                records.append(rec)
+                            _is_multi_html = bool(adapter.get("gemini_multi_month"))
+                            if batch_mode:
+                                _key = f"{ticker}__html__{len(_batch_lines)}"
+                                _prompt = _build_extract_prompt(
+                                    adapter, fname_stem, sub_date,
+                                    full_text=html_text, is_multi_month=_is_multi_html,
+                                )
+                                _req = _build_batch_request_obj(
+                                    _key, _prompt, full_text=html_text,
+                                )
+                                _batch_lines.append(json.dumps(_req, ensure_ascii=False))
+                                _batch_meta[_key] = {
+                                    "ticker": ticker, "adapter": adapter,
+                                    "doc_title": fname_stem, "submission_date": sub_date,
+                                    "source_label": "html_gemini", "multi_month": _is_multi_html,
+                                }
+                            else:
+                                if _is_multi_html:
+                                    multi = _extract_html_gemini_all_months(
+                                        html_text, adapter, fname_stem, sub_date,
+                                        _gemini_html_client, _gemini_html_model,
+                                        since=since, logger=logger,
+                                    )
+                                    if multi:
+                                        records.extend(multi)
+                                    else:
+                                        rec = _extract_html_gemini_personal(
+                                            html_text, adapter, fname_stem, sub_date,
+                                            _gemini_html_client, _gemini_html_model, logger,
+                                        )
+                                        if rec:
+                                            records.append(rec)
+                                else:
+                                    rec = _extract_html_gemini_personal(
+                                        html_text, adapter, fname_stem, sub_date,
+                                        _gemini_html_client, _gemini_html_model, logger,
+                                    )
+                                    if rec:
+                                        records.append(rec)
                         except Exception as e:
                             logger.debug(f"  [gemini] {fpath.name} 失敗: {e}")
                     else:
@@ -2993,12 +3927,21 @@ def phase_extract(
                 # GCS monthly/docs/{ticker}/ からファイル取得（Cloud Run 用）
                 import tempfile
                 bucket = gcs.bucket(GCS_BUCKET)
-                gcs_blobs = [b for b in bucket.list_blobs(prefix=f"{GCS_DOCS}/{ticker}/")
-                             if b.name.endswith(".html")]
+                _all_html_blobs = [b for b in bucket.list_blobs(prefix=f"{GCS_DOCS}/{ticker}/")
+                                   if b.name.endswith(".html")]
+                # ローカルモード同様 monthly_table を優先。なければ月次キーワードでフィルタ
+                _MONTHLY_HTML_RE = re.compile(
+                    r"monthly_table|月次|月度|monthly|売上速報|受注速報|月末|月別",
+                    re.IGNORECASE,
+                )
+                gcs_blobs = [b for b in _all_html_blobs
+                             if _MONTHLY_HTML_RE.search(Path(b.name).stem)]
+                if not gcs_blobs:
+                    gcs_blobs = _all_html_blobs  # フォールバック: 全HTMLを対象
                 if gcs_blobs:
                     logger.info(f"  GCS {GCS_DOCS}/{ticker}/ から HTML {len(gcs_blobs)} 件 → 抽出中 (method={extraction_method})")
                     for blob in gcs_blobs:
-                        if extraction_method == "gemini" and _gemini_html_client:
+                        if extraction_method == "gemini" and (batch_mode or _gemini_html_client):
                             try:
                                 html_bytes = blob.download_as_bytes()
                                 html_text = html_bytes.decode("utf-8", errors="replace")
@@ -3015,12 +3958,45 @@ def phase_extract(
                                         sub_date = _dt.now(_ZI("Asia/Tokyo")).strftime("%Y-%m-%d")
                                     except Exception:
                                         sub_date = _dt.now().strftime("%Y-%m-%d")
-                                rec = _extract_html_gemini_personal(
-                                    html_text, adapter, fname_stem, sub_date,
-                                    _gemini_html_client, _gemini_html_model, logger,
-                                )
-                                if rec:
-                                    records.append(rec)
+                                _is_multi_html = bool(adapter.get("gemini_multi_month"))
+                                if batch_mode:
+                                    _key = f"{ticker}__html__{len(_batch_lines)}"
+                                    _prompt = _build_extract_prompt(
+                                        adapter, fname_stem, sub_date,
+                                        full_text=html_text, is_multi_month=_is_multi_html,
+                                    )
+                                    _req = _build_batch_request_obj(
+                                        _key, _prompt, full_text=html_text,
+                                    )
+                                    _batch_lines.append(json.dumps(_req, ensure_ascii=False))
+                                    _batch_meta[_key] = {
+                                        "ticker": ticker, "adapter": adapter,
+                                        "doc_title": fname_stem, "submission_date": sub_date,
+                                        "source_label": "html_gemini", "multi_month": _is_multi_html,
+                                    }
+                                else:
+                                    if _is_multi_html:
+                                        multi = _extract_html_gemini_all_months(
+                                            html_text, adapter, fname_stem, sub_date,
+                                            _gemini_html_client, _gemini_html_model,
+                                            since=since, logger=logger,
+                                        )
+                                        if multi:
+                                            records.extend(multi)
+                                        else:
+                                            rec = _extract_html_gemini_personal(
+                                                html_text, adapter, fname_stem, sub_date,
+                                                _gemini_html_client, _gemini_html_model, logger,
+                                            )
+                                            if rec:
+                                                records.append(rec)
+                                    else:
+                                        rec = _extract_html_gemini_personal(
+                                            html_text, adapter, fname_stem, sub_date,
+                                            _gemini_html_client, _gemini_html_model, logger,
+                                        )
+                                        if rec:
+                                            records.append(rec)
                             except Exception as e:
                                 logger.debug(f"  [gemini] {blob.name} 失敗: {e}")
                         else:
@@ -3061,9 +4037,9 @@ def phase_extract(
                 re.IGNORECASE,
             )
 
-            # Gemini 初期化（extraction_method=gemini の場合）
+            # Gemini 初期化（extraction_method=gemini かつ同期モードの場合のみ）
             _gemini_model_pdf = None
-            if extraction_method == "gemini":
+            if extraction_method == "gemini" and not batch_mode:
                 try:
                     from google import genai
                     from dotenv import load_dotenv
@@ -3089,8 +4065,10 @@ def phase_extract(
                     logger.debug(f"  GCS {GCS_DOCS}/{ticker}/ から {len(docs_blobs)} PDF")
                 else:
                     all_blobs = [b for b in bucket.list_blobs(prefix=f"tdnet/{ticker}/") if b.name.endswith(".pdf")]
-                # 月次関連のみ絞り込み
-                pdf_blobs = [b for b in all_blobs if _MONTHLY_KW.search(Path(b.name).name)]
+                # 月次関連のみ絞り込み（adapter に monthly_kw_override があれば優先）
+                _kw_override = adapter.get("monthly_kw_override")
+                _kw_re = re.compile(_kw_override, re.IGNORECASE) if _kw_override else _MONTHLY_KW
+                pdf_blobs = [b for b in all_blobs if _kw_re.search(Path(b.name).name)]
                 # doc_title_pattern: ファイル名 OR PDF内テキストでマッチ（厳密フィルターではなく優先順位付け）
                 # source="pdf" ではファイル名と文書タイトルが異なる場合が多いため、除外はしない
                 _dtp = adapter.get("doc_title_pattern")
@@ -3132,8 +4110,8 @@ def phase_extract(
                                 )[:800]
                         except Exception:
                             _pdf_text_head = _extract_pdf_text(pdf_bytes)[:500]
-                        _month_re = adapter.get("month_from_title_regex", r"(\d{1,2})月")
-                        _year_re = adapter.get("year_from_title_regex", r"(\d{4})年")
+                        _month_re = adapter.get("month_from_title_regex") or r"(\d{1,2})月"
+                        _year_re = adapter.get("year_from_title_regex") or r"(\d{4})年"
                         _month_m = re.search(_month_re, fname_stem)
                         _year_m = re.search(_year_re, _pdf_text_head)
                         if _month_m and _year_m:
@@ -3160,30 +4138,48 @@ def phase_extract(
                     rec = None
 
                     # --- extraction_method=gemini ---
-                    if extraction_method == "gemini" and _gemini_model_pdf:
-                        try:
-                            # gemini_multi_month: 1PDFに複数月が載る場合、1回のGemini呼び出しで全月を抽出
-                            if adapter.get("gemini_multi_month"):
-                                multi = _extract_pdf_gemini_all_months(
-                                    pdf_bytes, adapter, fname_stem, sub_date,
-                                    _gemini_client, _gemini_model_pdf,
-                                    since=since, logger=logger,
-                                )
-                                if multi:
-                                    records.extend(multi)
-                                    rec = None  # 個別 rec は不要
+                    if extraction_method == "gemini" and (batch_mode or _gemini_model_pdf):
+                        if batch_mode:
+                            _is_multi = bool(adapter.get("gemini_multi_month"))
+                            _key = f"{ticker}__pdf__{len(_batch_lines)}"
+                            _pdf_gcs_uri = f"gs://{GCS_BUCKET}/{blob.name}"
+                            _prompt = _build_extract_prompt(
+                                adapter, fname_stem, sub_date, is_multi_month=_is_multi,
+                            )
+                            _req = _build_batch_request_obj(
+                                _key, _prompt, pdf_gcs_uri=_pdf_gcs_uri,
+                                is_multi_month=_is_multi,
+                            )
+                            _batch_lines.append(json.dumps(_req, ensure_ascii=False))
+                            _batch_meta[_key] = {
+                                "ticker": ticker, "adapter": adapter,
+                                "doc_title": fname_stem, "submission_date": sub_date,
+                                "source_label": "pdf_gemini",
+                                "multi_month": _is_multi, "since": since,
+                            }
+                        else:
+                            try:
+                                if adapter.get("gemini_multi_month"):
+                                    multi = _extract_pdf_gemini_all_months(
+                                        pdf_bytes, adapter, fname_stem, sub_date,
+                                        _gemini_client, _gemini_model_pdf,
+                                        since=since, logger=logger,
+                                    )
+                                    if multi:
+                                        records.extend(multi)
+                                        rec = None
+                                    else:
+                                        rec = _extract_pdf_gemini_personal(
+                                            pdf_bytes, adapter, fname_stem, sub_date,
+                                            _gemini_client, _gemini_model_pdf, logger,
+                                        )
                                 else:
                                     rec = _extract_pdf_gemini_personal(
                                         pdf_bytes, adapter, fname_stem, sub_date,
                                         _gemini_client, _gemini_model_pdf, logger,
                                     )
-                            else:
-                                rec = _extract_pdf_gemini_personal(
-                                    pdf_bytes, adapter, fname_stem, sub_date,
-                                    _gemini_client, _gemini_model_pdf, logger,
-                                )
-                        except Exception as e:
-                            logger.debug(f"  [gemini] {fname_stem} 失敗: {e}")
+                            except Exception as e:
+                                logger.debug(f"  [gemini] {fname_stem} 失敗: {e}")
 
                     # --- extraction_method=ocr ---
                     elif extraction_method == "ocr":
@@ -3236,9 +4232,23 @@ def phase_extract(
                 import traceback
                 logger.warning(f"  [pdf] GCS アクセスエラー: {e}\n{traceback.format_exc()}")
 
+        # バッチモードの Gemini 企業: 保存を遅延（バッチ結果待ち）
+        if batch_mode and extraction_method in ("gemini", "excel_gemini"):
+            _deferred_companies[ticker] = {
+                "company": company, "name": name, "adapter": adapter,
+                "records": records,
+            }
+            logger.info(f"  → バッチモード: {len([k for k in _batch_meta if _batch_meta[k]['ticker'] == ticker])} リクエスト収集済み")
+            continue
+
         if not records:
-            logger.info(f"  → 抽出レコードなし → スキップ")
+            _elapsed = time.perf_counter() - _company_t0
+            logger.info(f"  → 抽出レコードなし → スキップ (elapsed={_elapsed:.1f}s)")
             results["skip"].append(ticker)
+            _error_entries.append({
+                "ticker": ticker, "error_type": "no_records",
+                "error_detail": "抽出レコード0件", "elapsed": round(_elapsed, 1),
+            })
             continue
 
         # 重複除去（year_month ごとに最新提出日のもの優先）
@@ -3270,8 +4280,103 @@ def phase_extract(
             logger.info(f"  ✅ GCS保存: gs://{GCS_BUCKET}/{records_gcs_path}")
 
         results["success"].append(ticker)
+        _elapsed = time.perf_counter() - _company_t0
+        logger.info(f"  完了: records={len(records_clean)} elapsed={_elapsed:.1f}s")
+        if _elapsed > 120:
+            logger.warning("[%s] 処理遅延: %.1fs (閾値 120s)", ticker, _elapsed)
 
+    # ====================================================
+    # Gemini Batch 実行 & 結果適用
+    # ====================================================
+    if _batch_lines:
+        logger.info(f"--- Gemini Batch 投入: {len(_batch_lines)} リクエスト / {len(_deferred_companies)} 社 ---")
+        batch_results = _submit_and_poll_extract_batch(_batch_lines, gcs, logger)
+
+        if not batch_results:
+            logger.warning("  [batch] バッチ結果0件 — 全 deferred 企業を fail 扱い")
+            for ticker in _deferred_companies:
+                results["fail"].append(ticker)
+                _error_entries.append({
+                    "ticker": ticker, "error_type": "batch_failed",
+                    "error_detail": "Gemini Batch ジョブ失敗/タイムアウト",
+                })
+
+        # 結果を各企業の records に振り分け
+        for key, resp_obj in batch_results.items():
+            meta = _batch_meta.get(key)
+            if not meta:
+                continue
+            t = meta["ticker"]
+            comp_data = _deferred_companies.get(t)
+            if not comp_data:
+                continue
+
+            if meta.get("multi_month"):
+                recs = _parse_batch_result_multi_month(
+                    resp_obj, meta["adapter"], meta["doc_title"],
+                    meta["submission_date"], since=meta.get("since", since),
+                    source_label=meta.get("source_label", "pdf_gemini_all"),
+                )
+                comp_data["records"].extend(recs)
+            else:
+                rec = _parse_batch_result_single(
+                    resp_obj, meta["adapter"], meta["doc_title"],
+                    meta["submission_date"], source_label=meta.get("source_label", "tdnet"),
+                )
+                if rec:
+                    comp_data["records"].append(rec)
+
+        # 遅延企業の保存
+        for ticker, comp_data in _deferred_companies.items():
+            records = comp_data["records"]
+            name = comp_data["name"]
+
+            if not records:
+                logger.info(f"  [{ticker}] バッチ結果後もレコードなし → スキップ")
+                results["skip"].append(ticker)
+                _error_entries.append({
+                    "ticker": ticker, "error_type": "no_records_after_batch",
+                    "error_detail": "バッチ結果適用後レコード0件",
+                })
+                continue
+
+            rdf = pd.DataFrame(records)
+            if "submission_date" in rdf.columns:
+                rdf = rdf.sort_values("submission_date", ascending=False)
+            rdf = rdf.drop_duplicates(subset=["year_month"], keep="first")
+            rdf = rdf.sort_values("year_month")
+            records_clean = rdf.to_dict("records")
+
+            logger.info(f"  [{ticker}] バッチ結果: {len(records_clean)} 件 (year_month: {records_clean[0].get('year_month')} 〜 {records_clean[-1].get('year_month')})")
+
+            output = {
+                "ticker": ticker,
+                "company_name": name,
+                "updated_at": datetime.now(JST).isoformat(),
+                "record_count": len(records_clean),
+                "records": records_clean,
+            }
+
+            records_gcs_path = f"{GCS_RECORD}/{ticker}/monthly_records.json"
+            if no_gcs:
+                local = TMP_DIR / f"monthly_records_{ticker}.json"
+                local.write_text(json.dumps(output, ensure_ascii=False, indent=2), encoding="utf-8")
+                logger.info(f"  [{ticker}] ✅ ローカル保存: {local}")
+            else:
+                gcs_write_json(gcs, records_gcs_path, output)
+                logger.info(f"  [{ticker}] ✅ GCS保存: gs://{GCS_BUCKET}/{records_gcs_path}")
+
+            results["success"].append(ticker)
+
+        logger.info(f"  Gemini Batch 完了: 成功={len([t for t in _deferred_companies if t in results['success']])} / {len(_deferred_companies)} 社")
+
+    # サマリー
     logger.info(f"データ抽出: 成功={len(results['success'])} スキップ={len(results['skip'])} 失敗={len(results['fail'])}")
+
+    # P2-1: 構造化エラーサマリー JSON を GCS に保存
+    if not no_gcs and _error_entries:
+        _save_extract_error_log(gcs, results, _error_entries)
+
     return results
 
 
@@ -3285,12 +4390,17 @@ def main():
     parser.add_argument("--sample", type=int, default=30, help="自動選定する銘柄数（デフォルト30）")
     parser.add_argument("--all", action="store_true", dest="all_mode",
                         help="BQ TDNET月次全銘柄 + CSV active 全銘柄を対象（--tickers/--sample を無視）")
-    parser.add_argument("--since", type=int, default=2020, help="データ抽出の開始年（デフォルト2020）")
+    parser.add_argument("--since", type=int, default=2020, help="データ抽出の開始西暦年（年度ではない。デフォルト2020）")
     parser.add_argument("--no-gcs", action="store_true", help="GCS 保存スキップ（data/tmp/ にローカル保存）")
+    parser.add_argument("--batch", action="store_true", default=IS_CLOUD_RUN,
+                        help="Gemini 抽出をバッチモードで実行（Cloud Run ではデフォルト有効）")
+    parser.add_argument("--no-batch", action="store_true", help="バッチモードを無効化（同期モードで実行）")
     args = parser.parse_args()
 
+    batch_mode = args.batch and not args.no_batch
+
     logger = setup_logging()
-    logger.info(f"=== extract_monthly_data 開始 since={args.since} all={args.all_mode} ===")
+    logger.info(f"=== extract_monthly_data 開始 since={args.since} all={args.all_mode} batch={batch_mode} ===")
 
     # クライアント初期化
     gcs = get_gcs()
@@ -3304,7 +4414,7 @@ def main():
 
     # Phase 2: データ抽出
     logger.info("--- Phase 2: データ抽出 ---")
-    phase_extract(companies, bq, gcs, args.since, args.no_gcs, logger)
+    phase_extract(companies, bq, gcs, args.since, args.no_gcs, logger, batch_mode=batch_mode)
 
     logger.info("=== 完了 ===")
 

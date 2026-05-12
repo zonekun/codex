@@ -1,0 +1,92 @@
+{
+  "ticker": "6190",
+  "company_name": "Ｇ－ＰＸＢ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "分野別、地域別の受注高合計",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "薬効薬理分野受注高",
+          "type": "order_intake",
+          "description": "分野別の受注高内訳",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "安全性等分野受注高",
+          "type": "order_intake",
+          "description": "分野別の受注高内訳",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "分野別、地域別の受注残高合計",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "薬効薬理分野受注残高",
+          "type": "backlog",
+          "description": "分野別の受注残高内訳",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        },
+        {
+          "name": "安全性等分野受注残高",
+          "type": "backlog",
+          "description": "分野別の受注残高内訳",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "分野",
+          "items": [
+            "薬効薬理分野",
+            "安全性等分野"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "補足情報として、サービスライン別売上高、分野別売上高、および分野別・地域別の受注高と受注残高が詳細な表形式で提供されている。"
+    }
+  ],
+  "_source_pdf": "tdnet/6190/20260213_6190_Ｇ－ＰＸＢ_決算短信_2026年３月期　第３四半期決算短信[日本基準]（連結）_140120260210554601.pdf",
+  "_source_doc_id": "140120260210554601",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:46:34.437573+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      10
+    ],
+    "table_count": 3,
+    "max_rows": 7,
+    "max_cols": 6,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

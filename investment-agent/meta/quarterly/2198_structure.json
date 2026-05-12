@@ -1,0 +1,38 @@
+{
+  "ticker": "2198",
+  "company_name": "アイ・ケイ・ケイＨＤ",
+  "current_version": "2024-12",
+  "versions": [
+    {
+      "valid_from": "2024-12",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "breakdown_dimensions": [],
+      "presentation_format": "text",
+      "complexity": "no_data",
+      "notes": "婚礼事業における主要なKPIとして、受注・施行・受注残の各組数が開示されています。金額ベースの受注高および受注残高の記載はありませんが、組数ベースで詳細な内訳（国内・海外）と推移が示されています。\nユーザー指示により、金額以外または外貨単位の受注関連メトリクも必要なため復元。\nPhase 6b #23: ??JSON?PDF??????????????????????????? [2026-05-07] completedメトリクスのみのため収集対象外(false化)。"
+    }
+  ],
+  "_source_pdf": "tdnet/2198/20241212_2198_アイ・ケイ・ケイＨＤ_決算説明資料_2024年10月期　決算説明会資料_140120241212537491.pdf",
+  "_source_doc_id": "140120241212537491",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T17:17:58.283830+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      8
+    ],
+    "table_count": 4,
+    "max_rows": 11,
+    "max_cols": 6,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 4"
+    ]
+  }
+}

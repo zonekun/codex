@@ -1,0 +1,16 @@
+{
+  "ticker": "2501",
+  "company_name": "サッポロホールディングス",
+  "ir_page_url": "http://www.sapporobeer.jp/company/sales/index.html",
+  "type": "scrape_links",
+  "status": "active",
+  "link_text_pattern": "販売|売上|月次",
+  "link_href_pattern": "/company/sales/pdf/\\d{4}_\\d{2}\\.pdf",
+  "manual_override": true,
+  "note": "2026-04-24修正: 旧URLはHoldings IRトップ。月次ビール販売実績はサッポロビール子会社サイト。PDFはYYYY_MM.pdf形式",
+  "updated_at": "2026-04-24T17:15:36.150884+09:00",
+  "css_selector": null,
+  "table_selector": null,
+  "playwright_required": false,
+  "follow_links": false
+}

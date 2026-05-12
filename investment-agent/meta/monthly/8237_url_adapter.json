@@ -1,0 +1,14 @@
+{
+  "ticker": "8237",
+  "company_name": "松屋",
+  "ir_page_url": "https://www.matsuya.com/corp/ir/monthly-highlight/",
+  "status": "skip",
+  "type": null,
+  "skip_reason": "no_inline_pdf_links",
+  "note": "monthly-highlight/ ページに月次PDF直リンクなし。xj-storage.jp の可能性あるが1件のみ・パターン信頼性低。TDnet 経由取得で対応済",
+  "updated_at": "2026-04-24T08:54:47.677967+09:00",
+  "last_checked": "2026-04-24",
+  "manual_override": true,
+  "manual_override_at": "2026-04-24T08:54:47.677967+09:00",
+  "manual_override_note": "23NG個別調査 B群修正 (2026-04-24)"
+}

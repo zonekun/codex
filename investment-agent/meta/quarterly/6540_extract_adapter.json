@@ -1,0 +1,31 @@
+{
+  "ticker": "6540",
+  "company_name": "船場",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注実績",
+        "販売実績",
+        "市場分野別",
+        "地域ごと",
+        "受注高",
+        "受注残高",
+        "販売高",
+        "合計"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "以下の3つの数値を抽出してください。\n1. 受注高: 「② 受注実績」表の「合計」行にある「受注高（千円）」の値（34,729,203）。\n2. 受注残高: 「② 受注実績」表の「合計」行にある「受注残高（千円）」の値（8,429,859）。\n3. 販売高: 「③ 販売実績」表または「地域ごとの販売実績」表の「合計」行にある「販売高（千円）」の値（32,831,820）。",
+      "notes": "structure.jsonにてcomplex_tableと定義されており、同一ページ内に「合計」行を持つ複数の表（受注実績、販売実績、地域別販売実績）が混在しているため、誤抽出を避けるべくgemini_visionを採用しました。"
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/6540/20260213_6540_船場_決算短信_2025年12月期決算短信〔日本基準〕(連結)_140120260212558105.pdf",
+  "_source_doc_id": "140120260212558105",
+  "_generated_at": "2026-04-30T23:30:38.980981+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

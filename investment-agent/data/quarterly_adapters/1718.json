@@ -1,0 +1,119 @@
+{
+  "ticker": "1718",
+  "company_name": "美樹工業",
+  "current_version": "2025-02",
+  "versions": [
+    {
+      "valid_from": "2025-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注工事高",
+          "type": "order_intake",
+          "description": "建設部門における当事業年度の受注高合計",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "完成工事高",
+          "type": "completed",
+          "description": "建設部門における当事業年度の完成工事高合計",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "繰越工事高",
+          "type": "backlog",
+          "description": "建設部門における当事業年度末時点の未消化工事残高合計",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "建築",
+          "type": "other",
+          "description": "建設部門の内訳項目（建築工事）",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注工事高"
+        },
+        {
+          "name": "土木",
+          "type": "other",
+          "description": "建設部門の内訳項目（土木工事）",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注工事高"
+        },
+        {
+          "name": "給排水衛生空調設備",
+          "type": "other",
+          "description": "建設部門の内訳項目（設備工事）",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注工事高"
+        },
+        {
+          "name": "ガス導管敷設",
+          "type": "other",
+          "description": "建設部門の内訳項目（ガス導管工事）",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注工事高"
+        },
+        {
+          "name": "ガス設備",
+          "type": "other",
+          "description": "建設部門の内訳項目（ガス設備工事）",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注工事高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "建設部門セグメント",
+          "items": [
+            "建築",
+            "土木",
+            "給排水衛生空調設備",
+            "ガス導管敷設",
+            "ガス設備"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "資料の42ページ（添付画像10枚目）に、建設部門の受注工事高、完成工事高、繰越工事高の詳細なセグメント別内訳表が掲載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/1718/20250214_1718_美樹工業_決算短信_2024年12月期　決算短信〔日本基準〕（連結）_140120250131559499.pdf",
+  "_source_doc_id": "140120250131559499",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T16:32:57.216870+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      3,
+      18,
+      19,
+      33,
+      34,
+      37,
+      38,
+      40,
+      41,
+      44
+    ],
+    "table_count": 15,
+    "max_rows": 48,
+    "max_cols": 10,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 15"
+    ]
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "ticker": "6999",
+  "company_name": "ＫＯＡ",
+  "current_version": "2026-04",
+  "versions": [
+    {
+      "valid_from": "2026-04",
+      "valid_until": null,
+      "extraction_method": "regex",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注実績",
+        "セグメントの名称",
+        "受注高",
+        "受注残高"
+      ],
+      "fields": [
+        {
+          "key": "受注高",
+          "row_label_regex": "^日本",
+          "value_type": "integer",
+          "unit": "百万円",
+          "group": 1,
+          "notes": "日本セグメントの受注高"
+        },
+        {
+          "key": "受注高",
+          "row_label_regex": "^アジア",
+          "value_type": "integer",
+          "unit": "百万円",
+          "group": 1,
+          "notes": "アジアセグメントの受注高"
+        },
+        {
+          "key": "受注高",
+          "row_label_regex": "^アメリカ",
+          "value_type": "integer",
+          "unit": "百万円",
+          "group": 1,
+          "notes": "アメリカセグメントの受注高"
+        },
+        {
+          "key": "受注高",
+          "row_label_regex": "^ヨーロッパ",
+          "value_type": "integer",
+          "unit": "百万円",
+          "group": 1,
+          "notes": "ヨーロッパセグメントの受注高"
+        },
+        {
+          "key": "受注高",
+          "row_label_regex": "^合計",
+          "value_type": "integer",
+          "unit": "百万円",
+          "group": 1,
+          "notes": "受注高合計"
+        },
+        {
+          "key": "受注残高",
+          "row_label_regex": "^日本",
+          "value_type": "integer",
+          "unit": "百万円",
+          "group": 3,
+          "notes": "日本セグメントの受注残高"
+        },
+        {
+          "key": "受注残高",
+          "row_label_regex": "^アジア",
+          "value_type": "integer",
+          "unit": "百万円",
+          "group": 3,
+          "notes": "アジアセグメントの受注残高"
+        },
+        {
+          "key": "受注残高",
+          "row_label_regex": "^アメリカ",
+          "value_type": "integer",
+          "unit": "百万円",
+          "group": 3,
+          "notes": "アメリカセグメントの受注残高"
+        },
+        {
+          "key": "受注残高",
+          "row_label_regex": "^ヨーロッパ",
+          "value_type": "integer",
+          "unit": "百万円",
+          "group": 3,
+          "notes": "ヨーロッパセグメントの受注残高"
+        },
+        {
+          "key": "受注残高",
+          "row_label_regex": "^合計",
+          "value_type": "integer",
+          "unit": "百万円",
+          "group": 3,
+          "notes": "受注残高合計"
+        }
+      ],
+      "gemini_custom_prompt": "",
+      "notes": "補足情報の受注実績テーブルから、地域セグメント別および合計の数値を抽出します。受注高は1番目の数値列、受注残高は3番目の数値列（前年同期比の列を飛ばすため）を指定しています。"
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/6999/20260424_6999_ＫＯＡ_決算短信_2026年3月期 決算短信〔日本基準〕(連結)_140120260423509516.pdf",
+  "_source_doc_id": "140120260423509516",
+  "_generated_at": "2026-04-30T23:33:47.512539+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

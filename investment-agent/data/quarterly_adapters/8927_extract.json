@@ -1,0 +1,28 @@
+{
+  "ticker": "8927",
+  "company_name": "明豊エンター",
+  "current_version": "2026-03",
+  "versions": [
+    {
+      "valid_from": "2026-03",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "presentation",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/8927/20260318_8927_明豊エンター_決算説明資料_2026年７月期 第２四半期 決算説明資料_140120260318584078.pdf",
+  "_source_doc_id": "140120260318584078",
+  "_generated_at": "2026-04-30T20:11:08.275474+09:00",
+  "_model_used": null
+}

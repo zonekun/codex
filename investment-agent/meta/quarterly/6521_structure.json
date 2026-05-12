@@ -1,0 +1,75 @@
+{
+  "ticker": "6521",
+  "company_name": "Ｇ－オキサイド",
+  "current_version": "2026-04",
+  "versions": [
+    {
+      "valid_from": "2026-04",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注残高",
+          "type": "order_intake",
+          "unit": "百万円",
+          "description": "PDF??????????????"
+        },
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "unit": "百万円",
+          "description": "PDF??????????????"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "会計年度",
+          "items": [
+            "23年2月期",
+            "24年2月期",
+            "25年2月期",
+            "26年2月期"
+          ]
+        },
+        {
+          "dimension_name": "半期区分",
+          "items": [
+            "1H",
+            "2H"
+          ]
+        },
+        {
+          "dimension_name": "事業",
+          "items": [
+            "半導体事業",
+            "ヘルスケア事業",
+            "新領域事業"
+          ]
+        }
+      ],
+      "presentation_format": "chart",
+      "complexity": "ppt_chart",
+      "notes": "半導体事業に特化した受注高および受注残高の推移が棒グラフで示されています。受注高については上下半期の内訳が、受注残高については半期末ごとの数値が記載されています。 pages 5-7および10-11に連結売上高と事業別売上高が百万円単位で記載されているため、completed metricとして追加。\nPhase 6b #23: ??JSON?PDF???????????????????????????"
+    }
+  ],
+  "_source_pdf": "tdnet/6521/20260414_6521_Ｇ－オキサイド_決算説明資料_2026年2月期決算補足説明資料_140120260413503114.pdf",
+  "_source_doc_id": "140120260413503114",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T19:19:22.028067+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      9
+    ],
+    "table_count": 6,
+    "max_rows": 2,
+    "max_cols": 6,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 6"
+    ]
+  }
+}

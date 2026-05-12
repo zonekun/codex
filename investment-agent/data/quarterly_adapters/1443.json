@@ -1,0 +1,77 @@
+{
+  "ticker": "1443",
+  "company_name": "技研ホールディングス",
+  "current_version": "2025-11",
+  "versions": [
+    {
+      "valid_from": "2025-11",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "前期繰越受注高",
+          "type": "backlog",
+          "description": "期首時点における受注残高",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当期間中に獲得した受注高",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "当期間中に計上された売上高（完成工事高相当）",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "次期繰越受注高",
+          "type": "backlog",
+          "description": "期末時点における受注残高",
+          "unit": "千円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "土木関連事業",
+            "建築関連事業",
+            "型枠貸与関連事業",
+            "その他"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "全社合計および4つのセグメント別（土木関連事業、建築関連事業、型枠貸与関連事業、その他）に、前期繰越受注高、受注高、売上高、次期繰越受注高の推移が表形式で詳細に記載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/1443/20251114_1443_技研ホールディングス_決算短信_2026年３月期 第２四半期（中間期）決算短信〔日本基準〕(連結)_140120251106590828.pdf",
+  "_source_doc_id": "140120251106590828",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T16:29:05.035413+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      5
+    ],
+    "table_count": 5,
+    "max_rows": 3,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 5"
+    ]
+  }
+}

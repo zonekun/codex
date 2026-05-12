@@ -1,0 +1,56 @@
+{
+  "ticker": "1801",
+  "company_name": "大成建",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "個別受注高。土木、建築、開発、その他の各事業部門および国内官公庁、国内民間、海外の区分で構成される。",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "繰越高",
+          "type": "backlog",
+          "description": "個別繰越高（受注残高）。次期以降に繰り越される工事等の未消化分。",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "決算短信の補足情報「[個別] 受注高・売上高・繰越高」に基づき定義。事業部門別および発注者別の詳細なマトリックス形式でデータが提供されている。"
+    }
+  ],
+  "_source_pdf": "tdnet/1801/20260206_1801_大成建_決算短信_2026年３月期 第３四半期決算短信〔日本基準〕（連結）_140120260204547161.pdf",
+  "_source_doc_id": "140120260204547161",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T16:42:43.870689+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      5,
+      10,
+      17,
+      18,
+      19
+    ],
+    "table_count": 6,
+    "max_rows": 42,
+    "max_cols": 7,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 6"
+    ]
+  }
+}

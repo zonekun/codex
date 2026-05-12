@@ -1,0 +1,37 @@
+{
+  "ticker": "7701",
+  "company_name": "島津製",
+  "current_version": "2025-08",
+  "versions": [
+    {
+      "valid_from": "2025-08",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "手動レビューで受注関連の数値指標なしと確認済み。"
+    }
+  ],
+  "_source_pdf": "tdnet/7701/20250807_7701_島津製_決算短信_2026年3月期 第1四半期決算短信〔日本基準〕(連結)_140120250806532019.pdf",
+  "_source_doc_id": "140120250806532019",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:53:23.271009+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      5
+    ],
+    "table_count": 3,
+    "max_rows": 7,
+    "max_cols": 6,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

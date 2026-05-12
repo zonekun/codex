@@ -41,6 +41,7 @@ YAML 形式:
 from __future__ import annotations
 
 import argparse
+import atexit
 import json
 import logging
 import os
@@ -59,6 +60,72 @@ import yaml
 JST = ZoneInfo("Asia/Tokyo")
 PYTHON = "C:/venvs/investment-agent/Scripts/python.exe"
 GCLOUD = shutil.which("gcloud") or "gcloud"
+
+# ── PID lock file（同一 config の多重起動防止） ──
+
+_lock_path: Path | None = None
+
+
+def _is_pid_alive(pid: int) -> bool:
+    """PID のプロセスが生存しているか確認する。
+
+    Windows / UNIX 両対応。os.kill(pid, 0) はプロセス存在チェックのみ行い、
+    シグナルは送信しない。
+    """
+    if pid <= 0:
+        return False
+    try:
+        os.kill(pid, 0)
+    except OSError:
+        return False
+    return True
+
+
+def _acquire_lock(config_path: Path) -> None:
+    """config ファイル名に基づくロックファイルを取得する。
+
+    既にロックファイルが存在し、記載 PID のプロセスが生存していれば
+    sys.exit でアボートする。ロックファイルは atexit で自動削除される。
+    """
+    global _lock_path
+    lock_name = f"monitor_backfill_{config_path.name}.lock"
+    # Windows: /tmp → C:/tmp or tempdir; Git Bash: /tmp 直指定
+    tmp_dir = Path(os.environ.get("TEMP", "/tmp"))
+    _lock_path = tmp_dir / lock_name
+
+    if _lock_path.exists():
+        try:
+            existing_pid = int(_lock_path.read_text(encoding="utf-8").strip())
+        except (ValueError, OSError):
+            existing_pid = -1
+        if _is_pid_alive(existing_pid):
+            logging.error(
+                f"既に実行中のプロセスがあります (PID={existing_pid}, "
+                f"lock={_lock_path})。同一 config の多重起動は禁止です。"
+            )
+            sys.exit(1)
+        else:
+            logging.warning(
+                f"古いロックファイルを削除します (PID={existing_pid} は既に終了, "
+                f"lock={_lock_path})"
+            )
+            _lock_path.unlink(missing_ok=True)
+
+    _lock_path.write_text(str(os.getpid()), encoding="utf-8")
+    atexit.register(_release_lock)
+    logging.info(f"ロック取得: {_lock_path} (PID={os.getpid()})")
+
+
+def _release_lock() -> None:
+    """ロックファイルを削除する。atexit から呼ばれる。"""
+    global _lock_path
+    if _lock_path is not None and _lock_path.exists():
+        try:
+            _lock_path.unlink(missing_ok=True)
+            logging.info(f"ロック解放: {_lock_path}")
+        except OSError as e:
+            logging.warning(f"ロックファイル削除失敗: {_lock_path} err={e}")
+        _lock_path = None
 
 
 def notify(priority: str, title: str, message: str) -> None:
@@ -220,6 +287,34 @@ def workflow_error(exec_id: str, name: str, location: str) -> str:
     return err[:300]
 
 
+def _collect_bq_status(workflows: list[dict[str, Any]]) -> str:
+    """workflows の date 範囲から BQ AI_STATUS を集計し、通知用文字列を返す。"""
+    try:
+        import sys
+        from pathlib import Path
+
+        proj_root = str(Path(__file__).resolve().parent.parent)
+        if proj_root not in sys.path:
+            sys.path.insert(0, proj_root)
+        from scripts.check_backfill_status import (
+            format_status,
+            get_backfill_status,
+        )
+
+        lines: list[str] = []
+        for w in workflows:
+            data = w.get("data", {})
+            df = data.get("date_from", "")
+            dt = data.get("date_to", "")
+            if df and dt:
+                st = get_backfill_status(df, dt)
+                lines.append(format_status(st, df, dt))
+        return "\n".join(lines) if lines else ""
+    except Exception as e:
+        logging.warning(f"BQ status check failed: {e}")
+        return ""
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(
         description="Cloud Run Job + Workflows バックフィル監視"
@@ -237,6 +332,10 @@ def main() -> None:
     )
 
     cfg_path = Path(args.config)
+
+    # ── PID ロック取得（同一 config の多重起動防止） ──
+    _acquire_lock(cfg_path)
+
     cfg = yaml.safe_load(cfg_path.read_text(encoding="utf-8"))
 
     name: str = cfg["name"]
@@ -348,18 +447,33 @@ def main() -> None:
             fail_wfs += 1
             err = workflow_error(exec_id, w["name"], w["location"])
             logging.error(f"workflow {state}: {exec_id} err={err}")
-            # 失敗時は即中断（後続 workflow で Gemini/Embedding Batch の重複課金回避）
-            notify(
-                "high",
-                f"{name} WF {state} 中断",
-                f"exec={exec_id} 以降の workflow 中止 err={err}",
-            )
+            bq_msg = _collect_bq_status(workflows)
+            if state == "CANCELLED" and bq_msg:
+                notify(
+                    "high",
+                    f"{name} WF CANCELLED（BQ確認要）",
+                    f"exec={exec_id}\n{bq_msg}\nキャンセル前に処理完了の可能性あり",
+                )
+            else:
+                notify(
+                    "high",
+                    f"{name} WF {state} 中断",
+                    f"exec={exec_id} 以降の workflow 中止 err={err}"
+                    + (f"\n{bq_msg}" if bq_msg else ""),
+                )
             sys.exit(1)
 
+    bq_msg = _collect_bq_status(workflows)
+    priority = "default"
+    if bq_msg and any(
+        "pending" in line for line in bq_msg.split("\n")
+    ):
+        priority = "high"
     notify(
-        "default",
+        priority,
         f"{name} 完遂",
-        f"loads={len(load_pairs)} workflows={len(wf_pairs)}",
+        f"loads={len(load_pairs)} workflows={len(wf_pairs)}"
+        + (f"\n{bq_msg}" if bq_msg else ""),
     )
     logging.info(f"ALL DONE: {name}")
 

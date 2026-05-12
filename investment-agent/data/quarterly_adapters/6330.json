@@ -1,0 +1,86 @@
+{
+  "ticker": "6330",
+  "company_name": "洋エンジ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "期中受注工事高",
+          "type": "order_intake",
+          "description": "当該四半期連結累計期間における受注高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "期中完成工事高",
+          "type": "completed",
+          "description": "当該四半期連結累計期間における完成工事高（売上高）",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "次期繰越工事高",
+          "type": "backlog",
+          "description": "当該四半期連結会計期間末における受注残高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "期首繰越工事高",
+          "type": "other",
+          "description": "当該四半期連結累計期間の期首時点における受注残高",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "地域",
+          "items": [
+            "海外",
+            "国内"
+          ]
+        },
+        {
+          "dimension_name": "工事別",
+          "items": [
+            "石油化学",
+            "石油・ガス",
+            "発電・交通システム等",
+            "化学・肥料",
+            "医薬・環境・産業施設",
+            "その他"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "決算短信の補足情報として、地域別および工事種別の詳細な受注・売上・残高の推移表が掲載されています。また、本文中には持分法適用関連会社分を含めた「総受注高」および「総受注残高」についても言及があります。"
+    }
+  ],
+  "_source_pdf": "tdnet/6330/20260212_6330_洋エンジ_決算短信_2026年３月期　第３四半期決算短信〔日本基準〕(連結)_140120260210554192.pdf",
+  "_source_doc_id": "140120260210554192",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:03:09.354735+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      6,
+      9,
+      12
+    ],
+    "table_count": 2,
+    "max_rows": 28,
+    "max_cols": 7,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

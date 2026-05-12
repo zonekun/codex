@@ -1,0 +1,60 @@
+{
+  "ticker": "3433",
+  "company_name": "トーカロ",
+  "current_version": "2025-11",
+  "versions": [
+    {
+      "valid_from": "2025-11",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "生産高",
+          "type": "other",
+          "description": "生産実績の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "受注状況における受注高の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "受注状況における受注残高の合計",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "決算短信の「生産、受注及び販売の状況」セクションに、生産高、受注高、受注残高、販売高の4つの表が掲載されています。各指標について、溶射加工（単体）の製品区分別内訳、およびその他表面処理加工、国内子会社、海外子会社等のセグメント別内訳が詳細に示されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/3433/20251106_3433_トーカロ_決算短信_2026年３月期第２四半期（中間期）決算短信〔日本基準〕(連結)_140120251106589789.pdf",
+  "_source_doc_id": "140120251106589789",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:40:36.279933+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      13,
+      14
+    ],
+    "table_count": 4,
+    "max_rows": 6,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 4"
+    ]
+  }
+}

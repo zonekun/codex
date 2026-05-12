@@ -1,0 +1,112 @@
+{
+  "ticker": "6103",
+  "company_name": "オークマ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当四半期累計期間における受注高の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当四半期末時点における受注残高の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "当四半期累計期間における売上高の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "製品別受注高",
+          "type": "order_intake",
+          "description": "製品区分別の受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "製品別受注残高",
+          "type": "backlog",
+          "description": "製品区分別の受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        },
+        {
+          "name": "製品別売上高",
+          "type": "completed",
+          "description": "製品区分別の売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "海外売上高",
+          "type": "completed",
+          "description": "地域別の海外売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "製品区分",
+          "items": [
+            "NC旋盤",
+            "マシニングセンタ",
+            "複合加工機",
+            "NC研削盤",
+            "その他"
+          ]
+        },
+        {
+          "dimension_name": "地域",
+          "items": [
+            "米国",
+            "その他米州",
+            "欧州",
+            "中国",
+            "その他アジア・パシフィック"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "受注状況、販売実績、海外売上高の各テーブルから、受注高、受注残高、売上高およびその製品別・地域別の内訳データが取得可能です。"
+    }
+  ],
+  "_source_pdf": "tdnet/6103/20260204_6103_オークマ_決算短信_2026年３月期　第３四半期決算短信〔日本基準〕(連結)_140120260203546193.pdf",
+  "_source_doc_id": "140120260203546193",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:40:50.668354+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      12
+    ],
+    "table_count": 4,
+    "max_rows": 8,
+    "max_cols": 7,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 4"
+    ]
+  }
+}

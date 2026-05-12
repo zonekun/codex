@@ -1,0 +1,61 @@
+{
+  "ticker": "6395",
+  "company_name": "タダノ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "新規受注",
+          "type": "order_intake",
+          "description": "建設用クレーン（RT・AT）の四半期ごとの新規受注額",
+          "unit": "億円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "建設用クレーン（RT・AT）の四半期末時点の受注残高",
+          "unit": "億円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "製品タイプ",
+          "items": [
+            "RT",
+            "AT"
+          ]
+        }
+      ],
+      "presentation_format": "chart",
+      "complexity": "ppt_chart",
+      "notes": "建設用クレーンにおけるRT（ラフテレーンクレーン）とAT（オールテレーンクレーン）の新規受注および受注残高の推移がグラフ形式で示されている。"
+    }
+  ],
+  "_source_pdf": "tdnet/6395/20260226_6395_タダノ_決算説明資料_2025年12月期(1-12月)決算説明会_140120260226569432.pdf",
+  "_source_doc_id": "140120260226569432",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T19:11:25.963819+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      8
+    ],
+    "table_count": 10,
+    "max_rows": 21,
+    "max_cols": 25,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 10",
+      "wide table: 25 columns"
+    ]
+  }
+}

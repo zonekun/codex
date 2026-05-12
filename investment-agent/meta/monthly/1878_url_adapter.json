@@ -1,0 +1,13 @@
+{
+  "ticker": "1878",
+  "company_name": "大東建託",
+  "ir_page_url": "https://www.kentaku.co.jp/corporate/ir/getuji.html",
+  "updated_at": "2026-04-21T09:26:14.590427+09:00",
+  "last_checked": "2026-04-21",
+  "status": "active",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": null,
+  "link_href_pattern": "/ir/library/monthly\\-report/__icsFiles/afieldfile/2026/04/02.*\\.(pdf|xls)",
+  "note": "月次PDFリンク2件検出 best=https://www.kentaku.co.jp/ir/library/monthly-report/__icsFiles/afieldfile/2026/04/02/202603.pdf"
+}

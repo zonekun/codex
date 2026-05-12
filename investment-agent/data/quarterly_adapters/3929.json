@@ -1,0 +1,36 @@
+{
+  "ticker": "3929",
+  "company_name": "Ｇ－ソーシャルワイヤ",
+  "current_version": "2025-08",
+  "versions": [
+    {
+      "valid_from": "2025-08",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "no_relevant_pages",
+      "notes": "このページには、受注高、売上高（受注関連）、受注残高に関する数値データは含まれていません。記載されている数値はネットキャッシュ、繰越欠損金、顧客数などの戦略的指標のみです。"
+    }
+  ],
+  "_source_pdf": "tdnet/3929/20250812_3929_Ｇ－ソーシャルワイヤ_決算説明資料_2026年３月期 第１四半期業績概要（決算説明資料）_140120250808537500.pdf",
+  "_source_doc_id": "140120250808537500",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T17:56:14.111133+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      24
+    ],
+    "table_count": 1,
+    "max_rows": 2,
+    "max_cols": 1,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

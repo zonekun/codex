@@ -1,0 +1,117 @@
+{
+  "ticker": "5911",
+  "company_name": "横河ブＨＤ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当第３四半期連結累計期間における受注高の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "当第３四半期連結累計期間における売上高の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当第３四半期連結会計期間末における受注残高の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "橋梁事業 受注高",
+          "type": "order_intake",
+          "description": "橋梁事業セグメントの受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "システム建築事業 受注高",
+          "type": "order_intake",
+          "description": "システム建築事業セグメントの受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "エンジニアリング事業 受注高",
+          "type": "order_intake",
+          "description": "エンジニアリング事業セグメントの受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "先端技術事業 受注高",
+          "type": "order_intake",
+          "description": "先端技術事業セグメントの受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "橋梁事業",
+            "システム建築事業",
+            "エンジニアリング事業",
+            "先端技術事業",
+            "その他事業"
+          ]
+        },
+        {
+          "dimension_name": "事業内訳",
+          "items": [
+            "新設事業",
+            "保全事業",
+            "海外事業",
+            "土木関連事業",
+            "建築・機械鉄構事業",
+            "精密機器製造事業",
+            "情報処理事業",
+            "不動産事業"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "3ページおよび12ページに詳細な受注関連の表が掲載されている。3ページでは億円単位で事業別の詳細な内訳（新設・保全・海外等）が、12ページでは百万円単位でセグメント別の合計値が記載されている。"
+    }
+  ],
+  "_source_pdf": "tdnet/5911/20260202_5911_横河ブＨＤ_決算短信_2026年３月期 第３四半期決算短信〔日本基準〕（連結）_140120260202544077.pdf",
+  "_source_doc_id": "140120260202544077",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:33:40.783285+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      3,
+      4,
+      5,
+      14
+    ],
+    "table_count": 2,
+    "max_rows": 38,
+    "max_cols": 6,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

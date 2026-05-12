@@ -1,0 +1,28 @@
+{
+  "ticker": "7550",
+  "company_name": "7550",
+  "metrics": [
+    {
+      "name": "すき家 全店 売上（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "すき家 全店 店舗数",
+      "source": "bc"
+    },
+    {
+      "name": "すき家 既存店 売上（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "すき家 既存店 客単価（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "すき家 既存店 客数（前年同月比）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

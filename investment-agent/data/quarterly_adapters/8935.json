@@ -1,0 +1,59 @@
+{
+  "ticker": "8935",
+  "company_name": "ＦＪネクストＨＤ",
+  "current_version": "2025-11",
+  "versions": [
+    {
+      "valid_from": "2025-11",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "外部売上高",
+          "type": "completed",
+          "description": "建設事業（レジテックコーポレーション）における外部顧客への売上高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "繰越工事高",
+          "type": "backlog",
+          "description": "マンション建築における期末時点の繰越工事高（手持工事高）",
+          "unit": "百万円",
+          "is_total": false
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "工事種別",
+          "items": [
+            "マンション建築"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "ppt_chart",
+      "notes": "建設事業セグメントの売上高と、マンション建築に特化した繰越工事高の推移がグラフで示されている。"
+    }
+  ],
+  "_source_pdf": "tdnet/8935/20251106_8935_ＦＪネクストＨＤ_決算説明資料_2026年３月期 第２四半期（中間期）決算補足説明資料_140120251106589301.pdf",
+  "_source_doc_id": "140120251106589301",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T20:12:18.421262+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      13
+    ],
+    "table_count": 4,
+    "max_rows": 2,
+    "max_cols": 3,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 4"
+    ]
+  }
+}

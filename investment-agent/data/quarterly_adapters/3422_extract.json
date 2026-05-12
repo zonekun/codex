@@ -1,0 +1,28 @@
+{
+  "ticker": "3422",
+  "company_name": "Ｊ－ＭＡＸ",
+  "current_version": "2024-11",
+  "versions": [
+    {
+      "valid_from": "2024-11",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "presentation",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/3422/20241114_3422_Ｊ－ＭＡＸ_決算説明資料_2025年３月期第２四半期(中間期)決算説明会及び事前質問受付に関するお知らせ_140120241114522762.pdf",
+  "_source_doc_id": "140120241114522762",
+  "_generated_at": "2026-04-30T17:39:50.677963+09:00",
+  "_model_used": null
+}

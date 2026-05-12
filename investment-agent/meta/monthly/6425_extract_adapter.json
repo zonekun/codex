@@ -1,0 +1,47 @@
+{
+  "source": "non-tdnet(pdf)",
+  "format": "pdf",
+  "extraction_method": "regex",
+  "doc_title_pattern": "お知らせ",
+  "skip_tables": [0],
+  "fields": [
+    {
+      "key": "カジノ収益（百万PHP）",
+      "name": "カジノ収益（百万PHP）",
+      "row_label_regex": "カジノ収益\\s+[\\d,.]+\\s+[\\d,.]+\\s+([\\d,.\\-]+)",
+      "value_type": "integer",
+      "description": "TRLEI月次実績 要約テーブル「カジノ収益」の当月値（百万フィリピン・ペソ）。3列目（当月列）を取得"
+    },
+    {
+      "key": "売上高合計（百万PHP）",
+      "name": "売上高合計（百万PHP）",
+      "row_label_regex": "売上高合計\\s+[\\d,.]+\\s+[\\d,.]+\\s+([\\d,.\\-]+)",
+      "value_type": "integer",
+      "description": "TRLEI月次実績 要約テーブル「売上高合計」の当月値（百万フィリピン・ペソ）。3列目（当月列）を取得"
+    },
+    {
+      "key": "調整後EBITDA（百万PHP）",
+      "name": "調整後EBITDA（百万PHP）",
+      "row_label_regex": "調整後\\s*EBITDA\\s+[\\d,.\\-]+\\s+[\\d,.\\-]+\\s+([\\d,.\\-]+)",
+      "value_type": "integer",
+      "description": "TRLEI月次実績 要約テーブル「調整後EBITDA」の当月値（百万フィリピン・ペソ）。3列目（当月列）を取得"
+    },
+    {
+      "key": "その他売上高（百万PHP）",
+      "name": "その他売上高（百万PHP）",
+      "row_label_regex": "その他売上高\\s+[\\d,.]+\\s+[\\d,.]+\\s+([\\d,.]+)",
+      "value_type": "integer",
+      "description": "TRLEI月次実績 要約テーブル「その他売上高」の当月値（百万フィリピン・ペソ）。3列目（当月列）を取得"
+    }
+  ],
+  "ticker": "6425",
+  "company_name": "ユニバーサルエンターテインメント",
+  "created_at": "2026-04-24T21:55:00+09:00",
+  "created_by": "manual",
+  "fields_count": 4,
+  "manual_override": true,
+  "manual_override_at": "2026-04-24T21:55:00+09:00",
+  "manual_override_note": "Phase 1 extract adapter新規作成。カジノ会社のためBC月次データなし（BC_NODATA確定）。TRLEI月次実績PDFから主要KPI抽出",
+  "_excluded": true,
+  "_excluded_reason": "月次実績開示の一時中止（2020-05-12 TDnet発表）"
+}

@@ -1,0 +1,38 @@
+{
+  "ticker": "3293",
+  "company_name": "アズマハウス",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "ppt_chart",
+      "notes": "対象ページ（3, 9, 13ページ）には受注件数および受注残件数の推移グラフが掲載されているが、受注金額や受注残高（金額）の具体的な数値データが記載されていない。また、受注残額の前年比（％）の記載はあるが、金額の数値データ自体が存在しないため、抽出ルールに基づきデータなしと判定した。"
+    }
+  ],
+  "_source_pdf": "tdnet/3293/20260213_3293_アズマハウス_決算説明資料_第49期　第３四半期決算補足資料_140120260113532326.pdf",
+  "_source_doc_id": "140120260113532326",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T17:37:40.848987+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      3,
+      9,
+      13
+    ],
+    "table_count": 4,
+    "max_rows": 5,
+    "max_cols": 11,
+    "broken_col0": false,
+    "unit_mixed": false,
+    "notes": [
+      "many tables: 4"
+    ]
+  }
+}

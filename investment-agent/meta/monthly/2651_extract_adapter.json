@@ -1,0 +1,79 @@
+{
+  "source": "non-tdnet(html_table)",
+  "format": "html",
+  "extraction_method": "gemini",
+  "fields": [
+    {
+      "key": "国内 全店 売上（百万円）",
+      "name": "国内 全店 売上（百万円）",
+      "row_label_regex": "全店\\s+売上高",
+      "value_type": "integer",
+      "description": "国内コンビニエンスストア事業 サマリーテーブル「ローソン事業（ローソン・ナチュラルローソン）」セクションの「全店 売上高」の（百万円）の値。前年比ではなく実額。",
+      "bc_key": "国内 全店 売上（百万円）",
+      "_manual_description": true
+    },
+    {
+      "key": "国内 全店 売上（前年同月比）",
+      "name": "国内 全店 売上（前年同月比）",
+      "row_label_regex": "全店\\s+売上高",
+      "value_type": "percentage",
+      "description": "国内コンビニエンスストア事業「ローソン事業（ローソン・ナチュラルローソン）」の「全店 売上高」の前年比（%）。例: 101.6",
+      "bc_key": "国内 全店 売上（前年同月比）",
+      "_manual_description": true
+    },
+    {
+      "key": "国内 コンビニ 店舗数",
+      "name": "国内 コンビニ 店舗数",
+      "row_label_regex": "総店舗数|国内総店舗数",
+      "value_type": "integer",
+      "description": "店舗関連テーブル「ローソングループ計」の「総店舗数」。国内総店舗数の値。例: 14655",
+      "bc_key": "国内 コンビニ 店舗数",
+      "_manual_description": true
+    },
+    {
+      "key": "国内 既存店 売上（前年同月比）",
+      "name": "国内 既存店 売上（前年同月比）",
+      "row_label_regex": "既存店\\s+売上高",
+      "value_type": "percentage",
+      "description": "国内コンビニエンスストア事業「ローソン事業（ローソン・ナチュラルローソン）」の「既存店 売上高」の前年比（%）。例: 103.3",
+      "bc_key": "国内 既存店 売上（前年同月比）",
+      "_manual_description": true
+    },
+    {
+      "key": "国内 既存店 客数（前年同月比）",
+      "name": "国内 既存店 客数（前年同月比）",
+      "row_label_regex": "既存店\\s+客数",
+      "value_type": "percentage",
+      "description": "国内コンビニエンスストア事業「ローソン事業（ローソン・ナチュラルローソン）」の「既存店 客数」の前年比（%）。例: 100.8",
+      "bc_key": "国内 既存店 客数（前年同月比）",
+      "_manual_description": true
+    },
+    {
+      "key": "国内 既存店 客単価（前年同月比）",
+      "name": "国内 既存店 客単価（前年同月比）",
+      "row_label_regex": "既存店\\s+客単価",
+      "value_type": "percentage",
+      "description": "国内コンビニエンスストア事業「ローソン事業（ローソン・ナチュラルローソン）」の「既存店 客単価」の前年比（%）。例: 102.5",
+      "bc_key": "国内 既存店 客単価（前年同月比）",
+      "_manual_description": true
+    },
+    {
+      "key": "海外 コンビニ 店舗数",
+      "name": "海外 コンビニ 店舗数",
+      "row_label_regex": "海外総店舗数",
+      "value_type": "integer",
+      "description": "店舗関連テーブルの「海外総店舗数」。例: 7783",
+      "bc_key": "海外 コンビニ 店舗数",
+      "_manual_description": true
+    }
+  ],
+  "custom_prompt": "ローソンの月次情報ページです。HTMLには国内コンビニエンスストア事業のサマリーテーブルと月次推移テーブルがあります。\n\n【注意】\n- 「ローソン事業（ローソン・ナチュラルローソン）」セクションの値を取得してください。「株式会社ローソン（単体）」ではありません。\n- 既存店の売上高・客数・客単価は前年比（%）です。\n- 全店の売上高は前年比（%）と実額（百万円）の両方があります。\n- サマリーテーブル（当月分）の値を取得してください。月次推移テーブルの値と同じですが、サマリーが見やすい場合はそちらを優先。\n- 店舗数は「ローソングループ計」の「国内総店舗数」と「海外総店舗数」です。",
+  "ticker": "2651",
+  "company_name": "ローソン",
+  "created_at": "2026-04-24T21:00:00+09:00",
+  "created_by": "manual",
+  "fields_count": 7,
+  "manual_override": true,
+  "manual_override_at": "2026-04-24T21:00:00+09:00",
+  "manual_override_note": "Phase 1 extract adapter新規作成"
+}

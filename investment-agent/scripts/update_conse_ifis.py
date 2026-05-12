@@ -8,18 +8,17 @@ IFIS株予報 直取得コンセンサス（経常利益）取得 → BigQuery S
     強制的に新規実行するには --fresh フラグを指定する。
 
 【前提】
-    - BigQuery STOCK.CONSENSUS に SOURCE STRING カラムが追加済みであること
-    - 既存楽天版レコードの SOURCE='RAKU' 埋め戻しは Claude Code 側で実施すること
+    - BigQuery STOCK.CONSENSUS は新スキーマ（ORD_PROFIT / TARGET廃止）であること
 """
 
 from __future__ import annotations
 
 import argparse
-import csv
 import io
 import json
 import os
 import re
+import sys
 import time
 import unicodedata
 from collections import Counter
@@ -28,6 +27,7 @@ from typing import Any
 
 import pandas as pd
 import requests
+import structlog
 from bs4 import BeautifulSoup
 from google.cloud import bigquery
 from google.oauth2 import service_account
@@ -42,6 +42,9 @@ STATE_FILE = os.path.join(_BASE, "data", "logs", "conse_ifis_resume.json")
 BQ_TABLE = "gmailpj-357912.STOCK.CONSENSUS"
 CSV_PATH = r"C:\Users\zonekun\Dropbox\stock\py\conse_ifis.csv"
 
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+from scripts.lib_conse_csv_from_view import export_consensus_csv
+
 SOURCE = "IFIS"
 IFIS_URL = "https://kabuyoho.ifis.co.jp/index.php?action=tp1&sa=report&bcode={code}"
 REQUEST_TIMEOUT = 30
@@ -52,6 +55,8 @@ USER_AGENT = (
     "AppleWebKit/537.36 (KHTML, like Gecko) "
     "Chrome/124.0 Safari/537.36"
 )
+
+log = structlog.get_logger()
 
 
 # ==========================================
@@ -65,33 +70,16 @@ def get_bq_client() -> bigquery.Client:
 
 
 def insert_to_bq(client: bigquery.Client, rows: list[dict[str, Any]]) -> bool:
-    """BQ にストリーミングインサート。既存RAKUTEN版に合わせる。"""
+    """BQ にストリーミングインサート。"""
     if not rows:
         return True
     errors = client.insert_rows_json(BQ_TABLE, rows)
     if errors:
-        print(f"  ⚠️ BQ書き込みエラー: {errors}")
+        log.warning("bq_insert_error", errors=errors)
         return False
     return True
 
 
-# ==========================================
-# CSV保存
-# ==========================================
-
-
-def save_to_csv(row_dict: dict[str, Any]) -> None:
-    """データをCSVファイルに1銘柄1行で追記保存する（項目名なし・Shift-JIS）。"""
-    keys = ["TICKER", "1Q_CURRENT", "2Q_CURRENT", "3Q_CURRENT", "FY_CURRENT", "FY_NEXT"]
-    row_data = [row_dict.get(k, "") for k in keys]
-
-    try:
-        os.makedirs(os.path.dirname(CSV_PATH), exist_ok=True)
-        with open(CSV_PATH, mode="a", newline="", encoding="cp932", errors="replace") as f:
-            writer = csv.writer(f)
-            writer.writerow(row_data)
-    except Exception as e:
-        print(f"  ⚠️ CSV保存失敗: {e}")
 
 
 # ==========================================
@@ -123,10 +111,8 @@ def clear_state() -> None:
 
 
 def get_japanese_stock_tickers(client: bigquery.Client) -> list[str]:
-    """BigQuery STOCK_CODE_LIST からプライム・スタンダード・グロース（内国株式）を取得。
-    BQ取得失敗時はJPX Excelにフォールバック。
-    """
-    print("📊 BigQuery から銘柄リストを取得中...")
+    """BigQuery STOCK_CODE_LIST からプライム・スタンダード・グロース（内国株式）を取得。"""
+    log.info("fetching_tickers", source="BQ")
     try:
         query = """
             SELECT TICKER
@@ -141,12 +127,12 @@ def get_japanese_stock_tickers(client: bigquery.Client) -> list[str]:
         """
         rows = list(client.query(query).result())
         tickers = [row["TICKER"] for row in rows]
-        print(f"✅ {len(tickers)} 銘柄取得完了（BQ）")
+        log.info("tickers_fetched", count=len(tickers), source="BQ")
         return tickers
     except Exception as e:
-        print(f"⚠️ BQ 取得失敗: {e} → JPX Excel にフォールバック")
+        log.warning("bq_ticker_fetch_failed", error=str(e))
 
-    print("📊 JPX 上場銘柄一覧 Excel を取得中...")
+    log.info("fetching_tickers", source="JPX_Excel")
     url = "https://www.jpx.co.jp/markets/statistics-equities/misc/tvdivq0000001vg2-att/data_j.xls"
     try:
         resp = requests.get(url, timeout=REQUEST_TIMEOUT, headers={"User-Agent": USER_AGENT})
@@ -159,10 +145,10 @@ def get_japanese_stock_tickers(client: bigquery.Client) -> list[str]:
         }
         df = df[df["市場・商品区分"].isin(target_categories)]
         tickers = sorted(df["コード"].str.zfill(4).tolist())
-        print(f"✅ {len(tickers)} 銘柄取得完了（JPX Excel）")
+        log.info("tickers_fetched", count=len(tickers), source="JPX_Excel")
         return tickers
     except Exception as e2:
-        print(f"❌ 銘柄リスト取得失敗（Excel）: {e2}")
+        log.error("ticker_fetch_failed", error=str(e2))
         return []
 
 
@@ -176,7 +162,7 @@ def normalize_text(text: str) -> str:
 
 
 def clean_number(text: str) -> str:
-    cleaned = re.sub(r"[,\s\u3000\xa0]", "", unicodedata.normalize("NFKC", text).strip())
+    cleaned = re.sub(r"[,\s　\xa0]", "", unicodedata.normalize("NFKC", text).strip())
     cleaned = cleaned.replace("--", "").replace("－", "-")
     return cleaned if re.match(r"^-?\d+$", cleaned) else ""
 
@@ -251,8 +237,7 @@ def extract_ifis_consensus(html: str) -> tuple[list[dict[str, Any]], str | None,
         records.append({
             "FY": fy,
             "QUARTER": quarter,
-            "PROFIT": int(val),
-            "TARGET": "CURRENT",
+            "ORD_PROFIT": int(val),
         })
 
     if not records:
@@ -272,22 +257,17 @@ def build_bq_rows(code: str, dataat: str, records: list[dict[str, Any]]) -> list
             "TICKER": code,
             "FY": rec["FY"],
             "QUARTER": rec["QUARTER"],
-            "PROFIT": rec["PROFIT"],
-            "TARGET": rec["TARGET"],
+            "REVENUE": None,
+            "OP_PROFIT": None,
+            "ORD_PROFIT": rec["ORD_PROFIT"],
+            "NET_PROFIT": None,
+            "EPS": None,
             "SOURCE": SOURCE,
         }
         for rec in records
     ]
 
 
-def build_csv_row(code: str, records: list[dict[str, Any]]) -> dict[str, Any]:
-    row = {k: "" for k in ["TICKER", "1Q_CURRENT", "2Q_CURRENT", "3Q_CURRENT", "FY_CURRENT", "FY_NEXT"]}
-    row["TICKER"] = code
-    for rec in records:
-        key = f"{rec['QUARTER']}_{rec['TARGET']}"
-        if key in row:
-            row[key] = rec["PROFIT"]
-    return row
 
 
 def process_codes(
@@ -302,8 +282,9 @@ def process_codes(
     skip_until_resume = resume_from is not None
     stats: Counter = Counter()
     session = requests.Session()
+    total = len(codes)
 
-    for code in codes:
+    for i, code in enumerate(codes):
         code = code.strip()
         if not code:
             continue
@@ -312,11 +293,12 @@ def process_codes(
                 skip_until_resume = False
             continue
 
-        print(f"🔍 処理中: {code}")
+        stats["processed"] += 1
+        log.info("processing", ticker=code, progress=f"{stats['processed']}/{total}")
         try:
             html = fetch_ifis_page(code, session=session)
         except Exception as e:
-            print(f"  ⚠️ HTTP取得失敗: {e}")
+            log.warning("http_error", ticker=code, error=str(e))
             stats["http_error"] += 1
             if update_state:
                 save_state(dataat, code)
@@ -325,7 +307,7 @@ def process_codes(
 
         records, fy, skip_reason = extract_ifis_consensus(html)
         if skip_reason:
-            print(f"  ⚠️ skip: {skip_reason} (FY={fy or ''})")
+            log.info("skip", ticker=code, reason=skip_reason, fy=fy or "")
             stats[skip_reason] += 1
             if update_state:
                 save_state(dataat, code)
@@ -333,7 +315,8 @@ def process_codes(
             continue
 
         bq_rows = build_bq_rows(code, dataat, records)
-        print(f"  ✅ 抽出: FY={fy} {len(bq_rows)}件 {[(r['QUARTER'], r['PROFIT']) for r in bq_rows]}")
+        log.info("extracted", ticker=code, fy=fy, records=len(bq_rows),
+                 quarters=[(r["QUARTER"], r["ORD_PROFIT"]) for r in bq_rows])
 
         if dry_run:
             stats["dry_run_ok"] += 1
@@ -341,8 +324,7 @@ def process_codes(
             if bq_client is None:
                 raise ValueError("bq_client is required unless dry_run=True")
             if insert_to_bq(bq_client, bq_rows):
-                save_to_csv(build_csv_row(code, records))
-                print(f"  ✅ BQ/CSV保存完了: {code}")
+                log.info("saved", ticker=code)
                 stats["saved"] += 1
             else:
                 stats["bq_error"] += 1
@@ -377,10 +359,10 @@ def run(*, fresh: bool = False, ticker_arg: str | None = None, dry_run: bool = F
         update_state = True
 
     if not codes:
-        print("❌ 対象銘柄なし")
-        return
+        log.error("no_tickers")
+        sys.exit(1)
 
-    print(f"DATAAT={dataat} SOURCE={SOURCE} dry_run={dry_run}")
+    log.info("start", dataat=dataat, source=SOURCE, dry_run=dry_run, total=len(codes))
     stats = process_codes(
         codes,
         dataat,
@@ -389,12 +371,19 @@ def run(*, fresh: bool = False, ticker_arg: str | None = None, dry_run: bool = F
         dry_run=dry_run,
         update_state=update_state,
     )
-    print("\n=== 集計 ===")
-    for key, value in stats.most_common():
-        print(f"{key}: {value}")
+
+    log.info("summary", **dict(stats.most_common()))
 
     if update_state:
         clear_state()
+
+    if not dry_run:
+        export_consensus_csv(bq_client, CSV_PATH)
+
+    error_count = stats.get("bq_error", 0) + stats.get("http_error", 0)
+    if error_count > 0:
+        log.error("completed_with_errors", error_count=error_count)
+        sys.exit(1)
 
 
 if __name__ == "__main__":

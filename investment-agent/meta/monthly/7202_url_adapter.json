@@ -1,0 +1,14 @@
+{
+  "ticker": "7202",
+  "company_name": "いすゞ自動車",
+  "ir_page_url": "https://www.isuzu-global.com/ja/investor/financial/shipments.html",
+  "updated_at": "2026-04-24T14:03:22.404564+09:00",
+  "last_checked": "2026-04-24",
+  "status": "active",
+  "type": "scrape_links",
+  "note": "国内生産・輸出台数PDF。URL末尾に.htmlが必要(末尾なしは403)。PDFは teaserItems 配下の ja{yyyymm}.pdf (2026-04-24修正)",
+  "link_href_pattern": "shipments/main/\\d+/teaserItems\\d+/\\d+/linkList/\\d+/link/ja\\d{6}\\.pdf",
+  "manual_override": true,
+  "manual_override_at": "2026-04-24T14:03:22.404564+09:00",
+  "manual_override_note": "D群DL0件 scrape_links pattern修正 (2026-04-24)"
+}

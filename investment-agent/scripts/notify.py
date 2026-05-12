@@ -101,20 +101,49 @@ def send_mail(
 
 _NTFY_BASE_URL = "https://ntfy.sh"
 
+# --- 送信元コンテキスト（セッション中維持） ---
+_ntfy_sender: str = ""   # "ATP"(Claude Code) / "GPT"(Codex)
+_ntfy_task: str = ""     # 作業内容（最初にセットしたら変更しない）
 
-def _load_ntfy_topic() -> str:
-    """環境変数 or .env から NTFY_TOPIC を取得する."""
-    topic = os.environ.get("NTFY_TOPIC")
-    if topic:
-        return topic
-    # .env からフォールバック読み込み
+
+def set_ntfy_context(sender: str, task: str) -> None:
+    """送信元と作業内容をセッション中固定でセットする."""
+    global _ntfy_sender, _ntfy_task
+    _ntfy_sender = sender
+    _ntfy_task = task
+
+
+def _build_title(override: str | None = None) -> str:
+    """タイトル文字列を組み立てる. override指定時はそちらを優先."""
+    if override is not None:
+        return override
+    if _ntfy_sender:
+        parts = [_ntfy_sender]
+        if _ntfy_task:
+            parts.append(_ntfy_task)
+        return "：".join(parts)
+    return "投資エージェント"
+
+
+def _load_env_value(key: str, required: bool = False) -> str:
+    """環境変数 or .env から値を取得する."""
+    val = os.environ.get(key)
+    if val:
+        return val
     env_path = Path(__file__).resolve().parent.parent / ".env"
     if env_path.exists():
         for line in env_path.read_text(encoding="utf-8").splitlines():
             line = line.strip()
-            if line.startswith("NTFY_TOPIC="):
+            if line.startswith(f"{key}="):
                 return line.split("=", 1)[1].strip()
-    raise RuntimeError("NTFY_TOPIC が未設定です（.env または環境変数に設定してください）")
+    if required:
+        raise RuntimeError(f"{key} が未設定です（.env または環境変数に設定してください）")
+    return ""
+
+
+def _load_ntfy_topic() -> str:
+    """環境変数 or .env から NTFY_TOPIC を取得する."""
+    return _load_env_value("NTFY_TOPIC", required=True)
 
 
 _MSG_ID_TTL_SEC = 1800  # 30分以内に使用済みのIDは避ける（実質の有効期限）
@@ -169,7 +198,7 @@ def _gen_unique_msg_id(topic: str, max_tries: int = 50) -> str:
 
 def send_ntfy(
     message: str,
-    title: str = "投資エージェント",
+    title: str | None = None,
     *,
     tags: str = "white_check_mark",
     priority: str = "high",
@@ -179,7 +208,7 @@ def send_ntfy(
 
     Args:
         message : 通知本文（作業内容など）
-        title   : 通知タイトル
+        title   : 通知タイトル（None時はset_ntfy_contextの値を使用）
         tags    : ntfy タグ（絵文字ショートコード）
         priority: low / default / high / urgent
                   デフォルト high(4) でAndroidヘッドアップ通知を表示
@@ -189,6 +218,7 @@ def send_ntfy(
         with_id=True のとき生成したメッセージID、それ以外は None
     """
     topic = _load_ntfy_topic()
+    resolved_title = _build_title(title)
     # ID付き送信時: 直近TTL内に使用済みのIDを避けて生成
     msg_id = _gen_unique_msg_id(topic) if with_id else None
     # ID付き送信時: 1行目にID、2行目以降に本文（リプライ時にIDだけコピペしやすい）
@@ -196,7 +226,7 @@ def send_ntfy(
     url = f"{_NTFY_BASE_URL}"
     payload = json.dumps({
         "topic": topic,
-        "title": title,
+        "title": resolved_title,
         "message": body,
         "tags": [tags],
         "priority": 3 if priority == "default" else
@@ -297,7 +327,7 @@ def wait_ntfy_reply(
 def send_ntfy_and_wait(
     message: str,
     timeout: float = 3600.0,
-    title: str = "投資エージェント",
+    title: str | None = None,
     *,
     tags: str = "question",
     priority: str = "urgent",
@@ -315,7 +345,7 @@ def send_ntfy_and_wait(
     Args:
         message : 通知本文（ユーザー判断を仰ぐ内容）
         timeout : 返信待機上限（秒）
-        title   : 通知タイトル
+        title   : 通知タイトル（None時はset_ntfy_contextの値を使用）
         tags    : ntfy タグ（デフォルト question=❓）
         priority: 優先度（デフォルト urgent）
 
@@ -391,9 +421,13 @@ if __name__ == "__main__":
     # ntfy サブコマンド
     p_ntfy = sub.add_parser("ntfy", help="ntfy プッシュ通知を送信")
     p_ntfy.add_argument("message", help="通知メッセージ")
-    p_ntfy.add_argument("--title", default="投資エージェント", help="通知タイトル")
+    p_ntfy.add_argument("--title", default=None, help="通知タイトル（未指定時は--sender/--taskから生成）")
     p_ntfy.add_argument("--priority", default="high",
                         choices=["low", "default", "high", "urgent"])
+    p_ntfy.add_argument("--sender", default=None,
+                        help="送信元略字 (ATP=Claude Code, GPT=Codex)")
+    p_ntfy.add_argument("--task", default=None,
+                        help="作業内容（セッション中固定）")
     p_ntfy.add_argument("--wait", action="store_true",
                         help="メッセージIDを付与して送信し、リプライを待つ")
     p_ntfy.add_argument("--timeout", type=float, default=3600.0,
@@ -406,6 +440,10 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     if args.cmd == "ntfy":
+        if args.sender:
+            set_ntfy_context(args.sender, args.task or "")
+        if args.timeout != 3600.0 and not args.wait:
+            args.wait = True
         if args.wait:
             msg_id, reply = send_ntfy_and_wait(
                 args.message, timeout=args.timeout, title=args.title,

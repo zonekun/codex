@@ -1,0 +1,28 @@
+{
+  "ticker": "4060",
+  "company_name": "Ｇ－ｒａｋｕｍｏ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "presentation",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/4060/20260212_4060_Ｇ－ｒａｋｕｍｏ_決算説明資料_2025年度12月期 通期決算説明資料_140120260122537281.pdf",
+  "_source_doc_id": "140120260122537281",
+  "_generated_at": "2026-04-30T17:59:42.305806+09:00",
+  "_model_used": null
+}

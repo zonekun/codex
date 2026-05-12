@@ -1,0 +1,28 @@
+{
+  "ticker": "7809",
+  "company_name": "壽屋",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "presentation",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/7809/20260213_7809_壽屋_決算説明資料_2026年６月期　第２四半期（中間期）決算補足説明資料_140120260213559049.pdf",
+  "_source_doc_id": "140120260213559049",
+  "_generated_at": "2026-04-30T19:59:08.882522+09:00",
+  "_model_used": null
+}

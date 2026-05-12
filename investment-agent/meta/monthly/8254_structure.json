@@ -1,0 +1,20 @@
+{
+  "ticker": "8254",
+  "company_name": "8254",
+  "metrics": [
+    {
+      "name": "連結 営業利益（円）",
+      "source": "bc"
+    },
+    {
+      "name": "連結 売上（百万円）",
+      "source": "bc"
+    },
+    {
+      "name": "連結 経常利益（円）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

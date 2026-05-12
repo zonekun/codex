@@ -1,0 +1,130 @@
+{
+  "ticker": "6268",
+  "company_name": "ナブテスコ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当連結会計年度における受注の総額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "当連結会計年度における売上高の総額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "生産高",
+          "type": "other",
+          "description": "当連結会計年度における生産高の総額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当連結会計年度末時点における受注残高の総額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "セグメント別受注高",
+          "type": "order_intake",
+          "description": "各事業セグメント別の受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "セグメント別売上高",
+          "type": "completed",
+          "description": "各事業セグメント別の売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "地域別売上高",
+          "type": "completed",
+          "description": "所在地を基礎とした地域別の売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "セグメント別生産高",
+          "type": "other",
+          "description": "各事業セグメント別の生産高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "生産高"
+        },
+        {
+          "name": "セグメント別受注残高",
+          "type": "backlog",
+          "description": "各事業セグメント別の受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "コンポーネントソリューション事業",
+            "トランスポートソリューション事業",
+            "アクセシビリティソリューション事業",
+            "その他"
+          ]
+        },
+        {
+          "dimension_name": "地域",
+          "items": [
+            "日本",
+            "中国",
+            "その他アジア",
+            "北米",
+            "ヨーロッパ",
+            "その他地域"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "決算短信の経営成績の概況および補足情報において、受注高、売上高、生産高、受注残高のセグメント別内訳が詳細な表形式で開示されています。また、売上高については地域別の内訳も記載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/6268/20260212_6268_ナブテスコ_決算短信_2025年12月期決算短信〔ＩＦＲＳ〕(連結)_140120260212556894.pdf",
+  "_source_doc_id": "140120260212556894",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:55:20.725786+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      3,
+      4,
+      5,
+      25
+    ],
+    "table_count": 7,
+    "max_rows": 8,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 7"
+    ]
+  }
+}

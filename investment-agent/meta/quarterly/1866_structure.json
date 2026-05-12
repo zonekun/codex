@@ -1,0 +1,60 @@
+{
+  "ticker": "1866",
+  "company_name": "北野建",
+  "current_version": "2025-11",
+  "versions": [
+    {
+      "valid_from": "2025-11",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注工事高",
+          "type": "order_intake",
+          "description": "期中に新たに受注した建設工事の総額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "繰越工事高",
+          "type": "backlog",
+          "description": "期末時点における未完成建設工事の次期繰越額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "期首繰越工事高",
+          "type": "backlog",
+          "description": "期首時点における未完成建設工事の繰越額",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "決算短信の「3. その他」において、建設事業部門の受注・完成・繰越工事高の詳細な内訳表が提供されています。工事種類別（建築・土木）および顧客区分別（官公庁・民間）の金額データが網羅されています。また、損益計算書では売上高が完成工事高と兼業事業売上高に区分して表示されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/1866/20251112_1866_北野建_決算短信_令和８年３月期　第２四半期（中間期）決算短信〔日本基準〕（連結）_140120251112597059.pdf",
+  "_source_doc_id": "140120251112597059",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T16:55:14.717684+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      7,
+      12
+    ],
+    "table_count": 5,
+    "max_rows": 44,
+    "max_cols": 7,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 5"
+    ]
+  }
+}

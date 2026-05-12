@@ -1,0 +1,12 @@
+{
+  "ticker": "3407",
+  "company_name": "3407",
+  "metrics": [
+    {
+      "name": "ホームズ 受注金額（前年同月比）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

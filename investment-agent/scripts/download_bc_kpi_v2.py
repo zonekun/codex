@@ -141,16 +141,16 @@ def get_gcs() -> storage.Client:
 
 def list_tickers_with_records(gcs: storage.Client) -> list[str]:
     """structure.json が存在するティッカー一覧を返す（月次収集対象外を除く）。"""
-    # data/monthly_adapters/{ticker}.json に inactive_reason があるものは除外
+    # meta/monthly/{ticker}_extract_adapter.json に inactive_reason があるものは除外
     inactive: set[str] = set()
-    adapters_dir = Path("data/monthly_adapters")
+    adapters_dir = Path("meta/monthly")
     if adapters_dir.exists():
-        for p in adapters_dir.glob("*.json"):
+        for p in adapters_dir.glob("*_extract_adapter.json"):
             try:
                 import json as _json
                 d = _json.loads(p.read_text(encoding="utf-8"))
                 if d.get("inactive_reason"):
-                    inactive.add(p.stem)
+                    inactive.add(p.name.removesuffix("_extract_adapter.json"))
             except Exception:
                 pass
 

@@ -1,0 +1,28 @@
+{
+  "ticker": "3633",
+  "company_name": "ＧＭＯペパボ",
+  "current_version": "2025-08",
+  "versions": [
+    {
+      "valid_from": "2025-08",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "presentation",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/3633/20250807_3633_ＧＭＯペパボ_決算説明資料_2025年12月期 第２四半期 決算説明会資料_140120250807534214.pdf",
+  "_source_doc_id": "140120250807534214",
+  "_generated_at": "2026-04-30T17:45:30.927007+09:00",
+  "_model_used": null
+}

@@ -1,0 +1,28 @@
+{
+  "ticker": "6071",
+  "company_name": "6071",
+  "metrics": [
+    {
+      "name": "IBJ 登録会員数（名）",
+      "source": "bc"
+    },
+    {
+      "name": "お見合い件数（件）",
+      "source": "bc"
+    },
+    {
+      "name": "成婚組数（組）",
+      "source": "bc"
+    },
+    {
+      "name": "新規入会者数（名）",
+      "source": "bc"
+    },
+    {
+      "name": "結婚相談所数",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

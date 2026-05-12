@@ -10,8 +10,11 @@ from scripts.zaraba_earnings import (
     PREPARE_DATA_FULL,
     PREPARE_TARGET_ALL,
     PREPARE_TARGET_SCHEDULED,
+    cmd_backup_cache,
     cmd_catchup,
+    cmd_gcs_review,
     cmd_prepare,
+    cmd_upload_results,
     cmd_watch,
     resolve_date,
 )
@@ -21,6 +24,9 @@ MENU = """\
 1. 事前準備     — BQ から決算銘柄・事前情報を共有キャッシュ
 2. ザラバ監視   — リアルタイム TDnet 監視 & スコアリング
 3. キャッチアップ — 指定時刻までの開示を一括取得
+8. 結果保存     — results.csv を GCS にアップロード
+9. 結果表示     — GCS の results を watch レイアウトで表示
+Z. キャッシュ保管 — 全キャッシュを zip でスナップショット保存
 q. 終了
 """
 
@@ -69,12 +75,20 @@ def main() -> None:
         force = input("キャッシュを無視して再取得? (y/N): ").strip().lower() == "y"
         cmd_prepare(target, force=force, target=prepare_target, data=prepare_data)
     elif choice == "2":
-        target = _ask_date()
+        target = resolve_date("t")
         cmd_watch(target)
     elif choice == "3":
         target = _ask_date()
         until = input("何時までの開示を取得? (HH:MM, 例: 15:30): ").strip()
         cmd_catchup(target, until_time=until)
+    elif choice == "8":
+        target = _ask_date()
+        cmd_upload_results(target)
+    elif choice == "9":
+        target = _ask_date()
+        cmd_gcs_review(target)
+    elif choice in ("z", "Z"):
+        cmd_backup_cache()
     elif choice in ("q", "Q"):
         return
     else:

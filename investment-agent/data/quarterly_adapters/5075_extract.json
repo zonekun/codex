@@ -1,0 +1,48 @@
+{
+  "ticker": "5075",
+  "company_name": "アップコン",
+  "current_version": "2025-09",
+  "versions": [
+    {
+      "valid_from": "2025-09",
+      "valid_until": null,
+      "extraction_method": "regex",
+      "source": "tanshin",
+      "page_keywords": [
+        "中間損益計算書",
+        "売上高合計",
+        "完成工事高"
+      ],
+      "fields": [
+        {
+          "key": "売上高合計",
+          "row_label_regex": "^\\s*売上高合計",
+          "value_type": "integer",
+          "unit": "千円",
+          "use_last_number": true
+        },
+        {
+          "key": "完成工事高",
+          "row_label_regex": "^\\s*完成工事高",
+          "value_type": "integer",
+          "unit": "千円",
+          "use_last_number": true
+        },
+        {
+          "key": "兼業事業売上高",
+          "row_label_regex": "^\\s*兼業事業売上高",
+          "value_type": "integer",
+          "unit": "千円",
+          "use_last_number": true
+        }
+      ],
+      "gemini_custom_prompt": "",
+      "notes": "中間損益計算書の売上高内訳から各項目を抽出します。最新の会計期間（右側の列）の数値を取得するため、use_last_numberをtrueに設定しています。兼業事業売上高が当期において「ー」となっている場合は、パーサー側での処理に依存します。"
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/5075/20250912_5075_アップコン_決算短信_2026年１月期 第２四半期(中間期)決算短信〔日本基準〕(非連結)_140120250911556300.pdf",
+  "_source_doc_id": "140120250911556300",
+  "_generated_at": "2026-04-30T23:08:13.684045+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

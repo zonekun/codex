@@ -1,0 +1,52 @@
+{
+  "ticker": "5939",
+  "company_name": "大谷工業",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "セグメント及び品目別の受注高合計",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "セグメント及び品目別の受注残高合計",
+          "unit": "千円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "決算短信の補足情報（8ページ）に、電力通信部門および建材部門のセグメント別、ならびに架線金物、鉄塔・鉄構、スタッド、免震などの品目別の売上高、受注高、受注残高が詳細な表形式で記載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/5939/20260210_5939_大谷工業_決算短信_2026年３月期　第３四半期決算短信〔日本基準〕（非連結）_140120260210554206.pdf",
+  "_source_doc_id": "140120260210554206",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:35:35.809756+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      3,
+      10
+    ],
+    "table_count": 3,
+    "max_rows": 11,
+    "max_cols": 6,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "ticker": "1787",
+  "company_name": "ナカボーテック",
+  "current_version": "2025-08",
+  "versions": [
+    {
+      "valid_from": "2025-08",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当第１四半期累計期間における受注高の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "損益計算書における売上高合計",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "完成工事高",
+          "type": "completed",
+          "description": "売上高の内訳としての完成工事高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "製品等売上高",
+          "type": "completed",
+          "description": "売上高の内訳としての製品等売上高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当第１四半期末時点の受注残高",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "売上区分",
+          "items": [
+            "完成工事高",
+            "製品等売上高"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "受注高および受注残高は「1.当四半期決算に関する定性的情報」の本文中に記載されています。売上高の合計およびその内訳（完成工事高、製品等売上高）は、四半期損益計算書に詳細な金額が記載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/1787/20250804_1787_ナカボーテック_決算短信_2026年3月期 第1四半期決算短信〔日本基準〕（非連結）_140120250801527695.pdf",
+  "_source_doc_id": "140120250801527695",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T16:41:16.299291+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      7
+    ],
+    "table_count": 1,
+    "max_rows": 32,
+    "max_cols": 4,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

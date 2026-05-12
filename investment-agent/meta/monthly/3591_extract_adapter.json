@@ -1,0 +1,36 @@
+{
+  "source": "download",
+  "format": "xlsx",
+  "fields": [
+    {
+      "key": "ピーチ・ジョン 国内 売上（前年同月比）",
+      "name": "ピーチ・ジョン 国内 売上（前年同月比）",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "GCSのxlsx/PDFは年次財務サマリー(2001-2025年)・DATA BOOK・ESGデータのみ。月次ブランド別売上データなし"
+    },
+    {
+      "key": "ワコール 国内 売上（前年同月比）",
+      "name": "ワコール 国内 売上（前年同月比）",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "同上"
+    },
+    {
+      "key": "ワコール 米国 売上（前年同月比）",
+      "name": "ワコール 米国 売上（前年同月比）",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "同上"
+    }
+  ],
+  "extraction_notes": "ワコールHD。GCSのxlsxは年次財務サマリー(25年分)、PDFはDATA BOOK・ESGデータ集。月次のブランド別(ワコール/ピーチ・ジョン)売上前年比の記載なし。url_adapter scrape_links(active)だが取得文書に月次データ含まず。",
+  "ticker": "3591",
+  "company_name": "ワコールホールディングス",
+  "created_at": "2026-04-05T09:49:59.804148+09:00",
+  "created_by": "gemini-2.5-flash",
+  "extraction_method": "gemini",
+  "manual_override": true,
+  "manual_override_note": "Codex成果物を自ら検証・再作成。月次ブランド別データなしのためbc_ignore",
+  "manual_override_at": "2026-05-08T00:20:00+09:00"
+}

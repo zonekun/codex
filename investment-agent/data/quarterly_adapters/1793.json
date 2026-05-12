@@ -1,0 +1,66 @@
+{
+  "ticker": "1793",
+  "company_name": "大本組",
+  "current_version": "2025-11",
+  "versions": [
+    {
+      "valid_from": "2025-11",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "中間会計期間における建設事業の受注実績合計。",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "完成工事高",
+          "type": "completed",
+          "description": "損益計算書における売上高（完成工事高）",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "工種",
+          "items": [
+            "建築",
+            "土木"
+          ]
+        },
+        {
+          "dimension_name": "顧客区分",
+          "items": [
+            "民間",
+            "官公庁"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "PDFの補足情報で受注高合計63,497百万円を確認。"
+    }
+  ],
+  "_source_pdf": "tdnet/1793/20251111_1793_大本組_決算短信_2026年３月期 第２四半期（中間期）決算短信〔日本基準〕(非連結)_140120251111595456.pdf",
+  "_source_doc_id": "140120251111595456",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T16:41:35.029818+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      10
+    ],
+    "table_count": 1,
+    "max_rows": 33,
+    "max_cols": 4,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

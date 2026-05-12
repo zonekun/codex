@@ -273,14 +273,14 @@ WHERE PREV_ADJ_CLOSE IS NOT NULL
 
 ### 2026-04-11: 初回 PoC（Variation 1 自己リードラグ、機関投資家条件）
 
-- スクリプト: `scripts/factor_model/poc_overnight_daytime_leadlag.py`
+- スクリプト: `scripts/factor_model/poc_overnight_daytime_leadlag.py`（削除済み・git log参照）
 - 条件: 同日ON→同日DAY、ロングショート、q=0.3、日次リバランス、コスト無、N=921
 - 結果: **Sharpe 6.54（グロス）**、Ann +11.38%、MDD -0.96%
 - 所感: 過剰に見えたが、個人条件でやり直すまで判定保留
 
 ### 2026-04-12: Pass 1 検証（個人投資家条件、Variation 1 再実行）
 
-- スクリプト: `scripts/factor_model/poc_pass1_individual.py`
+- スクリプト: `scripts/factor_model/poc_pass1_individual.py`（削除済み・git log参照）
 - 条件: **前日情報→翌日DAY**（オプションA寄引戦略）、ロングオンリー、q=0.05/0.10、週次リバランス、コスト込み（片道平均 2.38 bp）、税後 20.315%、N=921
 - **結果（3段階）**:
 

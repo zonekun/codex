@@ -1,0 +1,60 @@
+{
+  "ticker": "6365",
+  "company_name": "電業社",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当第３四半期連結累計期間における受注の総額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "当第３四半期連結累計期間における売上高の総額",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "部門",
+          "items": [
+            "国内民需部門",
+            "官需部門",
+            "海外部門"
+          ]
+        }
+      ],
+      "presentation_format": "text",
+      "complexity": "no_table",
+      "notes": "本文中に第3四半期累計期間の受注高（16,428百万円）および売上高（17,816百万円）の数値が記載されています。受注残高については具体的な金額の記載はありません。また、通期業績予想としての受注高および売上高も本文中に言及されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/6365/20260213_6365_電業社_決算短信_2026年3月期 第3四半期決算短信〔日本基準〕（連結）_140120260212558156.pdf",
+  "_source_doc_id": "140120260212558156",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:07:27.714399+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "no_table",
+    "relevant_pages": [
+      4
+    ],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "pdfplumber found no tables on relevant pages"
+    ]
+  }
+}

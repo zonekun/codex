@@ -1,0 +1,38 @@
+{
+  "ticker": "9330",
+  "company_name": "Ｇ－揚羽",
+  "current_version": "2024-11",
+  "versions": [
+    {
+      "valid_from": "2024-11",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "breakdown_dimensions": [],
+      "presentation_format": "text",
+      "complexity": "no_relevant_pages",
+      "notes": "提供された資料（3、5、7ページ）には、受注高、売上高（実績）、受注残高の具体的な数値データを含む表やセクションは含まれていません。3ページの「今後の見通し」において、期末受注残高が前年同期比で増加した旨の定性的な記述と、次期の売上高予想（1,750,000千円）の記載はありますが、当期の実績値は確認できないため、データなしと判定しました。"
+    }
+  ],
+  "_source_pdf": "tdnet/9330/20241114_9330_Ｇ－揚羽_決算短信_2024年９月期 決算短信〔日本基準〕（非連結）_140120241113521682.pdf",
+  "_source_doc_id": "140120241113521682",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T20:19:26.822874+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      5,
+      7,
+      9
+    ],
+    "table_count": 3,
+    "max_rows": 34,
+    "max_cols": 11,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

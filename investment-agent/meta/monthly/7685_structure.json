@@ -1,0 +1,39 @@
+{
+  "ticker": "7685",
+  "company_name": "7685",
+  "metrics": [
+    {
+      "name": "グループ店舗数",
+      "source": "bc"
+    },
+    {
+      "name": "出張訪問買取事業 仕入高（円）",
+      "source": "bc"
+    },
+    {
+      "name": "出張訪問買取事業 仕入高（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "出張訪問買取事業 出張訪問数 （前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "出張訪問買取事業 問合せ数（前年同月比）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00",
+  "monthly_items": [
+    {
+      "name": "グループ合計",
+      "collection_excluded": false,
+      "_manual_add": true,
+      "_added_at": "2026-04-18T16:01:10+09:00",
+      "_note": "BC未収集だが収集対象（バイセル+タイムレス店舗数合計）。bc_ignore=true で突合除外 (2026-04-18判断)",
+      "source": "bc"
+    }
+  ],
+  "manual_override": true
+}

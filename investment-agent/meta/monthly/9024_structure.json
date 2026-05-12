@@ -1,0 +1,36 @@
+{
+  "ticker": "9024",
+  "company_name": "9024",
+  "metrics": [
+    {
+      "name": "ホテル RevPAR（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "ホテル 客室稼働率（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "ホテル 宿泊客数（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "ホテル 平均販売室料（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "輸送人員（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "運輸収入 定期外（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "運輸収入 定期（前年同月比）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

@@ -24,7 +24,64 @@ J-Quants MCP サーバー（`027_jquants_mcp_server.md`）と同じ SSE transpor
 
 ---
 
-## デプロイ済みサービス情報
+## ローカル直接実行: aws-api-mcp-server（汎用 AWS CLI ラッパー）
+
+**追加日**: 2026-04-30
+
+旧 `awslabs.core-mcp-server` は PyPI から yanked（廃止）。AWS は個別サービス別パッケージに分割した。
+ローカルから EC2 Spot placement score 等の AWS CLI 操作を行うには **`awslabs.aws-api-mcp-server`** を使う。
+
+### .mcp.json 設定（Windows）
+
+```json
+{
+  "aws": {
+    "command": "uvx",
+    "args": [
+      "--from",
+      "awslabs.aws-api-mcp-server@latest",
+      "awslabs.aws-api-mcp-server.exe"
+    ],
+    "env": {
+      "AWS_ACCESS_KEY_ID": "（.env参照）",
+      "AWS_SECRET_ACCESS_KEY": "（.env参照）",
+      "AWS_REGION": "us-east-1"
+    }
+  }
+}
+```
+
+> **Windows では `--from` + `.exe` サフィックスが必須**。Linux/macOS は `"args": ["awslabs.aws-api-mcp-server@latest"]` のみで可。
+
+### 提供ツール
+
+| ツール | 用途 |
+|--------|------|
+| `call_aws` | 任意の AWS CLI コマンド実行（`aws ec2 get-spot-placement-scores` 等） |
+| `suggest_aws_commands` | 自然言語から AWS CLI コマンドを提案 |
+
+### 廃止パッケージ
+
+| パッケージ | 状態 | 代替 |
+|-----------|------|------|
+| `awslabs.core-mcp-server` | yanked（全バージョン） | サービス別パッケージに分割 |
+
+### 主要な個別パッケージ一覧
+
+| パッケージ | 用途 |
+|-----------|------|
+| `awslabs.aws-api-mcp-server` | 汎用 AWS CLI ラッパー（EC2, S3, IAM 等） |
+| `awslabs.aws-pricing-mcp-server` | 料金照会（※Cloud Run版は別途上記参照） |
+| `awslabs.aws-documentation-mcp-server` | ドキュメント検索 |
+| `awslabs.cloudwatch-mcp-server` | CloudWatch メトリクス/ログ |
+| `awslabs.ecs-mcp-server` | ECS コンテナ管理 |
+| `awslabs.eks-mcp-server` | EKS Kubernetes |
+| `awslabs.dynamodb-mcp-server` | DynamoDB 操作 |
+| `awslabs.s3-tables-mcp-server` | S3 Tables |
+
+---
+
+## Cloud Run デプロイ版サービス情報
 
 ### aws-pricing-mcp（AWS サービス料金情報）
 
@@ -155,15 +212,11 @@ gcloud run services update aws-pricing-mcp \
 - `ThinkingConfig` は SDK バージョンによって importできない場合があるため try/except でフォールバック
 
 ```python
-from vertexai.generative_models import GenerationConfig
-try:
-    from vertexai.generative_models import ThinkingConfig
-    generation_config = GenerationConfig(
-        response_mime_type="application/json",
-        thinking_config=ThinkingConfig(thinking_budget=0),
-    )
-except (ImportError, TypeError):
-    generation_config = GenerationConfig(response_mime_type="application/json")
+from google.genai import types
+config = types.GenerateContentConfig(
+    response_mime_type="application/json",
+    thinking_config=types.ThinkingConfig(thinking_budget=0),
+)
 ```
 
 - レスポンスから thinking パートを除外: `part.thought == True` のパートをスキップ

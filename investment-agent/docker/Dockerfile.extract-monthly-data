@@ -12,7 +12,7 @@ RUN pip install --no-cache-dir \
     pandas>=2.0 \
     openpyxl>=3.1 \
     db-dtypes>=1.0 \
-    google-cloud-aiplatform>=1.38 \
+    google-genai>=1.0 \
     pdfplumber>=0.10 \
     pymupdf>=1.24 \
     xlrd>=2.0

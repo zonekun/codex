@@ -1,0 +1,60 @@
+{
+  "ticker": "9692",
+  "company_name": "シーイーシー",
+  "current_version": "2026-03",
+  "versions": [
+    {
+      "valid_from": "2026-03",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当連結会計年度におけるセグメント別の受注実績の合計額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当連結会計年度末におけるセグメント別の受注残高の合計額",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "インテグレーションセグメント",
+            "コネクティッドセグメント",
+            "ソリューションセグメント"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "当連結会計年度におけるセグメント別の受注高および受注残高の実績が表形式で記載されています。報告セグメントの区分変更に伴い、前期比の算出には変更後の区分に組み替えた前期実績値が使用されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/9692/20260312_9692_シーイーシー_決算短信_2026年１月期 決算短信〔日本基準〕（連結）_140120260311580120.pdf",
+  "_source_doc_id": "140120260311580120",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T20:25:30.537608+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      19
+    ],
+    "table_count": 1,
+    "max_rows": 5,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

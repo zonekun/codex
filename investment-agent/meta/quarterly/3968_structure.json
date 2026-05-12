@@ -1,0 +1,37 @@
+{
+  "ticker": "3968",
+  "company_name": "セグエ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "breakdown_dimensions": [],
+      "presentation_format": "text",
+      "complexity": "no_table",
+      "notes": "本文中に受注高および受注残高が前年を大きく上回り、豊富に積み上がっている旨の記載があるが、具体的な金額は売上高（完成分）のみ記載されている。 [2026-05-07] completedメトリクスのみのため収集対象外(false化)。"
+    }
+  ],
+  "_source_pdf": "tdnet/3968/20260213_3968_セグエ_決算短信_2025年12月期決算短信〔日本基準〕(連結)_140120260213561483.pdf",
+  "_source_doc_id": "140120260213561483",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:57:31.222992+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "no_table",
+    "relevant_pages": [
+      4,
+      7
+    ],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "pdfplumber found no tables on relevant pages"
+    ]
+  }
+}

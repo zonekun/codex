@@ -1,0 +1,28 @@
+{
+  "ticker": "8304",
+  "company_name": "あおぞら",
+  "current_version": "2025-08",
+  "versions": [
+    {
+      "valid_from": "2025-08",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "other",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/8304/20250801_8304_あおぞら_その他（未分類）_2025年度第1四半期決算概要_140120250801526857.pdf",
+  "_source_doc_id": "140120250801526857",
+  "_generated_at": "2026-04-30T20:06:44.877371+09:00",
+  "_model_used": null
+}

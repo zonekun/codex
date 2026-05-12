@@ -1,0 +1,71 @@
+{
+  "ticker": "9768",
+  "company_name": "いであ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当連結会計年度における受注高の合計額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "当連結会計年度における売上高の合計額、および次期予想値",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "セグメント別売上高",
+          "type": "completed",
+          "description": "各事業セグメントにおける売上高（次期予想値）",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "環境コンサルタント事業",
+            "建設コンサルタント事業",
+            "情報システム事業",
+            "海外事業",
+            "不動産事業"
+          ]
+        }
+      ],
+      "presentation_format": "text",
+      "complexity": "no_table",
+      "notes": "決算短信の「経営成績等の概況」および「今後の見通し」の本文中に、受注高および売上高の実績値、ならびに次期売上高のセグメント別予想値が記載されています。受注残高については、期首からの増加に関する言及はありますが、具体的な金額の記載は確認できません。"
+    }
+  ],
+  "_source_pdf": "tdnet/9768/20260209_9768_いであ_決算短信_2025年12月期　決算短信〔日本基準〕（連結）_140120260206550961.pdf",
+  "_source_doc_id": "140120260206550961",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T20:29:02.515083+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "no_table",
+    "relevant_pages": [
+      4,
+      8
+    ],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "pdfplumber found no tables on relevant pages"
+    ]
+  }
+}

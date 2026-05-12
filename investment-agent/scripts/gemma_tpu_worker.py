@@ -40,6 +40,7 @@ MODEL = "google/gemma-4-31B-it"
 RUN_ID = os.environ.get("RUN_ID")
 if not RUN_ID:
     raise SystemExit("RUN_ID env var required")
+RESUME_RUN_ID = os.environ.get("RESUME_RUN_ID") or ""
 
 BUCKET = os.environ.get("BUCKET_NAME", "stock_data_1930932")
 CALLBACK_URL = os.environ.get("CALLBACK_URL") or ""
@@ -434,7 +435,18 @@ async def amain() -> None:
     docs_all = state.get("docs", [])
     print(f"[state] run_id={state.get('run_id')} docs={len(docs_all)}", flush=True)
 
-    # 2. Resume: 既存 gemma_CURRENT.jsonl を取得 → 処理済 doc_id 集合化
+    # 2a. Cross-execution resume: 旧 execution の checkpoint を引き継ぐ
+    if RESUME_RUN_ID:
+        resume_blob = f"ai_job/{RESUME_RUN_ID}/gemma_CURRENT.jsonl"
+        resume_uri = f"gs://{BUCKET}/{resume_blob}"
+        rc, _ = _gcs_cp(resume_uri, str(LOCAL_OUT))
+        if rc == 0:
+            print(f"[resume] copied checkpoint from {RESUME_RUN_ID}", flush=True)
+            gcs_push_current(LOCAL_OUT)
+        else:
+            print(f"[resume] no checkpoint found for {RESUME_RUN_ID}, starting fresh", flush=True)
+
+    # 2b. Resume: 既存 gemma_CURRENT.jsonl を取得 → 処理済 doc_id 集合化
     resume_lines = gcs_download_current(LOCAL_OUT)
     done_ids: set[str] = set()
     if resume_lines > 0:
@@ -447,6 +459,18 @@ async def amain() -> None:
             except json.JSONDecodeError:
                 continue
     print(f"[resume] existing lines={resume_lines} done_ids={len(done_ids)}", flush=True)
+
+    # 2c. 整合性チェック: resume_run_id の doc_id と state.json の重複率を検証
+    if RESUME_RUN_ID and done_ids:
+        state_doc_ids = {d.get("doc_id") for d in docs_all if d.get("doc_id")}
+        overlap = done_ids & state_doc_ids
+        overlap_ratio = len(overlap) / len(done_ids) if done_ids else 1.0
+        if overlap_ratio < 0.5:
+            print(
+                f"[resume][WARNING] low overlap: {len(overlap)}/{len(done_ids)} "
+                f"({overlap_ratio:.1%}) — resume_run_id may be wrong",
+                flush=True,
+            )
 
     # 3. 未処理 doc を抽出
     pending_docs = [d for d in docs_all if d.get("doc_id") and d["doc_id"] not in done_ids]

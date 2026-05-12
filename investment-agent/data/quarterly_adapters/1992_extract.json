@@ -1,0 +1,28 @@
+{
+  "ticker": "1992",
+  "company_name": "神田通機",
+  "current_version": "2025-08",
+  "versions": [
+    {
+      "valid_from": "2025-08",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Vision extraction selected because structure is complex or data is unavailable."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/1992/20250808_1992_神田通機_決算短信_2026年3月期 第1四半期決算短信〔日本基準〕(連結)_140120250806532437.pdf",
+  "_source_doc_id": "140120250806532437",
+  "_generated_at": "2026-04-30T17:13:58.881590+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

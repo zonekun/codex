@@ -1,0 +1,16 @@
+{
+  "ticker": "9876",
+  "company_name": "コックス",
+  "ir_page_url": "https://www.rentracks.co.jp/ir/",
+  "status": "inactive",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": "月次売上高等のお知らせ|月次速報",
+  "link_href_pattern": "/ir/library/pdf/\\d+th/\\d{4}_\\d{2}_\\d{2}_monthly\\.pdf",
+  "note": "TDnet移行済み。download_monthly.pyでは処理しない (2026-04-24)。旧note: 旧 URL shikiho.toyokeizai.net/news/0/942070 は外部サイト（誤登録）。正しい IR 親ページは rentracks.co",
+  "updated_at": "2026-04-24T13:32:21.840743+09:00",
+  "last_checked": "2026-04-24",
+  "manual_override": true,
+  "manual_override_at": "2026-04-24T08:54:47.677967+09:00",
+  "manual_override_note": "23NG個別調査 B群修正 (2026-04-24)"
+}

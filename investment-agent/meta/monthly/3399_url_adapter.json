@@ -1,0 +1,15 @@
+{
+  "ticker": "3399",
+  "company_name": "丸千代山岡家",
+  "ir_page_url": "https://maruchiyo.yamaokaya.com/ir/library/",
+  "type": "scrape_links",
+  "status": "inactive",
+  "inactive_reason": "IRサイトに月次売上データなし。月次売上速報はTDnet経由のみ開示(TDnetパイプラインで対応)",
+  "excluded": true,
+  "manual_override": true,
+  "note": "2026-04-24確認: IR library に月次データ不在。TDnet経由のみ。inactive",
+  "updated_at": "2026-04-24T17:28:05.307145+09:00",
+  "css_selector": null,
+  "table_selector": null,
+  "follow_links": false
+}

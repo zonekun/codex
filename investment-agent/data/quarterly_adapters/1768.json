@@ -1,0 +1,99 @@
+{
+  "ticker": "1768",
+  "company_name": "ソネック",
+  "current_version": "2025-11",
+  "versions": [
+    {
+      "valid_from": "2025-11",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "建設事業における当中間会計期間の受注高合計",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "完成工事高および運輸事業売上高の合計",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "完成工事高",
+          "type": "completed",
+          "description": "建設事業における売上高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "運輸事業売上高",
+          "type": "completed",
+          "description": "運輸事業における売上高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "次期繰越高",
+          "type": "backlog",
+          "description": "建設事業における当中間会計期間末の受注残高（手持工事高）",
+          "unit": "千円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "工種",
+          "items": [
+            "建築",
+            "土木"
+          ]
+        },
+        {
+          "dimension_name": "発注者",
+          "items": [
+            "官公庁",
+            "民間"
+          ]
+        },
+        {
+          "dimension_name": "事業セグメント",
+          "items": [
+            "建設事業",
+            "運輸事業"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "決算短信の補足情報として、受注高、売上高、次期繰越高のそれぞれについて、工種別（建築・土木）および発注者別（官公庁・民間）の詳細な内訳が表形式で開示されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/1768/20251107_1768_ソネック_決算短信_2026年3月期第2四半期（中間期）決算短信〔日本基準〕（連結）_140120251030583610.pdf",
+  "_source_doc_id": "140120251030583610",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T16:38:58.847675+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      8,
+      12
+    ],
+    "table_count": 4,
+    "max_rows": 44,
+    "max_cols": 7,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 4"
+    ]
+  }
+}

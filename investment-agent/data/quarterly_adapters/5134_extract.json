@@ -1,0 +1,28 @@
+{
+  "ticker": "5134",
+  "company_name": "Ｇ－ＰＯＰＥＲ",
+  "current_version": "2025-12",
+  "versions": [
+    {
+      "valid_from": "2025-12",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Vision extraction selected because structure is complex or data is unavailable."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/5134/20251211_5134_Ｇ－ＰＯＰＥＲ_決算短信_2025年10月期 決算短信〔日本基準〕（非連結）_140120251208516007.pdf",
+  "_source_doc_id": "140120251208516007",
+  "_generated_at": "2026-04-30T18:23:28.290031+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

@@ -1,0 +1,71 @@
+{
+  "source": "non-tdnet(pdf)",
+  "format": "text",
+  "extraction_method": "gemini",
+  "doc_title_pattern": "ファミリーマート\\s*月次営業報告",
+  "fields": [
+    {
+      "key": "チェーン全店 売上（前年同月比）",
+      "name": "チェーン全店 売上（前年同月比）",
+      "row_label_regex": "チェーン全店売上高|全店\\s+売上高",
+      "value_type": "percentage",
+      "description": "チェーン全店売上高の前年比（%）。「全店 売上高」行の値。例: 100.4",
+      "bc_key": "チェーン全店 売上（前年同月比）",
+      "_manual_description": true
+    },
+    {
+      "key": "既存店 客数（前年同月比）",
+      "name": "既存店 客数（前年同月比）",
+      "row_label_regex": "既存店\\s+客数",
+      "value_type": "percentage",
+      "description": "既存店の客数前年比（%）。「既存店 客数」行の値。例: 98.2",
+      "bc_key": "既存店 客数（前年同月比）",
+      "_manual_description": true
+    },
+    {
+      "key": "既存店 客単価（前年同月比）",
+      "name": "既存店 客単価（前年同月比）",
+      "row_label_regex": "既存店\\s+客単価",
+      "value_type": "percentage",
+      "description": "既存店の客単価前年比（%）。「既存店 客単価」行の値。例: 102.5",
+      "bc_key": "既存店 客単価（前年同月比）",
+      "_manual_description": true
+    },
+    {
+      "key": "既存店 日商（前年同日対比）",
+      "name": "既存店 日商（前年同日対比）",
+      "row_label_regex": "既存店\\s+日商",
+      "value_type": "percentage",
+      "description": "既存店の日商前年比（%）。「既存店 日商」行の値。例: 100.6",
+      "bc_key": "既存店 日商（前年同日対比）",
+      "_manual_description": true
+    },
+    {
+      "key": "国内 店舗数",
+      "name": "国内 店舗数",
+      "row_label_regex": "月末店舗数",
+      "value_type": "integer",
+      "description": "月末店舗数（ファミリーマート プロパー、当月列の値）。例: 15480。「国内計（AFC含）」や「国内外合計」ではなく、プロパーの月末店舗数。",
+      "bc_key": "国内 店舗数",
+      "_manual_description": true
+    },
+    {
+      "key": "国内外 店舗数",
+      "name": "国内外 店舗数",
+      "row_label_regex": "国内外合計|国内外計",
+      "value_type": "integer",
+      "description": "国内外合計の店舗数。例: 25312。店舗数テーブルの「国内外合計」列の値。",
+      "bc_key": "国内外 店舗数",
+      "_manual_description": true
+    }
+  ],
+  "custom_prompt": "ファミリーマートの月次営業報告PDFです。\n\n【構造】\n- 1ページ目: サマリー（営業実績テーブル + 店舗数テーブル）\n- 2ページ目: 月次推移テーブル（年度の各月データ）\n\n【注意】\n- 営業実績テーブルは「前年比(%)」で、既存店の日商・客数・客単価、全店の売上高があります\n- 店舗数テーブルには「当月」「年度累計」「国内計(AFC含)」「海外AFC計」「国内外合計」の列があります\n- 「国内 店舗数」はプロパーの月末店舗数（15,480）です。「国内計（AFC含）」（16,412）ではありません\n- 「国内外 店舗数」は「国内外合計」列の値（25,312）です\n- 1ページ目のサマリーテーブルから値を取得してください",
+  "ticker": "8028",
+  "company_name": "ファミリーマート",
+  "created_at": "2026-04-24T21:00:00+09:00",
+  "created_by": "manual",
+  "fields_count": 6,
+  "manual_override": true,
+  "manual_override_at": "2026-04-24T21:00:00+09:00",
+  "manual_override_note": "Phase 1 extract adapter新規作成。PDFからGemini抽出"
+}

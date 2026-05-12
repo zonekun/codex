@@ -1,0 +1,13 @@
+{
+  "ticker": "1420",
+  "company_name": "サンヨーホームズ",
+  "ir_page_url": "https://shikiho.toyokeizai.net/news/0/942070",
+  "updated_at": "2026-04-24T13:42:00.493655+09:00",
+  "last_checked": "2026-04-21",
+  "status": "inactive",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": "monthly|PDF",
+  "link_href_pattern": "/ir/library/pdf/21th/2026_03_03_monthly\\.pdf",
+  "note": "月次開示データ確認できず → inactive化 (2026-04-24)。eir-parts/IRページに月次データ無し。"
+}

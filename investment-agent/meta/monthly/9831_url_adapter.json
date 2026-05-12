@@ -1,0 +1,20 @@
+{
+  "ticker": "9831",
+  "company_name": "ヤマダホールディングス",
+  "updated_at": "2026-04-20",
+  "ir_page_url": "https://www.yamada-holdings.jp/ir/monthly.html",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": null,
+  "link_href_pattern": ".*\\.(pdf|xlsx|xls)",
+  "table_selector": null,
+  "status": "active",
+  "skip_reason": null,
+  "note": "ヤマダHD月次。ltp=None, lhpを絶対URL対応に拡張",
+  "url_source": "recovered_from_index_csv",
+  "last_checked": "2026-04-20",
+  "follow_links": false,
+  "playwright_required": false,
+  "recovered_at": "2026-04-20T21:37:09.325193+09:00",
+  "recovery_reason": "sync_bug_overwrite_20260420"
+}

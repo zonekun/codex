@@ -1,0 +1,86 @@
+{
+  "ticker": "5343",
+  "company_name": "ニッコー",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "連結累計期間の売上高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "住設環境機器事業 売上高",
+          "type": "completed",
+          "description": "住設環境機器事業セグメントの売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "機能性セラミック商品事業 売上高",
+          "type": "completed",
+          "description": "機能性セラミック商品事業セグメントの売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "陶磁器事業 売上高",
+          "type": "completed",
+          "description": "陶磁器事業セグメントの売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "その他 売上高",
+          "type": "completed",
+          "description": "その他セグメントの売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "住設環境機器事業",
+            "機能性セラミック商品事業",
+            "陶磁器事業",
+            "その他"
+          ]
+        }
+      ],
+      "presentation_format": "text",
+      "complexity": "no_table",
+      "notes": "本文中にセグメント別の売上高の具体的な金額記載がありますが、受注高および受注残高については定性的な傾向の説明のみで、具体的な金額の記載はありません。"
+    }
+  ],
+  "_source_pdf": "tdnet/5343/20260210_5343_ニッコー_決算短信_2026年３月期第３四半期決算短信〔日本基準〕(連結)_140120260130542444.pdf",
+  "_source_doc_id": "140120260130542444",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:26:51.040992+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "no_table",
+    "relevant_pages": [
+      4
+    ],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "pdfplumber found no tables on relevant pages"
+    ]
+  }
+}

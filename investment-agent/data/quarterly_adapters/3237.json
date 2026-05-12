@@ -1,0 +1,107 @@
+{
+  "ticker": "3237",
+  "company_name": "Ｇ－イントランス",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "案件数（実績）",
+          "type": "completed",
+          "description": "各四半期において成立または実施されたプロジェクトの件数",
+          "unit": "件",
+          "is_total": false
+        },
+        {
+          "name": "計画案件数",
+          "type": "order_intake",
+          "description": "各四半期において計画されていたプロジェクトの件数",
+          "unit": "件",
+          "is_total": false
+        },
+        {
+          "name": "繰越・延期案件数",
+          "type": "backlog",
+          "description": "次期へ延期または前期から繰り越されたプロジェクトの件数",
+          "unit": "件",
+          "is_total": false
+        },
+        {
+          "name": "売上高（実績）",
+          "type": "completed",
+          "description": "インバウンド送客事業等における四半期累計の売上実績額",
+          "unit": "百万円",
+          "is_total": false
+        },
+        {
+          "name": "計画売上高",
+          "type": "order_intake",
+          "description": "インバウンド送客事業等における四半期累計の売上計画額",
+          "unit": "百万円",
+          "is_total": false
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "不動産事業",
+            "ホテル運営事業",
+            "インバウンド送客事業",
+            "投資事業"
+          ]
+        },
+        {
+          "dimension_name": "時期",
+          "items": [
+            "1Q実績",
+            "2Q実績",
+            "3Q計画",
+            "4Q計画"
+          ]
+        },
+        {
+          "dimension_name": "事業項目",
+          "items": [
+            "宿泊施設の転売",
+            "リゾート施設開発PM",
+            "インバウンド宿泊施設開発販売",
+            "不動産販売",
+            "既存運営ホテル",
+            "新規ホテル・旅館運営",
+            "リゾート施設コンサルティング",
+            "インバウンド送客売上"
+          ]
+        }
+      ],
+      "presentation_format": "text",
+      "complexity": "no_data",
+      "notes": "13ページに全セグメントの事業進捗状況が表形式でまとめられており、案件数ベースの計画・実績・繰越状況が詳細に記載されている。金額データについてはインバウンド送客事業の売上高（累計）のみが百万円単位で示されている。\nユーザー指示により、金額以外または外貨単位の受注関連メトリクも必要なため復元。"
+    }
+  ],
+  "_source_pdf": "tdnet/3237/20260213_3237_Ｇ－イントランス_決算説明資料_2026年３月期第３四半期決算説明資料_140120260212557911.pdf",
+  "_source_doc_id": "140120260212557911",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T17:35:11.307236+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      13,
+      17,
+      20
+    ],
+    "table_count": 10,
+    "max_rows": 5,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 10"
+    ]
+  }
+}

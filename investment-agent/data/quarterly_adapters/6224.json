@@ -1,0 +1,65 @@
+{
+  "ticker": "6224",
+  "company_name": "Ｇ－ＪＲＣ",
+  "current_version": "2025-10",
+  "versions": [
+    {
+      "valid_from": "2025-10",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "各事業セグメントにおける四半期ごとの受注高",
+          "unit": "百万円",
+          "is_total": false
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "各事業セグメントにおける四半期末時点の受注残高",
+          "unit": "百万円",
+          "is_total": false
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "事業セグメント",
+          "items": [
+            "コンベヤ事業",
+            "環境プラント事業",
+            "ロボットSI事業"
+          ]
+        }
+      ],
+      "presentation_format": "chart",
+      "complexity": "ppt_chart",
+      "notes": "コンベヤ事業（13ページ）、環境プラント事業（16ページ）、ロボットSI事業（20ページ）の各セグメントについて、四半期別の受注高および受注残高の推移が棒グラフで示されている。数値の詳細はグラフの目盛りから読み取る形式となっている。"
+    }
+  ],
+  "_source_pdf": "tdnet/6224/20251015_6224_Ｇ－ＪＲＣ_決算説明資料_2026年2月期 第2四半期（中間期） 決算説明資料_140120251015574205.pdf",
+  "_source_doc_id": "140120251015574205",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T18:48:49.504013+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      13,
+      16,
+      20
+    ],
+    "table_count": 6,
+    "max_rows": 14,
+    "max_cols": 17,
+    "broken_col0": true,
+    "unit_mixed": true,
+    "notes": [
+      "first-column labels appear merged",
+      "multiple units appear in relevant pages",
+      "many tables: 6",
+      "wide table: 17 columns"
+    ]
+  }
+}

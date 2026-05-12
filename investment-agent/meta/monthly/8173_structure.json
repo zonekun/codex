@@ -1,0 +1,40 @@
+{
+  "ticker": "8173",
+  "company_name": "8173",
+  "metrics": [
+    {
+      "name": "グループ 売上（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "グループ 店舗数",
+      "source": "bc"
+    },
+    {
+      "name": "売上 エアコン（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "売上 テレビ（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "売上 パソコン（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "売上 冷蔵庫（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "売上 携帯電話（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "売上 洗濯機・クリーナー（前年同月比）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

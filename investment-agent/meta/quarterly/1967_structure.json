@@ -1,0 +1,46 @@
+{
+  "ticker": "1967",
+  "company_name": "ヤマト",
+  "current_version": "2025-08",
+  "versions": [
+    {
+      "valid_from": "2025-08",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当第１四半期連結累計期間の受注高合計",
+          "unit": "千円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "PDFの連結受注実績内訳およびセグメント情報は単位：千円。全メトリクスを千円に正規化。"
+    }
+  ],
+  "_source_pdf": "tdnet/1967/20250801_1967_ヤマト_決算短信_2026年３月期第１四半期決算短信〔日本基準〕(連結)_140120250731526213.pdf",
+  "_source_doc_id": "140120250731526213",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:10:27.505373+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "no_table",
+    "relevant_pages": [
+      4,
+      10,
+      12
+    ],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "pdfplumber found no tables on relevant pages"
+    ]
+  }
+}

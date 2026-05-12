@@ -1,0 +1,44 @@
+{
+  "ticker": "6182",
+  "company_name": "Ｇ－メタリアル",
+  "current_version": "2026-04",
+  "versions": [
+    {
+      "valid_from": "2026-04",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "AI事業における受注高",
+          "unit": "千円",
+          "is_total": false
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "text",
+      "complexity": "no_table",
+      "notes": "売上高は連結合計とセグメント別内訳が別表示で確認できる。AI事業の受注高と連結売上高、セグメント別売上高を千円単位で確認し、重複名称の子指標をセグメント別売上高に改名した。"
+    }
+  ],
+  "_source_pdf": "tdnet/6182/20260414_6182_Ｇ－メタリアル_決算短信_2026年２月期 決算短信〔日本基準〕（連結）_140120260414504157.pdf",
+  "_source_doc_id": "140120260414504157",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:45:51.319126+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "no_table",
+    "relevant_pages": [
+      5
+    ],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "pdfplumber found no tables on relevant pages"
+    ]
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "ticker": "9517",
+  "company_name": "イーレックス",
+  "source": "non-tdnet(html_table)",
+  "extraction_method": "gemini",
+  "custom_prompt": "このHTMLページはイーレックスの月間受給電力量のお知らせです。表から各発電所の月間発電量(MWh)を抽出し、合計値を返してください。「佐伯」「豊前バイオマス」「中城バイオマス」「糸魚川」の合計値を「発電量 合計（MWh）」として返してください。停止中・未稼働の施設は0として扱ってください。",
+  "fields": [
+    {
+      "key": "発電量 合計（MWh）",
+      "bc_key": "発電量 合計（MWh）",
+      "description": "月間受給電力量 合計（MWh）。佐伯+豊前バイオマス+中城バイオマス+糸魚川の合計",
+      "value_type": "number"
+    }
+  ],
+  "manual_override": true,
+  "manual_override_at": "2026-05-08T14:00:00+09:00"
+}

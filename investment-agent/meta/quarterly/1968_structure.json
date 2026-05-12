@@ -1,0 +1,53 @@
+{
+  "ticker": "1968",
+  "company_name": "太平電",
+  "current_version": "2025-05",
+  "versions": [
+    {
+      "valid_from": "2025-05",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当連結会計年度における受注高の合計およびセグメント別内訳",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当連結会計年度末における受注残高の合計およびセグメント別内訳",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "第17ページの「(1) セグメント別受注高・売上高・受注残高」に、建設工事部門と補修工事部門の2セグメント別の詳細な数値が記載されている。"
+    }
+  ],
+  "_source_pdf": "tdnet/1968/20250521_1968_太平電_決算短信_(訂正・数値データ訂正)「2025年３月期決算短信〔日本基準〕(連結)」の一部修_140120250519558123.pdf",
+  "_source_doc_id": "140120250519558123",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:10:44.669267+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      5,
+      6,
+      21
+    ],
+    "table_count": 1,
+    "max_rows": 11,
+    "max_cols": 7,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

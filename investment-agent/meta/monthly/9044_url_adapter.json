@@ -1,0 +1,20 @@
+{
+  "ticker": "9044",
+  "company_name": "南海電気鉄道",
+  "updated_at": "2026-04-20",
+  "ir_page_url": "http://www.nankai.co.jp/ir/library/monthly_report",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": null,
+  "link_href_pattern": "monthly_report/pdf",
+  "table_selector": null,
+  "status": "active",
+  "skip_reason": null,
+  "note": "月次営業概況PDF。pattern: /monthly_report/pdf/{YYMM}_getsuji.pdf",
+  "url_source": "recovered_from_index_csv",
+  "last_checked": "2026-04-20",
+  "follow_links": false,
+  "playwright_required": false,
+  "recovered_at": "2026-04-20T21:37:09.325193+09:00",
+  "recovery_reason": "sync_bug_overwrite_20260420"
+}

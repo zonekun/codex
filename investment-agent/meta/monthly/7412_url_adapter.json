@@ -1,0 +1,16 @@
+{
+  "ticker": "7412",
+  "company_name": "アトム",
+  "ir_page_url": "http://www.atom-corp.co.jp/ir/monthlysale.php",
+  "type": "scrape_links",
+  "status": "active",
+  "link_text_pattern": null,
+  "link_href_pattern": "ir_disp\\.php\\?ir_no=|monthlysale.*\\.pdf",
+  "playwright_required": false,
+  "manual_override": true,
+  "note": "2026-04-24修正: ir_disp.php?ir_no=NNNが直接PDFを返す。DOWNLOAD_PATH_EXTにパターン追加。link_text_pattern除去(全リンクが月次)",
+  "updated_at": "2026-04-24T17:28:05.307145+09:00",
+  "css_selector": null,
+  "table_selector": null,
+  "follow_links": false
+}

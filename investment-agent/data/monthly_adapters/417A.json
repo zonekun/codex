@@ -1,9 +1,0 @@
-{
-  "ticker": "417A",
-  "company_name": "ブルーゾーンホールディングス",
-  "type": "scrape_links",
-  "url": "https://www.bluezonesholdings.co.jp/ir/finance/monthly.html",
-  "manual_add": true,
-  "created_at": "2026-04-04T22:49:35.598063+09:00",
-  "created_by": "manual"
-}

@@ -1,0 +1,77 @@
+{
+  "ticker": "1884",
+  "company_name": "日道路",
+  "current_version": "2025-07",
+  "versions": [
+    {
+      "valid_from": "2025-07",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当四半期累計期間における受注した工事および製品等の金額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "当四半期累計期間における完成工事高および製品販売等の売上高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "繰越高",
+          "type": "backlog",
+          "description": "当四半期会計期間末における次期以降に繰り越される未完成工事等の残高",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "部門",
+          "items": [
+            "建設事業",
+            "製造・販売事業",
+            "共創事業"
+          ]
+        },
+        {
+          "dimension_name": "建設事業内訳",
+          "items": [
+            "舗装工事",
+            "土木工事",
+            "建築工事"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "資料の9ページ（補足情報）に、個別ベースの部門別受注・売上・繰越高の詳細な内訳表が掲載されています。建設事業については舗装・土木・建築の工種別内訳も含まれています。"
+    }
+  ],
+  "_source_pdf": "tdnet/1884/20250729_1884_日道路_決算短信_2026年３月期 第１四半期決算短信〔日本基準〕（連結）_140120250728521687.pdf",
+  "_source_doc_id": "140120250728521687",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T16:58:38.309399+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      3,
+      4,
+      11
+    ],
+    "table_count": 1,
+    "max_rows": 17,
+    "max_cols": 9,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

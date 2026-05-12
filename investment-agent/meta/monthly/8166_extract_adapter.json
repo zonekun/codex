@@ -1,0 +1,71 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "doc_title_pattern": "月次売上高前年比情報（速報）のお知らせ",
+  "fields": [
+    {
+      "key": "全社 売上（前年同月比）",
+      "name": "全社 売上（前年同月比）",
+      "row_label_regex": "全\\s*社\\s*売上高",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "persistent diff=3.4: our=92.6 vs bc=89.2"
+    },
+    {
+      "key": "既存店 売上（前年同月比）",
+      "name": "既存店 売上（前年同月比）",
+      "row_label_regex": "既\\s*存\\s*店\\s*売上高",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "persistent diff=0.7: our=93.8 vs bc=94.5"
+    },
+    {
+      "key": "全店 店舗数",
+      "name": "全店 店舗数",
+      "row_label_regex": "店舗数\\s*当月度末店舗\\s*数",
+      "value_type": "integer",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "definition mismatch: our=282 vs bc=113.0"
+    },
+    {
+      "key": "全社 客単価（前年同月比）",
+      "name": "全社 客単価（前年同月比）",
+      "description": "「全社 売上高」セクション内の「客単価」行にある対象月の前年同月比（%）。「既存店」セクションの客単価と混同しないこと。",
+      "value_type": "percentage",
+      "bc_key": "全社 客単価（前年同月比）"
+    },
+    {
+      "key": "全社 客数（前年同月比）",
+      "name": "全社 客数（前年同月比）",
+      "description": "「全社 売上高」セクション内の「客数」行にある対象月の前年同月比（%）。「既存店」セクションの客数と混同しないこと。",
+      "value_type": "percentage",
+      "bc_key": "全社 客数（前年同月比）"
+    },
+    {
+      "key": "既存店 客単価（前年同月比）",
+      "name": "既存店 客単価（前年同月比）",
+      "description": "「既存店 売上高」セクション内の「客単価」行にある対象月の前年同月比（%）。「全社」セクションの客単価と混同しないこと。",
+      "value_type": "percentage",
+      "bc_key": "既存店 客単価（前年同月比）"
+    },
+    {
+      "key": "既存店 客数（前年同月比）",
+      "name": "既存店 客数（前年同月比）",
+      "description": "「既存店 売上高」セクション内の「客数」行にある対象月の前年同月比（%）。「全社」セクションの客数と混同しないこと。",
+      "value_type": "percentage",
+      "bc_key": "既存店 客数（前年同月比）"
+    }
+  ],
+  "extraction_notes": "「全社 客数（前年同月比）」、「全社 客単価（前年同月比）」、「既存店 客数（前年同月比）」、「既存店 客単価（前年同月比）」は、それぞれ「全社 売上高」または「既存店 売上高」の行の直後に「客数」または「客単価」として記載されており、row_label_regexのみでは一意に識別できないため、本JSONには含めていません。抽出には行の前後関係を考慮したより複雑なロジックが必要です。",
+  "ticker": "8166",
+  "company_name": "8166",
+  "created_at": "2026-03-21T20:08:16.320007+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "月次売上高前年比情報（速報）のお知らせ",
+  "sample_submission_date": "2026-03-04",
+  "fields_count": 3,
+  "extraction_method": "gemini",
+  "manual_override": true,
+  "manual_override_note": "Phase 2-3: bc_ignore for fields with persistent extraction mismatch",
+  "manual_override_at": "2026-04-25T06:10:00+09:00"
+}

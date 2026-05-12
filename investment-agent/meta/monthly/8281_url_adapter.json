@@ -1,0 +1,15 @@
+{
+  "ticker": "8281",
+  "company_name": "ゼビオ",
+  "ir_page_url": "http://www.xebio.co.jp/ja/ir/monthly.html",
+  "type": "html_table",
+  "status": "active",
+  "link_text_pattern": null,
+  "link_href_pattern": null,
+  "playwright_required": false,
+  "note": "月次売上データはHTMLテーブル埋め込み。旧URLの /ir/monthly/ はプレスリリース等のWordPressページでPDF汚染が多い（統合報告書・開店PR等）。正しいURLは /ja/ir/monthly.html でHTMLテーブル形式。2026-04-24修正",
+  "manual_override": true,
+  "manual_override_note": "2026-04-24 /ir/monthly/（WordPress PDF混在）→ /ja/ir/monthly.html（HTMLテーブル）に修正、type=html_tableに変更",
+  "manual_override_at": "2026-04-24T00:00:00+09:00",
+  "updated_at": "2026-04-24T00:00:00+09:00"
+}

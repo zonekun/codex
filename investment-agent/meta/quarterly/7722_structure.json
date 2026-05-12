@@ -1,0 +1,68 @@
+{
+  "ticker": "7722",
+  "company_name": "国際計測",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当第３四半期連結累計期間における受注高の合計",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "製品別受注高",
+          "type": "order_intake",
+          "description": "製品区分別の受注高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当第３四半期連結会計期間末における受注残高の合計",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "製品別受注残高",
+          "type": "backlog",
+          "description": "製品区分別の受注残高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "補足情報の「生産、受注及び販売の状況」セクションに、受注高、受注残高、売上高の製品別内訳が表形式で詳細に記載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/7722/20260209_7722_国際計測_決算短信_2026年３月期第３四半期決算短信〔日本基準〕(連結)_140120260209551183.pdf",
+  "_source_doc_id": "140120260209551183",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:55:14.832035+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      14
+    ],
+    "table_count": 4,
+    "max_rows": 7,
+    "max_cols": 4,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 4"
+    ]
+  }
+}

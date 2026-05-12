@@ -1,0 +1,71 @@
+{
+  "ticker": "6706",
+  "company_name": "電気興",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当第3四半期連結累計期間における受注高の合計額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当第3四半期連結会計期間末における受注残高の合計額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "セグメント別受注高",
+          "type": "order_intake",
+          "description": "報告セグメント別の受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "セグメント別受注残高",
+          "type": "backlog",
+          "description": "報告セグメント別の受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "補足情報（11ページ）にセグメント別の受注実績（受注高、受注残高）および売上実績の詳細な表が掲載されています。電気通信関連事業については、売上高が工事と設備・機材売上に細分化されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/6706/20260213_6706_電気興_決算短信_2026年3月期　第3四半期決算短信〔日本基準〕（連結）_140120260212558618.pdf",
+  "_source_doc_id": "140120260212558618",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:25:22.830726+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      5,
+      8,
+      13
+    ],
+    "table_count": 4,
+    "max_rows": 46,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 4"
+    ]
+  }
+}

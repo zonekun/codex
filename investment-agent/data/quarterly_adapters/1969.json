@@ -1,0 +1,109 @@
+{
+  "ticker": "1969",
+  "company_name": "高砂熱",
+  "current_version": "2025-11",
+  "versions": [
+    {
+      "valid_from": "2025-11",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当該期間中に新たに受注した工事および製品の金額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "連結決算における売上高（完成工事高を含む）",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "完成工事高",
+          "type": "completed",
+          "description": "個別決算における完成した工事の代金",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "繰越高",
+          "type": "backlog",
+          "description": "受注済みのうち、まだ完成・売上計上されていない残高",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "設備工事事業",
+            "設備機器の製造・販売事業",
+            "その他"
+          ]
+        },
+        {
+          "dimension_name": "設備工事事業内訳",
+          "items": [
+            "一般設備",
+            "産業設備"
+          ]
+        },
+        {
+          "dimension_name": "地域",
+          "items": [
+            "海外"
+          ]
+        },
+        {
+          "dimension_name": "サービス区分",
+          "items": [
+            "保守・メンテナンス"
+          ]
+        },
+        {
+          "dimension_name": "報告単位",
+          "items": [
+            "連結",
+            "個別"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "連結および個別の両方で受注高、売上高（完成工事高）、繰越高の詳細なデータが提供されています。設備工事事業については一般設備と産業設備の内訳があり、さらに海外案件や保守・メンテナンス案件の抽出も可能です。"
+    }
+  ],
+  "_source_pdf": "tdnet/1969/20251114_1969_高砂熱_決算短信_2026年３月期　第２四半期（中間期）決算短信　〔日本基準〕（連結）_140120251113501058.pdf",
+  "_source_doc_id": "140120251113501058",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:11:11.332413+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      2,
+      3,
+      5,
+      19,
+      20,
+      21,
+      22,
+      23
+    ],
+    "table_count": 13,
+    "max_rows": 25,
+    "max_cols": 13,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 13",
+      "wide table: 13 columns"
+    ]
+  }
+}

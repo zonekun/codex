@@ -14,12 +14,16 @@ PYTHONUTF8=1 python scripts/cleanup_disk.py
 # 実削除
 PYTHONUTF8=1 python scripts/cleanup_disk.py --execute
 
-# 保持期間を変える（デフォルト 30 日）
-PYTHONUTF8=1 python scripts/cleanup_disk.py --logs-days 14 --claude-days 14
+# 保持期間を変える（デフォルト: logs/claude 30日, mem 90日）
+PYTHONUTF8=1 python scripts/cleanup_disk.py --logs-days 14 --claude-days 14 --mem-days 60
 
 # 片方だけに限定
 PYTHONUTF8=1 python scripts/cleanup_disk.py --skip-claude
 PYTHONUTF8=1 python scripts/cleanup_disk.py --skip-logs
+PYTHONUTF8=1 python scripts/cleanup_disk.py --skip-mem
+
+# claude-mem DB の VACUUM（--execute と併用）
+PYTHONUTF8=1 python scripts/cleanup_disk.py --skip-logs --skip-claude --mem-vacuum --execute
 ```
 
 ## スコープ
@@ -32,6 +36,11 @@ PYTHONUTF8=1 python scripts/cleanup_disk.py --skip-logs
 | `data/logs/` | `active_jobs.md` | **常に除外**（実運用ファイル） |
 | `~/.claude/` | `debug/` `telemetry/` `file-history/` `shell-snapshots/` `paste-cache/` `cache/` 配下 | ファイル mtime が N 日以上前 |
 | `~/.claude/projects/<enc_path>/` | プロジェクト単位 | 内部ファイルの最新 mtime が N 日以上前 |
+| `claude-mem` logs/ | 日次ログファイル | N 日以上前（デフォルト 90 日） |
+| `claude-mem` trash/ | ソフト削除データ | **常に全削除** |
+| `claude-mem` backups/ | DBバックアップ | N 日以上前（デフォルト 90 日） |
+| `claude-mem` DB | observations / session_summaries / user_prompts | created_at が N 日以上前 |
+| `claude-mem` DB | VACUUM + WAL checkpoint | `--mem-vacuum` 指定時のみ |
 
 ## `~/.claude/` キャッシュ系の保持判断
 
@@ -70,3 +79,4 @@ PYTHONUTF8=1 python scripts/cleanup_disk.py --skip-logs
 
 - Claude Code hooks logger 設定: `docs/knowledges/tools/017_claude_code_hooks_logger.md`
 - `active_jobs.md` 運用: `docs/knowledges/tools/033_check_jobs.md`
+- claude-mem プラグイン: `docs/knowledges/tools/082_claude_mem.md`

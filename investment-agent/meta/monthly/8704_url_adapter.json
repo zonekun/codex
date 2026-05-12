@@ -1,0 +1,14 @@
+{
+  "ticker": "8704",
+  "company_name": "トレイダーズホールディングス",
+  "ir_page_url": "https://www.tradershd.com/ir/",
+  "updated_at": "2026-04-24T13:52:42.252045+09:00",
+  "last_checked": "2026-04-21",
+  "status": "inactive",
+  "type": "eir_api",
+  "eir_company_code": "8704",
+  "note": "ドメイン(tradersh.co.jp)DNS解決不可。社名変更 or ドメイン移転の可能性 → inactive (2026-04-24 要調査)。",
+  "manual_override": true,
+  "manual_override_at": "2026-04-24T13:52:42.252045+09:00",
+  "manual_override_note": "inactive化 (2026-04-24)"
+}

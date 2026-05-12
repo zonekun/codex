@@ -1,0 +1,52 @@
+{
+  "ticker": "9739",
+  "company_name": "ＮＳＷ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当第３四半期連結累計期間における受注高の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "セグメント別受注高",
+          "type": "order_intake",
+          "description": "各報告セグメント別の受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "text",
+      "complexity": "no_table",
+      "notes": "本文中に連結およびセグメント別の受注高と売上高の数値が記載されています。受注残高に関する具体的な数値の記載はこのページにはありません。"
+    }
+  ],
+  "_source_pdf": "tdnet/9739/20260209_9739_ＮＳＷ_決算短信_2026年３月期第３四半期決算短信〔日本基準〕(連結)_140120260206549704.pdf",
+  "_source_doc_id": "140120260206549704",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T20:26:28.912952+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "no_table",
+    "relevant_pages": [
+      4
+    ],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "pdfplumber found no tables on relevant pages"
+    ]
+  }
+}

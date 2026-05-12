@@ -1,0 +1,28 @@
+{
+  "ticker": "4426",
+  "company_name": "Ｐ－パスロジ",
+  "current_version": "2025-05",
+  "versions": [
+    {
+      "valid_from": "2025-05",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Vision extraction selected because structure is complex or data is unavailable."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/4426/20250515_4426_Ｐ－パスロジ_決算短信_2025年６月期 第３四半期決算短信〔日本基準〕（非連結）_140120250515553820.pdf",
+  "_source_doc_id": "140120250515553820",
+  "_generated_at": "2026-04-30T18:08:14.432410+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

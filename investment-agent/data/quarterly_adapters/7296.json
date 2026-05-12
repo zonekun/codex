@@ -1,0 +1,37 @@
+{
+  "ticker": "7296",
+  "company_name": "ＦＣＣ",
+  "current_version": "2025-05",
+  "versions": [
+    {
+      "valid_from": "2025-05",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "ppt_chart",
+      "notes": "提示された資料はキャッシュアロケーション（投資実績・計画）に関するものであり、受注高、売上高、受注残高に関する数値データは含まれていません。"
+    }
+  ],
+  "_source_pdf": "tdnet/7296/20250519_7296_ＦＣＣ_決算説明資料_2024年度決算説明会資料_140120250519557065.pdf",
+  "_source_doc_id": "140120250519557065",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T19:46:20.797496+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      15
+    ],
+    "table_count": 6,
+    "max_rows": 6,
+    "max_cols": 6,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 6"
+    ]
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "ticker": "1866",
+  "company_name": "北野建",
+  "current_version": "2025-11",
+  "versions": [
+    {
+      "valid_from": "2025-11",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Vision extraction selected because structure is complex or data is unavailable."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/1866/20251112_1866_北野建_決算短信_令和８年３月期　第２四半期（中間期）決算短信〔日本基準〕（連結）_140120251112597059.pdf",
+  "_source_doc_id": "140120251112597059",
+  "_generated_at": "2026-04-30T16:55:14.717684+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

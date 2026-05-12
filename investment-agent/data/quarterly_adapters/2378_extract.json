@@ -1,0 +1,28 @@
+{
+  "ticker": "2378",
+  "company_name": "ルネサンス",
+  "current_version": "2025-08",
+  "versions": [
+    {
+      "valid_from": "2025-08",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/2378/20250808_2378_ルネサンス_決算短信_2026年3月期第1四半期決算短信〔日本基準〕（連結）_140120250807533944.pdf",
+  "_source_doc_id": "140120250807533944",
+  "_generated_at": "2026-04-30T17:21:40.053584+09:00",
+  "_model_used": null
+}

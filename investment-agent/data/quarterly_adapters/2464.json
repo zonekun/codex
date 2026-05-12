@@ -1,0 +1,36 @@
+{
+  "ticker": "2464",
+  "company_name": "Ａｏｂａ‐ＢＢＴ",
+  "current_version": "2024-11",
+  "versions": [
+    {
+      "valid_from": "2024-11",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "breakdown_dimensions": [],
+      "presentation_format": "text",
+      "complexity": "no_table",
+      "notes": "本文中にリカレント教育事業の売上高（1,702百万円）の記載はあるが、受注高および受注残高の具体的な金額データが本文中に存在しないため、データなしと判定した。受注高については「前年同期とほぼ同水準」といった定性的な表現に留まっている。"
+    }
+  ],
+  "_source_pdf": "tdnet/2464/20241107_2464_Ａｏｂａ‐ＢＢＴ_決算短信_2025年３月期 第２四半期（中間期）決算短信[日本基準](連結）_140120241107514436.pdf",
+  "_source_doc_id": "140120241107514436",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:23:41.357931+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "no_table",
+    "relevant_pages": [
+      5
+    ],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "pdfplumber found no tables on relevant pages"
+    ]
+  }
+}

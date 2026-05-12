@@ -1,0 +1,27 @@
+{
+  "ticker": "1777",
+  "company_name": "川崎設備",
+  "current_version": "2025-07",
+  "versions": [
+    {
+      "valid_from": "2025-07",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "経営成績に関する説明",
+        "受注高",
+        "完成工事高",
+        "四半期損益計算書"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "以下の2つの指標を抽出してください。\n1. 受注高: 「1. 当四半期決算に関する定性的情報」の「(1) 経営成績に関する説明」のセクションに記載されている「受注高」の金額を、百万円単位の数値（整数）として抽出してください（例：140億39百万円の場合は 14039）。\n2. 完成工事高: 「（２）四半期損益計算書」の表にある「完成工事高」の「当第１四半期累計期間」の数値を抽出してください。単位は百万円です。",
+      "notes": "structure.jsonでcomplexityがcomplex_tableと定義されており、また「受注高」が本文テキスト中に「140億39百万円」という形式で記載されているため、単位換算を含めた抽出が可能なgemini_visionを選択しました。"
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/1777/20250731_1777_川崎設備_決算短信_2026年３月期 第１四半期決算短信〔日本基準〕(非連結)_140120250730524280.pdf",
+  "_source_doc_id": "140120250730524280",
+  "_generated_at": "2026-04-30T22:43:04.574728+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

@@ -1,0 +1,40 @@
+{
+  "ticker": "5134",
+  "company_name": "Ｇ－ＰＯＰＥＲ",
+  "current_version": "2025-12",
+  "versions": [
+    {
+      "valid_from": "2025-12",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "breakdown_dimensions": [],
+      "presentation_format": "text",
+      "complexity": "complex_table",
+      "notes": "提供された決算短信の抜粋ページ（貸借対照表、株主資本等変動計算書、注記等）を確認しましたが、受注高、受注残高、またはそれらに類するメトリクスの数値データは記載されていません。本文中に次期の売上高予想に関する記述はありますが、受注状況を詳細に示すデータは開示されていません。"
+    }
+  ],
+  "_source_pdf": "tdnet/5134/20251211_5134_Ｇ－ＰＯＰＥＲ_決算短信_2025年10月期 決算短信〔日本基準〕（非連結）_140120251208516007.pdf",
+  "_source_doc_id": "140120251208516007",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:23:28.290031+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      7,
+      9,
+      12,
+      14
+    ],
+    "table_count": 5,
+    "max_rows": 31,
+    "max_cols": 10,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 5"
+    ]
+  }
+}

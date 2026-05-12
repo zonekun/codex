@@ -1,0 +1,52 @@
+{
+  "ticker": "6455",
+  "company_name": "モリタＨＤ",
+  "current_version": "2026-01",
+  "versions": [
+    {
+      "valid_from": "2026-01",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当第３四半期連結累計期間における受注実績の合計額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当第３四半期連結累計期間末における受注残高の合計額",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "決算短信の補足情報（11ページ）において、セグメント別の受注高、受注残高、販売高が詳細な表形式で開示されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/6455/20260130_6455_モリタＨＤ_決算短信_2026年３月期　第３四半期決算短信〔日本基準〕（連結）_140120260128539866.pdf",
+  "_source_doc_id": "140120260128539866",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:13:45.662063+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      13
+    ],
+    "table_count": 3,
+    "max_rows": 3,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

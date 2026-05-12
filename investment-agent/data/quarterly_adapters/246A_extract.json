@@ -1,0 +1,28 @@
+{
+  "ticker": "246A",
+  "company_name": "Ｇ－アスア",
+  "current_version": "2024-11",
+  "versions": [
+    {
+      "valid_from": "2024-11",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "presentation",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/246A/20241113_246A_Ｇ－アスア_決算説明資料_2025年6月期 第1四半期決算説明資料_140120241113521085.pdf",
+  "_source_doc_id": "140120241113521085",
+  "_generated_at": "2026-04-30T17:23:47.529549+09:00",
+  "_model_used": null
+}

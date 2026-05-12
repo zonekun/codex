@@ -1,0 +1,89 @@
+{
+  "ticker": "6568",
+  "company_name": "Ｇ－神戸天然物化学",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注残",
+          "type": "order_intake",
+          "unit": "億円",
+          "description": "PDF??????????????"
+        },
+        {
+          "name": "受注残LT",
+          "type": "order_intake",
+          "unit": "億円",
+          "description": "PDF??????????????"
+        },
+        {
+          "name": "新規受注",
+          "type": "order_intake",
+          "unit": "億円",
+          "description": "PDF??????????????"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "四半期",
+          "items": [
+            "2022/3期 1Q",
+            "2022/3期 2Q",
+            "2022/3期 3Q",
+            "2022/3期 4Q",
+            "2023/3期 1Q",
+            "2023/3期 2Q",
+            "2023/3期 3Q",
+            "2023/3期 4Q",
+            "2024/3期 1Q",
+            "2024/3期 2Q",
+            "2024/3期 3Q",
+            "2024/3期 4Q",
+            "2025/3期 1Q",
+            "2025/3期 2Q",
+            "2025/3期 3Q",
+            "2025/3期 4Q",
+            "2026/3期 1Q",
+            "2026/3期 2Q",
+            "2026/3期 3Q"
+          ]
+        },
+        {
+          "dimension_name": "分野",
+          "items": [
+            "機能材料分野",
+            "医薬分野",
+            "バイオ分野"
+          ]
+        }
+      ],
+      "presentation_format": "chart",
+      "complexity": "ppt_chart",
+      "notes": "新規受注、受注残、および受注残存リードタイムの四半期推移が棒グラフおよび折れ線グラフで示されています。数値データはグラフ上に直接記載されています。 page 4に2026年3月期3Q累計の売上高と分野別売上高が百万円単位で記載されているため、completed metricとして追加。\nPhase 6b #23: ??JSON?PDF???????????????????????????"
+    }
+  ],
+  "_source_pdf": "tdnet/6568/20260213_6568_Ｇ－神戸天然物化学_決算説明資料_2026年３月期　第３四半期決算説明資料_140120260213559125.pdf",
+  "_source_doc_id": "140120260213559125",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T19:20:56.361403+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      8
+    ],
+    "table_count": 16,
+    "max_rows": 7,
+    "max_cols": 12,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 16"
+    ]
+  }
+}

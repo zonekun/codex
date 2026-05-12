@@ -1,0 +1,13 @@
+{
+  "ticker": "7601",
+  "company_name": "ポプラ",
+  "ir_page_url": "http://www.poplar-cvs.co.jp/ir/monthly/",
+  "updated_at": "2026-04-21T10:07:47.086058+09:00",
+  "last_checked": "2026-04-21",
+  "status": "active",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": null,
+  "link_href_pattern": "/ir/pdf/index/2026.*\\.(pdf)",
+  "note": "月次PDFリンク8件検出 best=http://www.poplar-cvs.co.jp/ir/pdf/index/2026/51-tanshin.pdf"
+}

@@ -1,0 +1,109 @@
+{
+  "ticker": "7760",
+  "company_name": "ＩＭＶ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高実績",
+          "type": "order_intake",
+          "description": "当第１四半期連結累計期間における受注高の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注高実績（振動シミュレーションシステム）",
+          "type": "order_intake",
+          "description": "振動シミュレーションシステム部門の受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高実績"
+        },
+        {
+          "name": "受注高実績（テスト＆ソリューションサービス）",
+          "type": "order_intake",
+          "description": "テスト＆ソリューションサービス部門の受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高実績"
+        },
+        {
+          "name": "受注高実績（メジャリングシステム）",
+          "type": "order_intake",
+          "description": "メジャリングシステム部門の受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高実績"
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当第１四半期連結会計期間末における受注残高の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高（振動シミュレーションシステム）",
+          "type": "backlog",
+          "description": "振動シミュレーションシステム部門の受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        },
+        {
+          "name": "受注残高（テスト＆ソリューションサービス）",
+          "type": "backlog",
+          "description": "テスト＆ソリューションサービス部門の受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        },
+        {
+          "name": "受注残高（メジャリングシステム）",
+          "type": "backlog",
+          "description": "メジャリングシステム部門の受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "品目",
+          "items": [
+            "振動シミュレーションシステム",
+            "テスト＆ソリューションサービス",
+            "メジャリングシステム"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "生産実績、受注高実績、受注残高、販売実績の4つの表が掲載されており、それぞれ品目別の内訳が含まれている。受注高、販売実績（売上高）、受注残高の3項目を抽出対象とした。"
+    }
+  ],
+  "_source_pdf": "tdnet/7760/20260210_7760_ＩＭＶ_決算短信_2026年9月期 第1四半期決算短信〔日本基準〕(連結)_140120260209551795.pdf",
+  "_source_doc_id": "140120260209551795",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:57:38.953711+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      11
+    ],
+    "table_count": 4,
+    "max_rows": 6,
+    "max_cols": 6,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 4"
+    ]
+  }
+}

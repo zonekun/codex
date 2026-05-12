@@ -1,0 +1,92 @@
+{
+  "ticker": "485A",
+  "company_name": "Ｇ－パワーエックス",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "2026年12月期に売上計上が見込まれる受注残高（正式受注及び受注見込みの合計値）",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "当連結会計年度の連結売上高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "BESS事業 売上高",
+          "type": "completed",
+          "description": "BESS事業の外部顧客への売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "EVCS事業 売上高",
+          "type": "completed",
+          "description": "EVCS事業の外部顧客への売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "電力事業 売上高",
+          "type": "completed",
+          "description": "電力事業の外部顧客への売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "受注区分",
+          "items": [
+            "正式受注",
+            "受注見込み"
+          ]
+        },
+        {
+          "dimension_name": "報告セグメント",
+          "items": [
+            "BESS事業",
+            "EVCS事業",
+            "電力事業"
+          ]
+        }
+      ],
+      "presentation_format": "text",
+      "complexity": "no_table",
+      "notes": "決算短信の「今後の見通し」セクションの本文中に、2026年12月期に売上計上が見込まれる受注残高の数値（34,668百万円）が記載されています。注釈により、この数値は正式受注と受注見込みの合計であることが定義されています。 pages 5および20に連結売上高と報告セグメント別売上高が百万円単位で記載されているため、completed metricとして追加。"
+    }
+  ],
+  "_source_pdf": "tdnet/485A/20260213_485A_Ｇ－パワーエックス_決算短信_2025年12月期 決算短信〔日本基準〕(連結)_140120260213560790.pdf",
+  "_source_doc_id": "140120260213560790",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:19:11.604161+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "no_table",
+    "relevant_pages": [
+      6,
+      7
+    ],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "pdfplumber found no tables on relevant pages"
+    ]
+  }
+}

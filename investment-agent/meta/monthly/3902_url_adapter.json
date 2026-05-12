@@ -1,0 +1,11 @@
+{
+  "ticker": "3902",
+  "company_name": "メディカル・データ・ビジョン",
+  "ir_page_url": "https://www.mdv.co.jp/ir/library/",
+  "updated_at": "2026-04-21T09:53:27.377125+09:00",
+  "last_checked": "2026-04-21",
+  "status": "active",
+  "type": "eir_api",
+  "eir_company_code": "3902",
+  "note": "eIRシステム検出。コード=3902"
+}

@@ -1,0 +1,12 @@
+{
+  "ticker": "8209",
+  "company_name": "フレンドリー",
+  "ir_page_url": "https://www.friendly-co.com/ir/monthly_data.html",
+  "updated_at": "2026-04-21T10:11:46.963700+09:00",
+  "last_checked": "2026-04-21",
+  "status": "active",
+  "type": "html_table",
+  "css_selector": null,
+  "table_selector": null,
+  "note": "HTML表に月次データ検出。table_selector要調整"
+}

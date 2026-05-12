@@ -1,0 +1,20 @@
+{
+  "ticker": "4641",
+  "company_name": "4641",
+  "metrics": [
+    {
+      "name": "全社稼働率（%）",
+      "source": "bc"
+    },
+    {
+      "name": "技術者数",
+      "source": "bc"
+    },
+    {
+      "name": "除く新卒（%）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

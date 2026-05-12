@@ -11,11 +11,11 @@ import os
 import sys
 from datetime import datetime
 
-import vertexai
+from google import genai
 from google.oauth2 import service_account
 
 PROJECT = "gmailpj-357912"
-LOCATION = "us-central1"
+LOCATION = "global"
 KEY_PATH = os.path.join(os.path.dirname(__file__), "..", "keys", "gcp-service-account.json")
 
 # 確認対象モデル（staged rollout 中 / 新登場候補）
@@ -42,9 +42,7 @@ def main() -> None:
     creds = service_account.Credentials.from_service_account_info(
         key, scopes=["https://www.googleapis.com/auth/cloud-platform"]
     )
-    vertexai.init(project=PROJECT, location=LOCATION, credentials=creds)
-
-    from vertexai.generative_models import GenerativeModel
+    client = genai.Client(vertexai=True, project=PROJECT, location=LOCATION, credentials=creds)
 
     print(f"=== Gemini モデル利用可否チェック ({datetime.now().strftime('%Y-%m-%d')}) ===")
     print(f"プロジェクト: {PROJECT} / リージョン: {LOCATION}\n")
@@ -54,8 +52,7 @@ def main() -> None:
     print("【監視中モデル】")
     for mid in WATCH_MODELS:
         try:
-            m = GenerativeModel(mid)
-            m.generate_content("hi")
+            client.models.generate_content(model=mid, contents="hi")
             print(f"  ✅ 新たに利用可能: {mid}")
             newly_available.append(mid)
         except Exception as e:
@@ -67,8 +64,7 @@ def main() -> None:
     print("\n【既知の利用可能モデル（参考）】")
     for mid in KNOWN_OK:
         try:
-            m = GenerativeModel(mid)
-            m.generate_content("hi")
+            client.models.generate_content(model=mid, contents="hi")
             print(f"  ✅ {mid}")
         except Exception as e:
             print(f"  ❌ {mid} → {str(e)[:60]}")

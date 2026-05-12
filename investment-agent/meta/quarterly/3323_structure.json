@@ -1,0 +1,36 @@
+{
+  "ticker": "3323",
+  "company_name": "レカム",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "売上収益はサマリー表内に、受注残高は下部の総括テキスト内に「受注残が12.8億円と過去最高」と記載されています。受注については「堅調に推移」との記述のみで具体的な数値はありません。\nPhase 6b #23: ??JSON?PDF??????????????????????????? [2026-05-07] completedメトリクスのみのため収集対象外(false化)。"
+    }
+  ],
+  "_source_pdf": "tdnet/3323/20260213_3323_レカム_決算説明資料_2026年９月期第１四半期決算説明資料_140120260213561884.pdf",
+  "_source_doc_id": "140120260213561884",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T17:38:18.591279+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4
+    ],
+    "table_count": 2,
+    "max_rows": 6,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

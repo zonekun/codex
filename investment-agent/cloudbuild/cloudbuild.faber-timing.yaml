@@ -1,0 +1,25 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - build
+      - -f
+      - docker/Dockerfile.faber-timing
+      - -t
+      - us-west1-docker.pkg.dev/gmailpj-357912/tools/faber-timing:latest
+      - .
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - push
+      - us-west1-docker.pkg.dev/gmailpj-357912/tools/faber-timing:latest
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        set -e
+        echo "Updating job: faber-timing"
+        gcloud run jobs update faber-timing --region=us-west1 \
+          --image=us-west1-docker.pkg.dev/gmailpj-357912/tools/faber-timing:latest
+
+images:
+  - us-west1-docker.pkg.dev/gmailpj-357912/tools/faber-timing:latest

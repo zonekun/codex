@@ -1,0 +1,44 @@
+{
+  "ticker": "7409",
+  "company_name": "Ｇ－ＡｅｒｏＥｄｇｅ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注機数残高",
+          "type": "backlog",
+          "description": "LEAPエンジンが搭載される航空機の受注機数残高",
+          "unit": "機",
+          "is_total": false
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "航空機メーカー別の受注機数残高および引渡機数が表形式で記載されています。また、自社製品が搭載されるエンジン基数および売上高の金額が本文中に記載されています。\nユーザー指示により、受注機数残高・引渡機数・エンジン基数は非金額単位だが必要データとして保持。"
+    }
+  ],
+  "_source_pdf": "tdnet/7409/20260213_7409_Ｇ－ＡｅｒｏＥｄｇｅ_決算短信_2026年6月期 第2四半期（中間期）決算短信〔日本基準〕(非連結)_140120260212556840.pdf",
+  "_source_doc_id": "140120260212556840",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:49:53.158514+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4
+    ],
+    "table_count": 1,
+    "max_rows": 5,
+    "max_cols": 4,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "source": "non-tdnet(pdf)",
+  "format": "pdf",
+  "fields": [
+    {
+      "key": "全店 売上（前年同月比）",
+      "name": "全店 売上（前年同月比）",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "url_adapter status=inactive。GCSにはアレルギー・カロリー情報PDFのみで月次売上開示なし"
+    },
+    {
+      "key": "全店 客単価（前年同月比）",
+      "name": "全店 客単価（前年同月比）",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "同上"
+    },
+    {
+      "key": "全店 客数（前年同月比）",
+      "name": "全店 客数（前年同月比）",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "同上"
+    },
+    {
+      "key": "全店 店舗数",
+      "name": "全店 店舗数",
+      "value_type": "integer",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "同上"
+    },
+    {
+      "key": "既存店 売上（前年同月比）",
+      "name": "既存店 売上（前年同月比）",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "同上"
+    },
+    {
+      "key": "既存店 客単価（前年同月比）",
+      "name": "既存店 客単価（前年同月比）",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "同上"
+    },
+    {
+      "key": "既存店 客数（前年同月比）",
+      "name": "既存店 客数（前年同月比）",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "同上"
+    }
+  ],
+  "extraction_notes": "丸千代山岡家。url_adapter status=inactive。GCSにはアレルギー・カロリー情報PDFのみ。月次売上データの開示文書が確認できないため全field bc_ignore。",
+  "ticker": "3399",
+  "company_name": "丸千代山岡家",
+  "created_at": "2026-04-04T01:34:35.428541+09:00",
+  "created_by": "gemini-2.5-flash",
+  "extraction_method": "gemini",
+  "manual_override": true,
+  "manual_override_note": "Codex成果物を自ら検証・再作成。月次文書不在のためbc_ignore",
+  "manual_override_at": "2026-05-08T00:20:00+09:00"
+}

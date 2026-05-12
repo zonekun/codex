@@ -1,0 +1,125 @@
+{
+  "ticker": "2734",
+  "company_name": "サーラ",
+  "current_version": "2026-04",
+  "versions": [
+    {
+      "valid_from": "2026-04",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "連結会計期間の売上高合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "エネルギー＆ソリューションズ事業 売上高",
+          "type": "completed",
+          "description": "エネルギー＆ソリューションズ事業の売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "エンジニアリング＆メンテナンス事業 売上高",
+          "type": "completed",
+          "description": "エンジニアリング＆メンテナンス事業の売上高（完成工事高の増加が寄与）",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "ハウジング事業 売上高",
+          "type": "completed",
+          "description": "ハウジング事業の売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "カーライフサポート事業 売上高",
+          "type": "completed",
+          "description": "カーライフサポート事業の売上高",
+          "unit": "百万円",
+          "period": "current_period",
+          "is_total": false,
+          "parent_metric": "売上高",
+          "breakdown_dimension": "セグメント",
+          "breakdown_item": "カーライフサポート事業"
+        },
+        {
+          "name": "アニマルヘルスケア事業 売上高",
+          "type": "completed",
+          "description": "アニマルヘルスケア事業の売上高",
+          "unit": "百万円",
+          "period": "current_period",
+          "is_total": false,
+          "parent_metric": "売上高",
+          "breakdown_dimension": "セグメント",
+          "breakdown_item": "アニマルヘルスケア事業"
+        },
+        {
+          "name": "プロパティ事業 売上高",
+          "type": "completed",
+          "description": "プロパティ事業の売上高",
+          "unit": "百万円",
+          "period": "current_period",
+          "is_total": false,
+          "parent_metric": "売上高",
+          "breakdown_dimension": "セグメント",
+          "breakdown_item": "プロパティ事業"
+        },
+        {
+          "name": "その他 売上高",
+          "type": "completed",
+          "description": "その他の売上高",
+          "unit": "百万円",
+          "period": "current_period",
+          "is_total": false,
+          "parent_metric": "売上高",
+          "breakdown_dimension": "セグメント",
+          "breakdown_item": "その他"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "エネルギー＆ソリューションズ事業",
+            "エンジニアリング＆メンテナンス事業",
+            "ハウジング事業",
+            "カーライフサポート事業",
+            "アニマルヘルスケア事業",
+            "プロパティ事業",
+            "その他"
+          ]
+        }
+      ],
+      "presentation_format": "text",
+      "complexity": "no_table",
+      "notes": "当四半期決算短信の本文中に、セグメント別の売上高（完成工事高に相当）の数値は記載されているが、受注高および受注残高の具体的な金額については記載がない。ハウジング事業での「受注が減少した」や、エンジニアリング＆メンテナンス事業での「完成工事高が増加した」といった定性的な記述に留まっている。"
+    }
+  ],
+  "_source_pdf": "tdnet/2734/20260407_2734_サーラ_決算短信_2026年11月期 第１四半期決算短信〔日本基準〕（連結）_140120260406598934.pdf",
+  "_source_doc_id": "140120260406598934",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:27:43.537009+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "no_table",
+    "relevant_pages": [
+      4
+    ],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "pdfplumber found no tables on relevant pages"
+    ]
+  }
+}

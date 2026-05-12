@@ -1,0 +1,34 @@
+{
+  "ticker": "3565",
+  "company_name": "アセンテック",
+  "current_version": "2026-04",
+  "versions": [
+    {
+      "valid_from": "2026-04",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "no_relevant_pages",
+      "notes": "Gemini skipped; complexity-only dry run output."
+    }
+  ],
+  "_source_pdf": "tdnet/3565/20260401_3565_アセンテック_決算短信_（訂正）「2026年１月期 決算短信補足資料」の一部訂正について_140120260401596557.pdf",
+  "_source_doc_id": "140120260401596557",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:45:00.034718+09:00",
+  "_model_used": null,
+  "_complexity_report": {
+    "complexity": "no_relevant_pages",
+    "relevant_pages": [],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": false,
+    "notes": [
+      "keyword scan found no relevant pages"
+    ]
+  }
+}

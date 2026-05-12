@@ -1,0 +1,52 @@
+{
+  "ticker": "1878",
+  "company_name": "1878",
+  "metrics": [
+    {
+      "name": "1人当たり受注高（万円/人・月）",
+      "source": "bc"
+    },
+    {
+      "name": "入居者斡旋（件）",
+      "source": "bc"
+    },
+    {
+      "name": "入居者斡旋（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "受注トレンド 6ヶ月移動平均（百万円）",
+      "source": "bc"
+    },
+    {
+      "name": "家賃ベース入居率（前年差）",
+      "source": "bc"
+    },
+    {
+      "name": "建設事業 受注高（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "建設事業 受注高（百万円）",
+      "source": "bc"
+    },
+    {
+      "name": "建設営業人員（人）",
+      "source": "bc"
+    },
+    {
+      "name": "空室在庫（ヶ月）",
+      "source": "bc"
+    },
+    {
+      "name": "空室数（戸）",
+      "source": "bc"
+    },
+    {
+      "name": "管理戸数（戸）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

@@ -1,0 +1,74 @@
+{
+  "ticker": "1926",
+  "company_name": "ライト工",
+  "current_version": "2025-11",
+  "versions": [
+    {
+      "valid_from": "2025-11",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当中間連結会計期間における受注高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "当中間連結会計期間における売上高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "次期繰越工事高",
+          "type": "backlog",
+          "description": "当中間連結会計期間末における次期繰越工事高",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "事業・工種別",
+          "items": [
+            "斜面・法面対策工事",
+            "基礎・地盤改良工事",
+            "補修・補強工事",
+            "環境修復工事",
+            "一般土木工事",
+            "建築工事",
+            "その他工事",
+            "建設部門計",
+            "商品・資材販売部門"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "決算短信の2ページ目に「事業・工種別」の表があり、受注高、売上高、次期繰越工事高の3つの指標について、建設部門の工種別内訳および商品・資材販売部門の内訳が詳細に記載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/1926/20251106_1926_ライト工_決算短信_2026年3月期第2四半期（中間期）決算短信〔日本基準〕（連結）_140120251106590015.pdf",
+  "_source_doc_id": "140120251106590015",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:02:57.299112+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      8
+    ],
+    "table_count": 2,
+    "max_rows": 47,
+    "max_cols": 7,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

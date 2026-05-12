@@ -1,0 +1,27 @@
+{
+  "source": "non-tdnet(html_table)",
+  "format": "html",
+  "fields": [
+    {
+      "key": "住宅受注 金額ベース（前年同月比）",
+      "name": "住宅受注 金額ベース（前年同月比）",
+      "description": "IR「住宅受注速報」HTMLページ。h1見出し直下の表。「住宅受注（金額ベース）」列の対象月行。値は＋7%/△3%/±0%形式の前年同月比。",
+      "value_type": "percentage"
+    },
+    {
+      "key": "住宅受注 棟数ベース（前年同月比）",
+      "name": "住宅受注 棟数ベース（前年同月比）",
+      "description": "同HTML表。「住宅受注（棟数ベース）」列の対象月行。値は＋1%/△2%/±0%形式の前年同月比。",
+      "value_type": "percentage"
+    }
+  ],
+  "extraction_notes": "積水化学工業。IR「住宅受注速報」HTMLページにて金額ベース・棟数ベースの前年同月比を月別に開示。値は＋/△/±記号付きパーセント。url_adapter scrape_links(active)で取得。",
+  "ticker": "4204",
+  "company_name": "積水化学工業",
+  "created_at": "2026-04-05T09:51:42.468250+09:00",
+  "created_by": "gemini-2.5-flash",
+  "extraction_method": "gemini",
+  "manual_override": true,
+  "manual_override_note": "Codex成果物を自ら検証・再作成。住宅受注速報HTMLから2メトリクス抽出可能",
+  "manual_override_at": "2026-05-08T00:25:00+09:00"
+}

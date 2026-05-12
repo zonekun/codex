@@ -1,0 +1,13 @@
+{
+  "ticker": "6083",
+  "company_name": "ＥＲＩホールディングス",
+  "ir_page_url": "https://www.h-eri.co.jp/ir/finance/genjyo.html",
+  "updated_at": "2026-04-21T09:58:15.259988+09:00",
+  "last_checked": "2026-04-21",
+  "status": "active",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": "月次",
+  "link_href_pattern": "/ir/data.*\\.(pdf)",
+  "note": "月次PDFリンク2件検出 best=https://www.h-eri.co.jp/ir/data/getuji_2025K.pdf"
+}

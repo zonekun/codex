@@ -1,0 +1,16 @@
+{
+  "ticker": "1840",
+  "company_name": "1840",
+  "metrics": [
+    {
+      "name": "リフォーム 受注（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "戸建住宅 受注（前年同月比）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

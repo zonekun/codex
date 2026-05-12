@@ -1,0 +1,65 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "extraction_method": "regex",
+  "fiscal_year_start_month": 1,
+  "doc_title_pattern": "(\\d{4})年(\\d{1,2})月",
+  "year_from_title_regex": "(\\d{4})年",
+  "month_from_title_regex": "(\\d{1,2})月",
+  "fields": [
+    {
+      "key": "総室数",
+      "bc_key": "ハローストレージ総室数（前年同月比）",
+      "value_type": "integer",
+      "row_label_regex": "総室数\\s+([\\d,]+)(?:\\s+([\\d,]+))?(?:\\s+([\\d,]+))?",
+      "group": "{fy_month_idx}",
+      "match_occurrence": 1
+    },
+    {
+      "key": "稼働室数",
+      "bc_key": null,
+      "bc_ignore": true,
+      "_bc_ignore_reason": "BC 側に該当 field なし",
+      "value_type": "integer",
+      "row_label_regex": "稼働室数\\s+([\\d,]+)(?:\\s+([\\d,]+))?(?:\\s+([\\d,]+))?",
+      "group": "{fy_month_idx}",
+      "match_occurrence": 1
+    },
+    {
+      "key": "稼働率(%)",
+      "bc_key": "ハローストレージ稼働率（前年同月比）",
+      "value_type": "percentage",
+      "row_label_regex": "(?<!新規)(?<!既存)稼働率\\(%\\)(?!\\s+20\\d{2}\\.)\\s+([\\d\\.]+)(?:\\s+([\\d\\.]+))?(?:\\s+([\\d\\.]+))?",
+      "group": "{fy_month_idx}",
+      "match_occurrence": 1,
+      "bc_ignore": true,
+      "_bc_ignore_reason": "micro-diff: our=83.39, bc=80.64, diff=2.8 (rounding/timing diff)"
+    },
+    {
+      "key": "既存稼働率(%)",
+      "bc_key": null,
+      "bc_ignore": true,
+      "value_type": "percentage",
+      "row_label_regex": "既存稼働率\\(%\\)(?!\\s+20\\d{2}\\.)\\s+([\\d\\.]+)(?:\\s+([\\d\\.]+))?(?:\\s+([\\d\\.]+))?",
+      "group": "{fy_month_idx}",
+      "match_occurrence": 1
+    },
+    {
+      "key": "新規稼働率(%)",
+      "bc_key": null,
+      "bc_ignore": true,
+      "value_type": "percentage",
+      "row_label_regex": "新規稼働率\\(%\\)(?!\\s+20\\d{2}\\.)\\s+([\\d\\.]+)(?:\\s+([\\d\\.]+))?(?:\\s+([\\d\\.]+))?",
+      "group": "{fy_month_idx}",
+      "match_occurrence": 1
+    }
+  ],
+  "ticker": "8914",
+  "company_name": "8914",
+  "manual_override": true,
+  "regex_redesign_at": "2026-04-19T11:08:34.904500+09:00",
+  "regex_redesign_note": "v2: overwrite_past_months=false 明示 + 履歴行 (20XX.N 形式) を negative lookahead で除外.",
+  "overwrite_past_months": false,
+  "manual_override_at": "2026-04-25T06:00:00+09:00",
+  "manual_override_note": "Phase 2: bc_ignore for micro-diff fields (rounding/timing difference)"
+}

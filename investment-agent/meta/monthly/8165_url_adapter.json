@@ -1,0 +1,14 @@
+{
+  "ticker": "8165",
+  "company_name": "千趣会",
+  "ir_page_url": "https://www.senshukai.co.jp/main/top/ir/monthly.html",
+  "status": "active",
+  "type": "html_table",
+  "playwright_required": false,
+  "note": "月次データ(速報値)ページ。HTML表形式+過去年度PDF。URL修正 /main/top/ir/ パス (2026-04-24)",
+  "updated_at": "2026-04-24T15:10:22.822884+09:00",
+  "last_checked": "2026-04-24",
+  "manual_override": true,
+  "manual_override_at": "2026-04-24T15:10:22.822884+09:00",
+  "manual_override_note": "URL修正→html_table (2026-04-24)"
+}

@@ -1,0 +1,36 @@
+{
+  "ticker": "2154",
+  "company_name": "2154",
+  "metrics": [
+    {
+      "name": "エンジニア在籍数（人）",
+      "source": "bc"
+    },
+    {
+      "name": "エンジニア稼働率（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "建設エンジニア在籍数（人）",
+      "source": "bc"
+    },
+    {
+      "name": "建設エンジニア稼働率（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "機電・ITエンジニア在籍数（人）",
+      "source": "bc"
+    },
+    {
+      "name": "機電・ITエンジニア稼働率（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "製造社員在籍数（人）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

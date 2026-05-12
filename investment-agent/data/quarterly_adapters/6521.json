@@ -1,0 +1,124 @@
+{
+  "ticker": "6521",
+  "company_name": "Ｇ－オキサイド",
+  "current_version": "2026-04",
+  "versions": [
+    {
+      "valid_from": "2026-04",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "半導体事業における年度ごとの受注高合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注高（上半期）",
+          "type": "order_intake",
+          "description": "半導体事業における上半期の受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "受注高（下半期）",
+          "type": "order_intake",
+          "description": "半導体事業における下半期の受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "半導体事業における各四半期末（1H末、2H末）時点の受注残高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "2026年2月期の連結売上高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "半導体事業 売上高",
+          "type": "completed",
+          "description": "半導体事業の売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "ヘルスケア事業 売上高",
+          "type": "completed",
+          "description": "ヘルスケア事業の売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "新領域事業 売上高",
+          "type": "completed",
+          "description": "新領域事業の売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "会計年度",
+          "items": [
+            "23年2月期",
+            "24年2月期",
+            "25年2月期",
+            "26年2月期"
+          ]
+        },
+        {
+          "dimension_name": "半期区分",
+          "items": [
+            "1H",
+            "2H"
+          ]
+        },
+        {
+          "dimension_name": "事業",
+          "items": [
+            "半導体事業",
+            "ヘルスケア事業",
+            "新領域事業"
+          ]
+        }
+      ],
+      "presentation_format": "chart",
+      "complexity": "ppt_chart",
+      "notes": "半導体事業に特化した受注高および受注残高の推移が棒グラフで示されています。受注高については上下半期の内訳が、受注残高については半期末ごとの数値が記載されています。 pages 5-7および10-11に連結売上高と事業別売上高が百万円単位で記載されているため、completed metricとして追加。"
+    }
+  ],
+  "_source_pdf": "tdnet/6521/20260414_6521_Ｇ－オキサイド_決算説明資料_2026年2月期決算補足説明資料_140120260413503114.pdf",
+  "_source_doc_id": "140120260413503114",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T19:19:22.028067+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      9
+    ],
+    "table_count": 6,
+    "max_rows": 2,
+    "max_cols": 6,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 6"
+    ]
+  }
+}

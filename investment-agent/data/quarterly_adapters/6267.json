@@ -1,0 +1,36 @@
+{
+  "ticker": "6267",
+  "company_name": "ゼネパッカー",
+  "current_version": "2025-09",
+  "versions": [
+    {
+      "valid_from": "2025-09",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "breakdown_dimensions": [],
+      "presentation_format": "text",
+      "complexity": "no_table",
+      "notes": "提供された画像（決算短信の3ページ目）には、『受注残高は前年から増加している』という定性的な記述や次期の売上高予想数値（11,000百万円）は含まれていますが、受注高や受注残高の具体的な実績数値データ（金額）が記載されていないため、data_availableをfalseと判定しました。"
+    }
+  ],
+  "_source_pdf": "tdnet/6267/20250905_6267_ゼネパッカー_決算短信_2025年７月期　決算短信[日本基準]（連結）_140120250818543831.pdf",
+  "_source_doc_id": "140120250818543831",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:55:01.230094+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "no_table",
+    "relevant_pages": [
+      5
+    ],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "pdfplumber found no tables on relevant pages"
+    ]
+  }
+}

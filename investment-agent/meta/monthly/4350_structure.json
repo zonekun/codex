@@ -1,0 +1,16 @@
+{
+  "ticker": "4350",
+  "company_name": "4350",
+  "metrics": [
+    {
+      "name": "医薬品ネットワーク加盟件数",
+      "source": "bc"
+    },
+    {
+      "name": "地域薬局 店舗数",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

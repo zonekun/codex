@@ -1,0 +1,20 @@
+{
+  "ticker": "2502",
+  "company_name": "アサヒグループホールディングス",
+  "updated_at": "2026-04-20",
+  "ir_page_url": "http://www.asahigroup-holdings.com/ir/financial_data/monthly_data/",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": null,
+  "link_href_pattern": ".*\\.(pdf)",
+  "table_selector": null,
+  "status": "active",
+  "skip_reason": null,
+  "note": "自動生成。ページ: http://www.asahigroup-holdings.com/ir/financial_data/monthly_data/ / リンク81件検出",
+  "url_source": "recovered_from_index_csv",
+  "last_checked": "2026-04-20",
+  "follow_links": false,
+  "playwright_required": false,
+  "recovered_at": "2026-04-20T21:37:09.325193+09:00",
+  "recovery_reason": "sync_bug_overwrite_20260420"
+}

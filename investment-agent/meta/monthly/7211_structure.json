@@ -1,0 +1,28 @@
+{
+  "ticker": "7211",
+  "company_name": "7211",
+  "metrics": [
+    {
+      "name": "国内 生産台数（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "国内 販売台数（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "海外 生産台数（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "総生産台数（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "輸出 出荷台数（前年同月比）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

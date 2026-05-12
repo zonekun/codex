@@ -1,0 +1,12 @@
+{
+  "ticker": "2429",
+  "company_name": "2429",
+  "metrics": [
+    {
+      "name": "在籍社員数（人）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

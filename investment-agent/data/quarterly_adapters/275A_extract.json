@@ -1,0 +1,28 @@
+{
+  "ticker": "275A",
+  "company_name": "ハンワホームズ",
+  "current_version": "2026-04",
+  "versions": [
+    {
+      "valid_from": "2026-04",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "presentation",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/275A/20260402_275A_ハンワホームズ_決算説明資料_2026年２月期　決算説明資料_140120260401597143.pdf",
+  "_source_doc_id": "140120260401597143",
+  "_generated_at": "2026-04-30T17:27:48.043985+09:00",
+  "_model_used": null
+}

@@ -1,0 +1,44 @@
+{
+  "ticker": "1793",
+  "company_name": "大本組",
+  "current_version": "2025-11",
+  "versions": [
+    {
+      "valid_from": "2025-11",
+      "valid_until": null,
+      "extraction_method": "regex",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注実績",
+        "受注予想",
+        "完成工事高"
+      ],
+      "fields": [
+        {
+          "key": "受注高",
+          "row_label_regex": "^\\s*\\u8a08\\s+[\\d,]+\\s+100\\.0\\s+100\\.0\\s+([\\d,]+)\\s+100\\.0\\s+100\\.0",
+          "value_type": "integer",
+          "unit": "百万円",
+          "group": 1,
+          "notes": "受注実績表の建設事業合計行から当中間会計期間の金額列を抽出。"
+        },
+        {
+          "key": "完成工事高",
+          "row_label_regex": "^\\s*完成工事高",
+          "value_type": "integer",
+          "unit": "百万円",
+          "use_last_number": true
+        }
+      ],
+      "gemini_custom_prompt": "",
+      "notes": "中間損益計算書の完成工事高と、補足情報の受注実績表から受注高合計を抽出します。受注高は合計行の当中間会計期間金額列をgroup=1で取得します。"
+    }
+  ],
+  "manual_override": true,
+  "_source_pdf": "tdnet/1793/20251111_1793_大本組_決算短信_2026年３月期 第２四半期（中間期）決算短信〔日本基準〕(非連結)_140120251111595456.pdf",
+  "_source_doc_id": "140120251111595456",
+  "_generated_at": "2026-04-30T22:43:19.762205+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_manual_fix": "2026-05-01: row_label_regexの$アンカーを削除。PDFテキスト上で完成工事高の後に数値が続くため$で不一致だった",
+  "_manual_fix_phase6b": "2026-05-06: structure.jsonに追加された受注高fieldをPDF 10ページの受注実績表に基づき追加。"
+}

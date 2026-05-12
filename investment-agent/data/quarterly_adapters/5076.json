@@ -1,0 +1,83 @@
+{
+  "ticker": "5076",
+  "company_name": "インフロニアＨＤ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "セグメント別、事業会社別、および発注者・工事区分別の受注高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "次期繰越高",
+          "type": "backlog",
+          "description": "セグメント別、事業会社別、および発注者・工事区分別の次期繰越高（受注残高）",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "建築事業",
+            "土木事業",
+            "舗装事業"
+          ]
+        },
+        {
+          "dimension_name": "事業会社",
+          "items": [
+            "前田建設工業",
+            "三井住友建設",
+            "前田道路",
+            "三井住友道路"
+          ]
+        },
+        {
+          "dimension_name": "内訳区分",
+          "items": [
+            "国内官公庁",
+            "国内民間",
+            "海外",
+            "舗装工事",
+            "土木工事",
+            "製造・販売",
+            "その他"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "14ページに受注高、16ページに次期繰越高の詳細な内訳表が掲載されている。事業会社として前田建設工業、三井住友建設、前田道路、三井住友道路の数値が区分ごとに記載されている。売上高（完成工事高）の表は提供された画像（15ページ相当）に含まれていないため、メトリクス定義から除外した。"
+    }
+  ],
+  "_source_pdf": "tdnet/5076/20260210_5076_インフロニアＨＤ_決算短信_2026年３月期第３四半期決算短信〔ＩＦＲＳ〕（連結）_140120260205549083.pdf",
+  "_source_doc_id": "140120260205549083",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:22:25.932781+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      17,
+      19
+    ],
+    "table_count": 2,
+    "max_rows": 41,
+    "max_cols": 9,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "doc_title_pattern": "キーパーラボ運営事業とキーパー製品等関連事業の月次速報",
+  "year_from_title_regex": "",
+  "month_from_title_regex": "(\\d{1,2})月",
+  "fields": [
+    {
+      "key": "全店 売上（前年同月比）",
+      "name": "全店 売上（前年同月比）",
+      "row_label_regex": "キーパーラボ運営事業全体の売上は前年同月比([\\d.]+)",
+      "value_type": "percentage",
+      "group": 1,
+      "notes": "本文中の「キーパーラボ運営事業全体の売上は前年同月比X.X％増」から取得",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "micro-diff: our=95.1, bc=93.9, diff=1.2 (rounding/timing diff)"
+    },
+    {
+      "key": "直営 店舗数",
+      "name": "直営 店舗数",
+      "row_label_regex": "直営店全(\\d+)店",
+      "value_type": "integer",
+      "group": 1,
+      "notes": "本文中の「直営店全N店」から全店舗数を取得（既存店ではなく全店）"
+    },
+    {
+      "key": "既存店 売上（前年同月比）",
+      "name": "既存店 売上（前年同月比）",
+      "row_label_regex": "既存\\d+店舗の売上は前年同月比([\\d.]+)",
+      "value_type": "percentage",
+      "group": 1,
+      "notes": "本文中の「既存N店舗の売上は前年同月比X.X％」から取得"
+    },
+    {
+      "key": "既存店 客単価（前年同月比）",
+      "name": "既存店 客単価（前年同月比）",
+      "row_label_regex": "平均単価は.*?([\\d.]+)%",
+      "value_type": "percentage",
+      "group": 1,
+      "notes": "本文中の平均単価前年同月比を取得"
+    },
+    {
+      "key": "既存店 来店台数（前年同月比）",
+      "name": "既存店 来店台数（前年同月比）",
+      "bc_ignore": true,
+      "bc_ignore_reason": "BC値81あり。月次速報は売上前年比・店舗数・客単価前年比のみ。来店台数データの記載なし（2026年2月度PDF確認済み）",
+      "bc_key": "既存店 来店台数（前年同月比）"
+    }
+  ],
+  "extraction_notes": "テーブルではなく本文テキストからregexで値を取得。直営店舗数は「直営店全N店」パターンで全店数を取得（既存店数ではない）。",
+  "ticker": "6036",
+  "company_name": "KeePer技研",
+  "created_at": "2026-03-17T17:13:37.863136+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "キーパーラボ運営事業とキーパー製品等関連事業の月次速報（2月）",
+  "sample_submission_date": "2026-03-04",
+  "fields_count": 4,
+  "manual_override": true,
+  "custom_prompt": "あなたは ticker 6036 (KeePer技研) の月次速報 PDF から KPI を抽出するアシスタントです.\n\n抽出対象月: {year}年{month}月度\n\n重要ルール:\n  - narrative の「前年同月比X.X％（増/減）」形式があれば、+X.X なら (100+X.X)、-X.X なら (100-X.X) を返す\n  - 表の該当月の値を優先 (narrative と食い違う場合は narrative 重視、narrative なければ表値)\n  - サブエリア合計ではなく**全店**(LABO 店舗全体)の値\n  - 直営 店舗数は narrative「直営店全N店」または LABO 店舗数列\n\n出力形式: JSON\n{\n  \"全店 売上（前年同月比）\": <float>,\n  \"直営 店舗数\": <int>,\n  \"既存店 売上（前年同月比）\": <float>,\n  \"既存店 客単価（前年同月比）\": <float>\n}\n見つからない field は null.\n",
+  "manual_override_note": "Phase 2: bc_ignore for micro-diff fields (rounding/timing difference)",
+  "manual_override_at": "2026-04-25T06:00:00+09:00",
+  "extraction_method": "gemini",
+  "overwrite_past_months": true,
+  "regex_redesign_at": "2026-04-19T11:17:07.994522+09:00",
+  "regex_redesign_note": "narrative + 表混在 PDF の符号判定を Gemini 抽出に切替. custom_prompt で KPI と符号ルール明示.",
+  "_agent_patched_at": "2026-04-20T07:01:12.521411+09:00"
+}

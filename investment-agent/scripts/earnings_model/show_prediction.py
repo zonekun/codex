@@ -26,11 +26,8 @@ import sys
 from pathlib import Path
 from typing import Any
 
-import structlog
 from google.cloud import storage
 from google.oauth2 import service_account
-
-log = structlog.get_logger()
 
 GCS_BUCKET = "stock_data_1930932"
 GCS_PREFIX = "earnings_model"
@@ -65,22 +62,22 @@ def load_json(predict_date: str, kind: str) -> dict[str, Any] | None:
     bucket = client.bucket(GCS_BUCKET)
     if kind == "actual":
         # 新旧命名規約を両方探索（新: actual_*_for_{PREDICT_DATE}.json）
-        all_blobs = list(bucket.list_blobs(prefix=f"{GCS_PREFIX}/actuals/actual_"))
+        all_blobs = list(bucket.list_blobs(prefix=f"{GCS_PREFIX}/earnings_reaction_actuals/actual_"))
         suffix_new = f"_for_{predict_date}.json"
-        prefix_old = f"{GCS_PREFIX}/actuals/actual_{predict_date}_"
+        prefix_old = f"{GCS_PREFIX}/earnings_reaction_actuals/actual_{predict_date}_"
         candidates = [
             b for b in all_blobs
             if b.name.endswith(suffix_new) or b.name.startswith(prefix_old)
         ]
         if not candidates:
-            log.warning("not_found", kind=kind, date=predict_date)
+            print(f"not found: kind={kind} date={predict_date}")
             return None
         blob = max(candidates, key=lambda b: b.time_created)
     else:
-        prefix = f"{GCS_PREFIX}/{kind}s/{kind}_{predict_date}"
+        prefix = f"{GCS_PREFIX}/earnings_reaction_{kind}s/{kind}_{predict_date}"
         blobs = sorted(bucket.list_blobs(prefix=prefix), key=lambda b: b.name)
         if not blobs:
-            log.warning("not_found", kind=kind, date=predict_date)
+            print(f"not found: kind={kind} date={predict_date}")
             return None
         blob = blobs[-1]
     text = blob.download_as_text()
@@ -157,7 +154,7 @@ def show_one(
         None,
     )
     if pred is None:
-        log.warning("ticker_not_found", ticker=ticker)
+        print(f"ticker not found: {ticker}")
         return
 
     print(f"\n=== {ticker} {pred.get('name', '')} ===")
@@ -198,7 +195,7 @@ def main() -> None:
 
     pred_data = load_json(args.predict_date, "prediction")
     if pred_data is None:
-        log.error("prediction_not_found", date=args.predict_date)
+        print(f"prediction not found: {args.predict_date}")
         sys.exit(1)
 
     actual_data = None

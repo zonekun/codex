@@ -1,0 +1,18 @@
+{
+  "ticker": "9601",
+  "company_name": "松竹",
+  "ir_page_url": "https://www.shochiku.co.jp/company/ir/",
+  "type": "scrape_links",
+  "status": "inactive",
+  "inactive_reason": "月次開示データなし。四半期決算・有報・統合報告書のみ",
+  "excluded": true,
+  "link_text_pattern": null,
+  "link_href_pattern": null,
+  "manual_override": true,
+  "note": "2026-04-24確認: 松竹は月次開示なし。inactive",
+  "updated_at": "2026-04-24T17:15:36.150884+09:00",
+  "css_selector": null,
+  "table_selector": null,
+  "playwright_required": false,
+  "follow_links": false
+}

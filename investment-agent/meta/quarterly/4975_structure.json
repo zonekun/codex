@@ -1,0 +1,51 @@
+{
+  "ticker": "4975",
+  "company_name": "ＪＣＵ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "装置事業における受注高",
+          "unit": "百万円",
+          "is_total": false
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "装置事業における受注残高",
+          "unit": "百万円",
+          "is_total": false
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "装置事業における受注高、売上高、受注残高のデータが表形式で提供されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/4975/20260205_4975_ＪＣＵ_決算短信_2026年３月期第３四半期決算短信〔日本基準〕(連結)_140120260205548282.pdf",
+  "_source_doc_id": "140120260205548282",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:19:52.798704+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      5
+    ],
+    "table_count": 1,
+    "max_rows": 5,
+    "max_cols": 4,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

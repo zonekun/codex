@@ -1,0 +1,65 @@
+{
+  "ticker": "1719",
+  "company_name": "安藤ハザマ",
+  "current_version": "2025-11",
+  "versions": [
+    {
+      "valid_from": "2025-11",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "建設事業における当期受注高の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "繰越高",
+          "type": "backlog",
+          "description": "建設事業における期末時点の未完成工事残高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "その他の事業売上高",
+          "type": "other",
+          "description": "建設事業以外の事業（不動産事業等）による売上高",
+          "unit": "百万円",
+          "is_total": false
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "決算短信の補足情報（16-18ページ）に、個別ベースの受注高、完成工事高、繰越高の詳細な内訳表（国内土木・国内建築・海外工事別の官公庁/民間内訳）が掲載されています。また、セグメント別の概況は2ページ目の本文中にも記載があります。"
+    }
+  ],
+  "_source_pdf": "tdnet/1719/20251107_1719_安藤ハザマ_決算短信_2026年３月期第２四半期（中間期）決算短信〔日本基準〕(連結)_140120251106590115.pdf",
+  "_source_doc_id": "140120251106590115",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T16:33:21.178100+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      3,
+      4,
+      8,
+      17,
+      18,
+      19,
+      20
+    ],
+    "table_count": 12,
+    "max_rows": 42,
+    "max_cols": 10,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 12"
+    ]
+  }
+}

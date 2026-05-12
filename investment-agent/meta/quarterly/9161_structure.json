@@ -1,0 +1,70 @@
+{
+  "ticker": "9161",
+  "company_name": "ＩＤ＆ＥＨＤ",
+  "current_version": "2025-02",
+  "versions": [
+    {
+      "valid_from": "2025-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当中間連結会計期間における受注高の合計額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当中間連結会計期間末における受注残高の合計額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "為替・その他調整",
+          "type": "other",
+          "description": "受注残高の増減要因となる為替差額および受注残高の補正による調整額",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "コンサルティング事業",
+            "都市空間事業",
+            "エネルギー事業",
+            "その他"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "決算短信の「生産、受注及び販売の状況」セクションに、受注高、売上収益、受注残高、および為替・その他調整のセグメント別内訳が詳細な表形式で記載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/9161/20250214_9161_ＩＤ＆ＥＨＤ_決算短信_2025年６月期第２四半期（中間期）決算短信〔ＩＦＲＳ〕（連結）_140120250213573719.pdf",
+  "_source_doc_id": "140120250213573719",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T20:14:21.994927+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      5,
+      17
+    ],
+    "table_count": 2,
+    "max_rows": 9,
+    "max_cols": 8,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

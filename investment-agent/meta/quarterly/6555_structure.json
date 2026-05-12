@@ -1,0 +1,45 @@
+{
+  "ticker": "6555",
+  "company_name": "ＭＳコンサル",
+  "current_version": "2026-04",
+  "versions": [
+    {
+      "valid_from": "2026-04",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "翌期首（当期末）時点での受注残高",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "text",
+      "complexity": "no_table",
+      "notes": "本文中に当期の売上収益（2,584,946千円）および、翌期首（2026年2月末）時点の受注残高（714百万円）の具体的な数値が記載されています。受注高については前年同期比（2.0%減）のみの言及であり、金額の記載はありません。"
+    }
+  ],
+  "_source_pdf": "tdnet/6555/20260410_6555_ＭＳコンサル_決算短信_2026年２月期決算短信〔ＩＦＲＳ〕(連結)_140120260410501672.pdf",
+  "_source_doc_id": "140120260410501672",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:20:35.157171+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "no_table",
+    "relevant_pages": [
+      4,
+      7
+    ],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "pdfplumber found no tables on relevant pages"
+    ]
+  }
+}

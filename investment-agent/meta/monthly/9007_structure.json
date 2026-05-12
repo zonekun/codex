@@ -1,0 +1,28 @@
+{
+  "ticker": "9007",
+  "company_name": "9007",
+  "metrics": [
+    {
+      "name": "ホテル 売上高（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "百貨店 取扱高（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "輸送人員（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "運輸収入（円）",
+      "source": "bc"
+    },
+    {
+      "name": "運輸収入（前年同月比）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

@@ -1,0 +1,29 @@
+{
+  "source": "non-tdnet(pdf)",
+  "format": "pdf",
+  "fields": [
+    {
+      "key": "単価（実費込、%）",
+      "name": "単価（実費込、%）",
+      "value_type": "number",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "GCSには中長期経営計画PDFのみ。月次の単価・物量データなし"
+    },
+    {
+      "key": "物量（日当り、%）",
+      "name": "物量（日当り、%）",
+      "value_type": "number",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "同上"
+    }
+  ],
+  "extraction_notes": "セイノーホールディングス。GCSには「こちら」リンク先の中長期経営計画PDFのみ。月次の単価・物量データを含む文書が確認できないため全field bc_ignore。",
+  "ticker": "9076",
+  "company_name": "セイノーホールディングス",
+  "created_at": "2026-04-05T10:27:19.881038+09:00",
+  "created_by": "gemini-2.5-flash",
+  "extraction_method": "gemini",
+  "manual_override": true,
+  "manual_override_note": "Codex成果物を自ら検証・再作成。月次文書不在のためbc_ignore",
+  "manual_override_at": "2026-05-08T01:00:00+09:00"
+}

@@ -1,0 +1,14 @@
+{
+  "ticker": "9974",
+  "company_name": "ベルク",
+  "ir_page_url": "https://www.belc.jp/company/library/monthly",
+  "status": "active",
+  "type": "html_table",
+  "playwright_required": true,
+  "note": "XJ-Storage経由の月次データ。静的HTMLでは空表示(掲載すべき事項はございません)。Playwright試行 (2026-04-24)",
+  "updated_at": "2026-04-24T15:03:29.322823+09:00",
+  "last_checked": "2026-04-24",
+  "manual_override": true,
+  "manual_override_at": "2026-04-24T15:03:29.322823+09:00",
+  "manual_override_note": "D群HAS_PDF→html_table+playwright (2026-04-24)"
+}

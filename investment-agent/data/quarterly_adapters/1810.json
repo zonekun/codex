@@ -1,0 +1,76 @@
+{
+  "ticker": "1810",
+  "company_name": "松井建",
+  "current_version": "2025-11",
+  "versions": [
+    {
+      "valid_from": "2025-11",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "個別受注実績における受注金額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "完成工事高",
+          "type": "completed",
+          "description": "建設事業における完成工事高（連結および個別）",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "連結売上高合計",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "事業・工種区分",
+          "items": [
+            "建設業",
+            "建築",
+            "土木",
+            "不動産事業等"
+          ]
+        },
+        {
+          "dimension_name": "発注者区分",
+          "items": [
+            "官公庁",
+            "民間"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "個別受注高については、工種別（建築・土木）および発注者別（官公庁・民間）の精緻な内訳表が掲載されています。連結の売上高および完成工事高はサマリーテキストとして記載されています。受注残高（繰越工事高）のデータは本資料には含まれていません。"
+    }
+  ],
+  "_source_pdf": "tdnet/1810/20251113_1810_松井建_決算短信_2026年3月期　第2四半期（中間期）決算短信〔日本基準〕（連結）_140120251112598748.pdf",
+  "_source_doc_id": "140120251112598748",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T16:44:19.884843+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      12
+    ],
+    "table_count": 2,
+    "max_rows": 13,
+    "max_cols": 9,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "ticker": "1777",
+  "company_name": "川崎設備",
+  "current_version": "2025-07",
+  "versions": [
+    {
+      "valid_from": "2025-07",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当第１四半期累計期間における受注高の合計値",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "完成工事高",
+          "type": "completed",
+          "description": "当第１四半期累計期間における完成工事高（売上高に相当）の合計値",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "提供された決算短信の定性的情報（2ページ）および四半期損益計算書（5ページ）より、受注高および完成工事高の合計数値が取得可能です。受注残高（繰越工事高）およびセグメント別・工事種類別の詳細な内訳表は、提示された画像内には含まれていません。"
+    }
+  ],
+  "_source_pdf": "tdnet/1777/20250731_1777_川崎設備_決算短信_2026年３月期 第１四半期決算短信〔日本基準〕(非連結)_140120250730524280.pdf",
+  "_source_doc_id": "140120250730524280",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T16:40:18.458982+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      7
+    ],
+    "table_count": 1,
+    "max_rows": 20,
+    "max_cols": 4,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

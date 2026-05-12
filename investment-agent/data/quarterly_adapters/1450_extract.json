@@ -1,0 +1,28 @@
+{
+  "ticker": "1450",
+  "company_name": "ＴＡＮＡＫＥＮ",
+  "current_version": "2025-08",
+  "versions": [
+    {
+      "valid_from": "2025-08",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Vision extraction selected because structure is complex or data is unavailable."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/1450/20250801_1450_ＴＡＮＡＫＥＮ_決算短信_2026年３月期　第１四半期決算短信〔日本基準〕（非連結）_140120250801527621.pdf",
+  "_source_doc_id": "140120250801527621",
+  "_generated_at": "2026-04-30T16:30:41.780437+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

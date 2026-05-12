@@ -1,0 +1,71 @@
+{
+  "ticker": "1844",
+  "company_name": "大盛工",
+  "current_version": "2026-03",
+  "versions": [
+    {
+      "valid_from": "2026-03",
+      "valid_until": null,
+      "extraction_method": "regex",
+      "source": "tanshin",
+      "page_keywords": [
+        "中間連結損益",
+        "売上高合計",
+        "受注高",
+        "完成工事高"
+      ],
+      "fields": [
+        {
+          "key": "売上高合計",
+          "row_label_regex": "売上高合計",
+          "value_type": "integer",
+          "unit": "千円",
+          "use_last_number": true
+        },
+        {
+          "key": "受注高",
+          "row_label_regex": "受注高",
+          "value_type": "integer",
+          "unit": "千円",
+          "use_last_number": false,
+          "notes": "1ページの本文「（建設事業）」セクションから抽出。括弧内の増減率は無視するためuse_last_numberはfalse。"
+        },
+        {
+          "key": "完成工事高",
+          "row_label_regex": "完成工事高",
+          "value_type": "integer",
+          "unit": "千円",
+          "use_last_number": true
+        },
+        {
+          "key": "不動産事業売上高",
+          "row_label_regex": "不動産事業売上高",
+          "value_type": "integer",
+          "unit": "千円",
+          "use_last_number": true
+        },
+        {
+          "key": "OLY事業売上高",
+          "row_label_regex": "ＯＬＹ事業売上高",
+          "value_type": "integer",
+          "unit": "千円",
+          "use_last_number": true
+        },
+        {
+          "key": "通信関連売上高",
+          "row_label_regex": "通信関連売上高",
+          "value_type": "integer",
+          "unit": "千円",
+          "use_last_number": true
+        }
+      ],
+      "gemini_custom_prompt": "",
+      "notes": "受注高は1ページの定性情報から、その他の売上項目は2ページの中間連結損益計算書から抽出します。損益計算書の項目は比較情報が含まれるため、当期数値を取得するためにuse_last_numberをtrueに設定しています。"
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/1844/20260312_1844_大盛工_決算短信_2026年７月期 第２四半期（中間期）決算短信【日本基準】（連結）_140120260206550847.pdf",
+  "_source_doc_id": "140120260206550847",
+  "_generated_at": "2026-04-30T22:45:32.934065+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

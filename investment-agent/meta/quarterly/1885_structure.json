@@ -1,0 +1,57 @@
+{
+  "ticker": "1885",
+  "company_name": "東亜建",
+  "current_version": "2025-05",
+  "versions": [
+    {
+      "valid_from": "2025-05",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "建設事業における新規受注契約額。連結および個別ベースで開示。",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "手持高",
+          "type": "backlog",
+          "description": "受注済みの工事のうち、未完成の残高。個別ベースで詳細が開示される。",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "決算短信の本文および末尾の補足資料（個別売上高・受注高・手持高の概況）に詳細なデータが存在する。特に個別ベースでは、工事種類（土木・建築）と発注者別（官公庁・民間・海外）のマトリックス形式でデータが提供されている。"
+    }
+  ],
+  "_source_pdf": "tdnet/1885/20250513_1885_東亜建_決算短信_2025年3月期 決算短信〔日本基準〕(連結)_140120250512540919.pdf",
+  "_source_doc_id": "140120250512540919",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T16:59:05.324234+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      5,
+      6,
+      7,
+      25,
+      26,
+      30
+    ],
+    "table_count": 6,
+    "max_rows": 34,
+    "max_cols": 7,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 6"
+    ]
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "ticker": "1997",
+  "company_name": "暁飯島",
+  "current_version": "2026-04",
+  "versions": [
+    {
+      "valid_from": "2026-04",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注工事高",
+          "type": "order_intake",
+          "description": "当中間会計期間における受注工事の総額（設備事業合計）",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "繰越工事高",
+          "type": "backlog",
+          "description": "当中間会計期間末における未完成工事の受注残高（設備事業合計）",
+          "unit": "千円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "資料の10ページ（補足情報）に、受注工事高、売上高、繰越工事高の3つの詳細な実績表が掲載されており、建築設備工事やリニューアル工事などの区分別に金額が記載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/1997/20260403_1997_暁飯島_決算短信_2026年８月期 第２四半期決算短信〔日本基準〕（非連結）_140120260402597656.pdf",
+  "_source_doc_id": "140120260402597656",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:14:29.230227+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      3,
+      4,
+      8,
+      12
+    ],
+    "table_count": 4,
+    "max_rows": 42,
+    "max_cols": 9,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 4"
+    ]
+  }
+}

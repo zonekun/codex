@@ -1,0 +1,8 @@
+{
+  "ticker": "3674",
+  "company_name": "オークファン",
+  "manual_override": true,
+  "inactive_set_at": "2026-04-17T19:33:20+09:00",
+  "_excluded": true,
+  "_excluded_reason": "BC月次データ 2024-09 以降停止（管理対象外判断 2026-04-17）"
+}

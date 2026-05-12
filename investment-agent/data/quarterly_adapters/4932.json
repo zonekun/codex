@@ -1,0 +1,37 @@
+{
+  "ticker": "4932",
+  "company_name": "アルマード",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "breakdown_dimensions": [],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "提供された画像（3ページおよび5ページ）には、受注高、売上高、受注残高に関するデータは記載されていません。5ページは貸借対照表の負債・純資産の部であり、3ページはその補足説明です。売上高が記載されていると思われる損益計算書（7ページ等）は画像に含まれていません。"
+    }
+  ],
+  "_source_pdf": "tdnet/4932/20260213_4932_アルマード_決算短信_2026年３月期 第３四半期決算短信〔日本基準〕（非連結）_140120260212558551.pdf",
+  "_source_doc_id": "140120260212558551",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:19:33.220711+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      5,
+      7
+    ],
+    "table_count": 1,
+    "max_rows": 34,
+    "max_cols": 3,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

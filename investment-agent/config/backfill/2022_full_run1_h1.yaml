@@ -1,0 +1,62 @@
+name: 2022_full_run1_h1
+
+loads:
+  # 4分割: ワークフローOOM分割と同一レンジ（各~7K-9K件 → 抽出2h以内）
+  - job: tdnet-load-daily
+    region: us-west1
+    env:
+      DATE_FROM: "20220101"
+      DATE_TO: "20220209"
+      ALLOW_FULL_BACKFILL: "1"
+    args: ["--job-mode=load"]
+  - job: tdnet-load-daily
+    region: us-west1
+    env:
+      DATE_FROM: "20220210"
+      DATE_TO: "20220331"
+      ALLOW_FULL_BACKFILL: "1"
+    args: ["--job-mode=load"]
+  - job: tdnet-load-daily
+    region: us-west1
+    env:
+      DATE_FROM: "20220401"
+      DATE_TO: "20220512"
+      ALLOW_FULL_BACKFILL: "1"
+    args: ["--job-mode=load"]
+  - job: tdnet-load-daily
+    region: us-west1
+    env:
+      DATE_FROM: "20220513"
+      DATE_TO: "20220630"
+      ALLOW_FULL_BACKFILL: "1"
+    args: ["--job-mode=load"]
+
+workflows:
+  # Q1 OOM分割: 15,183 docs → GCS実データ累積50%で分割(6,835/8,348 = 45.0%/55.0%)
+  - name: ai_processing_flow
+    location: us-central1
+    data:
+      date_from: "20220101"
+      date_to: "20220209"
+  - name: ai_processing_flow
+    location: us-central1
+    data:
+      date_from: "20220210"
+      date_to: "20220331"
+  # Q2 OOM分割: 17,226 docs → GCS実データ累積50%で分割(8,293/8,933 = 48.1%/51.9%)
+  - name: ai_processing_flow
+    location: us-central1
+    data:
+      date_from: "20220401"
+      date_to: "20220512"
+  - name: ai_processing_flow
+    location: us-central1
+    data:
+      date_from: "20220513"
+      date_to: "20220630"
+
+options:
+  parallel_loads: 2
+  poll_interval_s: 120
+  notify_on_start: true
+  notify_each_load: true

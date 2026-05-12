@@ -1,0 +1,28 @@
+{
+  "ticker": "5958",
+  "company_name": "三洋工",
+  "current_version": "2025-08",
+  "versions": [
+    {
+      "valid_from": "2025-08",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/5958/20250806_5958_三洋工_決算短信_2026年3月期第1四半期決算短信〔日本基準〕（連結）_140120250801527298.pdf",
+  "_source_doc_id": "140120250801527298",
+  "_generated_at": "2026-04-30T18:36:18.805976+09:00",
+  "_model_used": null
+}

@@ -1,0 +1,28 @@
+{
+  "ticker": "6093",
+  "company_name": "エスクローＡＪ",
+  "current_version": "2026-04",
+  "versions": [
+    {
+      "valid_from": "2026-04",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "presentation",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/6093/20260410_6093_エスクローＡＪ_決算説明資料_2026年2月期 決算説明における想定質問と回答_140120260410501536.pdf",
+  "_source_doc_id": "140120260410501536",
+  "_generated_at": "2026-04-30T18:40:19.565079+09:00",
+  "_model_used": null
+}

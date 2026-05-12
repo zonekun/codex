@@ -1,0 +1,82 @@
+{
+  "ticker": "1827",
+  "company_name": "ナカノフドー",
+  "current_version": "2025-11",
+  "versions": [
+    {
+      "valid_from": "2025-11",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "建設事業における受注高。連結および提出会社単体のデータが提供されている。",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "建設事業における売上高（完成工事高）。連結および提出会社単体のデータが提供されている。",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "繰越高",
+          "type": "backlog",
+          "description": "建設事業における期末時点の受注残高。連結および提出会社単体のデータが提供されている。",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "地域",
+          "items": [
+            "国内",
+            "海外"
+          ]
+        },
+        {
+          "dimension_name": "工種",
+          "items": [
+            "建築",
+            "土木"
+          ]
+        },
+        {
+          "dimension_name": "発注者",
+          "items": [
+            "官公庁",
+            "民間"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "資料11ページの補足情報に、連結業績および提出会社単体の建設事業に関する受注高、売上高、繰越高の詳細な表が掲載されている。地域別、工種別、発注者別の内訳が含まれる。"
+    }
+  ],
+  "_source_pdf": "tdnet/1827/20251113_1827_ナカノフドー_決算短信_2026年３月期 第２四半期(中間期)決算短信〔日本基準〕(連結)_140120251113599168.pdf",
+  "_source_doc_id": "140120251113599168",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T16:49:40.148721+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      3,
+      4,
+      13
+    ],
+    "table_count": 2,
+    "max_rows": 20,
+    "max_cols": 9,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

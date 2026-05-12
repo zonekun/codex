@@ -1,0 +1,105 @@
+{
+  "ticker": "1972",
+  "company_name": "三晃金",
+  "current_version": "2026-04",
+  "versions": [
+    {
+      "valid_from": "2026-04",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当期における受注の総額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "当期における売上高（完成工事高、製品売上高、売電事業売上高の合計）",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "期末時点における未消化の受注残高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "完成工事高",
+          "type": "completed",
+          "description": "売上高のうち、工事の完成による売上",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "製品売上高",
+          "type": "completed",
+          "description": "売上高のうち、製品の販売による売上",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "売電事業売上高",
+          "type": "completed",
+          "description": "売上高のうち、太陽光発電による売電収入",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント・品目",
+          "items": [
+            "屋根事業",
+            "屋根事業（工事）",
+            "屋根事業（工事・長尺屋根）",
+            "屋根事業（工事・ハイタフ）",
+            "屋根事業（工事・R-T）",
+            "屋根事業（工事・塗装）",
+            "屋根事業（工事・ソーラー）",
+            "屋根事業（販売・成型品）",
+            "住宅建材",
+            "売電"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "決算短信の「受注及び売上の状況」において、受注高、売上高、受注残高の3項目について、屋根事業（工事内訳・販売別）、住宅建材、売電のセグメント別詳細データが記載されています。また、損益計算書および本文でも主要な数値が補足されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/1972/20260424_1972_三晃金_決算短信_2026年3月期決算短信（日本基準）（非連結）_140120260423509582.pdf",
+  "_source_doc_id": "140120260423509582",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:11:36.490768+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      6,
+      10,
+      11,
+      13,
+      20
+    ],
+    "table_count": 7,
+    "max_rows": 44,
+    "max_cols": 13,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 7",
+      "wide table: 13 columns"
+    ]
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "ticker": "2461",
+  "company_name": "2461",
+  "metrics": [
+    {
+      "name": "連結 取扱高（円）",
+      "source": "bc"
+    },
+    {
+      "name": "連結 取扱高（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "連結 売上高（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "連結 売上高（百万円）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

@@ -1,0 +1,37 @@
+{
+  "ticker": "8174",
+  "company_name": "日瓦斯",
+  "current_version": "2025-07",
+  "versions": [
+    {
+      "valid_from": "2025-07",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "ppt_chart",
+      "notes": "提示された資料はキャッシュ・フロー（営業CF、投資CF、財務CF、FCF）および投資内訳に関するものであり、受注高、完成工事高、受注残高に関するデータは含まれていません。"
+    }
+  ],
+  "_source_pdf": "tdnet/8174/20250729_8174_日瓦斯_決算説明資料_2026年３月期　第１四半期　決算説明資料_140120250728521844.pdf",
+  "_source_doc_id": "140120250728521844",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T20:05:57.848456+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      17
+    ],
+    "table_count": 11,
+    "max_rows": 9,
+    "max_cols": 8,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 11"
+    ]
+  }
+}

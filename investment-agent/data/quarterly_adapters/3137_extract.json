@@ -1,0 +1,28 @@
+{
+  "ticker": "3137",
+  "company_name": "Ｇ－ファンデリー",
+  "current_version": "2026-01",
+  "versions": [
+    {
+      "valid_from": "2026-01",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "presentation",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Vision extraction selected because structure is complex or data is unavailable."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/3137/20260130_3137_Ｇ－ファンデリー_決算説明資料_2026年３月期 第３四半期決算説明資料_140120260130543097.pdf",
+  "_source_doc_id": "140120260130543097",
+  "_generated_at": "2026-04-30T17:33:40.818586+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

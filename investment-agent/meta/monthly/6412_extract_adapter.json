@@ -1,0 +1,90 @@
+{
+  "source": "non-tdnet(pdf)",
+  "format": "pdf",
+  "doc_title_pattern": "月次営業実績",
+  "year_from_title_regex": "(\\d{4})年",
+  "month_from_title_regex": "(\\d{1,2})月",
+  "fields": [
+    {
+      "key": "ゴルフ事業 全店 コース数",
+      "name": "ゴルフ事業 全店 コース数",
+      "row_label_regex": "^(\\d+)月\\s+\\d+\\s+[\\d.]+\\s+(\\d+)",
+      "value_type": "integer",
+      "group": 2,
+      "use_last_number": true,
+      "bc_key": "ゴルフ事業 全店 コース数"
+    },
+    {
+      "key": "ゴルフ事業 全店 売上（百万円）",
+      "name": "ゴルフ事業 全店 売上（百万円）",
+      "row_label_regex": "^(\\d+)月\\s+\\d+\\s+[\\d.]+\\s+\\d+\\s+[\\d.]+\\s+\\d+\\s+\\d+\\s+[\\d,]+\\s+([\\d,]+)",
+      "value_type": "integer",
+      "group": 2,
+      "use_last_number": true,
+      "bc_key": "ゴルフ事業 全店 売上（百万円）"
+    },
+    {
+      "key": "ゴルフ事業 全店 客数（前年同月比）",
+      "name": "ゴルフ事業 全店 客数（前年同月比）",
+      "row_label_regex": "^(\\d+)月\\s+\\d+\\s+[\\d.]+\\s+\\d+\\s+[\\d.]+\\s+\\d+\\s+\\d+\\s+[\\d,]+\\s+[\\d,]+\\s+([\\d.-]+%)",
+      "value_type": "percentage",
+      "group": 2,
+      "use_last_number": true,
+      "bc_key": "ゴルフ事業 全店 客数（前年同月比）"
+    },
+    {
+      "key": "ゴルフ事業 全店 売上（前年同月比）",
+      "name": "ゴルフ事業 全店 売上（前年同月比）",
+      "row_label_regex": "^(\\d+)月\\s+\\d+\\s+[\\d.]+\\s+\\d+\\s+[\\d.]+\\s+\\d+\\s+\\d+\\s+[\\d,]+\\s+[\\d,]+\\s+[\\d.-]+%\\s+([\\d.-]+%)",
+      "value_type": "percentage",
+      "group": 2,
+      "use_last_number": true,
+      "bc_key": "ゴルフ事業 全店 売上（前年同月比）"
+    },
+    {
+      "key": "ゴルフ事業 既存店 客数（前年同月比）",
+      "name": "ゴルフ事業 既存店 客数（前年同月比）",
+      "row_label_regex": "^(\\d+)月\\s+.*?\\s+([\\d.-]+%)\\s+([\\d.-]+%)\\s+([\\d.-]+%)$",
+      "value_type": "percentage",
+      "group": 2,
+      "use_last_number": true,
+      "bc_key": "ゴルフ事業 既存店 客数（前年同月比）"
+    },
+    {
+      "key": "ゴルフ事業 既存店 客単価（前年同月比）",
+      "name": "ゴルフ事業 既存店 客単価（前年同月比）",
+      "row_label_regex": "^(\\d+)月\\s+.*?\\s+([\\d.-]+%)\\s+([\\d.-]+%)\\s+([\\d.-]+%)$",
+      "value_type": "percentage",
+      "group": 3,
+      "use_last_number": true,
+      "bc_key": "ゴルフ事業 既存店 客単価（前年同月比）"
+    },
+    {
+      "key": "ゴルフ事業 既存店 売上（前年同月比）",
+      "name": "ゴルフ事業 既存店 売上（前年同月比）",
+      "row_label_regex": "^(\\d+)月\\s+.*?\\s+([\\d.-]+%)\\s+([\\d.-]+%)\\s+([\\d.-]+%)$",
+      "value_type": "percentage",
+      "group": 4,
+      "use_last_number": true,
+      "bc_key": "ゴルフ事業 既存店 売上（前年同月比）"
+    },
+    {
+      "key": "ゴルフ事業 全店 客単価（前年同月比）",
+      "name": "ゴルフ事業 全店 客単価（前年同月比）",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "BC値101.3あり。開示資料の全店テーブルに客単価項目なし。既存店の客単価・客数・売上はあるが全店は客数・売上のみ",
+      "bc_key": "ゴルフ事業 全店 客単価（前年同月比）"
+    }
+  ],
+  "extraction_notes": "平和。月次営業実績PDF。全店テーブル: コース数・売上(百万円)・客数YoY・売上YoY。既存店テーブル(通期ゴルフ場ベース): 客数YoY・客単価YoY・売上YoY。全店客単価は開示なしのためbc_ignore。降水量テーブルとの混同回避にregex列構成を考慮。",
+  "ticker": "6412",
+  "company_name": "平和",
+  "created_at": "2026-05-06T17:29:53.251726+09:00",
+  "created_by": "gemini-3-flash-preview",
+  "sample_doc_title": "2008年12月_月次営業実績",
+  "sample_file": "000000_6412_2008年12月_月次営業実績_f04927b6",
+  "extraction_method": "regex",
+  "manual_override": true,
+  "manual_override_note": "前セッションでgemini-3-flash-previewが作成したregexパターンを検証・承認。全店客単価のbc_ignore判断も正当",
+  "manual_override_at": "2026-05-08T00:25:00+09:00"
+}

@@ -1,0 +1,28 @@
+{
+  "ticker": "6337",
+  "company_name": "テセック",
+  "current_version": "2026-01",
+  "versions": [
+    {
+      "valid_from": "2026-01",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Vision extraction selected because structure is complex or data is unavailable."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/6337/20260127_6337_テセック_決算短信_2026年3月期 第3四半期決算短信〔日本基準〕(連結)_140120260127539293.pdf",
+  "_source_doc_id": "140120260127539293",
+  "_generated_at": "2026-04-30T19:04:29.305412+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

@@ -1,0 +1,28 @@
+{
+  "ticker": "7718",
+  "company_name": "スター精密",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "other",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/7718/20260212_7718_スター精密_その他（未分類）_2025年12月期 決算資料_140120260210553428.pdf",
+  "_source_doc_id": "140120260210553428",
+  "_generated_at": "2026-04-30T19:54:22.013456+09:00",
+  "_model_used": null
+}

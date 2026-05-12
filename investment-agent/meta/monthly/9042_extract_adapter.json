@@ -1,0 +1,52 @@
+{
+  "ticker": "9042",
+  "company_name": "阪急阪神ホールディングス",
+  "source": "non-tdnet(pdf)",
+  "format": "pdf",
+  "extraction_method": "gemini",
+  "gemini_multi_month": true,
+  "overwrite_past_months": true,
+  "doc_title_pattern": "鉄道運輸成績|月次鉄道",
+  "fiscal_year_start_month": 4,
+  "custom_prompt": "この文書は阪急阪神HDの「月次鉄道運輸成績」で、阪急電鉄と阪神電気鉄道の月次データが1つの表にまとめられています。各月の「前年同期比 YoY Change（％）」の値を抽出してください。阪急電鉄セクション: 収入の定期・定期外の前年同期比と、人員の合計の前年同期比。阪神電気鉄道セクション: 収入の定期・定期外の前年同期比と、人員の合計の前年同期比。月は4月～3月の年度ベースです。累計列（第1四半期累計、第2四半期累計等）は除外し、個別月のみ返してください。値はパーセント数値のみ（例: 2.3）。",
+  "fields": [
+    {
+      "key": "阪急電鉄 売上 定期（前年同月比）",
+      "bc_key": "阪急電鉄 売上 定期（前年同月比）",
+      "description": "阪急電鉄 収入 定期の前年同期比（％）",
+      "value_type": "percentage"
+    },
+    {
+      "key": "阪急電鉄 売上 定期外（前年同月比）",
+      "bc_key": "阪急電鉄 売上 定期外（前年同月比）",
+      "description": "阪急電鉄 収入 定期外の前年同期比（％）",
+      "value_type": "percentage"
+    },
+    {
+      "key": "阪急電鉄 輸送人員（前年同月比）",
+      "bc_key": "阪急電鉄 輸送人員（前年同月比）",
+      "description": "阪急電鉄 人員 合計の前年同期比（％）",
+      "value_type": "percentage"
+    },
+    {
+      "key": "阪神電鉄 売上 定期（前年同月比）",
+      "bc_key": "阪神電鉄 売上 定期（前年同月比）",
+      "description": "阪神電気鉄道 収入 定期の前年同期比（％）",
+      "value_type": "percentage"
+    },
+    {
+      "key": "阪神電鉄 売上 定期外（前年同月比）",
+      "bc_key": "阪神電鉄 売上 定期外（前年同月比）",
+      "description": "阪神電気鉄道 収入 定期外の前年同期比（％）",
+      "value_type": "percentage"
+    },
+    {
+      "key": "阪神電鉄 輸送人員（前年同月比）",
+      "bc_key": "阪神電鉄 輸送人員（前年同月比）",
+      "description": "阪神電気鉄道 人員 合計の前年同期比（％）",
+      "value_type": "percentage"
+    }
+  ],
+  "manual_override": true,
+  "manual_override_at": "2026-05-08T14:00:00+09:00"
+}

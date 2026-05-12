@@ -1,0 +1,69 @@
+{
+  "ticker": "6247",
+  "company_name": "日阪製作",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当四半期累計期間における受注契約の総額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当四半期会計期間末時点における未納入の受注残高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "海外受注高",
+          "type": "order_intake",
+          "description": "受注高のうち海外顧客からの受注額（内数）",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "海外受注残高",
+          "type": "backlog",
+          "description": "受注残高のうち海外顧客向けの残高（内数）",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "補足情報のセグメント別受注高及び受注残高の表において、金額および構成比、前年同期比、ならびに内数としての海外数値が詳細に記載されている。"
+    }
+  ],
+  "_source_pdf": "tdnet/6247/20260213_6247_日阪製作_決算短信_2026年３月期 第３四半期決算短信〔日本基準〕（連結）_140120260212557789.pdf",
+  "_source_doc_id": "140120260212557789",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:53:20.722338+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      3,
+      4,
+      13
+    ],
+    "table_count": 3,
+    "max_rows": 12,
+    "max_cols": 10,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "ticker": "2385",
+  "company_name": "Ｇ－総医研",
+  "current_version": "2025-08",
+  "versions": [
+    {
+      "valid_from": "2025-08",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "セグメント別の受注高",
+          "unit": "百万円",
+          "is_total": false
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "セグメント別の期末受注残高",
+          "unit": "百万円",
+          "is_total": false
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "text",
+      "complexity": "no_table",
+      "notes": "本文中のセグメント別概況において、生体評価システムおよびヘルスケアサポート事業の受注高、売上高、受注残高の数値が記載されています。化粧品および健康補助食品事業については売上高のみの記載です。"
+    }
+  ],
+  "_source_pdf": "tdnet/2385/20250813_2385_Ｇ－総医研_決算短信_2025年6月期　決算短信〔日本基準〕（連結）_140120250813540188.pdf",
+  "_source_doc_id": "140120250813540188",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:21:55.240405+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "no_table",
+    "relevant_pages": [
+      4
+    ],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "pdfplumber found no tables on relevant pages"
+    ]
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "ticker": "1980",
+  "company_name": "ダイダン",
+  "current_version": "2025-11",
+  "versions": [
+    {
+      "valid_from": "2025-11",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注工事高",
+          "type": "order_intake",
+          "description": "当中間連結会計期間における受注工事の総額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "繰越工事高",
+          "type": "backlog",
+          "description": "中間連結会計期間末時点における未完成工事の残高",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "補足情報の「部門別受注工事高・完成工事高・繰越工事高（連結）」テーブルに詳細な数値が記載されています。注記にある通り、産業施設工事、海外工事、リニューアル工事はそれぞれの工事種類ごとの集計で重複して含まれる区分です。"
+    }
+  ],
+  "_source_pdf": "tdnet/1980/20251107_1980_ダイダン_決算短信_2026年３月期 第２四半期（中間期）決算短信〔日本基準〕（連結）_140120251106589017.pdf",
+  "_source_doc_id": "140120251106589017",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:13:06.608324+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      5,
+      9,
+      16
+    ],
+    "table_count": 2,
+    "max_rows": 41,
+    "max_cols": 8,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

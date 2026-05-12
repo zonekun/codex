@@ -1,0 +1,28 @@
+{
+  "ticker": "7776",
+  "company_name": "Ｇ－セルシード",
+  "current_version": "2025-02",
+  "versions": [
+    {
+      "valid_from": "2025-02",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Vision extraction selected because structure is complex or data is unavailable."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/7776/20250213_7776_Ｇ－セルシード_決算短信_2024年12月期 決算短信〔日本基準〕（非連結）_140120250212570700.pdf",
+  "_source_doc_id": "140120250212570700",
+  "_generated_at": "2026-04-30T19:58:17.027629+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

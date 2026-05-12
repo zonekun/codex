@@ -1,0 +1,16 @@
+{
+  "ticker": "4415",
+  "company_name": "4415",
+  "metrics": [
+    {
+      "name": "B-CUBIC 戸数純増（戸）",
+      "source": "bc"
+    },
+    {
+      "name": "BRO-LOCK 戸数純増（戸）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

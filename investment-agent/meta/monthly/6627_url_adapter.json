@@ -1,0 +1,13 @@
+{
+  "ticker": "6627",
+  "company_name": "テラプローブ",
+  "ir_page_url": "http://www.teraprobe.com/ir/monthly/",
+  "updated_at": "2026-04-21T10:00:03.997139+09:00",
+  "last_checked": "2026-04-21",
+  "status": "active",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": "\\d{4}",
+  "link_href_pattern": "/cwp/wp\\-content/uploads.*\\.(pdf)",
+  "note": "月次PDFリンク12件検出 best=https://www.teraprobe.com/cwp/wp-content/uploads/20260415_monthlysales2603.pdf"
+}

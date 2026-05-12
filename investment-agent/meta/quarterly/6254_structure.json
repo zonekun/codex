@@ -1,0 +1,44 @@
+{
+  "ticker": "6254",
+  "company_name": "野村マイクロ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当第３四半期連結累計期間における受注高の合計",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "text",
+      "complexity": "no_table",
+      "notes": "本文中に受注高および売上高の合計値、ならびに売上高の事業別・地域別の内訳が記載されています。受注残高についての具体的な数値記載はありません。"
+    }
+  ],
+  "_source_pdf": "tdnet/6254/20260213_6254_野村マイクロ_決算短信_2026年３月期 第３四半期決算短信〔日本基準〕（連結）_140120260213559714.pdf",
+  "_source_doc_id": "140120260213559714",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:54:00.228005+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "no_table",
+    "relevant_pages": [
+      4
+    ],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "pdfplumber found no tables on relevant pages"
+    ]
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "ticker": "1431",
+  "company_name": "Ｇ－リブワーク",
+  "current_version": "2025-02",
+  "versions": [
+    {
+      "valid_from": "2025-02",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/1431/20250212_1431_Ｇ－リブワーク_決算短信_2025年６月期 第２四半期（中間期）決算短信〔日本基準〕(連結)_140120250210568863.pdf",
+  "_source_doc_id": "140120250210568863",
+  "_generated_at": "2026-04-30T16:27:14.487697+09:00",
+  "_model_used": null
+}

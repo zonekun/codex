@@ -1,0 +1,70 @@
+{
+  "ticker": "6668",
+  "company_name": "アドテック　プラズマ",
+  "current_version": "2026-04",
+  "versions": [
+    {
+      "valid_from": "2026-04",
+      "valid_until": null,
+      "extraction_method": "regex",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注実績",
+        "セグメントの名称",
+        "受注高",
+        "受注残高"
+      ],
+      "fields": [
+        {
+          "key": "受注高（半導体・液晶関連事業）",
+          "row_label_regex": "^半導体・液晶関連事業",
+          "value_type": "integer",
+          "unit": "百万円",
+          "group": 1
+        },
+        {
+          "key": "受注高（研究機関・大学関連事業）",
+          "row_label_regex": "^研究機関・大学関連事業",
+          "value_type": "integer",
+          "unit": "百万円",
+          "group": 1
+        },
+        {
+          "key": "受注高",
+          "row_label_regex": "^合計",
+          "value_type": "integer",
+          "unit": "百万円",
+          "group": 1
+        },
+        {
+          "key": "受注残高（半導体・液晶関連事業）",
+          "row_label_regex": "^半導体・液晶関連事業",
+          "value_type": "integer",
+          "unit": "百万円",
+          "group": 3
+        },
+        {
+          "key": "受注残高（研究機関・大学関連事業）",
+          "row_label_regex": "^研究機関・大学関連事業",
+          "value_type": "integer",
+          "unit": "百万円",
+          "group": 3
+        },
+        {
+          "key": "受注残高",
+          "row_label_regex": "^合計",
+          "value_type": "integer",
+          "unit": "百万円",
+          "group": 3
+        }
+      ],
+      "gemini_custom_prompt": "",
+      "notes": "The table contains order intake and backlog values in columns 1 and 3 respectively. Group 1 captures the order intake value, and group 3 captures the backlog value."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/6668/20260410_6668_アドテック　プラズマ_決算短信_2026年8月期第2四半期（中間期）決算短信〔日本基準〕（連結）_140120260330593168.pdf",
+  "_source_doc_id": "140120260330593168",
+  "_generated_at": "2026-04-30T23:31:21.653121+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

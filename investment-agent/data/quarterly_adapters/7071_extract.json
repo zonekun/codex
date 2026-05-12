@@ -1,0 +1,28 @@
+{
+  "ticker": "7071",
+  "company_name": "アンビス",
+  "current_version": "2025-11",
+  "versions": [
+    {
+      "valid_from": "2025-11",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "presentation",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/7071/20251110_7071_アンビス_決算説明資料_2025年9月期決算説明資料_140120251110593229.pdf",
+  "_source_doc_id": "140120251110593229",
+  "_generated_at": "2026-04-30T19:42:29.365562+09:00",
+  "_model_used": null
+}

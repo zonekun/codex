@@ -1,0 +1,52 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "doc_title_pattern": "月次|月度|月間|売上|速報|実績|業績|概況|KPI|ＫＰＩ|状況|報告|推移|月末",
+  "year_from_title_regex": "(\\\\d{4})年",
+  "month_from_title_regex": "(?P<month>\\d{1,2})月",
+  "fields": [
+    {
+      "key": "旅行事業 売上（前年同月比）",
+      "name": "旅行事業 売上（前年同月比）",
+      "row_label_regex": "前年比.*?([\\d.]+)%",
+      "use_last_number": true,
+      "value_type": "float",
+      "notes": "月次業績速報の前年比(最新月) - use_last_number (round9)",
+      "_manual_description": true
+    },
+    {
+      "key": "旅行事業 売上（百万円）",
+      "name": "旅行事業 売上（百万円）",
+      "bc_ignore": true,
+      "bc_ignore_reason": "BC値1833あり。月次業績速報は取扱高と前年比のみ開示。売上高（純額）は取扱高-仕入高で算出されるが仕入高は非開示",
+      "bc_key": "旅行事業 売上（百万円）"
+    }
+  ],
+  "extraction_notes": "Requested metrics '旅行事業 売上（百万円）' and '旅行事業 売上（前年同月比）' are not directly available in the provided text. The document explicitly states that '旅行事業の売上高は、上記取扱高から仕入高を差引いた純額として表示しております' and only provides '旅行事業 取扱高' and its year-on-year comparison.",
+  "ticker": "6561",
+  "company_name": "6561",
+  "created_at": "2026-03-24T16:10:16.224253+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "月次業績速報 2025年12月",
+  "sample_submission_date": "2026-01-20",
+  "fields_count": 0,
+  "updated_at": "2026-03-24",
+  "updated_by": "round9_batch_fix",
+  "manual_override": true,
+  "field_rename_at": "2026-04-17T22:28:27+09:00",
+  "_agent_loosened_from": "月次業績速報 {year}年{month}月",
+  "_agent_patched_at": "2026-04-19T20:44:01.712464+09:00",
+  "_agent_patch_history": [
+    {
+      "ts": "2026-04-19T20:44:01.712464+09:00",
+      "applied": [
+        "top-level: ['doc_title_pattern', '_agent_loosened_from']"
+      ]
+    }
+  ],
+  "extraction_method": "gemini",
+  "overwrite_past_months": true,
+  "custom_prompt": "あなたは ticker 6561 の月次開示 PDF から KPI を抽出するアシスタントです.\n\n抽出対象月: {year}年{month}月度\n\n重要ルール:\n  - 当月 (指定月) の値のみ採用\n  - 四半期累計・上期累計・通期・前年同期実績 等の集計値は絶対に拾わない\n  - サブブランド行ではなく「全店」「既存店」「合計」等の集約行を採用\n  - 前年同月比 field には 「+X.X%増」「−X.X%減」の narrative が該当する場合は\n    100 を加算した値 (例: +5.2% → 105.2, -4.9% → 95.1) を返す\n  - 見つからない field は null\n\n出力形式: JSON\n{\n  - \"旅行事業 売上（前年同月比）\": 数値 (月次業績速報の前年比(最新月) - use_last_number (round9))\n}\n",
+  "regex_redesign_at": "2026-04-19T21:57:26.992561+09:00",
+  "regex_redesign_note": "Gemini 切替 (regex 限界 or 誤マッチのため)."
+}

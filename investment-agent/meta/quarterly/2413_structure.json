@@ -1,0 +1,44 @@
+{
+  "ticker": "2413",
+  "company_name": "エムスリー",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注残",
+          "type": "backlog",
+          "description": "エビデンスソリューションセグメントにおける受注残高",
+          "unit": "億円",
+          "is_total": false
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "エビデンスソリューションの受注残高（356億円）が説明テキスト内に記載されています。売上収益はセグメント別の表形式で提供されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/2413/20260204_2413_エムスリー_決算説明資料_2026年３月期 第３四半期決算説明資料_140120260204547031.pdf",
+  "_source_doc_id": "140120260204547031",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T17:22:46.543740+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      7
+    ],
+    "table_count": 2,
+    "max_rows": 15,
+    "max_cols": 9,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

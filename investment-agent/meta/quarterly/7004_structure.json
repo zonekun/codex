@@ -1,0 +1,70 @@
+{
+  "ticker": "7004",
+  "company_name": "カナデビア",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当四半期累計期間における連結受注高の合計",
+          "unit": "億円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当第３四半期連結会計期間末における連結受注残高の合計",
+          "unit": "億円",
+          "is_total": true
+        },
+        {
+          "name": "セグメント別受注高",
+          "type": "order_intake",
+          "description": "事業セグメント別の受注高",
+          "unit": "億円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "セグメント別受注残高",
+          "type": "backlog",
+          "description": "事業セグメント別の受注残高",
+          "unit": "億円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "補足情報ページにセグメント別の受注高、売上高、受注残高の推移および予想が詳細な表形式で記載されています。本文中には百万円単位での記載もありますが、表データは億円単位で整理されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/7004/20260205_7004_カナデビア_決算短信_2026年３月期  第３四半期決算短信〔日本基準〕（連結）_140120260205547858.pdf",
+  "_source_doc_id": "140120260205547858",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:38:23.897678+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      13,
+      15
+    ],
+    "table_count": 5,
+    "max_rows": 15,
+    "max_cols": 8,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 5"
+    ]
+  }
+}

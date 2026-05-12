@@ -1,0 +1,12 @@
+{
+  "ticker": "9206",
+  "company_name": "スターフライヤー",
+  "ir_page_url": "https://www.starflyer.jp/starflyer/ir/traffic_figures/",
+  "updated_at": "2026-04-24T13:32:21.840743+09:00",
+  "last_checked": "2026-04-21",
+  "status": "inactive",
+  "type": "html_table",
+  "css_selector": null,
+  "table_selector": null,
+  "note": "TDnet移行済み。download_monthly.pyでは処理しない (2026-04-24)。旧note: HTML表に月次データ検出。table_selector要調整"
+}

@@ -1,0 +1,51 @@
+{
+  "ticker": "7610",
+  "company_name": "7610",
+  "metrics": [
+    {
+      "name": "グループ 中品売上高（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "グループ 売上高（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "グループ 新品売上高（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "全店 店舗数",
+      "source": "bc"
+    },
+    {
+      "name": "全社 売上（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "既存店 その他 売上（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "既存店 中古品 売上（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "既存店 新品 売上（前年同月比）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00",
+  "monthly_items": [
+    {
+      "name": "グループ 売上高（前年同月比）",
+      "collection_excluded": false,
+      "_manual_add": true,
+      "_added_at": "2026-04-18T16:01:10+09:00",
+      "_note": "BC未収集（BC=0.0固定）。我々の抽出値を正とする。bc_ignore=true で突合除外 (2026-04-18判断)",
+      "source": "bc"
+    }
+  ],
+  "manual_override": true
+}

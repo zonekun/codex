@@ -1,0 +1,63 @@
+{
+  "ticker": "6632",
+  "company_name": "ＪＶＣＫＷ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "北米公共安全市場向けの期中受注高",
+          "unit": "USDmil",
+          "is_total": false
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント・市場",
+          "items": [
+            "無線システム事業",
+            "北米公共安全市場"
+          ]
+        },
+        {
+          "dimension_name": "期間",
+          "items": [
+            "21年度",
+            "22年度",
+            "23年度",
+            "24年度",
+            "25年度",
+            "26年度"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "ppt_chart",
+      "notes": "無線システム事業の北米公共安全市場における受注残、受注高、売上高の推移がグラフで示されている。単位は百万米ドル（USDmil）。25年度については、第3四半期末（12月末）時点の受注残実績と第4四半期の受注・売上見通しが含まれている。また、3Qに約30百万ドルの大型案件受注があったことが本文に記載されている。\nユーザー指示により、金額以外または外貨単位の受注関連メトリクも必要なため復元。"
+    }
+  ],
+  "_source_pdf": "tdnet/6632/20260203_6632_ＪＶＣＫＷ_決算説明資料_ＪＶＣケンウッド　決算説明資料　2026年３月期第３四半期_140120260202544915.pdf",
+  "_source_doc_id": "140120260202544915",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T19:22:42.262823+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      18
+    ],
+    "table_count": 6,
+    "max_rows": 4,
+    "max_cols": 2,
+    "broken_col0": false,
+    "unit_mixed": false,
+    "notes": [
+      "many tables: 6"
+    ]
+  }
+}

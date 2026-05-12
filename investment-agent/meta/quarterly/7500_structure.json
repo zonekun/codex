@@ -1,0 +1,68 @@
+{
+  "ticker": "7500",
+  "company_name": "西川計測",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当中間期における受注実績の合計額",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当中間期末における受注残高の合計額",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "品目別受注高",
+          "type": "order_intake",
+          "description": "品目別の受注実績",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "品目別受注残高",
+          "type": "backlog",
+          "description": "品目別の受注残高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "本文（2ページ）に百万円単位での概況、補足情報（8ページ）に千円単位での品目別内訳テーブルが記載されています。\nPDFの受注実績・販売実績表は単位が千円のため、JPYを千円に正規化して保持。"
+    }
+  ],
+  "_source_pdf": "tdnet/7500/20260210_7500_西川計測_決算短信_2026年6月期第2四半期決算短信〔日本基準〕（非連結）_140120260209552420.pdf",
+  "_source_doc_id": "140120260209552420",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:50:47.837193+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      10
+    ],
+    "table_count": 2,
+    "max_rows": 6,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

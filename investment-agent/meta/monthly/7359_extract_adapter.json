@@ -1,0 +1,39 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "doc_title_pattern": "(\\\\d{4}年)(\\\\d{1,2}月度) 月次業績に関するお知らせ",
+  "year_from_title_regex": "(\\\\d{4})年",
+  "month_from_title_regex": "(\\\\d{1,2})月度",
+  "fields": [
+    {
+      "key": "連結 売上（百万円）",
+      "name": "連結 売上（百万円）",
+      "row_label_regex": "^売上高",
+      "value_type": "integer",
+      "notes": "「１．〇月度の月次業績 （連結）」セクションの「売上高」行から、当月実績（「７月度 実績」列）の値を抽出する。"
+    },
+    {
+      "key": "連結 売上（前年同月比）",
+      "name": "連結 売上（前年同月比）",
+      "row_label_regex": "^売上高",
+      "value_type": "percentage",
+      "notes": "「１．〇月度の月次業績 （連結）」セクションの「売上高」行から、前年同月比（「前年同月比（%）」列）の値を抽出する。"
+    },
+    {
+      "key": "連結 営業利益（百万円）",
+      "name": "連結 営業利益（百万円）",
+      "description": "「１．〇月度の月次業績（連結）」セクションの営業利益行から当月実績を抽出。百万円単位。マイナスの場合あり",
+      "value_type": "integer",
+      "bc_key": "連結 営業利益（円）",
+      "notes": "BC側は円単位(例:-12000000)、PDF/adapter側は百万円単位(例:-12)。BC比較時にunit_scale=1000000で換算が必要"
+    }
+  ],
+  "extraction_notes": "「１．〇月度の月次業績 （連結）」セクションの表からデータを抽出する。各行の最初の数値が当月実績、3番目の数値が前年同月比となる。「連結 営業利益（円）」は、文書に「百万円」単位で記載されているため、抽出対象外とする。",
+  "ticker": "7359",
+  "company_name": "7359",
+  "created_at": "2026-03-21T20:30:31.207798+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2025年７月度 月次業績に関するお知らせ",
+  "sample_submission_date": "2025-08-14",
+  "fields_count": 2
+}

@@ -1,0 +1,18 @@
+{
+  "ticker": "9627",
+  "company_name": "アインホールディングス",
+  "ir_page_url": "https://www.ainj.co.jp/ir/",
+  "updated_at": "2026-04-24T13:52:42.252045+09:00",
+  "last_checked": "2026-04-21",
+  "status": "active",
+  "type": "scrape_links",
+  "eir_company_code": "9627",
+  "note": "月次速報PDFはainj.co.jp/upload/monthly_report_YYMM.pdf形式 (2026-04-24)。",
+  "link_text_pattern": "月次|monthly",
+  "link_href_pattern": "monthly_report.*\\.pdf",
+  "follow_links": false,
+  "playwright_required": false,
+  "manual_override": true,
+  "manual_override_at": "2026-04-24T13:52:42.252045+09:00",
+  "manual_override_note": "type=scrape_links変更 (2026-04-24)"
+}

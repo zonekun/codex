@@ -1,0 +1,28 @@
+{
+  "ticker": "6652",
+  "company_name": "ＩＤＥＣ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Vision extraction selected because structure is complex or data is unavailable."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/6652/20260206_6652_ＩＤＥＣ_決算短信_2026年3月期 第3四半期決算短信〔日本基準〕(連結)_140120260130543107.pdf",
+  "_source_doc_id": "140120260130543107",
+  "_generated_at": "2026-04-30T19:23:52.134053+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

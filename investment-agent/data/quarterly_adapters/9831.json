@@ -1,0 +1,36 @@
+{
+  "ticker": "9831",
+  "company_name": "ヤマダＨＤ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "breakdown_dimensions": [],
+      "presentation_format": "text",
+      "complexity": "no_table",
+      "notes": "本文中に「注文住宅の受注高は第３四半期末時点で累計前年比114.6％」や「次期以降の完工に向けた受注は十分に積み上がっております」といった受注に関する言及はあるが、受注高および受注残高の具体的な金額（数値データ）が記載されていない。売上高の数値は存在するが、受注・受注残の金額が不明であるため、ルールに基づきdata_availableをfalseとした。"
+    }
+  ],
+  "_source_pdf": "tdnet/9831/20260205_9831_ヤマダＨＤ_決算短信_2026年３月期 第３四半期決算短信〔日本基準〕（連結）_140120260204547188.pdf",
+  "_source_doc_id": "140120260204547188",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T20:29:40.816796+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "no_table",
+    "relevant_pages": [
+      5
+    ],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "pdfplumber found no tables on relevant pages"
+    ]
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "ticker": "253A",
+  "company_name": "ＥＴＳグループ",
+  "current_version": "2025-05",
+  "versions": [
+    {
+      "valid_from": "2025-05",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "連結受注高",
+          "type": "order_intake",
+          "description": "当中間連結会計期間におけるグループ全体の受注高合計",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "受注高および売上高のデータは確認できるが、受注残高（手持工事高）の具体的な金額については当該ページ内に記載がない。売上高についてはセグメント別（百万円単位）と損益計算書上の科目別（千円単位）の内訳が示されている。"
+    }
+  ],
+  "_source_pdf": "tdnet/253A/20250514_253A_ＥＴＳグループ_決算短信_2025年９月期　第２四半期（中間期）決算短信〔日本基準〕（連結）_140120250513545005.pdf",
+  "_source_doc_id": "140120250513545005",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:24:59.256840+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      5,
+      9
+    ],
+    "table_count": 5,
+    "max_rows": 42,
+    "max_cols": 6,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 5"
+    ]
+  }
+}

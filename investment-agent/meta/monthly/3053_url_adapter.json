@@ -1,0 +1,13 @@
+{
+  "ticker": "3053",
+  "company_name": "ペッパーフードサービス",
+  "ir_page_url": "http://www.pepper-fs.co.jp/ir/monthly_report/library.php",
+  "updated_at": "2026-04-21T09:37:15.061882+09:00",
+  "last_checked": "2026-04-21",
+  "status": "active",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": "\\d{4}",
+  "link_href_pattern": "/_img/ir/monthly_report/2026.*\\.(pdf)",
+  "note": "月次PDFリンク3件検出 best=http://www.pepper-fs.co.jp/_img/ir/monthly_report/2026/PFS20260414.pdf"
+}

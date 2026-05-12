@@ -1,0 +1,39 @@
+{
+  "ticker": "7744",
+  "company_name": "ノーリツ鋼機",
+  "current_version": "2025-02",
+  "versions": [
+    {
+      "valid_from": "2025-02",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "手動レビューで受注関連の数値指標なしと確認済み。"
+    }
+  ],
+  "_source_pdf": "tdnet/7744/20250214_7744_ノーリツ鋼機_決算説明資料_2024年12月期 決算補足説明資料_140120250214576159.pdf",
+  "_source_doc_id": "140120250214576159",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T19:56:51.893349+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      8,
+      14,
+      19,
+      27
+    ],
+    "table_count": 1,
+    "max_rows": 7,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

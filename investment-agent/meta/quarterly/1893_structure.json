@@ -1,0 +1,57 @@
+{
+  "ticker": "1893",
+  "company_name": "五洋建",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "個別受注高の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "繰越高",
+          "type": "backlog",
+          "description": "個別繰越高の合計",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "資料の15ページ（PDFの6枚目）に「(3) 四半期個別受注高・売上高・繰越高の状況」として、詳細な内訳表が掲載されています。事業部門（土木・建築）と顧客・地域区分（国内官庁・国内民間・海外）による多角的な内訳データが提供されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/1893/20260209_1893_五洋建_決算短信_2026年３月期第３四半期決算短信〔日本基準〕(連結)_140120260209551339.pdf",
+  "_source_doc_id": "140120260209551339",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:00:40.933465+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      5,
+      6,
+      9,
+      17,
+      18
+    ],
+    "table_count": 5,
+    "max_rows": 43,
+    "max_cols": 7,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 5"
+    ]
+  }
+}

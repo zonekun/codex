@@ -1,0 +1,48 @@
+{
+  "ticker": "2652",
+  "company_name": "まんだらけ",
+  "source": "non-tdnet(pdf)",
+  "extraction_method": "gemini",
+  "format": "pdf",
+  "doc_title_pattern": "売上高推移報告",
+  "fiscal_year_start_month": 10,
+  "gemini_multi_month": true,
+  "overwrite_past_months": true,
+  "month_direction": "asc",
+  "fields": [
+    {
+      "key": "全店 売上（百万円）",
+      "description": "全店合計売上高 今期単月売上高（百万円）",
+      "value_type": "number"
+    },
+    {
+      "key": "全店 売上（前年同月比）",
+      "description": "全店合計売上高 増減比（%）",
+      "value_type": "percentage"
+    },
+    {
+      "key": "既存店 売上（百万円）",
+      "description": "既存店売上高 今期単月売上高（百万円）",
+      "value_type": "number"
+    },
+    {
+      "key": "既存店 売上（前年同月比）",
+      "description": "既存店売上高 増減比（%）",
+      "value_type": "percentage"
+    },
+    {
+      "key": "既存店 売上（円）",
+      "name": "既存店 売上（円）",
+      "bc_ignore": true,
+      "bc_ignore_reason": "PDFの単位は百万円。円単位のデータは存在しない。既存店 売上（百万円）で代替",
+      "bc_key": "既存店 売上（円）"
+    }
+  ],
+  "custom_prompt": "PDFには「全店合計売上高」と「既存店売上高」の2つの表がある。各表の「今期単月売上高」行から月別の売上金額（百万円）を、「増減比」行から前年同月比（%）を抽出せよ。合計列は無視し、個別月のみ抽出すること。",
+  "manual_override": true,
+  "created_at": "2026-04-05T09:39:51+09:00",
+  "created_by": "gemini-2.5-flash",
+  "rebuilt_at": "2026-05-06T23:00:00+09:00",
+  "rebuilt_by": "claude",
+  "rebuilt_reason": "元adapterは年次決算書を参照しfields=[]だった。月次売上高推移報告PDFに基づき再構築"
+}

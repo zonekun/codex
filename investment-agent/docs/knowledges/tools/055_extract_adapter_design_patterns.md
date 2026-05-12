@@ -3,7 +3,7 @@
 **カテゴリ**: tools
 **作成日**: 2026-03-24
 **ステータス**: 有効
-**関連ファイル**: `scripts/extract_monthly_data.py`, `scripts/build_monthly_extractor.py`, `scripts/apply_batch_fixes_round*.py`
+**関連ファイル**: `scripts/extract_monthly_data.py`, `scripts/build_monthly_extractor.py`
 
 ## 概要
 
@@ -181,18 +181,12 @@ Round3〜9 の修正作業を通じて確立したパターン集。Gemini 自�
 
 ---
 
-## アダプター修正スクリプトの命名規則
+## アダプター修正の実行方法
 
-```
-scripts/apply_batch_fixes_roundN.py  (N=1,2,3...)
-```
-
-各スクリプトは `patch_adapter(ticker, field_patches)` または `upload_adapter(ticker, adapter)` 関数で
-GCS の `monthlydata/{ticker}/extract_adapter.json` を更新する。
+修正は `scripts/monthly_bc_repair/apply_adapter_patch.py` で行う（旧 `apply_batch_fixes_round*.py` は全削除済み）。
 修正後は必ず `extract_monthly_data.py --tickers ... --no-gcs` で動作確認してから GCS に反映すること。
 
 ## 根拠・出典
 
-- Round3〜9 の adapter 修正作業（2026-03-xx 〜 2026-03-24）
-- `scripts/apply_batch_fixes_round3.py` 〜 `scripts/apply_batch_fixes_round9.py`
+- Round3〜9 の adapter 修正作業（2026-03-xx 〜 2026-03-24）で蓄積したパターン
 - `scripts/diagnose_zero_companies.py`（BQテキストに対して regex をテストする診断スクリプト）

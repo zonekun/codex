@@ -1,0 +1,72 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "doc_title_pattern": "(\\d{4})年(\\d{1,2})月期 (\\d{1,2})月度月次営業速報",
+  "year_from_title_regex": "^(\\d{4})年",
+  "month_from_title_regex": "(\\d{1,2})月度月次営業速報$",
+  "fields": [
+    {
+      "key": "全社 売上（前年同月比）",
+      "name": "全社 売上（前年同月比）",
+      "row_label_regex": "売上高前年[比⽐]（全店）|Net sales % change \\(all stores\\)",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "persistent diff=5.4: our=111.1 vs bc=105.7"
+    },
+    {
+      "key": "全店 店舗数",
+      "name": "全店 店舗数",
+      "row_label_regex": "総店舗数|Total stores",
+      "value_type": "integer",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "definition mismatch: our=1 vs bc=500.0"
+    },
+    {
+      "key": "既存店 売上（前年同月比）",
+      "name": "既存店 売上（前年同月比）",
+      "row_label_regex": "売上高前年[比⽐]（既存店）|Net sales % change \\(existing stores\\)",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "extraction discrepancy: our=111.1 vs bc=98.6"
+    },
+    {
+      "key": "既存店 客数（前年同月比）",
+      "name": "既存店 客数（前年同月比）",
+      "row_label_regex": "客数前年[比⽐]（既存店）|Customer traffic % change \\(existing stores\\)",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "persistent diff=5.3: our=105.4 vs bc=100.1"
+    },
+    {
+      "key": "既存店 客単価（前年同月比）",
+      "name": "既存店 客単価（前年同月比）",
+      "row_label_regex": "客単価前年[比⽐]（既存店）|Spending per customer % change \\(existing stores\\)",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "persistent diff=2.2: our=100.7 vs bc=98.5"
+    },
+    {
+      "key": "既存店のうちレギュラー店 売上（前年同月比）",
+      "name": "既存店のうちレギュラー店 売上（前年同月比）",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "BC値98.0あり。月次営業速報PDFは全店/既存店の合計値のみ。レギュラー店・大型店別の売上内訳は記載なし"
+    },
+    {
+      "key": "既存店のうち大型店 売上（前年同月比）",
+      "name": "既存店のうち大型店 売上（前年同月比）",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "BC値90.6あり。月次営業速報PDFは全店/既存店の合計値のみ。大型店別の売上内訳は記載なし"
+    }
+  ],
+  "extraction_notes": "OCRの揺らぎに対応するため、一部の漢字（比）は正規表現で複数の文字（[比⽐]）を許容しています。また、日本語と英語のラベル両方に対応しています。",
+  "ticker": "9267",
+  "company_name": "9267",
+  "created_at": "2026-03-17T18:32:10.359227+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2026年6月期 2月度月次営業速報",
+  "sample_submission_date": "2026-02-27",
+  "fields_count": 5,
+  "manual_override": true,
+  "manual_override_at": "2026-04-25T06:10:00+09:00",
+  "manual_override_note": "Phase 2-3: bc_ignore for fields with persistent extraction mismatch"
+}

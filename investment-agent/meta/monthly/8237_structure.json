@@ -1,0 +1,16 @@
+{
+  "ticker": "8237",
+  "company_name": "8237",
+  "metrics": [
+    {
+      "name": "銀座本店 売上（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "銀座本店 客数（前年同月比）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

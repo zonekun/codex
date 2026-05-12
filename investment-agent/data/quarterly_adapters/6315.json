@@ -1,0 +1,69 @@
+{
+  "ticker": "6315",
+  "company_name": "ＴＯＷＡ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "第3四半期会計期間（2025年10月～12月期）における受注高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "第3四半期連結累計期間の売上高合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "セグメント別売上高",
+          "type": "completed",
+          "description": "セグメント別の売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "半導体製造装置事業",
+            "メディカルデバイス事業",
+            "レーザ加工装置事業"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "no_table",
+      "notes": "本文中に第3四半期会計期間（3ヶ月間）の受注高（196億20百万円）および累計期間の売上高、セグメント別売上高の数値が記載されています。受注残高については「着実に積み上がっている」との記述はありますが、具体的な金額の記載はありません。"
+    }
+  ],
+  "_source_pdf": "tdnet/6315/20260206_6315_ＴＯＷＡ_決算短信_2026年３月期 第３四半期決算短信〔日本基準〕（連結）_140120260107529774.pdf",
+  "_source_doc_id": "140120260107529774",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:01:17.542883+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "no_table",
+    "relevant_pages": [
+      4,
+      5
+    ],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "pdfplumber found no tables on relevant pages"
+    ]
+  }
+}

@@ -1,0 +1,143 @@
+{
+  "ticker": "6858",
+  "company_name": "小野測器",
+  "current_version": "2026-04",
+  "versions": [
+    {
+      "valid_from": "2026-04",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当四半期累計期間における受注の総額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "当四半期累計期間における売上高の総額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当四半期会計期間末における受注残高の総額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "計測機器 受注高",
+          "type": "order_intake",
+          "description": "計測機器セグメントの受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "特注試験装置 受注高",
+          "type": "order_intake",
+          "description": "特注試験装置セグメントの受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "その他 受注高",
+          "type": "order_intake",
+          "description": "その他セグメントの受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "計測機器 売上高",
+          "type": "completed",
+          "description": "計測機器セグメントの売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "特注試験装置 売上高",
+          "type": "completed",
+          "description": "特注試験装置セグメントの売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "その他 売上高",
+          "type": "completed",
+          "description": "その他セグメントの売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "計測機器 受注残高",
+          "type": "backlog",
+          "description": "計測機器セグメントの受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        },
+        {
+          "name": "特注試験装置 受注残高",
+          "type": "backlog",
+          "description": "特注試験装置セグメントの受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        },
+        {
+          "name": "その他 受注残高",
+          "type": "backlog",
+          "description": "その他セグメントの受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "計測機器",
+            "特注試験装置",
+            "その他"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "決算短信の本文および末尾の補足資料（セグメント別四半期推移）に、受注高、売上高、受注残高の合計値およびセグメント別内訳が詳細に記載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/6858/20260423_6858_小野測器_決算短信_2026年12月期第１四半期決算短信〔日本基準〕(連結)_140120260423508900.pdf",
+  "_source_doc_id": "140120260423508900",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:31:56.136253+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      6,
+      13,
+      15
+    ],
+    "table_count": 5,
+    "max_rows": 17,
+    "max_cols": 11,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 5"
+    ]
+  }
+}

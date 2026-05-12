@@ -1,0 +1,20 @@
+{
+  "ticker": "8698",
+  "company_name": "8698",
+  "metrics": [
+    {
+      "name": "コインチェック 取引所 売買代金（円）",
+      "source": "bc"
+    },
+    {
+      "name": "コインチェック 販売所 売買代金（円）",
+      "source": "bc"
+    },
+    {
+      "name": "マネックス証券 月間約定代金（円）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

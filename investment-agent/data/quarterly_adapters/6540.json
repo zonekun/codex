@@ -1,0 +1,74 @@
+{
+  "ticker": "6540",
+  "company_name": "船場",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当連結会計年度における市場分野別の受注実績合計",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当連結会計年度末における市場分野別の受注残高合計",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "販売高",
+          "type": "completed",
+          "description": "当連結会計年度における市場分野別および地域別の販売実績合計",
+          "unit": "千円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "市場分野",
+          "items": [
+            "専門店",
+            "大型店・複合商業施設",
+            "オフィス・余暇施設等"
+          ]
+        },
+        {
+          "dimension_name": "地域",
+          "items": [
+            "国内",
+            "海外"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "市場分野別の受注高、受注残高、販売高、および地域別の販売高が複数の表に分かれて詳細に記載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/6540/20260213_6540_船場_決算短信_2025年12月期決算短信〔日本基準〕(連結)_140120260212558105.pdf",
+  "_source_doc_id": "140120260212558105",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:19:49.687015+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      15
+    ],
+    "table_count": 3,
+    "max_rows": 5,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

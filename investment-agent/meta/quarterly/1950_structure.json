@@ -1,0 +1,54 @@
+{
+  "ticker": "1950",
+  "company_name": "日本電設",
+  "current_version": "2025-10",
+  "versions": [
+    {
+      "valid_from": "2025-10",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当中間連結会計期間における受注高の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "繰越高",
+          "type": "backlog",
+          "description": "当中間連結会計期間末における受注残高（繰越工事高）",
+          "unit": "億円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "ページ4に受注高および売上高のセグメント別内訳表が掲載されている。繰越高についてはページ1の本文中に連結合計値の記載がある。"
+    }
+  ],
+  "_source_pdf": "tdnet/1950/20251031_1950_日本電設_決算短信_2026年３月期　第２四半期（中間期）決算短信〔日本基準〕（連結）_140120251031584770.pdf",
+  "_source_doc_id": "140120251031584770",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:07:38.954659+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      5,
+      8,
+      10
+    ],
+    "table_count": 3,
+    "max_rows": 27,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

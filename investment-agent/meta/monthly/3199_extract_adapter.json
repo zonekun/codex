@@ -1,0 +1,85 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "doc_title_pattern": "月次|月度|月間|売上|速報|実績|業績|概況|KPI|ＫＰＩ|状況|報告|推移|月末",
+  "year_from_title_regex": "(\\d{4})年",
+  "month_from_title_regex": "（(\\d{1,2})月度）",
+  "fields": [
+    {
+      "key": "全店 売上（前年同月比）",
+      "name": "全店 売上（前年同月比）",
+      "row_label_regex": "^全店\\s*売上",
+      "value_type": "percentage",
+      "notes": "2026年3月期 2月度のデータ",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "Gemini 切替後も数pt差、前年比ベース定義差（速報/確報？）→ 一旦 bc_ignore"
+    },
+    {
+      "key": "既存店 売上（前年同月比）",
+      "name": "既存店 売上（前年同月比）",
+      "row_label_regex": "^既存店\\s*売上",
+      "value_type": "percentage",
+      "notes": "2026年3月期 2月度のデータ",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "Gemini 切替後も数pt差、前年比ベース定義差（速報/確報？）→ 一旦 bc_ignore"
+    },
+    {
+      "key": "全店 客単価（前年同月比）",
+      "name": "全店 客単価（前年同月比）",
+      "description": "全店セクション（上段3行目）の対象月列。売上/客数/客単価の3行構成で3行目が客単価。",
+      "value_type": "percentage",
+      "_manual_description": true
+    },
+    {
+      "key": "全店 客数（前年同月比）",
+      "name": "全店 客数（前年同月比）",
+      "description": "全店セクション（上段2行目）の対象月列。売上/客数/客単価の3行構成で2行目が客数。",
+      "value_type": "percentage",
+      "_manual_description": true
+    },
+    {
+      "key": "既存店 客単価（前年同月比）",
+      "name": "既存店 客単価（前年同月比）",
+      "description": "既存店セクション（下段3行目）の対象月列。売上/客数/客単価の3行構成で3行目が客単価。",
+      "value_type": "percentage",
+      "_manual_description": true
+    },
+    {
+      "key": "既存店 客数（前年同月比）",
+      "name": "既存店 客数（前年同月比）",
+      "description": "既存店セクション（下段2行目）の対象月列。売上/客数/客単価の3行構成で2行目が客数。",
+      "value_type": "percentage",
+      "_manual_description": true
+    }
+  ],
+  "extraction_notes": "表は全店(上段)/既存店(下段)の2ブロック×売上/客数/客単価3行=計6行。Gemini切替により行ラベル重複問題を解消し6フィールド全抽出。2026年3月度PDF確認: 既存店客単価100.4(BC一致)、既存店客数98.0付近(BC一致)。全店客数/客単価も構造的に存在確認済み。",
+  "ticker": "3199",
+  "company_name": "3199",
+  "created_at": "2026-03-21T20:21:37.554766+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2026年３月期 月次動向（２月度）",
+  "sample_submission_date": "2026-03-10",
+  "fields_count": 6,
+  "_agent_loosened_from": "\\d{4}年\\d{1,2}月期 月次動向（\\d{1,2}月度）",
+  "_agent_patched_at": "2026-04-20T07:01:13.767934+09:00",
+  "_agent_patch_history": [
+    {
+      "ts": "2026-04-19T20:13:00.001251+09:00",
+      "applied": [
+        "top-level: ['doc_title_pattern', '_agent_loosened_from']"
+      ]
+    },
+    {
+      "ts": "2026-04-19T21:18:42.492787+09:00",
+      "applied": [
+        "top-level: ['use_fy_history_correction']"
+      ]
+    }
+  ],
+  "use_fy_history_correction": true,
+  "extraction_method": "gemini",
+  "overwrite_past_months": true,
+  "custom_prompt": "あなたは ticker 3199 の月次開示 PDF から KPI を抽出するアシスタントです.\n\n抽出対象月: {year}年{month}月度\n\n重要ルール:\n  - 当月 (指定月) の値のみ採用\n  - 四半期累計・上期累計・通期・前年同期実績 等の集計値は絶対に拾わない\n  - 表は全店セクション(上段)と既存店セクション(下段)の2ブロック構成\n  - 各セクションは売上(1行目)/客数(2行目)/客単価(3行目)の3行\n  - 前年同月比 field は 100+変化率 形式(例: 105.2 = +5.2%増)\n  - 見つからない field は null\n\n出力形式: JSON\n{\n  \"全店 売上（前年同月比）\": 前年同月比 (例 105.2),\n  \"全店 客数（前年同月比）\": 前年同月比,\n  \"全店 客単価（前年同月比）\": 前年同月比,\n  \"既存店 売上（前年同月比）\": 前年同月比,\n  \"既存店 客数（前年同月比）\": 前年同月比,\n  \"既存店 客単価（前年同月比）\": 前年同月比\n}\n",
+  "regex_redesign_at": "2026-04-19T22:19:20.043941+09:00",
+  "regex_redesign_note": "Gemini 切替 (regex 限界 or 誤マッチのため)."
+}

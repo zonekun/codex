@@ -1,0 +1,28 @@
+{
+  "ticker": "407A",
+  "company_name": "ＵＮＩＣＯＮ　ＨＤ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "presentation",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Vision extraction selected because structure is complex or data is unavailable."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/407A/20260213_407A_ＵＮＩＣＯＮ　ＨＤ_決算説明資料_2026年６月期第２四半期　決算説明会資料_140120260213559920.pdf",
+  "_source_doc_id": "140120260213559920",
+  "_generated_at": "2026-04-30T18:00:29.584086+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

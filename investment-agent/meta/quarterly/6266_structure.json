@@ -1,0 +1,101 @@
+{
+  "ticker": "6266",
+  "company_name": "タツモ",
+  "current_version": "2026-03",
+  "versions": [
+    {
+      "valid_from": "2026-03",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当連結会計年度の受注高合計",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当連結会計年度末の受注残高合計",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "セグメント別受注高",
+          "type": "order_intake",
+          "description": "事業の種類別セグメントごとの受注高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "セグメント別受注残高",
+          "type": "backlog",
+          "description": "事業の種類別セグメントごとの受注残高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        },
+        {
+          "name": "プロセス機器事業内訳受注高",
+          "type": "order_intake",
+          "description": "プロセス機器事業における製品別の受注高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "セグメント別受注高"
+        },
+        {
+          "name": "プロセス機器事業内訳受注残高",
+          "type": "backlog",
+          "description": "プロセス機器事業における製品別の受注残高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "セグメント別受注残高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "プロセス機器事業",
+            "金型・樹脂成形事業",
+            "表面処理用機器事業"
+          ]
+        },
+        {
+          "dimension_name": "プロセス機器事業内訳",
+          "items": [
+            "半導体装置",
+            "搬送装置",
+            "洗浄装置",
+            "コーター"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "受注高および受注残高について、セグメント別およびプロセス機器事業内の製品別内訳が詳細な表形式で記載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/6266/20260323_6266_タツモ_決算短信_（訂正・数値データ訂正）「2025年12月期決算短信〔日本基準〕（連結）」_140120260318584508.pdf",
+  "_source_doc_id": "140120260318584508",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:54:43.211149+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      26
+    ],
+    "table_count": 2,
+    "max_rows": 9,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

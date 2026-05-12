@@ -1,0 +1,28 @@
+{
+  "ticker": "3105",
+  "company_name": "日清紡ＨＤ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "presentation",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/3105/20260210_3105_日清紡ＨＤ_決算説明資料_2025年12月期_決算説明資料_140120260210553010.pdf",
+  "_source_doc_id": "決算説明資料",
+  "_generated_at": "2026-04-30T17:32:50.915273+09:00",
+  "_model_used": null
+}

@@ -1,0 +1,14 @@
+{
+  "ticker": "3543",
+  "company_name": "(株)コメダホールディングス",
+  "ir_page_url": "https://komeda-holdings.co.jp/monthly/",
+  "status": "active",
+  "type": "html_table",
+  "playwright_required": true,
+  "note": "月次開示資料ページ。静的HTMLでは空表示、JS動的ロードの可能性あり。Playwright試行 (2026-04-24)",
+  "updated_at": "2026-04-24T15:03:29.322823+09:00",
+  "last_checked": "2026-04-24",
+  "manual_override": true,
+  "manual_override_at": "2026-04-24T15:03:29.322823+09:00",
+  "manual_override_note": "D群HAS_PDF→html_table+playwright (2026-04-24)"
+}

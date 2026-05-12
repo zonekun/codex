@@ -1,0 +1,28 @@
+{
+  "ticker": "5259",
+  "company_name": "5259",
+  "metrics": [
+    {
+      "name": "SaaS New MRR（円）",
+      "source": "bc"
+    },
+    {
+      "name": "SaaS New MRR（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "SaaS 受注額残高（円）",
+      "source": "bc"
+    },
+    {
+      "name": "SaaS 受注額残高（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "SaaS 契約件数",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

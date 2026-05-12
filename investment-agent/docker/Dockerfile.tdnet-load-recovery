@@ -7,7 +7,7 @@ RUN pip install --no-cache-dir \
     pdfminer.six>=20221105 \
     google-cloud-storage>=2.16 \
     google-cloud-bigquery>=3.0 \
-    google-cloud-aiplatform>=1.38 \
+    google-genai>=1.0 \
     langchain-text-splitters>=0.2
 
 COPY scripts/tdnet_load_recovery.py scripts/tdnet_load_recovery.py

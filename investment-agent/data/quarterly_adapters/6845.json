@@ -1,0 +1,67 @@
+{
+  "ticker": "6845",
+  "company_name": "アズビル",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当第３四半期連結累計期間における受注高の合計値",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "当第３四半期連結累計期間における売上高の合計値",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "ビルディングオートメーション（ＢＡ）事業",
+            "アドバンスオートメーション（ＡＡ）事業",
+            "ライフオートメーション（ＬＡ）事業",
+            "その他"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "本資料には受注高および売上高のセグメント別データが記載されていますが、受注残高（繰越工事高）の具体的な数値データは含まれていません。テキスト内で「豊富な受注残」といった定性的な言及はありますが、定量的なメトリクスとしては受注高と売上高のみが抽出可能です。"
+    }
+  ],
+  "_source_pdf": "tdnet/6845/20260206_6845_アズビル_決算短信_2026年３月期 第３四半期決算短信〔日本基準〕（連結）_140120260205548171.pdf",
+  "_source_doc_id": "140120260205548171",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:30:41.612854+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "table_count": 15,
+    "max_rows": 7,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 15"
+    ]
+  }
+}

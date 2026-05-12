@@ -1,0 +1,28 @@
+{
+  "ticker": "8848",
+  "company_name": "レオパレス２１",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "presentation",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Vision extraction selected because structure is complex or data is unavailable."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/8848/20260220_8848_レオパレス２１_決算説明資料_2026年3月期第3四半期 決算説明会　当社説明・質疑応答_140120260220566193.pdf",
+  "_source_doc_id": "140120260220566193",
+  "_generated_at": "2026-04-30T20:09:13.302821+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

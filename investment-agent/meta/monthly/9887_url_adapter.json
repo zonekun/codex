@@ -1,0 +1,13 @@
+{
+  "ticker": "9887",
+  "company_name": "松屋フーズホールディングス",
+  "ir_page_url": "https://www.matsuyafoods-holdings.co.jp/ir2/monthly.html",
+  "updated_at": "2026-04-21T10:25:10.870568+09:00",
+  "last_checked": "2026-04-21",
+  "status": "active",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": null,
+  "link_href_pattern": ".*\\.(pdf)",
+  "note": "月次PDFリンク2件検出 best=https://www.matsuyafoods-holdings.co.jp/ir2/assets/pdf/260410_matsuyafoods_monthly.pdf"
+}

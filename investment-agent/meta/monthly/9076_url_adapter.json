@@ -1,0 +1,11 @@
+{
+  "ticker": "9076",
+  "company_name": "セイノーホールディングス",
+  "ir_page_url": "https://info.monex.co.jp/help/invest/calendar.html",
+  "updated_at": "2026-04-21T13:03:00.975987+09:00",
+  "last_checked": "2026-04-21",
+  "status": "skip",
+  "type": null,
+  "skip_reason": "スクレイプエラー: Page.goto: net::ERR_CONNECTION_RESET at https://info.monex.co.jp/help/invest/calendar.html\nCall log:\n  - navigating to \"https://info.monex.co.jp/help/invest/calendar.html\", waiting until \"load\"\n",
+  "note": "error: Page.goto: net::ERR_CONNECTION_RESET at https://info.monex.co.jp/help/invest/calendar.html\nCall log:\n  - navigating to \"https://info.monex.co.jp/help/invest/calendar.html\", waiting until \"load\"\n"
+}

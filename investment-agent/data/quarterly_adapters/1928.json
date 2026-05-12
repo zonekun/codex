@@ -1,0 +1,87 @@
+{
+  "ticker": "1928",
+  "company_name": "積水ハウス",
+  "current_version": "2026-03",
+  "versions": [
+    {
+      "valid_from": "2026-03",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当期における新規受注の総額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "期末時点における未着工および仕掛中の受注残高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "当期における売上高（完成工事高に相当）",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "事業区分",
+          "items": [
+            "請負型",
+            "ストック型",
+            "開発型",
+            "国際事業",
+            "その他"
+          ]
+        },
+        {
+          "dimension_name": "事業セグメント",
+          "items": [
+            "戸建住宅事業",
+            "賃貸・事業用建物事業",
+            "建築・土木事業",
+            "賃貸住宅管理事業",
+            "リフォーム事業",
+            "仲介・不動産事業",
+            "マンション事業",
+            "都市再開発事業",
+            "国際事業",
+            "その他"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "決算短信の参考資料において、受注高および受注残高のセグメント別・事業区分別の詳細な内訳が、前期実績、当期実績、次期予想の各フェーズで網羅的に表形式で提供されている。"
+    }
+  ],
+  "_source_pdf": "tdnet/1928/20260305_1928_積水ハウス_決算短信_2026年1月期決算短信〔日本基準〕(連結)_140120260304576061.pdf",
+  "_source_doc_id": "140120260304576061",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:03:16.224073+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      6,
+      8
+    ],
+    "table_count": 6,
+    "max_rows": 16,
+    "max_cols": 7,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 6"
+    ]
+  }
+}

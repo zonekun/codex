@@ -1,0 +1,15 @@
+{
+  "ticker": "8801",
+  "company_name": "三井不動産",
+  "ir_page_url": "https://www.mitsuihome.co.jp/company/ir/juchu.html",
+  "type": "scrape_links",
+  "status": "active",
+  "link_text_pattern": "受注速報",
+  "link_href_pattern": "/company/ir/pdf/juchu\\d{6}\\.pdf",
+  "playwright_required": false,
+  "note": "三井ホーム受注速報ページ (mitsuihome.co.jp)。PDFはjuchu[YYYYMM].pdfパターン。三井不動産IRライブラリページからは月次受注PDFは参照不可。旧URLは三井不動産IRライブラリで月次受注データなし。事業報告書汚染の根本原因は間違ったベースURLだったため、三井ホームサイトの正しいURLに変更。2026-04-24修正",
+  "manual_override": true,
+  "manual_override_note": "2026-04-24 三井不動産IRライブラリから三井ホーム受注速報ページに修正",
+  "manual_override_at": "2026-04-24T00:00:00+09:00",
+  "updated_at": "2026-04-24T00:00:00+09:00"
+}

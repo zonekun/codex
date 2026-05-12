@@ -2,7 +2,7 @@
 
 **カテゴリ**: analysis
 **作成日**: 2026-04-12
-**ステータス**: **ANALYZED_PASS（条件付き）**（2026-04-12 確定。Kill Switch 組込み必須）
+**ステータス**: **RETIRED**（2026-04-26 却下→2026-04-27 air trade含む全面停止。3/19以降の優位性消失を外部確認。参照: `docs/references/tweets/20260422_akkagi0416_us_japan_leadlag_edge_decay.md`）
 **アイデアソース**: 論文 SIG-FIN-036-13 の**直接再現**
 **親アイデア**: [`011_subspace_pca_leadlag_applications.md`](011_subspace_pca_leadlag_applications.md)（部分空間正則化PCAリードラグ 応用アイデア集）
 **兄弟**:
@@ -251,10 +251,10 @@ z_US,t = 米国セクターの当日標準化 c2c リターン（ウィンドウ
 
 | ファイル | 内容 |
 |---|---|
-| `scripts/factor_model/poc_011_4_us_japan_sector.py` | Pass 1a（ロングオンリー） |
-| `scripts/factor_model/poc_011_4b_us_japan_longshort.py` | Pass 1b（ロングショート） |
-| `scripts/factor_model/poc_011_4_pass2.py` | Pass 2（期間拡大 + 感度分析） |
-| `scripts/factor_model/poc_011_4_deep_dive.py` | 深掘り（月次/四半期/Rolling IC） |
+| `scripts/factor_model/poc_011_4_us_japan_sector.py` | Pass 1a（ロングオンリー）— 削除済み |
+| `scripts/factor_model/poc_011_4b_us_japan_longshort.py` | Pass 1b（ロングショート）— 削除済み |
+| `scripts/factor_model/poc_011_4_pass2.py` | Pass 2（期間拡大 + 感度分析）— 削除済み |
+| `scripts/factor_model/poc_011_4_deep_dive.py` | 深掘り（月次/四半期/Rolling IC）— 削除済み |
 | `C:\tmp\poc_011_4_us_japan_sector\` | Pass 1a 結果CSV |
 | `C:\tmp\poc_011_4b_us_japan_longshort\` | Pass 1b 結果CSV |
 | `C:\tmp\poc_011_4_pass2\` | Pass 2 結果CSV（感度分析含む） |

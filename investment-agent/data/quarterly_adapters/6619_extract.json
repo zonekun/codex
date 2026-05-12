@@ -1,0 +1,28 @@
+{
+  "ticker": "6619",
+  "company_name": "ＷＳＣＯＰＥ",
+  "current_version": "2026-03",
+  "versions": [
+    {
+      "valid_from": "2026-03",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/6619/20260319_6619_ＷＳＣＯＰＥ_決算短信_2026年１月期決算短信〔日本基準〕(連結)_140120260319585267.pdf",
+  "_source_doc_id": "140120260319585267",
+  "_generated_at": "2026-04-30T19:22:10.153999+09:00",
+  "_model_used": null
+}

@@ -1,0 +1,78 @@
+{
+  "ticker": "1833",
+  "company_name": "奥村組",
+  "current_version": "2025-11",
+  "versions": [
+    {
+      "valid_from": "2025-11",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "連結売上高の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "完成工事高",
+          "type": "completed",
+          "description": "建設事業（土木・建築）の売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "投資開発事業等売上高",
+          "type": "completed",
+          "description": "投資開発事業およびその他の売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "受注工事高",
+          "type": "order_intake",
+          "description": "建設事業における受注高",
+          "unit": "百万円",
+          "is_total": false
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "土木事業",
+            "建築事業",
+            "投資開発事業",
+            "その他"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "第1ページの概況テキストにセグメント別の売上高および受注工事高の数値が記載されている。第6ページの連結損益計算書には売上高の内訳として完成工事高と投資開発事業等売上高が計上されている。受注残高（繰越工事高）の数値は提供された範囲には含まれていない。"
+    }
+  ],
+  "_source_pdf": "tdnet/1833/20251113_1833_奥村組_決算短信_2026年3月期　第2四半期（中間期）決算短信〔日本基準〕（連結）_140120251112597633.pdf",
+  "_source_doc_id": "140120251112597633",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T16:50:53.694174+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      5,
+      9
+    ],
+    "table_count": 1,
+    "max_rows": 42,
+    "max_cols": 4,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

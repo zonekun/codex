@@ -1,0 +1,28 @@
+{
+  "ticker": "4447",
+  "company_name": "Ｇ－ＰＢシステムズ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "presentation",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Vision extraction selected because structure is complex or data is unavailable."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/4447/20260212_4447_Ｇ－ＰＢシステムズ_決算説明資料_2026年９月期　第１四半期決算補足資料_140120260212556339.pdf",
+  "_source_doc_id": "140120260212556339",
+  "_generated_at": "2026-04-30T18:09:22.824628+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

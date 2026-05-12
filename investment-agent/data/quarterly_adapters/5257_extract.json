@@ -1,0 +1,28 @@
+{
+  "ticker": "5257",
+  "company_name": "ノバシステム",
+  "current_version": "2025-02",
+  "versions": [
+    {
+      "valid_from": "2025-02",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "presentation",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/5257/20250213_5257_ノバシステム_決算説明資料_2024年12月期 決算説明資料_140120250213572551.pdf",
+  "_source_doc_id": "140120250213572551",
+  "_generated_at": "2026-04-30T18:25:54.496874+09:00",
+  "_model_used": null
+}

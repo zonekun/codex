@@ -1,0 +1,61 @@
+{
+  "ticker": "5715",
+  "company_name": "古河機金",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "産業機械部門 受注残",
+          "type": "backlog",
+          "description": "産業機械部門における四半期末時点の受注残高",
+          "unit": "億円",
+          "is_total": false
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント・部門",
+          "items": [
+            "機械事業",
+            "産業機械部門",
+            "ロックドリル部門",
+            "ユニック部門",
+            "素材事業",
+            "金属部門",
+            "電子部門",
+            "化成品部門",
+            "不動産事業",
+            "その他"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "売上高はセグメントおよび部門別に詳細な内訳が開示されている。受注残高については、受注生産を主とする産業機械部門のみが億円単位で別途開示されている。受注高の直接的な数値記載はない。"
+    }
+  ],
+  "_source_pdf": "tdnet/5715/20260209_5715_古河機金_決算短信_2026年3月期 第3四半期決算短信〔日本基準〕（連結）_140120260204547285.pdf",
+  "_source_doc_id": "140120260204547285",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:32:36.385379+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      15
+    ],
+    "table_count": 8,
+    "max_rows": 15,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 8"
+    ]
+  }
+}

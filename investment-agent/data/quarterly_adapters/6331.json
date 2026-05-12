@@ -1,0 +1,152 @@
+{
+  "ticker": "6331",
+  "company_name": "菱化工機",
+  "current_version": "2026-01",
+  "versions": [
+    {
+      "valid_from": "2026-01",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当該期間中に新たに受注した案件の合計金額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "当該期間中に計上された売上高（完成工事高に相当）",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "期末時点における未消化の受注案件の合計金額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "エンジニアリング事業 受注高",
+          "type": "order_intake",
+          "description": "エンジニアリング事業における受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "エンジニアリング事業 売上高",
+          "type": "completed",
+          "description": "エンジニアリング事業における売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "エンジニアリング事業 受注残高",
+          "type": "backlog",
+          "description": "エンジニアリング事業における受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        },
+        {
+          "name": "単体機械事業 受注高",
+          "type": "order_intake",
+          "description": "単体機械事業における受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "単体機械事業 売上高",
+          "type": "completed",
+          "description": "単体機械事業における売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "単体機械事業 受注残高",
+          "type": "backlog",
+          "description": "単体機械事業における受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        },
+        {
+          "name": "GX事業 受注高",
+          "type": "order_intake",
+          "description": "GX事業における受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "GX事業 売上高",
+          "type": "completed",
+          "description": "GX事業における売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "GX事業 受注残高",
+          "type": "backlog",
+          "description": "GX事業における受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "エンジニアリング事業",
+            "単体機械事業",
+            "GX事業"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "ppt_chart",
+      "notes": "財務サマリーおよびセグメント別の決算ポイントにおいて、受注高、売上高、受注残高の数値が明示されている。受注残高については、2025年12月末時点の実績値と2026年3月末の予想値がグラフおよびテキストで提供されている。GX事業は新設セグメントとして個別に開示されている。"
+    }
+  ],
+  "_source_pdf": "tdnet/6331/20260130_6331_菱化工機_決算説明資料_2026年3月期第3四半期決算補足説明資料_140120260130543730.pdf",
+  "_source_doc_id": "140120260130543730",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T19:03:41.425716+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      3,
+      6,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      21,
+      23,
+      27
+    ],
+    "table_count": 94,
+    "max_rows": 21,
+    "max_cols": 35,
+    "broken_col0": true,
+    "unit_mixed": true,
+    "notes": [
+      "first-column labels appear merged",
+      "multiple units appear in relevant pages",
+      "many tables: 94",
+      "wide table: 35 columns"
+    ]
+  }
+}

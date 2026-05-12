@@ -1,0 +1,28 @@
+{
+  "ticker": "3293",
+  "company_name": "アズマハウス",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "presentation",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Vision extraction selected because structure is complex or data is unavailable."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/3293/20260213_3293_アズマハウス_決算説明資料_第49期　第３四半期決算補足資料_140120260113532326.pdf",
+  "_source_doc_id": "140120260113532326",
+  "_generated_at": "2026-04-30T17:37:40.848987+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

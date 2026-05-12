@@ -1,0 +1,68 @@
+{
+  "ticker": "6871",
+  "company_name": "日マイクロニクス",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "四半期ごとの受注高",
+          "unit": "百万円",
+          "is_total": false
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "四半期ごとの売上高",
+          "unit": "百万円",
+          "is_total": false
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "四半期末時点の受注残高",
+          "unit": "百万円",
+          "is_total": false
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "プローブカード事業",
+            "TE事業"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "ppt_chart",
+      "notes": "資料の8ページ目に、プローブカード事業およびTE事業それぞれの受注高、売上高、受注残高の四半期推移がグラフと表形式で詳細に記載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/6871/20260213_6871_日マイクロニクス_決算説明資料_2025年12月期第4四半期決算補足資料（2025年10-12月）_140120260213559836.pdf",
+  "_source_doc_id": "140120260213559836",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T19:33:17.285856+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      6,
+      9
+    ],
+    "table_count": 12,
+    "max_rows": 4,
+    "max_cols": 6,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 12"
+    ]
+  }
+}

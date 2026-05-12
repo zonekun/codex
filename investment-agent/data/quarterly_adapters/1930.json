@@ -1,0 +1,118 @@
+{
+  "ticker": "1930",
+  "company_name": "北陸電工",
+  "current_version": "2025-10",
+  "versions": [
+    {
+      "valid_from": "2025-10",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当期における受注工事の総額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注高（事業区分別）",
+          "type": "order_intake",
+          "description": "事業区分別の受注高内訳",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "受注高（得意先別）",
+          "type": "order_intake",
+          "description": "主要得意先別の受注高内訳",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "当期における完成工事高および売上高の総額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "売上高（事業区分別）",
+          "type": "completed",
+          "description": "事業区分別の売上高内訳",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "売上高（得意先別）",
+          "type": "completed",
+          "description": "主要得意先別の売上高内訳",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "次期繰越高",
+          "type": "backlog",
+          "description": "期末時点における未完成工事の残高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "次期繰越高（事業区分別）",
+          "type": "backlog",
+          "description": "事業区分別の次期繰越高内訳",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "次期繰越高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "事業区分",
+          "items": [
+            "内線・空調管工事",
+            "配電線工事",
+            "その他工事",
+            "兼業事業"
+          ]
+        },
+        {
+          "dimension_name": "得意先",
+          "items": [
+            "北陸電力(株)",
+            "北陸電力送配電(株)",
+            "一般得意先"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "決算短信の補足情報として、受注高、売上高、次期繰越高の事業区分別内訳、および主要得意先別の受注高・売上高が詳細な表形式で記載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/1930/20251029_1930_北陸電工_決算短信_2026年3月期 第2四半期（中間期）決算短信〔日本基準〕(連結)_140120251023577426.pdf",
+  "_source_doc_id": "140120251023577426",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:04:04.929402+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      11
+    ],
+    "table_count": 4,
+    "max_rows": 8,
+    "max_cols": 7,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 4"
+    ]
+  }
+}

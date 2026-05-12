@@ -1,0 +1,28 @@
+{
+  "ticker": "6371",
+  "company_name": "椿本チエイン",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Vision extraction selected because structure is complex or data is unavailable."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/6371/20260206_6371_椿本チエイン_決算短信_2026年３月期第３四半期決算短信〔日本基準〕(連結)_140120260205549076.pdf",
+  "_source_doc_id": "140120260205549076",
+  "_generated_at": "2026-04-30T19:08:52.582797+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

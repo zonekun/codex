@@ -1,0 +1,52 @@
+{
+  "ticker": "1994",
+  "company_name": "高橋ウォール",
+  "current_version": "2025-08",
+  "versions": [
+    {
+      "valid_from": "2025-08",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当中間連結会計期間における受注高の合計額",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当中間連結会計期間末における受注残高の合計額",
+          "unit": "千円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "no_table",
+      "notes": "PDF本文で受注高と受注残高、損益計算書で完成工事高を確認。単位は千円に正規化。"
+    }
+  ],
+  "_source_pdf": "tdnet/1994/20250808_1994_高橋ウォール_決算短信_2025年12月期第２四半期（中間期）決算短信〔日本基準〕(連結)_140120250807534810.pdf",
+  "_source_doc_id": "140120250807534810",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:14:10.951024+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      8
+    ],
+    "table_count": 1,
+    "max_rows": 38,
+    "max_cols": 4,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

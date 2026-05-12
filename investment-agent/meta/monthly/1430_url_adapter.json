@@ -1,0 +1,12 @@
+{
+  "ticker": "1430",
+  "company_name": "ファーストコーポレーション",
+  "ir_page_url": "https://www.1st-corp.com/ir/library01.html",
+  "type": "scrape_links",
+  "status": "inactive",
+  "inactive_reason": "建設業。月次売上・受注速報の適時開示なし。IRサイトに月次データなし。四半期決算のみ",
+  "excluded": true,
+  "manual_override": true,
+  "note": "2026-04-24 Web調査確認: IRライブラリに月次なし、irbank TDnet開示にも月次なし",
+  "updated_at": "2026-04-24T19:30:00+09:00"
+}

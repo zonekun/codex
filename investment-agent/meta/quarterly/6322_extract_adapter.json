@@ -1,0 +1,28 @@
+{
+  "ticker": "6322",
+  "company_name": "タクミナ",
+  "current_version": "2026-01",
+  "versions": [
+    {
+      "valid_from": "2026-01",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "売上高",
+        "受注高",
+        "受注残高",
+        "高性能ソリューションポンプ",
+        "当第3四半期連結累計期間"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "「3. その他」のセクションにある各テーブルから、(1)売上高、(2)受注高、(2)受注残高のそれぞれの「合計」行における「当第3四半期連結累計期間（2025年12月31日まで）」の「金額」を抽出してください。単位は百万円です。",
+      "notes": "同一ページ内に『売上高』『受注高』『受注残高』の3つのセクションがあり、それぞれに『合計』行が存在する複雑な構成のため、gemini_visionを使用します。"
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/6322/20260130_6322_タクミナ_決算短信_2026年３月期 第３四半期決算短信〔日本基準〕（連結）_140120260116535130.pdf",
+  "_source_doc_id": "140120260116535130",
+  "_generated_at": "2026-04-30T23:21:38.355994+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

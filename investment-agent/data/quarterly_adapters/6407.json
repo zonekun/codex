@@ -1,0 +1,66 @@
+{
+  "ticker": "6407",
+  "company_name": "ＣＫＤ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "セグメント別の受注実績。自動機械部門のみが開示対象となっている。",
+          "unit": "百万円",
+          "is_total": false
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "セグメント別の受注残高。自動機械部門のみが開示対象となっている。",
+          "unit": "百万円",
+          "is_total": false
+        },
+        {
+          "name": "販売高",
+          "type": "completed",
+          "description": "セグメント別の販売実績および連結合計額。",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "自動機械部門",
+            "機器部門"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "受注実績（受注高・受注残高）については、自動機械部門のみが記載されている。機器部門は需要見込による生産方式をとっているため、受注実績の記載はない。販売高については全セグメントおよび合計が記載されている。"
+    }
+  ],
+  "_source_pdf": "tdnet/6407/20260213_6407_ＣＫＤ_決算短信_2026年３月期第３四半期決算短信〔日本基準〕(連結)_140120260212555888.pdf",
+  "_source_doc_id": "140120260212555888",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:12:42.410754+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      11
+    ],
+    "table_count": 3,
+    "max_rows": 4,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

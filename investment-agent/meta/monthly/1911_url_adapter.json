@@ -1,0 +1,15 @@
+{
+  "ticker": "1911",
+  "company_name": "住友林業",
+  "ir_page_url": "https://sfc.jp/information/ir/zaimu/order/",
+  "type": "html_table",
+  "status": "active",
+  "link_text_pattern": null,
+  "link_href_pattern": null,
+  "playwright_required": false,
+  "note": "国内受注速報ページ。データはHTMLテーブルとして埋め込まれており、ダウンロード可能なPDFリンクはない。typeをscrape_linksからhtml_tableに変更。ガバナンス/サステナ等のナビゲーションリンクはscraperが拾えないため汚染ゼロ。2026-04-24修正",
+  "manual_override": true,
+  "manual_override_note": "2026-04-24 type=html_table に修正（PDFなし、HTMLテーブルのみ）",
+  "manual_override_at": "2026-04-24T00:00:00+09:00",
+  "updated_at": "2026-04-24T00:00:00+09:00"
+}

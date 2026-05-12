@@ -1,0 +1,72 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "doc_title_pattern": "月次売上高（\\d+月度）のお知らせ",
+  "year_from_title_regex": "(\\d{4})年",
+  "month_from_title_regex": "（(\\d+)月度）",
+  "fields": [
+    {
+      "key": "連結 売上（百万円）",
+      "name": "連結 売上（百万円）",
+      "row_label_regex": "全\\s*社\\s*（\\s*連\\s*結\\s*）\\s*売上高",
+      "value_type": "integer"
+    },
+    {
+      "key": "連結 売上（前年同月比）",
+      "name": "連結 売上（前年同月比）",
+      "row_label_regex": "前年同月比\\s+（\\s*％\\s*）",
+      "value_type": "percentage",
+      "bc_key": "連結 売上（前年同月比）",
+      "notes": "連結売上高の前年同月比は、行ラベルに「前年同月比 （％）」のようにスペースが含まれるパターンで抽出します。"
+    },
+    {
+      "key": "クラウド事業 売上（円）",
+      "name": "クラウド事業 売上（円）",
+      "row_label_regex": "クラウド\\s*事業\\s*売上高",
+      "value_type": "integer",
+      "unit_scale": 1000000
+    },
+    {
+      "key": "クラウド事業 売上（前年同月比）",
+      "name": "クラウド事業 売上（前年同月比）",
+      "row_label_regex": "前年同月比（\\s*％\\s*）",
+      "value_type": "percentage",
+      "notes": "クラウド事業売上高の前年同月比は、行ラベルに「前年同月比（％）」のようにスペースが含まれないパターンで抽出します。クラウド事業ストック売上（前年同月比）とrow_label_regexが重複しています。"
+    },
+    {
+      "key": "クラウド事業 ストック売上（円）",
+      "name": "クラウド事業 ストック売上（円）",
+      "row_label_regex": "クラウド\\s*事業\\s*ストック売上高",
+      "value_type": "integer",
+      "unit_scale": 1000000
+    },
+    {
+      "key": "クラウド事業 ストック売上（前年同月比）",
+      "name": "クラウド事業 ストック売上（前年同月比）",
+      "row_label_regex": "前年同月比（\\s*％\\s*）",
+      "value_type": "percentage",
+      "notes": "クラウド事業ストック売上高の前年同月比は、行ラベルに「前年同月比（％）」のようにスペースが含まれないパターンで抽出します。クラウド事業売上（前年同月比）とrow_label_regexが重複しています。"
+    }
+  ],
+  "extraction_notes": "「前年同月比」の行ラベルは、OCRの揺らぎや元の書式により「前年同月比 （％）」と「前年同月比（％）」のようにスペースの有無が異なる場合があります。連結売上高の前年同月比はスペースありのパターン、クラウド事業の売上とストック売上の前年同月比はスペースなしのパターンで区別を試みていますが、クラウド事業の2つの前年同月比は行ラベルが同一であるため、row_label_regexのみでは区別が困難です。システム側で文脈を考慮した抽出ロジックが必要になる可能性があります。",
+  "ticker": "3923",
+  "company_name": "3923",
+  "created_at": "2026-03-24T08:29:26.214719+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2026年3月期月次売上高（1月度）のお知らせ",
+  "sample_submission_date": "2026-02-13",
+  "fields_count": 6,
+  "manual_override": true,
+  "manual_override_note": "NG96調査結果に基づくadapter修正（yoy_offset/unit_scale/regex等）",
+  "manual_override_at": "2026-04-08T21:05:28.165592+09:00",
+  "use_fy_history_correction": true,
+  "_agent_patched_at": "2026-04-19T19:11:23.177411+09:00",
+  "_agent_patch_history": [
+    {
+      "ts": "2026-04-19T19:11:23.177411+09:00",
+      "applied": [
+        "top-level: ['use_fy_history_correction']"
+      ]
+    }
+  ]
+}

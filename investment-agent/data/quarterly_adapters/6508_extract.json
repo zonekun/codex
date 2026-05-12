@@ -1,0 +1,28 @@
+{
+  "ticker": "6508",
+  "company_name": "明電舎",
+  "current_version": "2025-05",
+  "versions": [
+    {
+      "valid_from": "2025-05",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Vision extraction selected because structure is complex or data is unavailable."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/6508/20250513_6508_明電舎_決算短信_2025年３月期　決算短信〔日本基準〕（連結）_140120250512543228.pdf",
+  "_source_doc_id": "140120250512543228",
+  "_generated_at": "2026-04-30T19:18:49.261946+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

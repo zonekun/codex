@@ -1,0 +1,16 @@
+{
+  "ticker": "9706",
+  "company_name": "日本空港ビルデング",
+  "ir_page_url": "https://www.tokyo-airport-bldg.co.jp/result/index.html",
+  "type": "scrape_links",
+  "status": "active",
+  "link_text_pattern": "年度.*利用実績|旅客ターミナル",
+  "link_href_pattern": "/files/result/\\d+\\.pdf",
+  "playwright_required": false,
+  "manual_override": true,
+  "note": "2026-04-24修正: テキスト「年度　利用実績」の全角スペースに対応(年度.*利用実績)。",
+  "updated_at": "2026-04-24T17:28:05.307145+09:00",
+  "css_selector": null,
+  "table_selector": null,
+  "follow_links": false
+}

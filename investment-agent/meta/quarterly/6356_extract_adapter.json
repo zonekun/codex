@@ -1,0 +1,28 @@
+{
+  "ticker": "6356",
+  "company_name": "日ギア",
+  "current_version": "2026-01",
+  "versions": [
+    {
+      "valid_from": "2026-01",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Vision extraction selected because structure is complex or data is unavailable."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/6356/20260129_6356_日ギア_決算短信_2026年３月期　第３四半期決算短信〔日本基準〕（非連結）_140120260129540878.pdf",
+  "_source_doc_id": "140120260129540878",
+  "_generated_at": "2026-04-30T19:06:13.791191+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

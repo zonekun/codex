@@ -1,0 +1,151 @@
+{
+  "ticker": "1811",
+  "company_name": "銭高組",
+  "current_version": "2025-05",
+  "versions": [
+    {
+      "valid_from": "2025-05",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当連結会計年度における受注高の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注高（建築工事）",
+          "type": "order_intake",
+          "description": "建設事業のうち建築工事に係る受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "受注高（土木工事）",
+          "type": "order_intake",
+          "description": "建設事業のうち土木工事に係る受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "連結損益計算書における売上高の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "売上高（建設事業）",
+          "type": "completed",
+          "description": "売上高のうち建設事業に係る金額",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "売上高（不動産事業等）",
+          "type": "completed",
+          "description": "売上高のうち不動産事業等に係る金額",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "完成工事高",
+          "type": "completed",
+          "description": "建設事業における完成工事高の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "完成工事高（建築工事）",
+          "type": "completed",
+          "description": "建設事業のうち建築工事に係る完成工事高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "完成工事高"
+        },
+        {
+          "name": "完成工事高（土木工事）",
+          "type": "completed",
+          "description": "建設事業のうち土木工事に係る完成工事高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "完成工事高"
+        },
+        {
+          "name": "次期繰越工事高",
+          "type": "backlog",
+          "description": "期末時点における未完成工事の手持残高（受注残高）の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "次期繰越工事高（建築工事）",
+          "type": "backlog",
+          "description": "次期繰越工事高のうち建築工事に係る金額",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "次期繰越工事高"
+        },
+        {
+          "name": "次期繰越工事高（土木工事）",
+          "type": "backlog",
+          "description": "次期繰越工事高のうち土木工事に係る金額",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "次期繰越工事高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "事業区分",
+          "items": [
+            "建設事業",
+            "不動産事業等"
+          ]
+        },
+        {
+          "dimension_name": "工事種類",
+          "items": [
+            "建築工事",
+            "土木工事"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "第1ページ本文に受注高・売上高の概況、損益計算書に売上高の内訳、補足資料に受注・売上・繰越工事高の詳細な一覧表が記載されている。"
+    }
+  ],
+  "_source_pdf": "tdnet/1811/20250514_1811_銭高組_決算短信_2025年3月期　決算短信〔日本基準〕（連結）_140120250513544050.pdf",
+  "_source_doc_id": "140120250513544050",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T16:46:42.180682+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      5,
+      9,
+      18,
+      19,
+      21,
+      22
+    ],
+    "table_count": 8,
+    "max_rows": 45,
+    "max_cols": 9,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 8"
+    ]
+  }
+}

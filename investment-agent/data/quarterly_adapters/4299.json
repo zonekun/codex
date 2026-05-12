@@ -1,0 +1,115 @@
+{
+  "ticker": "4299",
+  "company_name": "ハイマックス",
+  "current_version": "2026-01",
+  "versions": [
+    {
+      "valid_from": "2026-01",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当第３四半期連結累計期間における受注高の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "システム・ソリューションサービス 受注高",
+          "type": "order_intake",
+          "description": "システム・ソリューションサービス分野の受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "システム・メンテナンスサービス 受注高",
+          "type": "order_intake",
+          "description": "システム・メンテナンスサービス分野の受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当第３四半期連結会計期間末における受注残高の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "システム・ソリューションサービス 受注残高",
+          "type": "backlog",
+          "description": "システム・ソリューションサービス分野の受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        },
+        {
+          "name": "システム・メンテナンスサービス 受注残高",
+          "type": "backlog",
+          "description": "システム・メンテナンスサービス分野の受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        },
+        {
+          "name": "販売実績",
+          "type": "completed",
+          "description": "当第３四半期連結累計期間における販売実績（売上高）の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "システム・ソリューションサービス 販売実績",
+          "type": "completed",
+          "description": "システム・ソリューションサービス分野の販売実績",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "販売実績"
+        },
+        {
+          "name": "システム・メンテナンスサービス 販売実績",
+          "type": "completed",
+          "description": "システム・メンテナンスサービス分野の販売実績",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "販売実績"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "サービス分野",
+          "items": [
+            "システム・ソリューションサービス",
+            "システム・メンテナンスサービス"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "決算短信の「(その他の事項) (生産、受注及び販売の実績)」に、サービス分野別の受注高、受注残高、販売実績が表形式で記載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/4299/20260130_4299_ハイマックス_決算短信_2026年３月期 第３四半期決算短信〔日本基準〕（連結）_140120260129541387.pdf",
+  "_source_doc_id": "140120260129541387",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:03:52.491878+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      10
+    ],
+    "table_count": 4,
+    "max_rows": 5,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 4"
+    ]
+  }
+}

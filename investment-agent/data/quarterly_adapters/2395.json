@@ -1,0 +1,139 @@
+{
+  "ticker": "2395",
+  "company_name": "新日科学",
+  "current_version": "2025-11",
+  "versions": [
+    {
+      "valid_from": "2025-11",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "非臨床事業における受注高の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "国内受注高",
+          "type": "order_intake",
+          "description": "非臨床事業における国内顧客からの受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "海外受注高",
+          "type": "order_intake",
+          "description": "非臨床事業における海外顧客からの受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "非臨床事業における受注残高の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "当中間連結会計期間における連結売上高",
+          "unit": "千円",
+          "period": "current_period",
+          "is_total": true
+        },
+        {
+          "name": "外部顧客への売上高（ＣＲＯ事業）",
+          "type": "completed",
+          "description": "当中間連結会計期間におけるＣＲＯ事業の外部顧客への売上高",
+          "unit": "千円",
+          "period": "current_period",
+          "is_total": false,
+          "parent_metric": "売上高",
+          "breakdown_dimension": "セグメント",
+          "breakdown_item": "ＣＲＯ事業"
+        },
+        {
+          "name": "外部顧客への売上高（トランスレーショナルリサーチ事業）",
+          "type": "completed",
+          "description": "当中間連結会計期間におけるトランスレーショナルリサーチ事業の外部顧客への売上高",
+          "unit": "千円",
+          "period": "current_period",
+          "is_total": false,
+          "parent_metric": "売上高",
+          "breakdown_dimension": "セグメント",
+          "breakdown_item": "トランスレーショナルリサーチ事業"
+        },
+        {
+          "name": "外部顧客への売上高（メディポリス事業）",
+          "type": "completed",
+          "description": "当中間連結会計期間におけるメディポリス事業の外部顧客への売上高",
+          "unit": "千円",
+          "period": "current_period",
+          "is_total": false,
+          "parent_metric": "売上高",
+          "breakdown_dimension": "セグメント",
+          "breakdown_item": "メディポリス事業"
+        },
+        {
+          "name": "外部顧客への売上高（米国不動産事業）",
+          "type": "completed",
+          "description": "当中間連結会計期間における米国不動産事業の外部顧客への売上高",
+          "unit": "千円",
+          "period": "current_period",
+          "is_total": false,
+          "parent_metric": "売上高",
+          "breakdown_dimension": "セグメント",
+          "breakdown_item": "米国不動産事業"
+        },
+        {
+          "name": "外部顧客への売上高（その他）",
+          "type": "completed",
+          "description": "当中間連結会計期間におけるその他の外部顧客への売上高",
+          "unit": "千円",
+          "period": "current_period",
+          "is_total": false,
+          "parent_metric": "売上高",
+          "breakdown_dimension": "セグメント",
+          "breakdown_item": "その他"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "地域",
+          "items": [
+            "国内",
+            "海外"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "非臨床事業に関する詳細な受注推移表（受注高、国内・海外内訳、受注残高）が8ページに掲載されており、3ページ本文でも主要な数値が言及されている。"
+    }
+  ],
+  "_source_pdf": "tdnet/2395/20251107_2395_新日科学_決算短信_2026年３月期　第２四半期（中間期）決算短信〔日本基準〕（連結）_140120251028580416.pdf",
+  "_source_doc_id": "140120251028580416",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:22:15.274324+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      5,
+      10
+    ],
+    "table_count": 2,
+    "max_rows": 6,
+    "max_cols": 9,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "ticker": "6482",
+  "company_name": "ＹＵＳＨＩＮ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当四半期累計期間における受注高の合計額",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "製品別受注高",
+          "type": "order_intake",
+          "description": "製品等の区分（ロボット、特注機、部品・保守サービス）別の受注高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当四半期会計期間末における受注残高の合計額",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "製品別受注残高",
+          "type": "backlog",
+          "description": "製品等の区分（ロボット、特注機、部品・保守サービス）別の受注残高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "決算短信の「3. 補足情報」において、受注高、受注残高、販売高の3つの指標について、製品区分（ロボット、特注機、部品・保守サービス）別の詳細な数値が表形式で記載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/6482/20260213_6482_ＹＵＳＨＩＮ_決算短信_2026年３月期 第３四半期決算短信〔日本基準〕（連結）_140120260212557354.pdf",
+  "_source_doc_id": "140120260212557354",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:15:34.122390+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      11
+    ],
+    "table_count": 5,
+    "max_rows": 5,
+    "max_cols": 6,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 5"
+    ]
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "ticker": "339A",
+  "company_name": "Ｇ－プログレス",
+  "current_version": "2026-01",
+  "versions": [
+    {
+      "valid_from": "2026-01",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "presentation",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/339A/20260120_339A_Ｇ－プログレス_決算説明資料_2026年2月期 第3四半期 決算説明会 質疑応答要旨_140120260120535951.pdf",
+  "_source_doc_id": "140120260120535951",
+  "_generated_at": "2026-04-30T17:38:45.969619+09:00",
+  "_model_used": null
+}

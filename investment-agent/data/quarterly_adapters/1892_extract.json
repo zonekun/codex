@@ -1,0 +1,28 @@
+{
+  "ticker": "1892",
+  "company_name": "徳倉建",
+  "current_version": "2025-11",
+  "versions": [
+    {
+      "valid_from": "2025-11",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/1892/20251114_1892_徳倉建_決算短信_2026年３月期　第２四半期決算短信〔日本基準〕（連結）_140120251113599261.pdf",
+  "_source_doc_id": "140120251113599261",
+  "_generated_at": "2026-04-30T17:00:17.435982+09:00",
+  "_model_used": null
+}

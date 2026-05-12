@@ -1,0 +1,51 @@
+{
+  "ticker": "1724",
+  "company_name": "シンクレイヤ",
+  "current_version": "2025-11",
+  "versions": [
+    {
+      "valid_from": "2025-11",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "セグメント別の受注高",
+          "unit": "百万円",
+          "is_total": false
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "セグメント別の受注残高",
+          "unit": "百万円",
+          "is_total": false
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "text",
+      "complexity": "no_table",
+      "notes": "決算短信の「1. 当四半期決算に関する定性的情報 (1) 経営成績に関する説明」の本文中に、セグメント別の売上高、受注高、受注残高の具体的な数値が記載されています。表形式での記載はありません。"
+    }
+  ],
+  "_source_pdf": "tdnet/1724/20251113_1724_シンクレイヤ_決算短信_2025年12月期第３四半期決算短信〔日本基準〕(連結)_140120251113599579.pdf",
+  "_source_doc_id": "140120251113599579",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T16:34:22.114683+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "no_table",
+    "relevant_pages": [
+      4
+    ],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "pdfplumber found no tables on relevant pages"
+    ]
+  }
+}

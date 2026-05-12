@@ -1,0 +1,20 @@
+{
+  "ticker": "8715",
+  "company_name": "8715",
+  "metrics": [
+    {
+      "name": "どうぶつ健活 申込数",
+      "source": "bc"
+    },
+    {
+      "name": "正味収入保険料",
+      "source": "bc"
+    },
+    {
+      "name": "遺伝子検査 検体数",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

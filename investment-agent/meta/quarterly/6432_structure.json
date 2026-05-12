@@ -1,0 +1,51 @@
+{
+  "ticker": "6432",
+  "company_name": "竹内製作所",
+  "current_version": "2026-04",
+  "versions": [
+    {
+      "valid_from": "2026-04",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当連結会計年度の受注高合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当連結会計年度末の受注残高合計",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "text",
+      "complexity": "no_table",
+      "notes": "「1. 経営成績等の概況」の本文テキストから、連結の受注高、売上高、受注残高、および日本・米国・英国の各セグメント売上高の数値が抽出可能です。"
+    }
+  ],
+  "_source_pdf": "tdnet/6432/20260410_6432_竹内製作所_決算短信_2026年2月期 決算短信〔日本基準〕(連結）_140120260410501419.pdf",
+  "_source_doc_id": "140120260410501419",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:13:20.751163+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "no_table",
+    "relevant_pages": [
+      4
+    ],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "pdfplumber found no tables on relevant pages"
+    ]
+  }
+}

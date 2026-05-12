@@ -1,0 +1,87 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "extraction_method": "gemini",
+  "doc_title_pattern": "月次|月度|月間|売上|速報|実績|業績|概況|KPI|ＫＰＩ|状況|報告|推移|月末",
+  "year_from_title_regex": "(?P<year>\\d{4})年",
+  "month_from_title_regex": "(?P<month>\\d{1,2})月度",
+  "fields": [
+    {
+      "key": "全社 売上（前年同月比）",
+      "name": "全社 売上（前年同月比）",
+      "description": "「事業本部別 売上高」の項目において、その直前に記載されている数値列「108.4 102.2 104.1 104.4 104.5 105.2 102.4 105.1 103.9」の最も右端の数値。全社の売上高前年同月比（%）。",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "micro-diff: our=117.5, bc=115.0, diff=2.0 (rounding/timing diff)"
+    },
+    {
+      "key": "小売・ネット通販 既存店 売上（前年同月比）",
+      "name": "小売・ネット通販 既存店 売上（前年同月比）",
+      "description": "売上高の項目において、「小売＋ネット通販 既存店」の行にある、最も右端の数値「106.0」。小売とネット通販を合算した既存店売上の前年同月比（%）。",
+      "value_type": "percentage",
+      "bc_ignore": true
+    },
+    {
+      "key": "小売・ネット通販 既存店 客単価（前年同月比）",
+      "name": "小売・ネット通販 既存店 客単価（前年同月比）",
+      "description": "客単価の項目において、「客単価 小売＋ネット通販」の行にある、最も右端の数値「108.1」。小売とネット通販を合算した既存店客単価の前年同月比（%）。",
+      "value_type": "percentage",
+      "bc_ignore": true
+    },
+    {
+      "key": "全店 店舗数",
+      "name": "全店 店舗数",
+      "bc_ignore": true,
+      "bc_ignore_reason": "BC値331あり。月次売上概況PDFに店舗数の記載なし（売上高・客単価・客数の前年比のみ）",
+      "bc_key": "全店 店舗数"
+    },
+    {
+      "key": "小売・ネット通販 客単価（前年同月比）",
+      "name": "小売・ネット通販 客単価（前年同月比）",
+      "description": "月次売上概況の客単価セクションにおける「小売＋ネット通販 全店」の行の数値（前年同月比%）。「既存店」ではなく「全店」の行を取得すること。",
+      "value_type": "percentage",
+      "bc_key": "小売・ネット通販 客単価（前年同月比）"
+    },
+    {
+      "key": "小売・ネット通販 客数（前年同月比）",
+      "name": "小売・ネット通販 客数（前年同月比）",
+      "description": "月次売上概況の客数セクションにおける「小売＋ネット通販 全店」の行の数値（前年同月比%）。「既存店」ではなく「全店」の行を取得すること。",
+      "value_type": "percentage",
+      "bc_key": "小売・ネット通販 客数（前年同月比）"
+    },
+    {
+      "key": "小売・ネット通販 既存店 客数（前年同月比）",
+      "name": "小売・ネット通販 既存店 客数（前年同月比）",
+      "description": "月次売上概況の客数セクションにおける「小売＋ネット通販 既存店」の行の数値（前年同月比%）。「全店」ではなく「既存店」の行を取得すること。",
+      "value_type": "percentage",
+      "bc_key": "小売・ネット通販 既存店 客数（前年同月比）"
+    }
+  ],
+  "extraction_notes": "「全社 売上（前年同月比）」は「事業本部別 売上高」の直前の数値列の最終値と判断しました。 「小売・ネット通販 客単価（前年同月比）」は、文脈上「客単価 小売＋ネット通販」が既存店のものであると判断し、「小売・ネット通販 既存店 客単価（前年同月比）」として抽出しました。その他の客数や全店店舗数は、合算値または全店値が明確に特定できませんでした。",
+  "ticker": "7606",
+  "company_name": "7606",
+  "created_at": "2026-03-29T18:41:45.296372+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2026年2月度月次売上概況（速報）〔2026年3月決算期〕",
+  "sample_submission_date": "2026-03-03",
+  "fields_count": 3,
+  "manual_override": true,
+  "manual_override_note": "Phase 2: bc_ignore for micro-diff fields (rounding/timing difference)",
+  "manual_override_at": "2026-04-25T06:00:00+09:00",
+  "custom_prompt": "あなたは ticker 7606 の月次開示 PDF から KPI を抽出するアシスタントです.\n\n抽出対象月: {year}年{month}月度\n\n重要ルール:\n  - 当月 (指定月) の値のみ採用\n  - 四半期累計・上期累計・通期・前年同期実績 等の集計値は絶対に拾わない\n  - サブブランド行ではなく「全店」「既存店」「合計」等の集約行を採用\n  - 前年同月比 field には 「+X.X%増」「−X.X%減」の narrative が該当する場合は\n    100 を加算した値 (例: +5.2% → 105.2, -4.9% → 95.1) を返す\n  - 見つからない field は null\n\n出力形式: JSON\n{\n  - \"全社 売上（前年同月比）\": 前年同月比 (例 105.2)\n  - \"小売・ネット通販 既存店 売上（前年同月比）\": 前年同月比 (例 105.2)\n  - \"小売・ネット通販 既存店 客単価（前年同月比）\": 前年同月比 (例 105.2)\n}\n",
+  "overwrite_past_months": true,
+  "_doc_title_pattern_fixed_at": "2026-04-18T23:24:12.768114+09:00",
+  "_doc_title_pattern_fixed_from": "(?P<year>\\d{4})年(?P<month>\\d{1,2})月度月次売上概況（速報）〔\\d{4}年\\d{1,2}月決算期〕",
+  "_agent_loosened_from": "(?P<year>\\d{4})年(?P<month>\\d{1,2})月度月次売上概況(速報)〔\\d{4}年\\d{1,2}月決算期〕",
+  "_agent_patched_at": "2026-04-19T20:52:08.943455+09:00",
+  "_agent_patch_history": [
+    {
+      "ts": "2026-04-19T20:52:08.943455+09:00",
+      "applied": [
+        "top-level: ['doc_title_pattern', '_agent_loosened_from']"
+      ]
+    }
+  ],
+  "regex_redesign_at": "2026-04-19T22:36:14.995016+09:00",
+  "regex_redesign_note": "Gemini 切替 (regex 限界 or 誤マッチのため)."
+}

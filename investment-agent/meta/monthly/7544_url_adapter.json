@@ -1,0 +1,14 @@
+{
+  "ticker": "7544",
+  "company_name": "(株)スリーエフ",
+  "ir_page_url": "https://www.three-f.co.jp/ir/recentFact.html",
+  "status": "active",
+  "type": "html_table",
+  "playwright_required": false,
+  "note": "月次売上は静的HTML(テキスト+JPG画像テーブル)。Playwright不要。html_table型で保存し、Gemini visionで画像から数値抽出 (2026-04-24)。",
+  "updated_at": "2026-04-24T12:42:51.353165+09:00",
+  "last_checked": "2026-04-24",
+  "manual_override": true,
+  "manual_override_at": "2026-04-24T12:42:51.353165+09:00",
+  "manual_override_note": "7544 スリーエフ html_table アダプター作成 (2026-04-24)"
+}

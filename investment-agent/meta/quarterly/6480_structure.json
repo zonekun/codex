@@ -1,0 +1,44 @@
+{
+  "ticker": "6480",
+  "company_name": "日トムソン",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "軸受等ならびに諸機械部品の受注高合計",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "受注高は本文中に合計値が記載されている。売上高については部門別の内訳表（軸受等、諸機械部品）が存在する。受注残高に関する具体的な数値の記載は見当たらない。"
+    }
+  ],
+  "_source_pdf": "tdnet/6480/20260209_6480_日トムソン_決算短信_2026年３月期　第３四半期決算短信〔日本基準〕(連結)_140120260205547975.pdf",
+  "_source_doc_id": "140120260205547975",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:15:17.642093+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4
+    ],
+    "table_count": 1,
+    "max_rows": 4,
+    "max_cols": 7,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

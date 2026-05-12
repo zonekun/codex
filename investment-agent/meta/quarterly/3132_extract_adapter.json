@@ -1,0 +1,28 @@
+{
+  "ticker": "3132",
+  "company_name": "マクニカＨＤ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "presentation",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Vision extraction selected because structure is complex or data is unavailable."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/3132/20260202_3132_マクニカＨＤ_決算説明資料_2026年３月期第３四半期 決算説明資料（プレゼン編）_140120260129541823.pdf",
+  "_source_doc_id": "140120260129541823",
+  "_generated_at": "2026-04-30T17:33:10.320888+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

@@ -1,0 +1,36 @@
+{
+  "ticker": "7354",
+  "company_name": "ＤｍＭｉＸ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "breakdown_dimensions": [],
+      "presentation_format": "table",
+      "complexity": "simple_table",
+      "notes": "受注トレンドの章はあるが、内容はドメイン別の売上推移であり、受注高または受注残高の具体的な数値はPDF内で確認できない。売上収益のみのため受注関連データは利用不可と判断した。"
+    }
+  ],
+  "_source_pdf": "tdnet/7354/20260213_7354_ＤｍＭｉＸ_決算説明資料_2025年12月期通期決算説明資料_140120260213561074.pdf",
+  "_source_doc_id": "140120260213561074",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T19:46:58.681859+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      10
+    ],
+    "table_count": 1,
+    "max_rows": 9,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

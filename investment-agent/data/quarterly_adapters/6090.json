@@ -1,0 +1,115 @@
+{
+  "ticker": "6090",
+  "company_name": "ＨＭＴ",
+  "current_version": "2025-08",
+  "versions": [
+    {
+      "valid_from": "2025-08",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当連結会計年度における受注高の合計",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "先端研究開発支援事業 受注高",
+          "type": "order_intake",
+          "description": "先端研究開発支援事業における受注高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "ヘルスケア・ソリューション事業 受注高",
+          "type": "order_intake",
+          "description": "ヘルスケア・ソリューション事業における受注高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当連結会計年度末における受注残高の合計",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "先端研究開発支援事業 受注残高",
+          "type": "backlog",
+          "description": "先端研究開発支援事業における受注残高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        },
+        {
+          "name": "ヘルスケア・ソリューション事業 受注残高",
+          "type": "backlog",
+          "description": "ヘルスケア・ソリューション事業における受注残高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        },
+        {
+          "name": "販売高",
+          "type": "completed",
+          "description": "当連結会計年度における販売高の合計",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "先端研究開発支援事業 販売高",
+          "type": "completed",
+          "description": "先端研究開発支援事業における販売高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "販売高"
+        },
+        {
+          "name": "ヘルスケア・ソリューション事業 販売高",
+          "type": "completed",
+          "description": "ヘルスケア・ソリューション事業における販売高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "販売高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "先端研究開発支援事業",
+            "ヘルスケア・ソリューション事業"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "「受注実績」および「販売実績」の表から、セグメント別の受注高、受注残高、販売高のデータが取得可能。"
+    }
+  ],
+  "_source_pdf": "tdnet/6090/20250808_6090_ＨＭＴ_決算短信_2025年６月期 決算短信〔日本基準〕（連結）_140120250807535593.pdf",
+  "_source_doc_id": "140120250807535593",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:39:36.398270+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      18
+    ],
+    "table_count": 4,
+    "max_rows": 5,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 4"
+    ]
+  }
+}

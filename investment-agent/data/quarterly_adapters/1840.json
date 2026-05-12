@@ -1,0 +1,76 @@
+{
+  "ticker": "1840",
+  "company_name": "土屋ＨＤ",
+  "current_version": "2026-03",
+  "versions": [
+    {
+      "valid_from": "2026-03",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "販売実績",
+          "type": "completed",
+          "description": "セグメント別の販売実績（売上高）",
+          "unit": "千円",
+          "is_total": false
+        },
+        {
+          "name": "販売実績合計",
+          "type": "completed",
+          "description": "全セグメントの販売実績合計",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "セグメント別の受注高",
+          "unit": "千円",
+          "is_total": false
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "セグメント別の受注残高",
+          "unit": "千円",
+          "is_total": false
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "住宅事業",
+            "リフォーム事業",
+            "不動産事業",
+            "賃貸事業"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "補足情報のページにセグメント別の販売実績、受注高、受注残高の表が掲載されています。受注高と受注残高は住宅事業とリフォーム事業のみ開示されています。住宅事業の受注データには非住宅物件等が含まれています。"
+    }
+  ],
+  "_source_pdf": "tdnet/1840/20260313_1840_土屋ＨＤ_決算短信_2026年10月期　第１四半期決算短信〔日本基準〕（連結）_140120260313581389.pdf",
+  "_source_doc_id": "140120260313581389",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T16:51:26.876580+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      12
+    ],
+    "table_count": 2,
+    "max_rows": 6,
+    "max_cols": 7,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

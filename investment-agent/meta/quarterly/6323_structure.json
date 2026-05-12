@@ -1,0 +1,67 @@
+{
+  "ticker": "6323",
+  "company_name": "ローツェ",
+  "current_version": "2026-04",
+  "versions": [
+    {
+      "valid_from": "2026-04",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当連結会計年度における受注実績の金額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当連結会計年度末における受注残高の金額",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "半導体・FPD関連装置事業",
+            "ライフサイエンス事業"
+          ]
+        },
+        {
+          "dimension_name": "品目",
+          "items": [
+            "半導体関連装置",
+            "分析装置",
+            "FPD関連装置"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "「(2) 受注実績」の表より、セグメント別および品目別の受注高と受注残高を抽出。生産実績の表も存在するが、受注関連メトリクスを優先して定義。"
+    }
+  ],
+  "_source_pdf": "tdnet/6323/20260409_6323_ローツェ_決算短信_2026年2月期　決算短信〔日本基準〕（連結）_140120260409500528.pdf",
+  "_source_doc_id": "140120260409500528",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:01:52.627918+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      20
+    ],
+    "table_count": 2,
+    "max_rows": 7,
+    "max_cols": 6,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

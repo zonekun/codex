@@ -1,0 +1,15 @@
+{
+  "ticker": "7621",
+  "company_name": "うかい",
+  "ir_page_url": "http://www.ukai.co.jp/corporate/ir/highlight.html",
+  "type": "scrape_links",
+  "status": "active",
+  "link_text_pattern": "月次売上|売上高前年対比",
+  "link_href_pattern": "mon_sales_.*\\.pdf",
+  "playwright_required": false,
+  "note": "月次売上高前年対比速報ページ (highlight.html)。PDFは pdf/highlight/mon_sales_YYYY.pdf パターン。旧URLはホームページトップで誤り。2026-04-24修正",
+  "manual_override": true,
+  "manual_override_note": "2026-04-24 月次売上ページURLに修正、mon_salesパターンを追加",
+  "manual_override_at": "2026-04-24T00:00:00+09:00",
+  "updated_at": "2026-04-24T00:00:00+09:00"
+}

@@ -1,0 +1,20 @@
+{
+  "ticker": "8242",
+  "company_name": "エイチ・ツー・オー　リテイリング",
+  "updated_at": "2026-04-20",
+  "ir_page_url": "https://www.h2o-retailing.co.jp/ja/ir/library/monthly.html",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": null,
+  "link_href_pattern": "monthly/main",
+  "table_selector": null,
+  "status": "active",
+  "skip_reason": null,
+  "note": "月次売上速報PDF。月次一覧ページ。link_href_pattern=monthly/main。",
+  "url_source": "recovered_from_index_csv",
+  "last_checked": "2026-04-20",
+  "follow_links": false,
+  "playwright_required": false,
+  "recovered_at": "2026-04-20T21:37:09.325193+09:00",
+  "recovery_reason": "sync_bug_overwrite_20260420"
+}

@@ -1,0 +1,28 @@
+{
+  "ticker": "1887",
+  "company_name": "日本国土開発",
+  "current_version": "2026-04",
+  "versions": [
+    {
+      "valid_from": "2026-04",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Vision extraction selected because structure is complex or data is unavailable."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/1887/20260414_1887_日本国土開発_決算短信_2026年５月期第３四半期決算短信〔日本基準〕(連結)_140120260414503218.pdf",
+  "_source_doc_id": "140120260414503218",
+  "_generated_at": "2026-04-30T16:59:24.388608+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

@@ -1,0 +1,13 @@
+{
+  "ticker": "3010",
+  "company_name": "ポラリス・ホールディングス",
+  "ir_page_url": "https://www.pictet.co.jp/fund/polaris.html",
+  "updated_at": "2026-04-21T09:32:55.838600+09:00",
+  "last_checked": "2026-04-21",
+  "status": "active",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": "\\d{4}",
+  "link_href_pattern": "/content/dam/pamweb/jp/ja/fund/polaris/fund\\-detail\\-document/polaris\\-Monthly\\-Report\\-\\d{6}31\\.pdf",
+  "note": "月次PDFリンク1件検出 best=https://www.pictet.co.jp/content/dam/pamweb/jp/ja/fund/polaris/fund-detail-document/polaris-Monthly-Report-20260331.pdf"
+}

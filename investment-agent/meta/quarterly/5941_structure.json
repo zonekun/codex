@@ -1,0 +1,69 @@
+{
+  "ticker": "5941",
+  "company_name": "中西製作所",
+  "current_version": "2025-05",
+  "versions": [
+    {
+      "valid_from": "2025-05",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "生産高",
+          "type": "other",
+          "description": "業務用厨房機器製造販売事業における生産実績",
+          "unit": "千円",
+          "is_total": false
+        },
+        {
+          "name": "商品仕入実績",
+          "type": "other",
+          "description": "業務用厨房機器製造販売事業における商品仕入実績",
+          "unit": "千円",
+          "is_total": false
+        },
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "業務用厨房機器製造販売事業における受注実績",
+          "unit": "千円",
+          "is_total": false
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "業務用厨房機器製造販売事業における受注残高",
+          "unit": "千円",
+          "is_total": false
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "決算短信の「4. その他 (1) 生産、受注及び販売の状況」に記載されている生産高、商品仕入実績、受注高、受注残高、販売高のデータを抽出。受注関連（受注高・受注残高）は業務用厨房機器製造販売事業のみの数値が記載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/5941/20250509_5941_中西製作所_決算短信_2025年３月期　決算短信[日本基準]（非連結）_140120250508535216.pdf",
+  "_source_doc_id": "140120250508535216",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:36:02.940855+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      8,
+      11,
+      12,
+      25
+    ],
+    "table_count": 10,
+    "max_rows": 24,
+    "max_cols": 9,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 10"
+    ]
+  }
+}

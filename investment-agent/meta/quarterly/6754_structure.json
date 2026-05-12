@@ -1,0 +1,72 @@
+{
+  "ticker": "6754",
+  "company_name": "アンリツ",
+  "current_version": "2026-01",
+  "versions": [
+    {
+      "valid_from": "2026-01",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当第3四半期連結累計期間および各四半期における受注の総額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "各四半期末時点における未消化の受注残高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "セグメント別受注高",
+          "type": "order_intake",
+          "description": "事業セグメント別の受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "セグメント別受注残高",
+          "type": "backlog",
+          "description": "事業セグメント別の受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "サマリー情報に加え、決算補足資料（18-19ページ）にてセグメント別の受注高、受注残高、売上収益の四半期推移が詳細な表形式で開示されています。また、地域別の売上収益についてもセグメント情報内で開示されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/6754/20260129_6754_アンリツ_決算短信_2026年3月期第3四半期決算短信〔ＩＦＲＳ〕（連結）_140120260128540712.pdf",
+  "_source_doc_id": "140120260128540712",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:28:24.439725+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      5,
+      20,
+      21,
+      22
+    ],
+    "table_count": 6,
+    "max_rows": 28,
+    "max_cols": 7,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 6"
+    ]
+  }
+}

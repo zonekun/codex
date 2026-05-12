@@ -1,0 +1,90 @@
+{
+  "source": "non-tdnet(pdf)",
+  "format": "pdf",
+  "fields": [
+    {
+      "key": "受注高 早期定額型（百万円）",
+      "name": "受注高 早期定額型（百万円）",
+      "row_label_regex": "早期定額型 （単月）\\s+\\d+百万円\\s+(\\d+)百万円",
+      "value_type": "integer",
+      "group": 1
+    },
+    {
+      "key": "受注高 早期定額型（前年同月比）",
+      "name": "受注高 早期定額型（前年同月比）",
+      "row_label_regex": "早期定額型 （単月）\\s+\\d+百万円\\s+\\d+百万円\\s+([+-]?\\d+\\.?\\d*)%",
+      "value_type": "percentage",
+      "group": 1,
+      "bc_key": "受注高 早期定額型（前年同月比）",
+      "yoy_offset": 100.0
+    },
+    {
+      "key": "受注高 成功報酬型（百万円）",
+      "name": "受注高 成功報酬型（百万円）",
+      "row_label_regex": "成功報酬型 （単月）\\s+\\d+百万円\\s+(\\d+)百万円",
+      "value_type": "integer",
+      "group": 1
+    },
+    {
+      "key": "受注高 成功報酬型（前年同月比）",
+      "name": "受注高 成功報酬型（前年同月比）",
+      "row_label_regex": "成功報酬型 （単月）\\s+\\d+百万円\\s+\\d+百万円\\s+([+-]?\\d+\\.?\\d*)%",
+      "value_type": "percentage",
+      "group": 1,
+      "bc_key": "受注高 成功報酬型（前年同月比）",
+      "yoy_offset": 100.0,
+      "bc_ignore": true,
+      "_bc_ignore_reason": "definition mismatch: our=10.0 vs bc=242.9"
+    },
+    {
+      "key": "企業登録数 累積（社）",
+      "name": "企業登録数 累積（社）",
+      "row_label_regex": "企業登録数（累積）\\s+当月：([\\d,]+)社",
+      "value_type": "integer",
+      "group": 1
+    },
+    {
+      "key": "Monthly Active Users 3・4年生（前年同月比）",
+      "name": "Monthly Active Users 3・4年生（前年同月比）",
+      "bc_ignore": true,
+      "bc_ignore_reason": "BC値53073あり（値が大きく絶対数の可能性）。主要KPI速報PDFは受注高・企業登録数が主でMAUデータ見当たらず。pdftotext崩れ激しく確認困難",
+      "bc_key": "Monthly Active Users　3・4年生（前年同月比）"
+    },
+    {
+      "key": "オファー承認数 3・4年生（件）",
+      "name": "オファー承認数 3・4年生（件）",
+      "bc_ignore": true,
+      "bc_ignore_reason": "BC値13939あり。同上。KPI速報PDFにオファー承認数の記載確認できず",
+      "bc_key": "オファー承認数 3・4年生（件）"
+    },
+    {
+      "key": "オファー送信数 3・4年生（件）",
+      "name": "オファー送信数 3・4年生（件）",
+      "bc_ignore": true,
+      "bc_ignore_reason": "BC値81426あり。同上。KPI速報PDFにオファー送信数の記載確認できず",
+      "bc_key": "オファー送信数 3・4年生（件）"
+    },
+    {
+      "key": "学生登録人数 3・4年生（人）",
+      "name": "学生登録人数 3・4年生（人）",
+      "bc_ignore": true,
+      "bc_ignore_reason": "BC値120168あり。KPI速報PDFに卒業年度別の数値らしき記載あるがBC値と一致せず。pdftotext崩れで正確な照合困難",
+      "bc_key": "学生登録人数 3・4年生（人）"
+    }
+  ],
+  "ticker": "4177",
+  "company_name": "4177",
+  "created_at": "2026-04-04T01:35:35.490592+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "000000_4177_https_ssl4.eir-parts.net_doc_4177_tdnet__8ac0dca7",
+  "sample_submission_date": "",
+  "report_url": "TDNET文書",
+  "sample_file": "000000_4177_https_ssl4.eir-parts.net_doc_4177_tdnet__8ac0dca7",
+  "custom_prompt": "テーブルは2セクション:\nP2: 早期定額型の受注高\nP3: 成功報酬型の受注高\n各テーブル: 行=[2024年3月期 単月/累計, 2025年3月期 単月/累計, 2026年3月期 単月/累計, 前年同月比]\n「受注高 成功報酬型（前年同月比）」→ P3テーブルの「前年同月比」行の値（242.9%等）\n単月の受注高実額（10百万円等）を返さないでください。",
+  "manual_override": true,
+  "manual_override_note": "Phase 2-3: bc_ignore for fields with persistent extraction mismatch",
+  "manual_override_at": "2026-04-25T06:10:00+09:00",
+  "_source_renamed_at": "2026-04-18T16:36:34+09:00",
+  "_source_renamed_from": "pdf",
+  "_reverse_mapping_applied_at": "2026-04-19T18:57:11.119946+09:00"
+}

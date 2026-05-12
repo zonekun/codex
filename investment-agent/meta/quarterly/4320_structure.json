@@ -1,0 +1,94 @@
+{
+  "ticker": "4320",
+  "company_name": "ＣＥＨＤ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当第１四半期連結累計期間における受注高の合計",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "ヘルスケアソリューション事業 受注高",
+          "type": "order_intake",
+          "description": "ヘルスケアソリューション事業における受注高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "マーケティングソリューション事業 受注高",
+          "type": "order_intake",
+          "description": "マーケティングソリューション事業における受注高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当第１四半期連結会計期間末における受注残高の合計",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "ヘルスケアソリューション事業 受注残高",
+          "type": "backlog",
+          "description": "ヘルスケアソリューション事業における受注残高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        },
+        {
+          "name": "マーケティングソリューション事業 受注残高",
+          "type": "backlog",
+          "description": "マーケティングソリューション事業における受注残高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "ヘルスケアソリューション事業",
+            "マーケティングソリューション事業"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "決算短信の「3. その他 (2) 受注実績」および「(3) 販売実績」に、セグメント別の受注高、受注残高、売上高が詳細な表形式で記載されています。また、本文中（1ページおよび2ページ）にも主要な数値の言及があります。"
+    }
+  ],
+  "_source_pdf": "tdnet/4320/20260206_4320_ＣＥＨＤ_決算短信_2026年９月期 第１四半期決算短信〔日本基準〕（連結）_140120260204547585.pdf",
+  "_source_doc_id": "140120260204547585",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:04:16.804322+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      5,
+      12
+    ],
+    "table_count": 4,
+    "max_rows": 5,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 4"
+    ]
+  }
+}

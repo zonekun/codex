@@ -1,0 +1,56 @@
+{
+  "ticker": "7567",
+  "company_name": "栄電子",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "四半期累計および会計期間における受注の総額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "各四半期末時点における未納入の受注残高",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "データシート形式の資料であり、連結業績の累計期間推移（1ページ）および会計期間推移（3ページ）の表内に、受注高、売上高、受注残高の数値が網羅的に記載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/7567/20260213_7567_栄電子_決算説明資料_2026年3月期　第3四半期　決算補足説明資料（データシート）_140120260212557251.pdf",
+  "_source_doc_id": "140120260212557251",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T19:51:46.073445+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "table_count": 4,
+    "max_rows": 48,
+    "max_cols": 28,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 4",
+      "wide table: 28 columns"
+    ]
+  }
+}

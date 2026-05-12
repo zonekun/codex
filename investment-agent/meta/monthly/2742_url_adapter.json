@@ -1,0 +1,14 @@
+{
+  "ticker": "2742",
+  "company_name": "ハローズ",
+  "ir_page_url": "http://www.halows.com/ir/finance_monthly/",
+  "status": "active",
+  "type": "html_table",
+  "playwright_required": false,
+  "note": "月次売上データはHTML表形式で直接ページに表示。PDF無し。html_table型で保存→Gemini抽出 (2026-04-24)",
+  "updated_at": "2026-04-24T14:57:33.488197+09:00",
+  "last_checked": "2026-04-24",
+  "manual_override": true,
+  "manual_override_at": "2026-04-24T14:57:33.488197+09:00",
+  "manual_override_note": "D群HAS_PDF→html_table型に変更 (2026-04-24)"
+}

@@ -1,0 +1,20 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "doc_title_pattern": ".*決算補足資料",
+  "year_from_title_regex": "(\\d{4})年",
+  "month_from_title_regex": "(\\d{1,2})月期",
+  "fields": [],
+  "extraction_notes": "The provided text is highly unstructured and lacks clear row labels for the requested metrics (e.g., '全店 売上', '既存店 客数', '処方せん受付枚数'). While several percentages are present, it is impossible to definitively associate them with the specific metrics requested. Therefore, no extraction rules can be generated based on this sample.",
+  "ticker": "3141",
+  "company_name": "3141",
+  "created_at": "2026-03-24T16:05:56.734789+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2025年２月期　第３四半期決算補足資料",
+  "sample_submission_date": "2025-01-08",
+  "fields_count": 0,
+  "manual_override": true,
+  "inactive_set_at": "2026-04-17T16:05:46+09:00",
+  "_excluded": true,
+  "_excluded_reason": "上場廃止 2025-11-27 (ツルハHDによる株式交換)"
+}

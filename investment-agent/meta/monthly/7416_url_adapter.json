@@ -1,0 +1,16 @@
+{
+  "ticker": "7416",
+  "company_name": "はるやまホールディングス",
+  "ir_page_url": "http://www.haruyama.co.jp/ir/ir_monthly_data.php",
+  "type": "html_table",
+  "status": "active",
+  "link_text_pattern": null,
+  "link_href_pattern": null,
+  "manual_override": true,
+  "note": "2026-04-24修正: 旧URLはトップページでプレスリリース混入。月次データはir_monthly_data.phpにHTMLテーブル形式",
+  "updated_at": "2026-04-24T17:15:36.150884+09:00",
+  "css_selector": null,
+  "table_selector": null,
+  "playwright_required": false,
+  "follow_links": false
+}

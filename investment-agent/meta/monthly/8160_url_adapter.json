@@ -1,0 +1,16 @@
+{
+  "ticker": "8160",
+  "company_name": "木曽路",
+  "ir_page_url": "http://www.kisoji.co.jp/ir/monthly.html",
+  "updated_at": "2026-04-24T14:03:22.404564+09:00",
+  "last_checked": "2026-04-24",
+  "status": "active",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": "月次|売上",
+  "link_href_pattern": "/ir/media(?:/+ir)?/media-download/\\d+/[^/]+/PDF/?",
+  "note": "木曽路月次売上高。media-downloadエンドポイントは HTTP200+application/pdf を返す。_is_downloadable() 拡張のため DOWNLOAD_PATH_EXT 追加が必要 (2026-04-24修正)",
+  "manual_override": true,
+  "manual_override_at": "2026-04-24T14:03:22.404564+09:00",
+  "manual_override_note": "D群DL0件 scrape_links pattern修正 (2026-04-24)"
+}

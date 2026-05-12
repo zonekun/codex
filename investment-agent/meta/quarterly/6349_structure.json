@@ -1,0 +1,36 @@
+{
+  "ticker": "6349",
+  "company_name": "小森",
+  "current_version": "2026-01",
+  "versions": [
+    {
+      "valid_from": "2026-01",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "地域別の連結売上高の概況が表形式で示されている。本文中で欧州市場の受注残高について言及があるが、具体的な数値は記載されていない。 [2026-05-07] completedメトリクスのみのため収集対象外(false化)。"
+    }
+  ],
+  "_source_pdf": "tdnet/6349/20260129_6349_小森_決算短信_2026年３月期　第３四半期決算短信〔日本基準〕（連結）_140120260128540744.pdf",
+  "_source_doc_id": "140120260128540744",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:05:59.190427+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4
+    ],
+    "table_count": 1,
+    "max_rows": 7,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

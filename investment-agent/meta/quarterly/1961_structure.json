@@ -1,0 +1,54 @@
+{
+  "ticker": "1961",
+  "company_name": "三機工",
+  "current_version": "2025-11",
+  "versions": [
+    {
+      "valid_from": "2025-11",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当中間連結会計期間における受注の総額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "期末繰越受注高",
+          "type": "backlog",
+          "description": "当中間連結会計期間末における未消化の受注残高",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "決算短信の定性的情報および中間連結損益計算書から、受注高、期末繰越受注高、売上高（完成工事高・不動産事業等売上高の内訳含む）のデータが取得可能です。また、主要セグメント別の受注高および売上高も各セグメントの表に記載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/1961/20251114_1961_三機工_決算短信_2026年３月期 第２四半期（中間期）決算短信〔日本基準〕(連結)_140120251113599493.pdf",
+  "_source_doc_id": "140120251113599493",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:09:13.379677+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      5,
+      6,
+      10
+    ],
+    "table_count": 7,
+    "max_rows": 49,
+    "max_cols": 6,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 7"
+    ]
+  }
+}

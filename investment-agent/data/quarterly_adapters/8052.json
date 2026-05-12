@@ -1,0 +1,72 @@
+{
+  "ticker": "8052",
+  "company_name": "椿本興",
+  "current_version": "2026-01",
+  "versions": [
+    {
+      "valid_from": "2026-01",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当第３四半期連結累計期間における受注実績の合計およびセグメント別数値",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当第３四半期連結会計期間末における受注残高の合計およびセグメント別数値",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "販売高",
+          "type": "completed",
+          "description": "当第３四半期連結累計期間における販売実績（売上高に相当）の合計およびセグメント別数値",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "東日本本部",
+            "西日本本部",
+            "中日本本部",
+            "開発戦略本部",
+            "調整額"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "資料の第3ページ「3. その他 (1) 受注、販売及び仕入の状況」に、セグメント別の受注高、受注残高、販売高の明細表が記載されています。販売高は損益計算書の売上高に対応する指標として抽出しました。"
+    }
+  ],
+  "_source_pdf": "tdnet/8052/20260130_8052_椿本興_決算短信_2026年３月期　第３四半期決算短信〔日本基準〕(連結)_140120260116535140.pdf",
+  "_source_doc_id": "140120260116535140",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T20:03:29.148237+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      5,
+      13
+    ],
+    "table_count": 5,
+    "max_rows": 7,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 5"
+    ]
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "extraction_method": "gemini",
+  "doc_title_pattern": "月次販売高状況のお知らせ",
+  "year_from_title_regex": "202(5|6)年",
+  "month_from_title_regex": "(?P<month>\\d{1,2})月",
+  "fields": [
+    {
+      "key": "国内小売 全店 売上（前年同月比）",
+      "name": "国内小売 全店 売上（前年同月比）",
+      "description": "「国内リテール事業2026年６月期月別販売高状況（速報）」と記載された表（Page 1/2）の「全店」の「売上高」行の数値（前年同月比%）。",
+      "value_type": "percentage",
+      "_manual_description": true
+    },
+    {
+      "key": "国内小売 全店 店舗数",
+      "name": "国内小売 全店 店舗数",
+      "description": "「国内リテール事業2026年６月期月別販売高状況（速報）」と記載された表（Page 1/2）の「全店」の「対象店舗数」行の数値（店舗数）。",
+      "value_type": "integer",
+      "_manual_description": true
+    },
+    {
+      "key": "国内小売 既存店 売上（前年同月比）",
+      "name": "国内小売 既存店 売上（前年同月比）",
+      "description": "「国内リテール事業2026年６月期月別販売高状況（速報）」と記載された表（Page 1/2）の「既存店」の「売上高」行の数値（前年同月比%）。",
+      "value_type": "percentage",
+      "_manual_description": true
+    },
+    {
+      "key": "ドン・キホーテ 全店 売上（前年同月比）",
+      "name": "ドン・キホーテ 全店 売上（前年同月比）",
+      "description": "「2026年６月期月別販売高状況（速報） 2 / 2」と記載された「ディスカウント事業」の表の「全店」の「売上高」行の数値（前年同月比%）。",
+      "value_type": "percentage",
+      "_manual_description": true,
+      "bc_ignore": true,
+      "_bc_ignore_reason": "BC 側サブブランド行 2022-06 打ち切り、国内小売行に統合"
+    },
+    {
+      "key": "ドン・キホーテ 全店 店舗数",
+      "name": "ドン・キホーテ 全店 店舗数",
+      "description": "「2026年６月期月別販売高状況（速報） 2 / 2」と記載された「ディスカウント事業」の表の「全店」の「対象店舗数」行の数値（店舗数）。",
+      "value_type": "integer",
+      "_manual_description": true,
+      "bc_ignore": true,
+      "_bc_ignore_reason": "BC 側サブブランド行 2022-06 打ち切り、国内小売行に統合"
+    },
+    {
+      "key": "ドン・キホーテ 既存店 売上（前年同月比）",
+      "name": "ドン・キホーテ 既存店 売上（前年同月比）",
+      "description": "「2026年６月期月別販売高状況（速報） 2 / 2」と記載された「ディスカウント事業」の表の「既存店」の「売上高」行の数値（前年同月比%）。",
+      "value_type": "percentage",
+      "_manual_description": true,
+      "bc_ignore": true,
+      "_bc_ignore_reason": "BC 側サブブランド行 2022-06 打ち切り、国内小売行に統合"
+    },
+    {
+      "key": "ドン・キホーテ 既存店 客数（前年同月比）",
+      "name": "ドン・キホーテ 既存店 客数（前年同月比）",
+      "description": "「2026年６月期月別販売高状況（速報） 2 / 2」と記載された「ディスカウント事業」の表の「既存店」の「客数」行の数値（前年同月比%）。",
+      "value_type": "percentage",
+      "_manual_description": true,
+      "bc_ignore": true,
+      "_bc_ignore_reason": "BC 側サブブランド行 2022-06 打ち切り、国内小売行に統合"
+    },
+    {
+      "key": "ドン・キホーテ 既存店 客単価（前年同月比）",
+      "name": "ドン・キホーテ 既存店 客単価（前年同月比）",
+      "description": "「2026年６月期月別販売高状況（速報） 2 / 2」と記載された「ディスカウント事業」の表の「既存店」の「客単価」行の数値（前年同月比%）。",
+      "value_type": "percentage",
+      "_manual_description": true,
+      "bc_ignore": true,
+      "_bc_ignore_reason": "BC 側サブブランド行 2022-06 打ち切り、国内小売行に統合"
+    },
+    {
+      "key": "国内小売 既存店 客単価（前年同月比）",
+      "name": "国内小売 既存店 客単価（前年同月比）",
+      "bc_ignore": true,
+      "bc_ignore_reason": "BC値104.7あり。国内リテール事業集約表(Page1)には売上高・店舗数のみ。客単価は開示なし。ディスカウント事業(Page2)にはあるがBC統合後の国内小売レベルでは非開示",
+      "bc_key": "国内小売 既存店 客単価（前年同月比）"
+    },
+    {
+      "key": "国内小売 既存店 客数（前年同月比）",
+      "name": "国内小売 既存店 客数（前年同月比）",
+      "bc_ignore": true,
+      "bc_ignore_reason": "BC値93.4あり。同上。国内リテール集約表に客数なし",
+      "bc_key": "国内小売 既存店 客数（前年同月比）"
+    }
+  ],
+  "extraction_notes": "文書内の「2月は、中旬から下旬にかけての温暖な気候に伴う外出需要の高まりを的確に捉えたことで、売上が伸長しています。」という記述と、文書日付が「2026年3月10日」であることから、最新月は2月と判断しました。各表の8列目の値が2月のデータに該当します。国内小売の既存店客数と客単価は、提供されたテキストからは特定できませんでした。",
+  "ticker": "7532",
+  "company_name": "7532",
+  "created_at": "2026-03-29T18:37:13.687319+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "月次販売高状況のお知らせ",
+  "sample_submission_date": "2026-03-10",
+  "fields_count": 8,
+  "manual_override": true,
+  "desc_rewrite_at": "2026-04-17T23:15:49+09:00",
+  "regex_redesign_at": "2026-04-19T15:50:14.633988+09:00",
+  "regex_redesign_note": "ドン・キホーテ サブブランド 5 field を bc_ignore=true. BC は 2022-07 以降 国内小売 集約行のみ維持."
+}

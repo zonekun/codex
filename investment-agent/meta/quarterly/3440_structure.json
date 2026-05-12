@@ -1,0 +1,69 @@
+{
+  "ticker": "3440",
+  "company_name": "日創グループ",
+  "current_version": "2026-04",
+  "versions": [
+    {
+      "valid_from": "2026-04",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当中間連結会計期間における受注実績の金額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当中間連結会計期間末における受注残高の金額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "セグメント別受注高",
+          "type": "order_intake",
+          "description": "各セグメントごとの受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "セグメント別受注残高",
+          "type": "backlog",
+          "description": "各セグメントごとの受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "決算短信の「補足情報」セクション（12ページ）に、セグメント別の受注実績（受注高・受注残高）および販売実績が詳細な表形式で記載されています。また、1ページ目の経営成績の概況テキスト内でも主要な数値が言及されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/3440/20260414_3440_日創グループ_決算短信_2026年8月期 第2四半期決算短信〔日本基準〕（連結）_140120260414503770.pdf",
+  "_source_doc_id": "140120260414503770",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:40:50.295283+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      14
+    ],
+    "table_count": 4,
+    "max_rows": 9,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 4"
+    ]
+  }
+}

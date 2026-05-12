@@ -1,0 +1,28 @@
+{
+  "ticker": "6232",
+  "company_name": "Ｇ－ＡＣＳＬ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/6232/20260213_6232_Ｇ－ＡＣＳＬ_決算短信_2025年12月期　決算短信〔日本基準〕（連結）_140120260213561613.pdf",
+  "_source_doc_id": "140120260213561613",
+  "_generated_at": "2026-04-30T18:51:10.541190+09:00",
+  "_model_used": null
+}

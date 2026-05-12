@@ -1,0 +1,109 @@
+{
+  "ticker": "6246",
+  "company_name": "テクノスマート",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "最終製品別の売上高の合計値",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "最終製品別の受注高の合計値",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "最終製品別の受注残高の合計値",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "最終製品別売上高",
+          "type": "completed",
+          "description": "製品カテゴリ別の売上高内訳",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "最終製品別受注高",
+          "type": "order_intake",
+          "description": "製品カテゴリ別の受注高内訳",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "最終製品別受注残高",
+          "type": "backlog",
+          "description": "製品カテゴリ別の受注残高内訳",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        },
+        {
+          "name": "内輸出高",
+          "type": "other",
+          "description": "各項目のうち輸出が占める金額",
+          "unit": "千円",
+          "is_total": false
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "最終製品",
+          "items": [
+            "ディスプレイ部品関連機器",
+            "機能性フィルム関連塗工機器",
+            "電子部品関連塗工機器",
+            "エネルギー関連機器",
+            "化工機器",
+            "その他"
+          ]
+        },
+        {
+          "dimension_name": "輸出区分",
+          "items": [
+            "内輸出高"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "補足情報（8ページ）に「最終製品別売上高、受注高、受注残高」の非常に詳細な表が掲載されています。売上高、受注高、受注残高のそれぞれについて、6つの製品カテゴリ別の金額・構成比、および輸出高の内書きが記載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/6246/20260206_6246_テクノスマート_決算短信_2026年３月期 第３四半期決算短信〔日本基準〕（非連結）_140120260203546458.pdf",
+  "_source_doc_id": "140120260203546458",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:53:06.526320+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      3,
+      4,
+      10
+    ],
+    "table_count": 1,
+    "max_rows": 11,
+    "max_cols": 8,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

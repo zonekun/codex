@@ -1,0 +1,14 @@
+{
+  "ticker": "3080",
+  "company_name": "ジェーソン",
+  "ir_page_url": "https://jason.co.jp/ir/monthly_information_2027_2",
+  "status": "skip",
+  "type": null,
+  "skip_reason": "image_only",
+  "note": "月次データは PNG 画像（jason.co.jp/wptest/wp-content/uploads/.../YYYY年M月期_YYYYMM.png）でのみ提供。DLしても数値抽出不可",
+  "updated_at": "2026-04-24T08:41:50.910815+09:00",
+  "last_checked": "2026-04-24",
+  "manual_override": true,
+  "manual_override_at": "2026-04-24T08:41:50.910815+09:00",
+  "manual_override_note": "23NG個別調査で修正 (2026-04-24)"
+}

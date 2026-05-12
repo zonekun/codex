@@ -1,0 +1,28 @@
+{
+  "ticker": "1847",
+  "company_name": "イチケン",
+  "current_version": "2025-05",
+  "versions": [
+    {
+      "valid_from": "2025-05",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Vision extraction selected because structure is complex or data is unavailable."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/1847/20250520_1847_イチケン_決算短信_2025年3月期決算短信〔日本基準〕（連結）_140120250519558093.pdf",
+  "_source_doc_id": "140120250519558093",
+  "_generated_at": "2026-04-30T16:52:27.509778+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

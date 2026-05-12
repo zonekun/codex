@@ -1,0 +1,28 @@
+{
+  "ticker": "9603",
+  "company_name": "9603",
+  "metrics": [
+    {
+      "name": "国内旅行 取扱高（円）",
+      "source": "bc"
+    },
+    {
+      "name": "旅行 総取扱高（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "旅行 総取扱高（百万円）",
+      "source": "bc"
+    },
+    {
+      "name": "海外旅行 取扱高（円）",
+      "source": "bc"
+    },
+    {
+      "name": "訪日旅行 取扱高（円）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

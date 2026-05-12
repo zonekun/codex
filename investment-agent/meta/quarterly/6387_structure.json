@@ -1,0 +1,140 @@
+{
+  "ticker": "6387",
+  "company_name": "サムコ",
+  "current_version": "2026-03",
+  "versions": [
+    {
+      "valid_from": "2026-03",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "品目別の受注実績の合計額",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "受注残",
+          "type": "backlog",
+          "description": "品目別の受注残高の合計額",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "CVD装置 受注高",
+          "type": "order_intake",
+          "description": "CVD装置の受注高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "エッチング装置 受注高",
+          "type": "order_intake",
+          "description": "エッチング装置の受注高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "洗浄装置 受注高",
+          "type": "order_intake",
+          "description": "洗浄装置の受注高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "部品・メンテナンス 受注高",
+          "type": "order_intake",
+          "description": "部品・メンテナンスの受注高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "CVD装置 受注残",
+          "type": "backlog",
+          "description": "CVD装置の受注残高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注残"
+        },
+        {
+          "name": "エッチング装置 受注残",
+          "type": "backlog",
+          "description": "エッチング装置の受注残高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注残"
+        },
+        {
+          "name": "洗浄装置 受注残",
+          "type": "backlog",
+          "description": "洗浄装置の受注残高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注残"
+        },
+        {
+          "name": "部品・メンテナンス 受注残",
+          "type": "backlog",
+          "description": "部品・メンテナンスの受注残高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注残"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "品目別",
+          "items": [
+            "CVD装置",
+            "エッチング装置",
+            "洗浄装置",
+            "部品・メンテナンス"
+          ]
+        },
+        {
+          "dimension_name": "用途別",
+          "items": [
+            "化合物半導体分野",
+            "シリコン半導体分野",
+            "電子部品分野",
+            "ヘルスケア関連分野",
+            "その他",
+            "部品・メンテナンス"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "決算短信の4ページ「補足情報」に品目別の受注高、受注残、販売実績、および地域別の輸出販売実績が詳細な表形式で記載されています。また、1ページには用途別の売上高構成が記載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/6387/20260312_6387_サムコ_決算短信_2026年７月期  第２四半期（中間期）決算短信〔日本基準〕（非連結）_140120260311579631.pdf",
+  "_source_doc_id": "140120260311579631",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:11:11.928656+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      5,
+      8,
+      12
+    ],
+    "table_count": 5,
+    "max_rows": 46,
+    "max_cols": 7,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 5"
+    ]
+  }
+}

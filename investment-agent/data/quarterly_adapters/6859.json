@@ -1,0 +1,80 @@
+{
+  "ticker": "6859",
+  "company_name": "エスペック",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当第３四半期連結累計期間における受注の総額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "当第３四半期連結累計期間における売上高の総額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "セグメント別受注高",
+          "type": "order_intake",
+          "description": "各事業セグメント（装置事業、サービス事業、その他事業）および連結消去の受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "セグメント別売上高",
+          "type": "completed",
+          "description": "各事業セグメント（装置事業、サービス事業、その他事業）および連結消去の売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "装置事業",
+            "サービス事業",
+            "その他事業",
+            "連結消去"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "受注高および売上高の全体数値とセグメント別の内訳が複数の表に分かれて詳細に記載されています。受注残高については、財政状態に関する説明の中で「受注残高の増加」という定性的な言及はありますが、具体的な金額データは本資料内には記載されていません。"
+    }
+  ],
+  "_source_pdf": "tdnet/6859/20260212_6859_エスペック_決算短信_2026年3月期　第3四半期決算短信〔日本基準〕（連結）_140120260210554604.pdf",
+  "_source_doc_id": "140120260210554604",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:32:12.967050+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      5,
+      6
+    ],
+    "table_count": 5,
+    "max_rows": 6,
+    "max_cols": 4,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 5"
+    ]
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "ticker": "8233",
+  "company_name": "高島屋",
+  "current_version": "2024-10",
+  "versions": [
+    {
+      "valid_from": "2024-10",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "no_relevant_pages",
+      "notes": "Gemini skipped; complexity-only dry run output."
+    }
+  ],
+  "_source_pdf": "tdnet/8233/20241015_8233_高島屋_決算説明資料_2025年2月期 第2四半期（中間期）決算説明会資料_140120241014597572.pdf",
+  "_source_doc_id": "140120241014597572",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T20:06:09.764826+09:00",
+  "_model_used": null,
+  "_complexity_report": {
+    "complexity": "no_relevant_pages",
+    "relevant_pages": [],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": false,
+    "notes": [
+      "keyword scan found no relevant pages"
+    ]
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "ticker": "5071",
+  "company_name": "ヴィス",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "四半期ごとの受注高推移および累計受注高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "四半期末時点の受注残高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "大規模案件受注高",
+          "type": "order_intake",
+          "description": "1億円以上の大規模案件の受注金額合計",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "大規模案件受注件数",
+          "type": "other",
+          "description": "1億円以上の大規模案件の受注件数",
+          "unit": "件",
+          "is_total": false
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "ppt_chart",
+      "notes": "エグゼクティブサマリーに累計実績と大規模案件の状況が、個別ページに四半期ごとの受注高および受注残高の推移グラフが掲載されている。"
+    }
+  ],
+  "_source_pdf": "tdnet/5071/20260210_5071_ヴィス_決算説明資料_2026年３月期 第３四半期 決算説明資料_140120260205549311.pdf",
+  "_source_doc_id": "140120260205549311",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T18:20:51.061141+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      13,
+      14
+    ],
+    "table_count": 1,
+    "max_rows": 7,
+    "max_cols": 3,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

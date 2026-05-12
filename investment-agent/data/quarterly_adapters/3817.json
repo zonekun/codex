@@ -1,0 +1,91 @@
+{
+  "ticker": "3817",
+  "company_name": "ＳＲＡＨＤ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "セグメント別の受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高 合計"
+        },
+        {
+          "name": "受注高 合計",
+          "type": "order_intake",
+          "description": "受注高の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "セグメント別の受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高 合計"
+        },
+        {
+          "name": "受注残高 合計",
+          "type": "backlog",
+          "description": "受注残高の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "販売実績",
+          "type": "completed",
+          "description": "セグメント別の販売実績",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "販売実績 合計"
+        },
+        {
+          "name": "販売実績 合計",
+          "type": "completed",
+          "description": "販売実績の合計",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "開発事業",
+            "運用・構築事業",
+            "販売事業"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "補足情報として、セグメント別の受注高、受注残高、および販売実績（売上高に相当）が表形式で記載されています。仕入実績については対象外として除外しています。"
+    }
+  ],
+  "_source_pdf": "tdnet/3817/20260212_3817_ＳＲＡＨＤ_決算短信_2026年３月期 第３四半期決算短信〔日本基準〕（連結）_140120260212557439.pdf",
+  "_source_doc_id": "140120260212557439",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:52:07.906673+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      11
+    ],
+    "table_count": 3,
+    "max_rows": 5,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

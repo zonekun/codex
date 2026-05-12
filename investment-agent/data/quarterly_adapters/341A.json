@@ -1,0 +1,110 @@
+{
+  "ticker": "341A",
+  "company_name": "Ｇ－トヨコー",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "各事業年度末および四半期末時点における未消化の受注合計額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "SOSEI 受注残高",
+          "type": "backlog",
+          "description": "SOSEI事業における受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        },
+        {
+          "name": "CoolLaser 受注残高",
+          "type": "backlog",
+          "description": "CoolLaser事業における受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "2026年3月期3Q実績の売上高",
+          "unit": "百万円",
+          "period": "current_period",
+          "is_total": true
+        },
+        {
+          "name": "SOSEI 売上高",
+          "type": "completed",
+          "description": "2026年3月期3Q実績におけるSOSEI事業の売上高",
+          "unit": "百万円",
+          "period": "current_period",
+          "is_total": false,
+          "parent_metric": "売上高",
+          "breakdown_dimension": "事業別",
+          "breakdown_item": "SOSEI"
+        },
+        {
+          "name": "CoolLaser 売上高",
+          "type": "completed",
+          "description": "2026年3月期3Q実績におけるCoolLaser事業の売上高",
+          "unit": "百万円",
+          "period": "current_period",
+          "is_total": false,
+          "parent_metric": "売上高",
+          "breakdown_dimension": "事業別",
+          "breakdown_item": "CoolLaser"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "事業別",
+          "items": [
+            "SOSEI",
+            "CoolLaser"
+          ]
+        },
+        {
+          "dimension_name": "年度別",
+          "items": [
+            "2022/3期",
+            "2023/3期",
+            "2024/3期",
+            "2025/3期",
+            "2026/3期 3Q末"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "ppt_chart",
+      "notes": "資料28ページに「事業別・年度別受注残高の推移」として、2022年3月期から2026年3月期第3四半期末までの受注残高がグラフ形式で記載されています。内訳としてSOSEI事業とCoolLaser事業の数値が確認可能です。"
+    }
+  ],
+  "_source_pdf": "tdnet/341A/20260212_341A_Ｇ－トヨコー_決算説明資料_2026年３月期３Ｑ決算説明資料_140120260208551098.pdf",
+  "_source_doc_id": "140120260208551098",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T17:39:28.888998+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      2,
+      18,
+      28
+    ],
+    "table_count": 3,
+    "max_rows": 11,
+    "max_cols": 7,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

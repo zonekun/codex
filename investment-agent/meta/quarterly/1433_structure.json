@@ -1,0 +1,62 @@
+{
+  "ticker": "1433",
+  "company_name": "ベステラ",
+  "current_version": "2026-03",
+  "versions": [
+    {
+      "valid_from": "2026-03",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "当期受注工事高",
+          "type": "order_intake",
+          "description": "当連結会計年度中に新たに受注した工事の金額",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "次期繰越工事高",
+          "type": "backlog",
+          "description": "当連結会計年度末時点における未完成工事の受注残高",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "前期繰越工事高",
+          "type": "backlog",
+          "description": "当連結会計年度期首時点における未完成工事の受注残高",
+          "unit": "千円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "第4ページの『生産、受注及び販売の状況』テーブルに、前期繰越、当期受注、当期完成、次期繰越の各工事高が詳細に記載されている。売上高は完成工事高と兼業事業売上高で構成される。"
+    }
+  ],
+  "_source_pdf": "tdnet/1433/20260312_1433_ベステラ_決算短信_2026年１月期　決算短信〔日本基準〕(連結)_140120260311580114.pdf",
+  "_source_doc_id": "140120260311580114",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T16:27:43.364317+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      7,
+      8,
+      11,
+      25
+    ],
+    "table_count": 2,
+    "max_rows": 52,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

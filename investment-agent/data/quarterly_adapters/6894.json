@@ -1,0 +1,107 @@
+{
+  "ticker": "6894",
+  "company_name": "パルステック",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "第３四半期連結累計期間における受注実績の合計",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "第３四半期連結累計期間末における受注残高の合計",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "販売高",
+          "type": "completed",
+          "description": "第３四半期連結累計期間における販売実績の合計",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "受注高（セグメント別）",
+          "type": "order_intake",
+          "description": "セグメント別の受注高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "受注残高（セグメント別）",
+          "type": "backlog",
+          "description": "セグメント別の受注残高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        },
+        {
+          "name": "販売高（セグメント別）",
+          "type": "completed",
+          "description": "セグメント別の販売高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "販売高"
+        },
+        {
+          "name": "販売高（相手先別）",
+          "type": "completed",
+          "description": "主な相手先別の販売高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "販売高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "X線残留応力測定装置関連",
+            "ヘルスケア装置関連",
+            "光応用・特殊機器装置関連"
+          ]
+        },
+        {
+          "dimension_name": "相手先",
+          "items": [
+            "株式会社日立ハイテク",
+            "東海電子株式会社"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "第3四半期累計期間の受注高、受注残高、販売高がセグメント別に、また販売高が主要な相手先別に表形式で詳細に記載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/6894/20260206_6894_パルステック_決算短信_2026年３月期 第３四半期決算短信〔日本基準〕(連結)_140120260206550009.pdf",
+  "_source_doc_id": "140120260206550009",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:34:26.477558+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      10
+    ],
+    "table_count": 4,
+    "max_rows": 5,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 4"
+    ]
+  }
+}

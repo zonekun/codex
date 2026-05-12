@@ -1,0 +1,20 @@
+{
+  "ticker": "8185",
+  "company_name": "チヨダ",
+  "updated_at": "2026-04-20",
+  "ir_page_url": "https://www.chiyodagrp.co.jp/ir/sales.html",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": "\\d{4}年\\d{1,2}月度",
+  "link_href_pattern": "/ir/data/\\d{6}_getsuji_(soku|kaku)\\.pdf",
+  "table_selector": null,
+  "status": "active",
+  "skip_reason": null,
+  "note": "Static PDF links found at https://www.chiyodagrp.co.jp/ir/sales.html (original URL /ir/monthly/ returns 404; correct page is /ir/sales.html). Pattern: /ir/data/YYYYMM_getsuji_soku.pdf (速報) and /ir/data/YYYYMM_getsuji_kaku.pdf (確報). Base URL: https://www.chiyodagrp.co.jp",
+  "url_source": "recovered_from_index_csv",
+  "last_checked": "2026-04-20",
+  "follow_links": false,
+  "playwright_required": false,
+  "recovered_at": "2026-04-20T21:37:09.325193+09:00",
+  "recovery_reason": "sync_bug_overwrite_20260420"
+}

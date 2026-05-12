@@ -1,0 +1,24 @@
+{
+  "ticker": "6547",
+  "company_name": "6547",
+  "metrics": [
+    {
+      "name": "オリジナルブランド 客室単価（円）",
+      "source": "bc"
+    },
+    {
+      "name": "オリジナルブランド 客室稼働率（%）",
+      "source": "bc"
+    },
+    {
+      "name": "チョイスブランド 客室単価（円）",
+      "source": "bc"
+    },
+    {
+      "name": "チョイスブランド 客室稼働率（%）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

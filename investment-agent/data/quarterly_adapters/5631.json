@@ -1,0 +1,86 @@
+{
+  "ticker": "5631",
+  "company_name": "日製鋼所",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "連結累計期間の受注高。セグメント別および主要製品別の内訳を含む。",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "連結累計期間の売上高。セグメント別および主要製品別の内訳を含む。",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "連結会計期間末の受注残高。セグメント別の内訳を含む。",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "産業機械事業",
+            "素形材・エンジニアリング事業",
+            "その他事業"
+          ]
+        },
+        {
+          "dimension_name": "産業機械事業製品別内訳",
+          "items": [
+            "樹脂製造・加工機械",
+            "成形機",
+            "防衛関連機器",
+            "その他の産業機械"
+          ]
+        },
+        {
+          "dimension_name": "素形材・エンジニアリング事業製品別内訳",
+          "items": [
+            "素形材製品",
+            "エンジニアリング他"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "決算短信の「経営成績等の概況」および「補足情報」に、セグメント別および主要製品別の受注高、売上高、受注残高のデータが詳細な表形式で記載されています。受注残高についてはセグメント別のみの開示です。"
+    }
+  ],
+  "_source_pdf": "tdnet/5631/20260209_5631_日製鋼所_決算短信_2026年３月期第3四半期決算短信〔日本基準〕（連結）_140120260204547367.pdf",
+  "_source_doc_id": "140120260204547367",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:31:11.693726+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      3,
+      4,
+      14
+    ],
+    "table_count": 7,
+    "max_rows": 7,
+    "max_cols": 7,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 7"
+    ]
+  }
+}

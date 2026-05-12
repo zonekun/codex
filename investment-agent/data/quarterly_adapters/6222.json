@@ -1,0 +1,92 @@
+{
+  "ticker": "6222",
+  "company_name": "島精機",
+  "current_version": "2026-01",
+  "versions": [
+    {
+      "valid_from": "2026-01",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "第３四半期連結累計期間における受注実績の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "セグメント別受注高",
+          "type": "order_intake",
+          "description": "セグメント別の受注高内訳",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "第３四半期連結累計期間末における受注残高の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "セグメント別受注残高",
+          "type": "backlog",
+          "description": "セグメント別の受注残高内訳",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        },
+        {
+          "name": "販売高",
+          "type": "completed",
+          "description": "第３四半期連結累計期間における販売実績の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "セグメント別販売高",
+          "type": "completed",
+          "description": "セグメント別の販売高内訳",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "販売高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "横編機",
+            "デザインシステム関連",
+            "手袋靴下編機",
+            "その他"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "補足情報の受注及び販売の状況で、受注高・受注残高・販売高は百万円単位で開示。合計指標とセグメント別内訳を区別するため、子指標の名称をセグメント別に改名した。"
+    }
+  ],
+  "_source_pdf": "tdnet/6222/20260130_6222_島精機_決算短信_2026年３月期　第３四半期決算短信〔日本基準〕(連結)_140120260130542713.pdf",
+  "_source_doc_id": "140120260130542713",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:48:09.487866+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      13
+    ],
+    "table_count": 2,
+    "max_rows": 6,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

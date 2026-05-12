@@ -1,0 +1,28 @@
+{
+  "ticker": "5256",
+  "company_name": "Ｇ－Ｆｕｓｉｃ",
+  "current_version": "2025-08",
+  "versions": [
+    {
+      "valid_from": "2025-08",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Vision extraction selected because structure is complex or data is unavailable."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/5256/20250812_5256_Ｇ－Ｆｕｓｉｃ_決算短信_2025年６月期決算短信〔日本基準〕(非連結)_140120250812538804.pdf",
+  "_source_doc_id": "140120250812538804",
+  "_generated_at": "2026-04-30T18:25:50.291609+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

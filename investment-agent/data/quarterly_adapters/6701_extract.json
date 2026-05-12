@@ -1,0 +1,28 @@
+{
+  "ticker": "6701",
+  "company_name": "ＮＥＣ",
+  "current_version": "2025-04",
+  "versions": [
+    {
+      "valid_from": "2025-04",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "other",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/6701/20250428_6701_ＮＥＣ_その他（未分類）_2024年度（25年3月期）通期決算概要_140120250425525050.pdf",
+  "_source_doc_id": "140120250425525050",
+  "_generated_at": "2026-04-30T19:24:51.870817+09:00",
+  "_model_used": null
+}

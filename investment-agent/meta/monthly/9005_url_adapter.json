@@ -1,0 +1,16 @@
+{
+  "ticker": "9005",
+  "company_name": "東急",
+  "ir_page_url": "https://ir.tokyu.co.jp/ja/ir/library/monthly_data.html",
+  "status": "active",
+  "type": "scrape_links",
+  "playwright_required": false,
+  "link_text_pattern": "Monthly|月次|Railway|Retail|Hotel",
+  "link_href_pattern": "Monthly_.*\\.pdf|_Monthly_Report.*\\.pdf",
+  "note": "IRサイトがir.tokyu.co.jpに移転。Railway/Retail/Hotel 3分野の月次PDFあり (2026-04-24)",
+  "updated_at": "2026-04-24T15:02:51.400898+09:00",
+  "last_checked": "2026-04-24",
+  "manual_override": true,
+  "manual_override_at": "2026-04-24T15:02:51.400898+09:00",
+  "manual_override_note": "D群HAS_PDF→URL修正 ir.tokyu.co.jp (2026-04-24)"
+}

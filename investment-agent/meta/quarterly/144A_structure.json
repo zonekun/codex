@@ -1,0 +1,39 @@
+{
+  "ticker": "144A",
+  "company_name": "Ｐ－エネルギーパワー",
+  "current_version": "2025-10",
+  "versions": [
+    {
+      "valid_from": "2025-10",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "損益計算書（7ページ）に売上高の内訳として完成工事高等の数値が記載されています。定性的な説明として受注が堅調である旨の記載はありますが、受注高および受注残高の具体的な数値データは本資料内には確認できません。 [2026-05-07] completedメトリクスのみのため収集対象外(false化)。"
+    }
+  ],
+  "_source_pdf": "tdnet/144A/20251014_144A_Ｐ－エネルギーパワー_決算短信_2025年８月期　決算短信〔日本基準〕（非連結）_140120251014572812.pdf",
+  "_source_doc_id": "140120251014572812",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T16:30:27.082220+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      5,
+      8,
+      9,
+      10
+    ],
+    "table_count": 2,
+    "max_rows": 13,
+    "max_cols": 9,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

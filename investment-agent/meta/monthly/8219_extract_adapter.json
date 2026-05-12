@@ -1,0 +1,53 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "doc_title_pattern": "(?P<year>\\d{4})年(?P<month>\\d{1,2})月\\s*月次売上高前年比(速報)に関するお知らせ",
+  "year_from_title_regex": "(?P<year>\\d{4})",
+  "month_from_title_regex": "(?P<month>\\d{1,2})",
+  "fields": [
+    {
+      "key": "ビジネスウェア事業 全店 売上（前年同月比）",
+      "name": "ビジネスウェア事業 全店 売上（前年同月比）",
+      "row_label_regex": "全\\s*店\\s*売上高",
+      "value_type": "percentage"
+    },
+    {
+      "key": "ビジネスウェア事業 既存店 売上（前年同月比）",
+      "name": "ビジネスウェア事業 既存店 売上（前年同月比）",
+      "row_label_regex": "^(?!.*全\\s*店)売上高",
+      "value_type": "percentage"
+    },
+    {
+      "key": "ビジネスウェア事業 既存店 客数（前年同月比）",
+      "name": "ビジネスウェア事業 既存店 客数（前年同月比）",
+      "row_label_regex": "客\\s*数",
+      "value_type": "percentage"
+    },
+    {
+      "key": "ビジネスウェア事業 既存店 客単価（前年同月比）",
+      "name": "ビジネスウェア事業 既存店 客単価（前年同月比）",
+      "row_label_regex": "客単価",
+      "value_type": "percentage"
+    },
+    {
+      "key": "ビジネスウェア事業 全店 店舗数",
+      "name": "ビジネスウェア事業 全店 店舗数",
+      "bc_ignore": true,
+      "bc_ignore_reason": "BC値908あり。月次速報テキストに店舗数の行ラベルがなく数値のみで構成されているためregex抽出不可",
+      "bc_key": "ビジネスウェア事業 全店 店舗数"
+    }
+  ],
+  "extraction_notes": "「ビジネスウェア事業 全店 店舗数」は、提供されたテキストにおいて、特定の行ラベルを持たず数値のみで構成されているため、row_label_regexの制約上、抽出ルールを定義できませんでした。",
+  "ticker": "8219",
+  "company_name": "8219",
+  "created_at": "2026-03-21T20:11:35.331243+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2026年2月　月次売上高前年比（速報）に関するお知らせ",
+  "sample_submission_date": "2026-03-09",
+  "fields_count": 4,
+  "_doc_title_pattern_fixed_at": "2026-04-18T23:24:14.703308+09:00",
+  "_doc_title_pattern_fixed_from": "(?P<year>\\d{4})年(?P<month>\\d{1,2})月\\s*月次売上高前年比（速報）に関するお知らせ",
+  "manual_override": true,
+  "manual_override_at": "2026-05-08T06:00:00+09:00",
+  "manual_override_note": "bc_ignore: 店舗数(行ラベルなしでregex抽出不可)"
+}

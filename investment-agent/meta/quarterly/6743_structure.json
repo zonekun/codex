@@ -1,0 +1,73 @@
+{
+  "ticker": "6743",
+  "company_name": "大同信号",
+  "current_version": "2025-05",
+  "versions": [
+    {
+      "valid_from": "2025-05",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当連結会計年度の受注高合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "鉄道信号関連事業 受注高",
+          "type": "order_intake",
+          "description": "鉄道信号関連事業における受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "産業用機器関連事業 受注高",
+          "type": "order_intake",
+          "description": "産業用機器関連事業における受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "鉄道信号関連事業",
+            "産業用機器関連事業",
+            "不動産関連事業"
+          ]
+        }
+      ],
+      "presentation_format": "text",
+      "complexity": "complex_table",
+      "notes": "受注高および売上高の合計値とセグメント別内訳が、決算短信の「1. 経営成績等の概況」の本文中に記載されています。受注残高に関する具体的な数値の記載は確認できませんでした。"
+    }
+  ],
+  "_source_pdf": "tdnet/6743/20250515_6743_大同信号_決算短信_2025年3月期決算短信〔日本基準〕（連結）_140120250509538624.pdf",
+  "_source_doc_id": "140120250509538624",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:26:56.059003+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      21,
+      23,
+      24
+    ],
+    "table_count": 5,
+    "max_rows": 48,
+    "max_cols": 9,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 5"
+    ]
+  }
+}

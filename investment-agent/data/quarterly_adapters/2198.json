@@ -1,0 +1,83 @@
+{
+  "ticker": "2198",
+  "company_name": "アイ・ケイ・ケイＨＤ",
+  "current_version": "2024-12",
+  "versions": [
+    {
+      "valid_from": "2024-12",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "連結会計年度の売上高合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "婚礼事業売上高",
+          "type": "completed",
+          "description": "婚礼事業セグメントにおける売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "施行組数",
+          "type": "completed",
+          "description": "当期中に施行（売上計上）された婚礼の組数",
+          "unit": "組",
+          "is_total": true
+        },
+        {
+          "name": "受注組数",
+          "type": "order_intake",
+          "description": "当期中に新たに受注した婚礼の組数",
+          "unit": "組",
+          "is_total": true
+        },
+        {
+          "name": "受注残組数",
+          "type": "backlog",
+          "description": "期末時点における未施行の受注済み婚礼組数",
+          "unit": "組",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "施行地域",
+          "items": [
+            "国内",
+            "海外"
+          ]
+        }
+      ],
+      "presentation_format": "text",
+      "complexity": "no_data",
+      "notes": "婚礼事業における主要なKPIとして、受注・施行・受注残の各組数が開示されています。金額ベースの受注高および受注残高の記載はありませんが、組数ベースで詳細な内訳（国内・海外）と推移が示されています。\nユーザー指示により、金額以外または外貨単位の受注関連メトリクも必要なため復元。"
+    }
+  ],
+  "_source_pdf": "tdnet/2198/20241212_2198_アイ・ケイ・ケイＨＤ_決算説明資料_2024年10月期　決算説明会資料_140120241212537491.pdf",
+  "_source_doc_id": "140120241212537491",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T17:17:58.283830+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      8
+    ],
+    "table_count": 4,
+    "max_rows": 11,
+    "max_cols": 6,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 4"
+    ]
+  }
+}

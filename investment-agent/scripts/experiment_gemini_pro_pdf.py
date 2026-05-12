@@ -63,13 +63,12 @@ def extract_with_gemini_pro_pdf(
     submission_date: str,
 ) -> Optional[dict]:
     """Gemini Pro に PDF を直接送信してメトリクス値を抽出する。"""
-    import vertexai
-    from vertexai.generative_models import GenerationConfig, GenerativeModel, Part
+    from google import genai
+    from google.genai import types
 
-    vertexai.init(
-        project=GCP_PROJECT, location=VERTEXAI_REGION, credentials=get_credentials()
+    client = genai.Client(
+        vertexai=True, project=GCP_PROJECT, location=VERTEXAI_REGION, credentials=get_credentials(),
     )
-    model = GenerativeModel("gemini-2.5-pro")
 
     fields = adapter.get("fields", [])
     if not fields:
@@ -123,12 +122,13 @@ def extract_with_gemini_pro_pdf(
         "required": ["year_month"],
     }
 
-    pdf_part = Part.from_data(data=pdf_bytes, mime_type="application/pdf")
+    pdf_part = types.Part.from_bytes(data=pdf_bytes, mime_type="application/pdf")
 
     try:
-        resp = model.generate_content(
-            [pdf_part, prompt],
-            generation_config=GenerationConfig(
+        resp = client.models.generate_content(
+            model="gemini-2.5-pro",
+            contents=[pdf_part, prompt],
+            config=types.GenerateContentConfig(
                 response_mime_type="application/json",
                 response_schema=response_schema,
                 temperature=0,

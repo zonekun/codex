@@ -1,0 +1,105 @@
+{
+  "ticker": "4812",
+  "company_name": "電通総研",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当期における受注高の合計額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "期末時点における受注残高の合計額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "報告セグメント別受注高",
+          "type": "order_intake",
+          "description": "報告セグメント別の受注高内訳",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "サービス品目別受注高",
+          "type": "order_intake",
+          "description": "サービス品目別の受注高内訳",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "報告セグメント別受注残高",
+          "type": "backlog",
+          "description": "報告セグメント別の受注残高内訳",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        },
+        {
+          "name": "サービス品目別受注残高",
+          "type": "backlog",
+          "description": "サービス品目別の受注残高内訳",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "報告セグメント",
+          "items": [
+            "金融ソリューション",
+            "ビジネスソリューション",
+            "製造ソリューション",
+            "コミュニケーションIT"
+          ]
+        },
+        {
+          "dimension_name": "サービス品目",
+          "items": [
+            "コンサルティングサービス",
+            "受託システム開発",
+            "ソフトウェア製品",
+            "ソフトウェア商品",
+            "アウトソーシング・運用保守",
+            "情報機器販売・その他"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "17ページに受注高および受注残高のセグメント別・サービス品目別の詳細な実績テーブルが掲載されています。4ページにはその要約が記載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/4812/20260212_4812_電通総研_決算説明資料_2025年12月期 決算説明会資料_140120260212556535.pdf",
+  "_source_doc_id": "140120260212556535",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T18:16:05.995151+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      17
+    ],
+    "table_count": 1,
+    "max_rows": 13,
+    "max_cols": 8,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "ticker": "3246",
+  "company_name": "コーセーアールイー",
+  "current_version": "2026-03",
+  "versions": [
+    {
+      "valid_from": "2026-03",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "breakdown_dimensions": [],
+      "presentation_format": "text",
+      "complexity": "no_table",
+      "notes": "本文の「経営成績等の概況」セクションにセグメント別の売上高（完成工事高に相当）の記載がありますが、受注高および受注残高の金額についての具体的な数値記載はありません。引渡戸数（数量）については言及があります。 [2026-05-07] 抽出バッチ結果FAIL: 対象メトリクスの数値がPDF内に見つからなかったためfalse化。"
+    }
+  ],
+  "_source_pdf": "tdnet/3246/20260312_3246_コーセーアールイー_決算短信_2026年1月期　決算短信［日本基準］(連結)_140120260223566997.pdf",
+  "_source_doc_id": "140120260223566997",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:35:49.222977+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "no_table",
+    "relevant_pages": [
+      4
+    ],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "pdfplumber found no tables on relevant pages"
+    ]
+  }
+}

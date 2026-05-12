@@ -1,0 +1,44 @@
+{
+  "ticker": "480A",
+  "company_name": "Ｇ－リブコンサル",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注残増加率",
+          "type": "backlog",
+          "description": "期初時点における年度内に確定している今期契約金額の、前年同時期に確定していた契約額に対する成長率",
+          "unit": "%",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "ppt_chart",
+      "notes": "売上高についてはFY20、FY24、FY25の百万円単位の数値がグラフ上に記載されています。受注残高については絶対額の記載はなく、FY26期初時点の増加率（25.7%増）のみが示されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/480A/20260213_480A_Ｇ－リブコンサル_決算説明資料_2025年12月期決算説明会資料_140120260212558851.pdf",
+  "_source_doc_id": "140120260212558851",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T18:15:33.915429+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      13
+    ],
+    "table_count": 2,
+    "max_rows": 4,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

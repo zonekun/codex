@@ -1,0 +1,14 @@
+{
+  "ticker": "9048",
+  "company_name": "名古屋鉄道",
+  "ir_page_url": "https://www.meitetsu.co.jp/ir/reference/monthly_report/index.html",
+  "type": "scrape_links",
+  "status": "active",
+  "link_text_pattern": "月次営業概況|monthly_report",
+  "link_href_pattern": "__icsFiles/afieldfile/.*monthly_report.*\\.pdf",
+  "playwright_required": false,
+  "follow_links": false,
+  "manual_override": true,
+  "manual_override_at": "2026-05-08T14:00:00+09:00",
+  "note": "旧URL(meitetsu.co.jp/ir/monthly/)は404。正しいURLはir/reference/monthly_report/index.html。月次営業概況PDFが毎月掲載"
+}

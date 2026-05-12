@@ -1,0 +1,36 @@
+{
+  "ticker": "5871",
+  "company_name": "ＳＯＬＩＺＥ　ＨＤ",
+  "current_version": "2025-11",
+  "versions": [
+    {
+      "valid_from": "2025-11",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "no_relevant_pages",
+      "notes": "提示されたページ（15ページ）は連結貸借対照表であり、受注高、売上高（実績値）、受注残高などの受注関連メトリクスに関する具体的な数値データは含まれていません。"
+    }
+  ],
+  "_source_pdf": "tdnet/5871/20251107_5871_ＳＯＬＩＺＥ　ＨＤ_決算説明資料_2025年12月期 第3四半期決算説明資料_140120251107591698.pdf",
+  "_source_doc_id": "140120251107591698",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T18:33:20.072376+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      16
+    ],
+    "table_count": 3,
+    "max_rows": 5,
+    "max_cols": 4,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

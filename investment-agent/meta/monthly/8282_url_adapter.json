@@ -1,0 +1,13 @@
+{
+  "ticker": "8282",
+  "company_name": "ケーズホールディングス",
+  "ir_page_url": "https://www.ksdenki.co.jp/ir/library/monthlyinfo/",
+  "type": "eir_api",
+  "status": "active",
+  "eir_company_code": "8282",
+  "eir_category": "announcement",
+  "eir_page": 21,
+  "manual_override": true,
+  "note": "2026-04-24: scrape_links→eir_api変更。ksdenki.co.jpがCloud Run IPからタイムアウト。eIR announcement API (page=21) に月次速報あり(news_type=ir_material5)",
+  "updated_at": "2026-04-24T20:00:00+09:00"
+}

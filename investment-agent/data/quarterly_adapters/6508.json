@@ -1,0 +1,39 @@
+{
+  "ticker": "6508",
+  "company_name": "明電舎",
+  "current_version": "2025-05",
+  "versions": [
+    {
+      "valid_from": "2025-05",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "breakdown_dimensions": [],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "提供された画像（22、24、25ページ）は貸借対照表および株主資本等変動計算書であり、受注高、売上高、受注残高（繰越工事高）に関する数値データは含まれていません。これらのデータは通常、決算短信のセグメント情報や受注状況のセクションに記載されます。"
+    }
+  ],
+  "_source_pdf": "tdnet/6508/20250513_6508_明電舎_決算短信_2025年３月期　決算短信〔日本基準〕（連結）_140120250512543228.pdf",
+  "_source_doc_id": "140120250512543228",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:18:49.261946+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      24,
+      26,
+      27
+    ],
+    "table_count": 5,
+    "max_rows": 45,
+    "max_cols": 10,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 5"
+    ]
+  }
+}

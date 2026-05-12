@@ -1,0 +1,13 @@
+{
+  "ticker": "8276",
+  "company_name": "平和堂",
+  "ir_page_url": "http://www.heiwado.jp/ir/sales/monthly",
+  "updated_at": "2026-04-21T10:12:41.607748+09:00",
+  "last_checked": "2026-04-21",
+  "status": "active",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": null,
+  "link_href_pattern": "/assets/img/pages/ir.*\\.(pdf)",
+  "note": "サブページ踏み込み3件検出 best=http://www.heiwado.jp/assets/img/pages/ir/sales/monthly/pdf_sales.pdf?ts=1776733958990"
+}

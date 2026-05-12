@@ -1,0 +1,16 @@
+{
+  "ticker": "8028",
+  "company_name": "ファミリーマート",
+  "ir_page_url": "https://www.family.co.jp/company/familymart/monthly_sales/flash.html",
+  "updated_at": "2026-04-24T14:03:22.404564+09:00",
+  "last_checked": "2026-04-24",
+  "status": "active",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": "\\d{4}年\\d{1,2}月度",
+  "link_href_pattern": "/content/dam/family/company/familymart/monthly_sales/getsuji_\\d{6}_japanese\\.pdf",
+  "note": "ファミリーマート月次売上速報。getsuji_{yyyymm}_japanese.pdf 形式。テキスト: '{YYYY}年{M}月度' (2026-04-24確認・パターン確定)",
+  "manual_override": true,
+  "manual_override_at": "2026-04-24T14:03:22.404564+09:00",
+  "manual_override_note": "D群DL0件 scrape_links pattern修正 (2026-04-24)"
+}

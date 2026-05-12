@@ -1,0 +1,13 @@
+{
+  "ticker": "3591",
+  "company_name": "ワコールホールディングス",
+  "ir_page_url": "http://www.wacoalholdings.jp/ir/financial/monthly.html",
+  "updated_at": "2026-04-21T09:39:33.808794+09:00",
+  "last_checked": "2026-04-21",
+  "status": "active",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": "\\d{4}",
+  "link_href_pattern": ".*\\.(pdf|xlsx)",
+  "note": "月次PDFリンク4件検出 best=http://www.wacoalholdings.jp/ir/files/ESG_DATABOOK.pdf"
+}

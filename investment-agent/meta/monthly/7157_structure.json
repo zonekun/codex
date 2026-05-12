@@ -1,0 +1,36 @@
+{
+  "ticker": "7157",
+  "company_name": "7157",
+  "metrics": [
+    {
+      "name": "保有契約件数（件）",
+      "source": "bc"
+    },
+    {
+      "name": "保有契約年換算保険料（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "保有契約年換算保険料（百万円）",
+      "source": "bc"
+    },
+    {
+      "name": "保有契約金額（円）",
+      "source": "bc"
+    },
+    {
+      "name": "保険料収入（円）",
+      "source": "bc"
+    },
+    {
+      "name": "新契約件数（件）",
+      "source": "bc"
+    },
+    {
+      "name": "新契約金額（円）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

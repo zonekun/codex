@@ -1,0 +1,92 @@
+{
+  "ticker": "5310",
+  "company_name": "東洋炭素",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注金額",
+          "type": "order_intake",
+          "description": "品目別の四半期および年度の受注金額",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注金額 合計"
+        },
+        {
+          "name": "受注金額 合計",
+          "type": "order_intake",
+          "description": "全品目の合計受注金額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "品目別の四半期末時点の受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高 合計"
+        },
+        {
+          "name": "受注残高 合計",
+          "type": "backlog",
+          "description": "全品目の合計受注残高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "販売実績 合計",
+          "type": "completed",
+          "description": "全品目の合計販売実績",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "販売実績",
+          "type": "completed",
+          "description": "品目別の四半期および年度の販売実績",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "販売実績 合計"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "品目",
+          "items": [
+            "特殊黒鉛製品",
+            "一般カーボン製品（機械用カーボン分野）",
+            "一般カーボン製品（電気用カーボン分野）",
+            "複合材その他製品"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "2024年12月期および2025年12月期の各四半期（1Q-4Q）および年度合計における、品目別の受注金額と受注残高が詳細な表形式で記載されています。 page 24に品目別販売実績と合計が百万円単位で記載されているため、completed metricとして追加。"
+    }
+  ],
+  "_source_pdf": "tdnet/5310/20260216_5310_東洋炭素_決算短信_2025年12月期 決算短信〔日本基準〕（連結）_140120260216562789.pdf",
+  "_source_doc_id": "140120260216562789",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:26:33.144308+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      23
+    ],
+    "table_count": 2,
+    "max_rows": 7,
+    "max_cols": 11,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

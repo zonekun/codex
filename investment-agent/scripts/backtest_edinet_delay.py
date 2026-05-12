@@ -58,7 +58,7 @@ log = structlog.get_logger()
 
 # --- 設定 ---
 EXCEL_PATH = Path(r"C:\Users\zonekun\Dropbox\stock\AI分析優待\Edinet遅延.xlsx")
-ACTIVIST_EDINET_CSV = Path(r"C:\tmp\tob_activist\delay_event_shareholders.csv")
+SCREENING_CSV = Path(r"C:\tmp\edinet_delay_screen\screening_result.csv")
 CACHE_DIR = Path(r"C:\tmp\edinet_delay_backtest")
 OUTPUT_CSV = CACHE_DIR / "backtest_result.csv"
 FORCE_RELOAD = False
@@ -74,6 +74,7 @@ _CACHE = {
     "price": CACHE_DIR / "stock_price_all.csv",
     "topix": CACHE_DIR / "topix.csv",
     "delisted": CACHE_DIR / "delisted_stocks.csv",
+    "activist": CACHE_DIR / "activist_tickers.csv",
 }
 
 
@@ -112,6 +113,11 @@ def _download_all(client: bigquery.Client) -> None:
             FROM `gmailpj-357912.STOCK.DELISTED_STOCKS`
             WHERE IS_TOB_MBO = TRUE
         """,
+        "activist": """
+            SELECT DISTINCT TICKER
+            FROM `gmailpj-357912.STOCK.SHAREHOLDER_COMPOSITION`
+            WHERE HAS_ACTIVIST = TRUE
+        """,
     }
 
     for name, query in queries.items():
@@ -122,12 +128,11 @@ def _download_all(client: bigquery.Client) -> None:
 
 
 def _build_activist_tickers() -> set[str]:
-    """EDINET有報ベースでアクティビスト保有銘柄セットを返す."""
-    df = pd.read_csv(ACTIVIST_EDINET_CSV, dtype=str)
-    df["HAS_ACTIVIST"] = df["HAS_ACTIVIST"].str.lower() == "true"
+    """BQ SHAREHOLDER_COMPOSITIONベースでアクティビスト保有銘柄セットを返す."""
+    df = pd.read_csv(_CACHE["activist"], dtype=str)
     df["TICKER"] = df["TICKER"].astype(str).str.zfill(4)
-    tickers = set(df.loc[df["HAS_ACTIVIST"], "TICKER"])
-    log.info("activist_tickers_edinet", count=len(tickers))
+    tickers = set(df["TICKER"])
+    log.info("activist_tickers", count=len(tickers))
     return tickers
 
 
@@ -216,6 +221,16 @@ def main() -> None:
     # アクティビスト保有銘柄セット
     activist_tickers = _build_activist_tickers()
 
+    # スクリーニングスコア読み込み
+    score_map: dict[str, float] = {}
+    if SCREENING_CSV.exists():
+        df_screen = pd.read_csv(SCREENING_CSV)
+        df_screen["TICKER"] = df_screen["TICKER"].astype(str).str.zfill(4)
+        score_map = dict(zip(df_screen["TICKER"], df_screen["SCORE"]))
+        log.info("screening_scores_loaded", tickers=len(score_map))
+    else:
+        log.warning("screening_csv_not_found", path=str(SCREENING_CSV))
+
     # --- イベントごとにリターン計算 ---
     # イベントを銘柄×提出日でユニーク化（同日複数報告は1イベント）
     events = df_events.groupby(["TICKER", "FILING_DATE"]).agg(
@@ -235,6 +250,7 @@ def main() -> None:
             "DELAY_DAYS": ev["DELAY_DAYS"],
             "IS_TOB": ev["TICKER"] in tob_tickers,
             "HAS_ACTIVIST": ev["TICKER"] in activist_tickers,
+            "SCORE": score_map.get(ev["TICKER"], 0.0),
             "PERIOD": "TRAIN" if ev["FILING_DATE"] <= pd.Timestamp(TRAIN_END) else "TEST",
         }
         # TOB発生日がイベント後かチェック
@@ -344,6 +360,46 @@ def main() -> None:
         # 250日以内にTOB発生した割合
         within_250 = (tob_days <= 250).sum()
         print(f"  250日以内: {within_250}/{len(tob_days)} = {within_250/len(tob_days)*100:.1f}%")
+
+    # === 複合条件分析（SCORE × アクティビスト） ===
+    if score_map:
+        print("\n\n" + "=" * 80)
+        print("複合条件分析: SCORE × アクティビスト")
+        print("=" * 80)
+
+        for score_th in [8, 10, 12]:
+            conditions = [
+                (f"SCORE≥{score_th}", df_result["SCORE"] >= score_th),
+                (f"SCORE≥{score_th} × アクティビスト", (df_result["SCORE"] >= score_th) & df_result["HAS_ACTIVIST"]),
+                (f"SCORE≥{score_th} × 非アクティビスト", (df_result["SCORE"] >= score_th) & ~df_result["HAS_ACTIVIST"]),
+            ]
+            print(f"\n--- SCORE閾値={score_th} ---")
+            for label, mask in conditions:
+                sub = df_result[mask]
+                if len(sub) == 0:
+                    print(f"  [{label}] 該当なし")
+                    continue
+                tob_n = sub["TOB_AFTER_EVENT"].sum()
+                tickers_unique = sub["TICKER"].nunique()
+                print(f"\n  [{label}] ({len(sub)}件, {tickers_unique}銘柄, TOB={tob_n}件={tob_n/len(sub)*100:.1f}%)")
+                for hold in HOLD_PERIODS:
+                    car = sub[f"CAR_{hold}D"].dropna()
+                    if len(car) == 0:
+                        continue
+                    print(f"    {hold}日: 平均CAR={car.mean()*100:+.2f}%, "
+                          f"中央値={car.median()*100:+.2f}%, "
+                          f"勝率={((car>0).sum()/len(car))*100:.1f}%, N={len(car)}")
+
+        # SCORE≥10 × アクティビストの銘柄一覧
+        combo = df_result[(df_result["SCORE"] >= 10) & df_result["HAS_ACTIVIST"]]
+        if len(combo) > 0:
+            print(f"\n--- SCORE≥10 × アクティビスト 銘柄一覧 ({combo['TICKER'].nunique()}銘柄) ---")
+            for ticker in sorted(combo["TICKER"].unique()):
+                t_sub = combo[combo["TICKER"] == ticker]
+                car60 = t_sub["CAR_60D"].dropna()
+                car_str = f"60D CAR={car60.mean()*100:+.2f}%" if len(car60) > 0 else "CAR=N/A"
+                tob_str = " [TOB]" if t_sub["TOB_AFTER_EVENT"].any() else ""
+                print(f"  {ticker} ({len(t_sub)}件) {car_str}{tob_str}")
 
 
 if __name__ == "__main__":

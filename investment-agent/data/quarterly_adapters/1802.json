@@ -1,0 +1,81 @@
+{
+  "ticker": "1802",
+  "company_name": "大林組",
+  "current_version": "2025-11",
+  "versions": [
+    {
+      "valid_from": "2025-11",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "建設事業における新規受注額の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "完成工事高および不動産事業等売上高の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "完成工事高",
+          "type": "completed",
+          "description": "建設事業における売上高（外部顧客に対する売上高）",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "不動産事業等売上高",
+          "type": "completed",
+          "description": "不動産事業およびその他の事業における売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "事業セグメント",
+          "items": [
+            "国内建築事業",
+            "海外建築事業",
+            "国内土木事業",
+            "海外土木事業",
+            "不動産事業",
+            "その他"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "第1ページの本文に建設事業のセグメント別受注高および売上高の具体的な数値が記載されており、下部の表および第3ページの損益計算書に連結ベースの売上高内訳が記載されています。受注残高（繰越工事高）の具体的な数値は、提供されたページ範囲内には含まれていません。"
+    }
+  ],
+  "_source_pdf": "tdnet/1802/20251105_1802_大林組_決算短信_2026年3月期 第2四半期（中間期）決算短信〔日本基準〕（連結）_140120250924561570.pdf",
+  "_source_doc_id": "140120250924561570",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T16:43:04.454711+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      5,
+      9
+    ],
+    "table_count": 2,
+    "max_rows": 38,
+    "max_cols": 9,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

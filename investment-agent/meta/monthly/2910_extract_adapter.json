@@ -1,0 +1,32 @@
+{
+  "source": "non-tdnet(html_table)",
+  "format": "html",
+  "fields": [
+    {
+      "key": "全店 売上（前年同月比）",
+      "name": "全店 売上（前年同月比）",
+      "description": "IRページ「月次実績」の「全店売上」(h3)セクション表。ブランド別行(RF1/グリーン・グルメ/神戸コロッケ/融合/いとはん/ベジテリア)+「合計」行の12列(5月〜4月)。「合計」行の対象月列を取得。「既存店売上」表と混同しない。",
+      "value_type": "percentage"
+    },
+    {
+      "key": "既存店 売上（前年同月比）",
+      "name": "既存店 売上（前年同月比）",
+      "description": "IRページ「月次実績」の「既存店売上」(h3)セクション表。同構造。「合計」行の対象月列を取得。",
+      "value_type": "percentage"
+    }
+  ],
+  "extraction_notes": "IRページ(rockfield.co.jp/ir/library/monthly/)をHTML保存。h2「業態別売上推移（前年同月比）」配下にh3「既存店売上」表(Table0)とh3「全店売上」表(Table1)。各表はブランド別行+合計行×12月列。単位:%。会計年度5月始まり。",
+  "ticker": "2910",
+  "company_name": "ロック・フィールド",
+  "created_at": "2026-04-05T09:43:46.378669+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "000000_2910_monthly_table.html",
+  "sample_submission_date": "",
+  "report_url": "https://www.rockfield.co.jp/ir/library/monthly/",
+  "sample_file": "000000_2910_monthly_table.html",
+  "extraction_method": "gemini",
+  "manual_override": true,
+  "manual_override_note": "Codex成果物を自ら検証・再作成",
+  "manual_override_at": "2026-05-08T00:00:00+09:00",
+  "fiscal_year_start_month": 5
+}

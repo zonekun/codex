@@ -1,0 +1,95 @@
+{
+  "ticker": "6302",
+  "company_name": "住友重",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当連結会計年度における受注高の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "当連結会計年度における売上高の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当連結会計年度末における受注残高の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "セグメント別受注高",
+          "type": "order_intake",
+          "description": "セグメント別の受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "セグメント別売上高",
+          "type": "completed",
+          "description": "セグメント別の売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "セグメント別受注残高",
+          "type": "backlog",
+          "description": "セグメント別の受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "メカトロニクス",
+            "インダストリアル マシナリー",
+            "ロジスティックス＆コンストラクション",
+            "エネルギー＆ライフライン",
+            "その他"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "決算短信の補足情報ページに、受注高、売上高、受注残高のセグメント別内訳が詳細な表形式で記載されています。また、経営成績の概況説明文の中にも主要な数値が言及されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/6302/20260210_6302_住友重_決算短信_2025年12月期決算短信〔日本基準〕(連結)_140120260210553413.pdf",
+  "_source_doc_id": "140120260210553413",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:59:58.802069+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      5,
+      20
+    ],
+    "table_count": 3,
+    "max_rows": 8,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

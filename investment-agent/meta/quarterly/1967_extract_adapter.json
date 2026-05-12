@@ -1,0 +1,28 @@
+{
+  "ticker": "1967",
+  "company_name": "ヤマト",
+  "current_version": "2025-08",
+  "versions": [
+    {
+      "valid_from": "2025-08",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Vision extraction selected because structure is complex or data is unavailable."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/1967/20250801_1967_ヤマト_決算短信_2026年３月期第１四半期決算短信〔日本基準〕(連結)_140120250731526213.pdf",
+  "_source_doc_id": "140120250731526213",
+  "_generated_at": "2026-04-30T17:10:27.505373+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

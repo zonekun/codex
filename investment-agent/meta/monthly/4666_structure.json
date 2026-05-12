@@ -1,0 +1,24 @@
+{
+  "ticker": "4666",
+  "company_name": "4666",
+  "metrics": [
+    {
+      "name": "タイムズ駐車場 売上（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "タイムズ駐車場 売上（百万円）",
+      "source": "bc"
+    },
+    {
+      "name": "総駐車場数 件数（件）",
+      "source": "bc"
+    },
+    {
+      "name": "総駐車場数 台数（台）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

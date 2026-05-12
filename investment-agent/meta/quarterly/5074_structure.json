@@ -1,0 +1,63 @@
+{
+  "ticker": "5074",
+  "company_name": "テスホールディングス",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "エンジニアリング事業における第2四半期累計の受注高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "エンジニアリング事業における期末時点の受注残高",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "設備区分",
+          "items": [
+            "蓄電池",
+            "太陽光発電設備",
+            "その他省エネ設備等",
+            "コージェネ・自家発電設備",
+            "バイオマス発電設備"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "ppt_chart",
+      "notes": "エンジニアリング事業の受注高（2026年6月期第2四半期累計）および受注残高（2025年12月末時点）のデータがグラフと表で示されている。内訳は構成比（％）で提供されている。"
+    }
+  ],
+  "_source_pdf": "tdnet/5074/20260213_5074_テスホールディングス_決算説明資料_2026年６月期第２四半期（中間期）決算説明資料_140120260213560761.pdf",
+  "_source_doc_id": "140120260213560761",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T18:21:09.034243+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      17
+    ],
+    "table_count": 2,
+    "max_rows": 9,
+    "max_cols": 7,
+    "broken_col0": true,
+    "unit_mixed": true,
+    "notes": [
+      "first-column labels appear merged",
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

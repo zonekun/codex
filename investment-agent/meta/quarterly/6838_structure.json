@@ -1,0 +1,60 @@
+{
+  "ticker": "6838",
+  "company_name": "多摩川ＨＤ",
+  "current_version": "2026-03",
+  "versions": [
+    {
+      "valid_from": "2026-03",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "連結累計期間における受注高の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "電子・通信用機器事業 受注高",
+          "type": "order_intake",
+          "description": "電子・通信用機器事業セグメントの受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "電子・通信用機器事業",
+            "再生可能エネルギー事業"
+          ]
+        }
+      ],
+      "presentation_format": "text",
+      "complexity": "no_table",
+      "notes": "決算短信の本文（定性的情報）から、受注高および売上収益のセグメント別数値が抽出可能です。受注残高に関する具体的な数値の記載は確認できません。"
+    }
+  ],
+  "_source_pdf": "tdnet/6838/20260316_6838_多摩川ＨＤ_決算短信_2026年10月期 第1四半期決算短信（連結）_140120260316582751.pdf",
+  "_source_doc_id": "140120260316582751",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:29:49.198196+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "no_table",
+    "relevant_pages": [
+      5
+    ],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "pdfplumber found no tables on relevant pages"
+    ]
+  }
+}

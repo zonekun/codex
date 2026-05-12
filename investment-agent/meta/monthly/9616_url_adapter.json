@@ -1,0 +1,17 @@
+{
+  "ticker": "9616",
+  "company_name": "共立メンテナンス",
+  "ir_page_url": "https://www.kyoritsugroup.co.jp/ir/library/",
+  "updated_at": "2026-04-24T13:57:48.884197+09:00",
+  "last_checked": "2026-04-21",
+  "status": "active",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": "Monthly|月次|monthly",
+  "link_href_pattern": "monthly-report.*\\.pdf",
+  "note": "月次レポートPDF (YYYY_MM_monthly-report_jp.pdf)。ドメイン変更 (2026-04-24)。",
+  "playwright_required": false,
+  "manual_override": true,
+  "manual_override_at": "2026-04-24T13:57:48.884197+09:00",
+  "manual_override_note": "URL修正 (2026-04-24)"
+}

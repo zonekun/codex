@@ -1,0 +1,77 @@
+{
+  "source": "non-tdnet(pdf)",
+  "format": "pdf",
+  "fields": [
+    {
+      "key": "小売事業 全店 売上（前年同月比）",
+      "name": "小売事業 全店 売上（前年同月比）",
+      "description": "MonthlySalesReport PDF。小売事業合計セクション。全店の売上高前年同月比。",
+      "value_type": "percentage"
+    },
+    {
+      "key": "小売事業 既存店 売上（前年同月比）",
+      "name": "小売事業 既存店 売上（前年同月比）",
+      "description": "同PDF。小売事業合計セクション。既存店の売上高前年同月比。",
+      "value_type": "percentage"
+    },
+    {
+      "key": "小売事業 既存店 客数（前年同月比）",
+      "name": "小売事業 既存店 客数（前年同月比）",
+      "description": "同PDF。小売事業合計セクション。既存店の客数前年同月比。",
+      "value_type": "percentage"
+    },
+    {
+      "key": "小売事業 既存店 客単価（前年同月比）",
+      "name": "小売事業 既存店 客単価（前年同月比）",
+      "description": "同PDF。小売事業合計セクション。既存店の客単価前年同月比。",
+      "value_type": "percentage"
+    },
+    {
+      "key": "HCムサシ等 既存店 売上（前年同月比）",
+      "name": "HCムサシ等 既存店 売上（前年同月比）",
+      "description": "同PDF。ホームセンタームサシ等セクション。既存店の売上高前年同月比。",
+      "value_type": "percentage"
+    },
+    {
+      "key": "HCムサシ等 既存店 客数（前年同月比）",
+      "name": "HCムサシ等 既存店 客数（前年同月比）",
+      "description": "同PDF。ホームセンタームサシ等セクション。既存店の客数前年同月比。",
+      "value_type": "percentage"
+    },
+    {
+      "key": "HCムサシ等 既存店 客単価（前年同月比）",
+      "name": "HCムサシ等 既存店 客単価（前年同月比）",
+      "description": "同PDF。ホームセンタームサシ等セクション。既存店の客単価前年同月比。",
+      "value_type": "percentage"
+    },
+    {
+      "key": "ビバホーム等 既存店 売上（前年同月比）",
+      "name": "ビバホーム等 既存店 売上（前年同月比）",
+      "description": "同PDF。ビバホーム等セクション。既存店の売上高前年同月比。",
+      "value_type": "percentage"
+    },
+    {
+      "key": "ビバホーム等 既存店 客数（前年同月比）",
+      "name": "ビバホーム等 既存店 客数（前年同月比）",
+      "description": "同PDF。ビバホーム等セクション。既存店の客数前年同月比。",
+      "value_type": "percentage"
+    },
+    {
+      "key": "ビバホーム等 既存店 客単価（前年同月比）",
+      "name": "ビバホーム等 既存店 客単価（前年同月比）",
+      "description": "同PDF。ビバホーム等セクション。既存店の客単価前年同月比。",
+      "value_type": "percentage"
+    }
+  ],
+  "extraction_notes": "アークランズ。IR「MonthlySalesReport」PDFをGCS保存(2023〜2025)。小売事業合計/HCムサシ等/ビバホーム等の3セクション × 全店・既存店の売上/客数/客単価前年比を開示。10メトリクス。url_adapter scrape_links(active)で取得。",
+  "ticker": "9842",
+  "company_name": "アークランズ",
+  "created_at": "2026-04-04T00:55:03.726945+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "MonthlySalesReport",
+  "sample_file": "202502_9842_MonthlySalesReport202502%20(2)_15fd70fd.pdf",
+  "extraction_method": "gemini",
+  "manual_override": true,
+  "manual_override_note": "Codex成果物を自ら検証・再作成。MonthlySalesReport PDF確認済み。10メトリクス抽出可能",
+  "manual_override_at": "2026-05-08T01:00:00+09:00"
+}

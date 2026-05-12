@@ -1,9 +1,0 @@
-{
-  "ticker": "7177",
-  "company_name": "GMOフィナンシャルホールディングス",
-  "updated_at": "2026-03-15",
-  "link_text_pattern": "月次|開示|monthly|report",
-  "link_href_pattern": "\\.(pdf|xlsx)",
-  "css_selector": null,
-  "note": "https://www.gmofh.com/ir/monthly_report.html から PDF リンクを取得"
-}

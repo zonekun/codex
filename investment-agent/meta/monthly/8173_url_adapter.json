@@ -1,0 +1,20 @@
+{
+  "ticker": "8173",
+  "company_name": "上新電機",
+  "updated_at": "2026-04-20",
+  "ir_page_url": "http://www.joshin.co.jp/ja/ir/library/sales_report.html",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": "月次売上速報",
+  "link_href_pattern": "/ir/library/sales_report/.*|Joshin_Monthly.*\\.pdf",
+  "table_selector": null,
+  "status": "active",
+  "skip_reason": null,
+  "note": "月次売上速報PDF。JSレンダリング必要。link text=月次売上速報、href=Joshin Monthly。",
+  "url_source": "recovered_from_index_csv",
+  "last_checked": "2026-04-20",
+  "follow_links": false,
+  "playwright_required": false,
+  "recovered_at": "2026-04-20T21:37:09.325193+09:00",
+  "recovery_reason": "sync_bug_overwrite_20260420"
+}

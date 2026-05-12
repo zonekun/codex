@@ -1,0 +1,44 @@
+{
+  "ticker": "4177",
+  "company_name": "4177",
+  "metrics": [
+    {
+      "name": "Monthly Active Users　3・4年生（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "オファー承認数 3・4年生（件）",
+      "source": "bc"
+    },
+    {
+      "name": "オファー送信数 3・4年生（件）",
+      "source": "bc"
+    },
+    {
+      "name": "企業登録数 累積（社）",
+      "source": "bc"
+    },
+    {
+      "name": "受注高 成功報酬型（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "受注高 成功報酬型（百万円）",
+      "source": "bc"
+    },
+    {
+      "name": "受注高 早期定額型（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "受注高 早期定額型（百万円）",
+      "source": "bc"
+    },
+    {
+      "name": "学生登録人数 3・4年生（人）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

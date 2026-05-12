@@ -1,0 +1,38 @@
+{
+  "ticker": "5256",
+  "company_name": "Ｇ－Ｆｕｓｉｃ",
+  "current_version": "2025-08",
+  "versions": [
+    {
+      "valid_from": "2025-08",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "breakdown_dimensions": [],
+      "presentation_format": "text",
+      "complexity": "complex_table",
+      "notes": "提供された画像（3、6、8ページ）には、受注高、受注残高、および売上高の具体的な金額データが含まれていません。6ページの貸借対照表に「契約負債」の計上は確認できますが、本タスクの対象である受注残高（手持工事高）とは定義が異なるため除外しています。事前判定で言及されている5ページや10ページに該当する表が存在する可能性がありますが、提供画像内には存在しません。"
+    }
+  ],
+  "_source_pdf": "tdnet/5256/20250812_5256_Ｇ－Ｆｕｓｉｃ_決算短信_2025年６月期決算短信〔日本基準〕(非連結)_140120250812538804.pdf",
+  "_source_doc_id": "140120250812538804",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:25:50.291609+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      5,
+      8,
+      10
+    ],
+    "table_count": 3,
+    "max_rows": 31,
+    "max_cols": 11,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "ticker": "6494",
+  "company_name": "ＮＦＫ－ＨＤ",
+  "current_version": "2025-05",
+  "versions": [
+    {
+      "valid_from": "2025-05",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "期初および期末（次期期初）時点における受注残高",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "売上高および受注残高の数値が本文中に記載されています。売上高については5つの事業部門別の内訳が示されています。受注残高については、当期期初（5億7千6百万円）および次期期初（5億2千4百万円）の数値が記載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/6494/20250515_6494_ＮＦＫ－ＨＤ_決算短信_2025年3月期 決算短信〔日本基準〕（連結）_140120250514551621.pdf",
+  "_source_doc_id": "140120250514551621",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:16:10.344685+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      6
+    ],
+    "table_count": 1,
+    "max_rows": 5,
+    "max_cols": 6,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

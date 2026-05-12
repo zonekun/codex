@@ -1,0 +1,109 @@
+{
+  "ticker": "1905",
+  "company_name": "テノックス",
+  "current_version": "2025-11",
+  "versions": [
+    {
+      "valid_from": "2025-11",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "セグメント別の受注高の合計値",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "セグメント別の売上高の合計値",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "セグメント別の受注残高の合計値",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "建設事業 受注高",
+          "type": "order_intake",
+          "description": "建設事業セグメントにおける受注高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "建設事業 売上高",
+          "type": "completed",
+          "description": "建設事業セグメントにおける売上高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "建設事業 受注残高",
+          "type": "backlog",
+          "description": "建設事業セグメントにおける受注残高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        },
+        {
+          "name": "土木建築コンサルティング全般等事業 売上高",
+          "type": "completed",
+          "description": "土木建築コンサルティング全般等事業セグメントにおける売上高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "その他の事業 売上高",
+          "type": "completed",
+          "description": "その他の事業セグメントにおける売上高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "建設事業",
+            "土木建築コンサルティング全般等事業",
+            "その他の事業"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "補足情報として、前中間連結会計期間および当中間連結会計期間の受注高、売上高、受注残高の内訳が表形式で記載されています。土木建築コンサルティング全般等事業およびその他の事業については、受注生産を行っていないため受注高および受注残高の記載が省略されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/1905/20251107_1905_テノックス_決算短信_2026年3月期　第2四半期（中間期）決算短信〔日本基準〕（連結）_140120251106589413.pdf",
+  "_source_doc_id": "140120251106589413",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:02:24.286534+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      3,
+      10
+    ],
+    "table_count": 4,
+    "max_rows": 5,
+    "max_cols": 3,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 4"
+    ]
+  }
+}

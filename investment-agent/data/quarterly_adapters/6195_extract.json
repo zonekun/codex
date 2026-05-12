@@ -1,0 +1,28 @@
+{
+  "ticker": "6195",
+  "company_name": "Ｇ－ホープ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "presentation",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/6195/20260213_6195_Ｇ－ホープ_決算説明資料_2026年３月期　第３四半期決算補足説明資料_140120260213558985.pdf",
+  "_source_doc_id": "140120260213558985",
+  "_generated_at": "2026-04-30T18:46:43.689189+09:00",
+  "_model_used": null
+}

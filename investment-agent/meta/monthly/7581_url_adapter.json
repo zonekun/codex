@@ -1,0 +1,20 @@
+{
+  "ticker": "7581",
+  "company_name": "サイゼリヤ",
+  "updated_at": "2026-04-20",
+  "ir_page_url": "https://www.saizeriya.co.jp/corporate/investor/ir/monthly-sales-report/",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": null,
+  "link_href_pattern": "/files.*\\.(pdf)",
+  "table_selector": null,
+  "status": "active",
+  "skip_reason": null,
+  "note": "自動生成。ページ: https://www.saizeriya.co.jp/corporate/investor/ir/monthly-sales-report/ / リンク20件検出",
+  "url_source": "recovered_from_index_csv",
+  "last_checked": "2026-04-20",
+  "follow_links": false,
+  "playwright_required": false,
+  "recovered_at": "2026-04-20T21:37:09.325193+09:00",
+  "recovery_reason": "sync_bug_overwrite_20260420"
+}

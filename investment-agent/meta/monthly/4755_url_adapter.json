@@ -1,0 +1,11 @@
+{
+  "ticker": "4755",
+  "company_name": "楽天グループ",
+  "ir_page_url": "https://www.rakuten-bank.co.jp/corp/pdf/QA-260209_JP.pdf",
+  "updated_at": "2026-04-21T12:45:16.954441+09:00",
+  "last_checked": "2026-04-21",
+  "status": "skip",
+  "type": null,
+  "skip_reason": "スクレイプエラー: Page.goto: Download is starting\nCall log:\n  - navigating to \"https://www.rakuten-bank.co.jp/corp/pdf/QA-260209_JP.pdf\", waiting until \"load\"\n",
+  "note": "error: Page.goto: Download is starting\nCall log:\n  - navigating to \"https://www.rakuten-bank.co.jp/corp/pdf/QA-260209_JP.pdf\", waiting until \"load\"\n"
+}

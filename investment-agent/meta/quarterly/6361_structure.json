@@ -1,0 +1,96 @@
+{
+  "ticker": "6361",
+  "company_name": "荏原製",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当期中に新たに受けた注文の総額",
+          "unit": "億円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "期末時点における未消化の受注残高",
+          "unit": "億円",
+          "is_total": true
+        },
+        {
+          "name": "セグメント別受注高",
+          "type": "order_intake",
+          "description": "各事業セグメントごとの受注高",
+          "unit": "億円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "セグメント別受注残高",
+          "type": "backlog",
+          "description": "各事業セグメントごとの受注残高",
+          "unit": "億円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        },
+        {
+          "name": "精密・電子事業 製品別受注高",
+          "type": "order_intake",
+          "description": "精密・電子事業における製品別の受注高",
+          "unit": "億円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "建築・産業",
+            "エネルギー",
+            "インフラ",
+            "環境",
+            "精密・電子",
+            "その他"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "受注高、売上収益、受注残高について、全社合計およびセグメント別の数値が詳細に記載されています。また、精密・電子事業については製品別の受注高・売上収益の内訳も開示されています。単位はサマリー表では百万円ですが、セグメント別詳細表（p.29-30）では億円が用いられています。"
+    }
+  ],
+  "_source_pdf": "tdnet/6361/20260213_6361_荏原製_決算短信_2025年12月期 決算短信〔ＩＦＲＳ〕（連結）_140120260212556825.pdf",
+  "_source_doc_id": "140120260212556825",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:06:41.565218+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      5,
+      6,
+      7,
+      11,
+      26,
+      28,
+      29,
+      32,
+      33
+    ],
+    "table_count": 13,
+    "max_rows": 41,
+    "max_cols": 10,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 13"
+    ]
+  }
+}

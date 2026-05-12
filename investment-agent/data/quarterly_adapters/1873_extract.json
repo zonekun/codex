@@ -1,0 +1,29 @@
+{
+  "ticker": "1873",
+  "company_name": "日本ハウスＨＤ",
+  "current_version": "2026-03",
+  "versions": [
+    {
+      "valid_from": "2026-03",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注状況",
+        "受注高",
+        "販売実績",
+        "セグメントの名称",
+        "建築部門",
+        "不動産部門"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "以下の2つのテーブルからデータを抽出してください。\n\n1. 「② 受注状況」テーブルから、住宅事業の「建築部門」、「不動産部門」、および「計」の受注高（百万円）を抽出してください。\n2. 「③ 販売実績」テーブルから、「住宅事業」、「ホテル事業」、「その他事業」、および「計」の金額（百万円）を抽出してください。\n\n出力は、structure.jsonで定義されたmetrics（受注高、販売実績）およびbreakdown_dimensions（セグメント、部門）に従って整理してください。",
+      "notes": "受注高のテーブルは住宅事業の内訳（建築・不動産）を含む複雑な構造であり、販売実績のテーブルもセグメント別に分かれているため、gemini_visionによる抽出が最適です。"
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/1873/20260306_1873_日本ハウスＨＤ_決算短信_2026年４月期第３四半期決算短信〔日本基準〕(連結)_140120260305576938.pdf",
+  "_source_doc_id": "140120260305576938",
+  "_generated_at": "2026-04-30T22:46:36.887169+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

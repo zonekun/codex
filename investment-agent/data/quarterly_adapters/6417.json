@@ -1,0 +1,89 @@
+{
+  "ticker": "6417",
+  "company_name": "ＳＡＮＫＹＯ",
+  "current_version": "2025-05",
+  "versions": [
+    {
+      "valid_from": "2025-05",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "セグメント別の受注高",
+          "unit": "百万円",
+          "is_total": false
+        },
+        {
+          "name": "受注高 合計",
+          "type": "order_intake",
+          "description": "受注高の合計額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "セグメント別の受注残高",
+          "unit": "百万円",
+          "is_total": false
+        },
+        {
+          "name": "受注残高 合計",
+          "type": "backlog",
+          "description": "受注残高の合計額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "販売実績",
+          "type": "completed",
+          "description": "セグメント別の販売実績（売上高）",
+          "unit": "百万円",
+          "is_total": false
+        },
+        {
+          "name": "販売実績 合計",
+          "type": "completed",
+          "description": "販売実績の合計額",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "パチンコ機関連事業",
+            "パチスロ機関連事業",
+            "補給機器関連事業",
+            "その他"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "決算短信の「生産、受注及び販売の状況」セクションより、受注高、受注残高、販売実績のセグメント別内訳を抽出。受注状況の表には「その他」セグメントは含まれていないが、販売実績の表には含まれている。"
+    }
+  ],
+  "_source_pdf": "tdnet/6417/20250512_6417_ＳＡＮＫＹＯ_決算短信_2025年３月期　決算短信［日本基準］（連結）_140120250508535312.pdf",
+  "_source_doc_id": "140120250508535312",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:12:59.438233+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      29
+    ],
+    "table_count": 3,
+    "max_rows": 3,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

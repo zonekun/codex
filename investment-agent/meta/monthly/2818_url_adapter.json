@@ -1,0 +1,13 @@
+{
+  "ticker": "2818",
+  "company_name": "ピエトロ",
+  "ir_page_url": "http://www.pietro.co.jp/ir/monthly/",
+  "updated_at": "2026-04-21T09:31:17.652880+09:00",
+  "last_checked": "2026-04-21",
+  "status": "active",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": "PDF",
+  "link_href_pattern": "/assets/upload.*\\.(pdf)",
+  "note": "月次PDFリンク8件検出 best=http://www.pietro.co.jp/assets/upload/newsrelease/newsrelease_20260331.pdf"
+}

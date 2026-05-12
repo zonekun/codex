@@ -1,0 +1,43 @@
+{
+  "source": "non-tdnet(pdf)",
+  "format": "pdf",
+  "fields": [
+    {
+      "key": "映画興行 興行収入（前年同月比）",
+      "name": "映画興行 興行収入（前年同月比）",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "GCSには統合報告書・決算短信PDFのみ。月次の興行収入データなし"
+    },
+    {
+      "key": "映画興行 興行収入（百万円）",
+      "name": "映画興行 興行収入（百万円）",
+      "value_type": "number",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "同上"
+    },
+    {
+      "key": "松竹配給作品 興行収入（前年同月比）",
+      "name": "松竹配給作品 興行収入（前年同月比）",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "同上"
+    },
+    {
+      "key": "松竹配給作品 興行収入（百万円）",
+      "name": "松竹配給作品 興行収入（百万円）",
+      "value_type": "number",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "同上"
+    }
+  ],
+  "extraction_notes": "松竹。GCSには統合報告書・決算短信PDFのみ。月次の映画興行収入データを含む文書が確認できないため全field bc_ignore。",
+  "ticker": "9601",
+  "company_name": "松竹",
+  "created_at": "2026-04-05T10:29:48.466560+09:00",
+  "created_by": "gemini-2.5-flash",
+  "extraction_method": "gemini",
+  "manual_override": true,
+  "manual_override_note": "Codex成果物を自ら検証・再作成。月次文書不在のためbc_ignore",
+  "manual_override_at": "2026-05-08T01:00:00+09:00"
+}

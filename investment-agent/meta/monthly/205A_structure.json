@@ -1,0 +1,16 @@
+{
+  "ticker": "205A",
+  "company_name": "205A",
+  "metrics": [
+    {
+      "name": "受注棟数（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "受注棟数（棟）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

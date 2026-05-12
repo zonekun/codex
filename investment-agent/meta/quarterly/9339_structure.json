@@ -1,0 +1,45 @@
+{
+  "ticker": "9339",
+  "company_name": "コーチ・エィ",
+  "current_version": "2025-08",
+  "versions": [
+    {
+      "valid_from": "2025-08",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "入金済み受注残高",
+          "type": "backlog",
+          "description": "今後サービス提供を予定している入金済みの受注残高（貸借対照表の前受金に相当）",
+          "unit": "千円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "text",
+      "complexity": "no_table",
+      "notes": "本文中に売上高の具体的な数値（1,646,236千円）の記載がある。また、受注残高（前受金）については期首からの増加額（254,822千円）が本文中に記載されており、貸借対照表項目として管理されている。受注高については具体的な数値の記載は確認できない。"
+    }
+  ],
+  "_source_pdf": "tdnet/9339/20250808_9339_コーチ・エィ_決算短信_2025年12月期 第2四半期（中間期）決算短信〔日本基準〕（連結）_140120250808536884.pdf",
+  "_source_doc_id": "140120250808536884",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T20:20:18.170044+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "no_table",
+    "relevant_pages": [
+      4,
+      5
+    ],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "pdfplumber found no tables on relevant pages"
+    ]
+  }
+}

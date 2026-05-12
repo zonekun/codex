@@ -1,0 +1,15 @@
+{
+  "ticker": "9517",
+  "company_name": "イーレックス",
+  "ir_page_url": "https://www.erex.co.jp/news/",
+  "type": "scrape_links",
+  "status": "active",
+  "link_text_pattern": "発電量実績|受給電力量",
+  "link_href_pattern": "/news/information/\\d+/",
+  "follow_links": true,
+  "follow_links_save_html": true,
+  "playwright_required": false,
+  "manual_override": true,
+  "manual_override_at": "2026-05-08T14:00:00+09:00",
+  "note": "月間受給電力量は個別ニュース記事ページにHTML表形式で掲載。ニュース一覧ページからlink_text_patternでフィルタし、個別記事HTMLをDL"
+}

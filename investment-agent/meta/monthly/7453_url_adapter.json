@@ -1,0 +1,18 @@
+{
+  "ticker": "7453",
+  "company_name": "良品計画",
+  "ir_page_url": "https://ryohin-keikaku.jp/ir/monthly/",
+  "updated_at": "2026-04-24T13:52:42.252045+09:00",
+  "last_checked": "2026-04-21",
+  "status": "active",
+  "type": "scrape_links",
+  "eir_company_code": "7453",
+  "note": "月次PDFはmicrocms-assets.ioホスト。リンクテキスト空のためhref_patternのみでマッチ (2026-04-24)。",
+  "link_text_pattern": null,
+  "link_href_pattern": "microcms-assets\\.io.*Monthly_Sales.*\\.pdf|microcms-assets\\.io.*FY\\d{4}_Monthly.*\\.pdf",
+  "follow_links": false,
+  "playwright_required": false,
+  "manual_override": true,
+  "manual_override_at": "2026-04-24T13:52:42.252045+09:00",
+  "manual_override_note": "type=scrape_links変更 (2026-04-24)"
+}

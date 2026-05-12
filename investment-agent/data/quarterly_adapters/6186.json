@@ -1,0 +1,82 @@
+{
+  "ticker": "6186",
+  "company_name": "一蔵",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "当第３四半期連結累計期間の売上高合計",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "和装事業 売上高",
+          "type": "completed",
+          "description": "和装事業における売上高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "ウエディング事業 売上高",
+          "type": "completed",
+          "description": "ウエディング事業における売上高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "和装事業 受注残高",
+          "type": "backlog",
+          "description": "和装事業における当第３四半期連結会計期間末の受注残高",
+          "unit": "千円",
+          "is_total": false
+        },
+        {
+          "name": "ウエディング事業 受注残組数",
+          "type": "backlog",
+          "description": "ウエディング事業における当第３四半期連結会計期間末の受注残組数",
+          "unit": "組",
+          "is_total": false
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "事業セグメント",
+          "items": [
+            "和装事業",
+            "ウエディング事業"
+          ]
+        }
+      ],
+      "presentation_format": "text",
+      "complexity": "no_table",
+      "notes": "和装事業は売上高と受注残高が千円単位で開示。ウエディング事業は受注残組数のみで金額指標ではないため抽出対象外とした。\nユーザー指示により、金額以外の受注・受注残関連メトリクを復元。"
+    }
+  ],
+  "_source_pdf": "tdnet/6186/20260210_6186_一蔵_決算短信_2026年３月期 第３四半期決算短信〔日本基準〕（連結）_140120260210553137.pdf",
+  "_source_doc_id": "140120260210553137",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:46:12.150618+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "no_table",
+    "relevant_pages": [
+      4
+    ],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "pdfplumber found no tables on relevant pages"
+    ]
+  }
+}

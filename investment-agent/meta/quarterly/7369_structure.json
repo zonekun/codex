@@ -1,0 +1,95 @@
+{
+  "ticker": "7369",
+  "company_name": "Ｇ－メイホーＨＤ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当連結会計期間の受注高合計",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当連結会計期間末の受注残高合計",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "建設関連サービス事業 受注高",
+          "type": "order_intake",
+          "description": "建設関連サービス事業における受注高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "建設関連サービス事業 受注残高",
+          "type": "backlog",
+          "description": "建設関連サービス事業における受注残高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        },
+        {
+          "name": "建設事業 受注高",
+          "type": "order_intake",
+          "description": "建設事業における受注高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "建設事業 受注残高",
+          "type": "backlog",
+          "description": "建設事業における受注残高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "建設関連サービス事業",
+            "人材関連サービス事業",
+            "建設事業",
+            "介護事業"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "決算短信の本文およびサマリー表から、全社およびセグメント別の受注高、受注残高、売上高のデータが取得可能です。一部のセグメント（人材関連、介護）については受注高・受注残高の記載がありません。"
+    }
+  ],
+  "_source_pdf": "tdnet/7369/20260213_7369_Ｇ－メイホーＨＤ_決算短信_2026年6月期第2四半期(中間期)決算短信〔日本基準〕(連結)_140120260213559857.pdf",
+  "_source_doc_id": "140120260213559857",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:48:10.344489+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      5,
+      6
+    ],
+    "table_count": 1,
+    "max_rows": 5,
+    "max_cols": 3,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

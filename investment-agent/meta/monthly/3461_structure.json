@@ -1,0 +1,16 @@
+{
+  "ticker": "3461",
+  "company_name": "3461",
+  "metrics": [
+    {
+      "name": "BPOサービス受託件数 累計",
+      "source": "bc"
+    },
+    {
+      "name": "クラリス登録室数",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

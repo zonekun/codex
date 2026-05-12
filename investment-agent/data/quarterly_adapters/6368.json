@@ -1,0 +1,83 @@
+{
+  "ticker": "6368",
+  "company_name": "オルガノ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "連結累計期間の受注高合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "連結累計期間の売上高合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "繰越受注残高",
+          "type": "backlog",
+          "description": "連結会計期間末の受注残高合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "セグメント別受注高",
+          "type": "order_intake",
+          "description": "セグメント別の受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "セグメント別売上高",
+          "type": "completed",
+          "description": "セグメント別の売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "水処理エンジニアリング事業",
+            "機能商品事業"
+          ]
+        }
+      ],
+      "presentation_format": "text",
+      "complexity": "no_table",
+      "notes": "決算短信の「経営成績に関する説明」の本文中から、連結合計およびセグメント別の受注高、売上高、ならびに連結合計の繰越受注残高の数値を抽出。データは表形式ではなくテキスト形式で提供されている。"
+    }
+  ],
+  "_source_pdf": "tdnet/6368/20260204_6368_オルガノ_決算短信_2026年3月期 第3四半期決算短信〔日本基準〕（連結）_140120260203546159.pdf",
+  "_source_doc_id": "140120260203546159",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:08:05.735089+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "no_table",
+    "relevant_pages": [
+      4,
+      5
+    ],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "pdfplumber found no tables on relevant pages"
+    ]
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "ticker": "2311",
+  "company_name": "エプコ",
+  "current_version": "2024-11",
+  "versions": [
+    {
+      "valid_from": "2024-11",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "presentation",
+      "page_keywords": [
+        "??? ?460??"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "「LESSO合弁事業の概況」セクションの「■営業状況」に記載されている、2024年9月末時点の「受注残」の数値を抽出してください。単位は「万元」です。\n?LESSO?????????????????2024?9?? ??? ?460???????????????",
+      "notes": "structure.jsonのcomplexityがppt_chartであるため、gemini_visionを選択しました。スライド内のテキストブロックから特定の数値を抽出します。"
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/2311/20241111_2311_エプコ_決算説明資料_2024年12月期 第3四半期決算説明資料_140120241111517359.pdf",
+  "_source_doc_id": "140120241111517359",
+  "_generated_at": "2026-04-30T22:49:12.950033+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

@@ -1,0 +1,94 @@
+{
+  "ticker": "5923",
+  "company_name": "高田機工",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当四半期累計期間および前事業年度における受注高の合計額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "期末時点における未完成工事の受注残高合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "橋梁 受注高",
+          "type": "order_intake",
+          "description": "橋梁セグメントにおける受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "鉄構 受注高",
+          "type": "order_intake",
+          "description": "鉄構セグメントにおける受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "橋梁 受注残高",
+          "type": "backlog",
+          "description": "橋梁セグメントにおける期末受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        },
+        {
+          "name": "鉄構 受注残高",
+          "type": "backlog",
+          "description": "鉄構セグメントにおける期末受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント別",
+          "items": [
+            "橋梁",
+            "鉄構"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "決算短信の補足情報（7ページ）に、売上状況（完成工事高）、受注状況（受注高）、受注残高の3つの詳細な表が掲載されており、それぞれ橋梁と鉄構のセグメント別に金額と構成比が記載されています。また、1ページ目の経営成績の概況および中期経営計画の進捗状況において、大型案件の受注実績や保全事業・生研トラス事業の受注残高目標についても言及があります。"
+    }
+  ],
+  "_source_pdf": "tdnet/5923/20260213_5923_高田機工_決算短信_2026年3月期 第3四半期決算短信〔日本基準〕（非連結）_140120260123537782.pdf",
+  "_source_doc_id": "140120260123537782",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:34:46.215212+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      7,
+      9
+    ],
+    "table_count": 4,
+    "max_rows": 29,
+    "max_cols": 7,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 4"
+    ]
+  }
+}

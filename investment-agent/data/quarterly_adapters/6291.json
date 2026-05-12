@@ -1,0 +1,40 @@
+{
+  "ticker": "6291",
+  "company_name": "エアーテック",
+  "current_version": "2025-02",
+  "versions": [
+    {
+      "valid_from": "2025-02",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "breakdown_dimensions": [],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "提供された画像（2、10、14、15ページ）には、受注高および受注残高の具体的な数値データを含む「受注及び販売の状況」等の詳細な表が含まれていません。サマリー表に売上高の総額は記載されていますが、受注・受注残のデータが欠如しているため、本件の抽出対象データは不十分と判断しました。"
+    }
+  ],
+  "_source_pdf": "tdnet/6291/20250214_6291_エアーテック_決算短信_2024年12月期 決算短信〔日本基準〕（非連結）_140120250214576429.pdf",
+  "_source_doc_id": "140120250214576429",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:58:20.160034+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      12,
+      16,
+      17
+    ],
+    "table_count": 6,
+    "max_rows": 23,
+    "max_cols": 8,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 6"
+    ]
+  }
+}

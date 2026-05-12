@@ -1,0 +1,36 @@
+{
+  "ticker": "9051",
+  "company_name": "センコン物流",
+  "current_version": "2025-05",
+  "versions": [
+    {
+      "valid_from": "2025-05",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "breakdown_dimensions": [],
+      "presentation_format": "text",
+      "complexity": "no_table",
+      "notes": "本文中に各セグメントの営業収益（売上高）の数値が記載されている。倉庫事業において受注高が増加した旨の記述があるが、具体的な受注高や受注残高の数値データは記載されていない。 [2026-05-07] completedメトリクスのみのため収集対象外(false化)。"
+    }
+  ],
+  "_source_pdf": "tdnet/9051/20250515_9051_センコン物流_決算短信_2025年3月期　決算短信〔日本基準〕（連結）_140120250514551759.pdf",
+  "_source_doc_id": "140120250514551759",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T20:13:05.513234+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "no_table",
+    "relevant_pages": [
+      4
+    ],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "pdfplumber found no tables on relevant pages"
+    ]
+  }
+}

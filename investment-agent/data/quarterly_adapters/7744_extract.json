@@ -1,0 +1,62 @@
+{
+  "ticker": "7744",
+  "company_name": "ノーリツ鋼機",
+  "current_version": "2025-02",
+  "versions": [
+    {
+      "valid_from": "2025-02",
+      "valid_until": null,
+      "extraction_method": "regex",
+      "source": "presentation",
+      "page_keywords": [
+        "セグメント別業績予想",
+        "売上収益",
+        "FY25予想"
+      ],
+      "fields": [
+        {
+          "key": "売上収益",
+          "row_label_regex": "ものづくり.*テイボー\\s*売上収益",
+          "value_type": "integer",
+          "unit": "百万円",
+          "notes": "ものづくり（部品・材料）テイボーのFY24実績値"
+        },
+        {
+          "key": "売上収益",
+          "row_label_regex": "ものづくり.*音響機器関連.*\\s*売上収益",
+          "value_type": "integer",
+          "unit": "百万円",
+          "notes": "ものづくり（音響機器関連）のFY24実績値"
+        },
+        {
+          "key": "売上収益",
+          "row_label_regex": "AlphaTheta\\s*売上収益",
+          "value_type": "integer",
+          "unit": "百万円",
+          "notes": "AlphaThetaのFY24実績値"
+        },
+        {
+          "key": "売上収益",
+          "row_label_regex": "JLab\\s*売上収益",
+          "value_type": "integer",
+          "unit": "百万円",
+          "notes": "JLabのFY24実績値"
+        },
+        {
+          "key": "売上収益",
+          "row_label_regex": "連結合計\\s*売上収益",
+          "value_type": "integer",
+          "unit": "百万円",
+          "notes": "連結合計のFY24実績値"
+        }
+      ],
+      "gemini_custom_prompt": "",
+      "notes": "19ページの「FY25 通期セグメント別業績予想」テーブルから、各セグメントおよび連結合計のFY24実績（売上収益）を抽出します。正規表現は行ラベルと項目名の組み合わせで特定しています。"
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/7744/20250214_7744_ノーリツ鋼機_決算説明資料_2024年12月期 決算補足説明資料_140120250214576159.pdf",
+  "_source_doc_id": "140120250214576159",
+  "_generated_at": "2026-04-30T23:38:02.527840+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

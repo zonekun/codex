@@ -1,0 +1,130 @@
+{
+  "ticker": "1762",
+  "company_name": "高松Ｇ",
+  "current_version": "2025-11",
+  "versions": [
+    {
+      "valid_from": "2025-11",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当第２四半期累計期間におけるグループ全体の受注高合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "当第２四半期累計期間におけるグループ全体の売上高合計（完成工事高および不動産事業売上高の合計）",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "建築事業 受注高",
+          "type": "order_intake",
+          "description": "建設事業のうち建築事業における受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "土木事業 受注高",
+          "type": "order_intake",
+          "description": "建設事業のうち土木事業における受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "建設事業計 受注高",
+          "type": "order_intake",
+          "description": "建築事業と土木事業を合わせた建設事業全体の受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "不動産事業 受注高",
+          "type": "order_intake",
+          "description": "不動産事業における受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "建築事業 売上高",
+          "type": "completed",
+          "description": "建設事業のうち建築事業における売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "土木事業 売上高",
+          "type": "completed",
+          "description": "建設事業のうち土木事業における売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "建設事業計 売上高",
+          "type": "completed",
+          "description": "建築事業と土木事業を合わせた建設事業全体の売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "不動産事業 売上高",
+          "type": "completed",
+          "description": "不動産事業における売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "事業セグメント",
+          "items": [
+            "建築事業",
+            "土木事業",
+            "建設事業計",
+            "不動産事業"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "PDF第5枚目（資料7ページ）の「3. 連結受注高・連結売上高の状況」に詳細なセグメント別内訳が記載されています。受注残高（繰越工事高）に関する数値データは本資料内には含まれていません。"
+    }
+  ],
+  "_source_pdf": "tdnet/1762/20251112_1762_高松Ｇ_決算短信_2026年３月期 第２四半期（中間期）決算短信〔日本基準〕(連結)_140120251112597692.pdf",
+  "_source_doc_id": "140120251112597692",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T16:37:50.504295+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      1,
+      3,
+      4,
+      7,
+      9
+    ],
+    "table_count": 7,
+    "max_rows": 41,
+    "max_cols": 12,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 7"
+    ]
+  }
+}

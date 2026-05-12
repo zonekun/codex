@@ -1,0 +1,16 @@
+{
+  "ticker": "3048",
+  "company_name": "ビックカメラ",
+  "ir_page_url": "https://www.biccamera.co.jp/ir/monthly/202608.html",
+  "status": "active",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": "月次|月度",
+  "link_href_pattern": "images/\\d{4}/ms-\\d{8}\\.pdf",
+  "note": "月次売上速報PDF。images/{year}/ms-{date8}.pdf 形式。link_text_pattern='月次|月度'で絞り込み (2026-04-24修正)",
+  "updated_at": "2026-04-24T14:03:22.404564+09:00",
+  "last_checked": "2026-04-24",
+  "manual_override": true,
+  "manual_override_at": "2026-04-24T14:03:22.404564+09:00",
+  "manual_override_note": "D群DL0件 scrape_links pattern修正 (2026-04-24)"
+}

@@ -49,7 +49,7 @@ if COMPARE_CSV.exists():
 
 rows = []
 for t in TICKERS:
-    ap_path = Path(f'data/monthly_adapters/{t}.json')
+    ap_path = Path(f'meta/monthly/{t}_extract_adapter.json')
     if not ap_path.exists():
         rows.append({
             'ticker': t, 'source': 'NO_ADAPTER', 'method': '-', 'fields': 0,

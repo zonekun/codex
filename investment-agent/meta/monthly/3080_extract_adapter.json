@@ -1,0 +1,38 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "fields": [
+    {
+      "key": "全店 売上（前年同月比）",
+      "name": "全店 売上（前年同月比）",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "url_adapter status=skip。GCS(monthly/docs/3080/, tdnet/3080/)に月次開示文書なし。決算短信・業績修正のみ"
+    },
+    {
+      "key": "全店 店舗数",
+      "name": "全店 店舗数",
+      "value_type": "integer",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "同上。月次開示文書なし"
+    },
+    {
+      "key": "既存店 売上（前年同月比）",
+      "name": "既存店 売上（前年同月比）",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "同上。月次開示文書なし"
+    }
+  ],
+  "extraction_notes": "ジェーソン。url_adapter status=skip、GCSに月次開示文書なし。tdnet側にも月次売上速報なし（決算短信・業績修正のみ）。BuffettCodeには月次データあるがソース文書が確認できないため全field bc_ignore。",
+  "ticker": "3080",
+  "company_name": "ジェーソン",
+  "created_at": "2026-03-25T11:14:06.982475+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "",
+  "sample_submission_date": "",
+  "extraction_method": "gemini",
+  "manual_override": true,
+  "manual_override_note": "Codex成果物を自ら検証・再作成。月次文書不在のためbc_ignore",
+  "manual_override_at": "2026-05-08T00:15:00+09:00"
+}

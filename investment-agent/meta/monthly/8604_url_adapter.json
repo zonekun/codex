@@ -1,0 +1,15 @@
+{
+  "ticker": "8604",
+  "company_name": "野村ホールディングス",
+  "ir_page_url": "https://www.nomuraholdings.com/jp/investor/summary/",
+  "type": "scrape_links",
+  "status": "active",
+  "link_text_pattern": "営業活動実績|月次|business",
+  "link_href_pattern": "business\\.xlsx$",
+  "playwright_required": false,
+  "note": "月次・四半期営業活動実績はExcel（business.xlsx）でダウンロード提供。HTMLページ上の営業概況データ（口座数・資産残高等）はHTMLテーブル。旧URLは英語ホームページで誤り。正しくは /jp/investor/summary/ の business.xlsx リンク。2026-04-24修正",
+  "manual_override": true,
+  "manual_override_note": "2026-04-24 英語ホームページから日本語IR summaryページに修正。business.xlsxパターンでフィルタ",
+  "manual_override_at": "2026-04-24T00:00:00+09:00",
+  "updated_at": "2026-04-24T00:00:00+09:00"
+}

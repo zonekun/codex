@@ -1,0 +1,77 @@
+{
+  "ticker": "8137",
+  "company_name": "サンワテクノス",
+  "current_version": "2026-01",
+  "versions": [
+    {
+      "valid_from": "2026-01",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当第３四半期連結累計期間におけるセグメント別の受注実績",
+          "unit": "百万円",
+          "is_total": false
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当第３四半期連結会計期間末におけるセグメント別の受注残高",
+          "unit": "百万円",
+          "is_total": false
+        },
+        {
+          "name": "受注高 合計",
+          "type": "order_intake",
+          "description": "当第３四半期連結累計期間の受注高の総計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高 合計",
+          "type": "backlog",
+          "description": "当第３四半期連結会計期間末の受注残高の総計",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "日本",
+            "アジア",
+            "欧米",
+            "報告セグメント計",
+            "その他",
+            "合計"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "補足情報の「仕入、受注及び販売の状況」のセクションに、セグメント別の受注高、受注残高、販売実績が表形式で詳細に記載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/8137/20260130_8137_サンワテクノス_決算短信_2026年３月期 第３四半期決算短信〔日本基準〕（連結）_140120260128540433.pdf",
+  "_source_doc_id": "140120260128540433",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T20:05:12.409880+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      11
+    ],
+    "table_count": 3,
+    "max_rows": 7,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "ticker": "8742",
+  "company_name": "小林洋行",
+  "updated_at": "2026-04-24",
+  "last_checked": "2026-04-24",
+  "ir_page_url": "https://www.kobayashiyoko.com/news/",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": "月間売買実績|月次売買|月次取引|商品先物|月次",
+  "link_href_pattern": "/upfile/\\d+_\\d+\\.pdf",
+  "table_selector": null,
+  "status": "active",
+  "skip_reason": null,
+  "playwright_required": false,
+  "follow_links": false,
+  "note": "商品先物・金融商品取引の月次売買実績。link_text_patternで「月間売買実績」のみに絞り込み（自己株式取得・配当・決算を除外）",
+  "url_source": "manual_fix_20260424"
+}

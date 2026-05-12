@@ -1,0 +1,48 @@
+{
+  "source": "non-tdnet(pdf)",
+  "format": "pdf",
+  "fields": [
+    {
+      "key": "全店 売上（前年同月比）",
+      "name": "全店 売上（前年同月比）",
+      "row_label_regex": "全店.*売上",
+      "value_type": "percentage"
+    },
+    {
+      "key": "全店 店舗数",
+      "name": "全店 店舗数",
+      "row_label_regex": "全店.*店舗数",
+      "value_type": "percentage"
+    },
+    {
+      "key": "既存店 売上（前年同月比）",
+      "name": "既存店 売上（前年同月比）",
+      "row_label_regex": "既存店.*売上",
+      "value_type": "percentage"
+    },
+    {
+      "key": "既存店 客単価（前年同月比）",
+      "name": "既存店 客単価（前年同月比）",
+      "row_label_regex": "既存店.*客単価",
+      "value_type": "percentage"
+    },
+    {
+      "key": "既存店 客数（前年同月比）",
+      "name": "既存店 客数（前年同月比）",
+      "row_label_regex": "既存店.*客数",
+      "value_type": "percentage"
+    }
+  ],
+  "ticker": "8194",
+  "company_name": "ライフコーポレーション",
+  "created_at": "2026-04-11T21:50:30.325302+09:00",
+  "created_by": "rule-based-builder",
+  "extraction_method": "regex",
+  "fields_count": 5,
+  "_source_renamed_at": "2026-04-18T16:36:34+09:00",
+  "_source_renamed_from": "pdf",
+  "manual_override": true,
+  "_excluded": true,
+  "_excluded_at": "2026-05-06T21:31:00+09:00",
+  "_excluded_reason": "url_adapterがryutsuu.biz（流通ニュース、第三者ニュースサイト）を参照。GCS上のHTMLは他社（DCM、イオン、セブンイレブン等）の月次ニュース記事43件で、ライフコーポレーション自社のIR月次開示データではない。自社IRサイト(lifecorp.jp)には月次売上開示ページが存在しない。"
+}

@@ -1,0 +1,44 @@
+{
+  "ticker": "7014",
+  "company_name": "名村造船",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "各セグメントにおける期末時点の手持工事高",
+          "unit": "百万円",
+          "is_total": false
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "売上高はセグメント別概況の表に、受注残高は各セグメントのテキスト説明内に記載されています。受注高（オーダー・インテイク）の具体的な金額記載は見当たりません。"
+    }
+  ],
+  "_source_pdf": "tdnet/7014/20260212_7014_名村造船_決算短信_2026年3月期 第3四半期決算短信〔日本基準〕(連結)_140120260204546883.pdf",
+  "_source_doc_id": "140120260204546883",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:39:42.522995+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      5
+    ],
+    "table_count": 1,
+    "max_rows": 9,
+    "max_cols": 9,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

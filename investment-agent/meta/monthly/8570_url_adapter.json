@@ -1,0 +1,16 @@
+{
+  "ticker": "8570",
+  "company_name": "イオンフィナンシャルサービス",
+  "ir_page_url": "https://www.aeonfinancial.co.jp/ir/monthly/",
+  "type": "html_table",
+  "status": "active",
+  "link_text_pattern": null,
+  "link_href_pattern": null,
+  "playwright_required": false,
+  "manual_override": true,
+  "note": "2026-04-24修正: 月次取扱高データはHTMLテーブル埋込(PDF無)。/ir/monthly/→/ir/monthly/2027/にリダイレクト。html_tableに変更",
+  "updated_at": "2026-04-24T17:28:05.307145+09:00",
+  "css_selector": null,
+  "table_selector": null,
+  "follow_links": false
+}

@@ -1,0 +1,52 @@
+{
+  "ticker": "186A",
+  "company_name": "Ｇ－アストロスケール",
+  "current_version": "2026-03",
+  "versions": [
+    {
+      "valid_from": "2026-03",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注残高",
+          "type": "order_intake",
+          "unit": "千円",
+          "description": "PDF??????????????"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "軌道上サービス事業"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "受注実績表の受注総額・受注残総額に加え、要約四半期連結損益計算書と製品及びサービス別注記に売上収益、受託収益、その他の売上収益が千円単位で記載されています。参考的な想定受注残総額の合算値もPDF記載に基づき維持します。\nPhase 6b #23: ??JSON?PDF???????????????????????????"
+    }
+  ],
+  "_source_pdf": "tdnet/186A/20260313_186A_Ｇ－アストロスケール_決算短信_2026年4月期 第3四半期決算短信〔IFRS〕(連結)_140120260313581725.pdf",
+  "_source_doc_id": "140120260313581725",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T16:56:30.947097+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      7,
+      16
+    ],
+    "table_count": 1,
+    "max_rows": 4,
+    "max_cols": 4,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

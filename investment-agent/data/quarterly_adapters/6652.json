@@ -1,0 +1,86 @@
+{
+  "ticker": "6652",
+  "company_name": "ＩＤＥＣ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当第3四半期連結累計期間における受注高の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当第3四半期連結会計期間末における受注残高の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "当第3四半期連結累計期間における売上高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "地域別受注高",
+          "type": "order_intake",
+          "description": "日本、米州、EMEA、アジア・パシフィック別の受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "地域別受注残高",
+          "type": "backlog",
+          "description": "日本、米州、EMEA、アジア・パシフィック別の受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "地域",
+          "items": [
+            "日本",
+            "米州",
+            "EMEA",
+            "アジア・パシフィック"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "決算短信の13ページ「(4) 受注実績」に地域別の受注高および受注残高の明細表が記載されています。また、2ページの業績概況に連結売上高のサマリー表が掲載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/6652/20260206_6652_ＩＤＥＣ_決算短信_2026年3月期 第3四半期決算短信〔日本基準〕(連結)_140120260130543107.pdf",
+  "_source_doc_id": "140120260130543107",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:23:52.134053+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      15
+    ],
+    "table_count": 7,
+    "max_rows": 8,
+    "max_cols": 9,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 7"
+    ]
+  }
+}

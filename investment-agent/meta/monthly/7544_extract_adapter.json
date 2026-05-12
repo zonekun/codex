@@ -1,0 +1,88 @@
+{
+  "source": "non-tdnet(html_table)",
+  "format": "html",
+  "extraction_method": "gemini",
+  "fields": [
+    {
+      "key": "チェーン全店 売上（前年同月比）",
+      "name": "チェーン全店 売上（前年同月比）",
+      "row_label_regex": "チェーン全店売上高前年比",
+      "value_type": "percentage",
+      "description": "チェーン全店売上高前年比。JPG画像テーブル内の「チェーン全店売上高前年比*3」の当月値。gooz店舗含む全店舗売上高総合計の前年比。例: 103.6",
+      "bc_key": "チェーン全店 売上（前年同月比）",
+      "_manual_description": true
+    },
+    {
+      "key": "既存店 売上（前年同月比）",
+      "name": "既存店 売上（前年同月比）",
+      "row_label_regex": "既存店売上高前年比",
+      "value_type": "percentage",
+      "description": "既存店売上高前年比。テキスト中「既存店売上高前年比は103.6％」から取得、またはJPG画像テーブルから取得。例: 103.6",
+      "bc_key": "既存店 売上（前年同月比）",
+      "_manual_description": true
+    },
+    {
+      "key": "既存店 客数（前年同月比）",
+      "name": "既存店 客数（前年同月比）",
+      "row_label_regex": "既存店客数前年比",
+      "value_type": "percentage",
+      "description": "既存店客数前年比。テキスト中「既存店客数前年比は101.3％」から取得、またはJPG画像テーブルから取得。例: 101.3",
+      "bc_key": "既存店 客数（前年同月比）",
+      "_manual_description": true
+    },
+    {
+      "key": "既存店 客単価（前年同月比）",
+      "name": "既存店 客単価（前年同月比）",
+      "row_label_regex": "既存店客単価前年比",
+      "value_type": "percentage",
+      "description": "既存店客単価前年比。テキスト中「既存店客単価前年比は102.2％」から取得、またはJPG画像テーブルから取得。例: 102.2",
+      "bc_key": "既存店 客単価（前年同月比）",
+      "_manual_description": true
+    },
+    {
+      "key": "全店 平均日販（百万円）",
+      "name": "全店 平均日販（百万円）",
+      "row_label_regex": "全店平均日販",
+      "value_type": "integer",
+      "description": "全店平均日販（千円）。テキスト中「全店平均日販は620千円」から取得。注意: BC側では「百万円」だが実際は千円単位。例: 620",
+      "bc_key": "全店 平均日販（百万円）",
+      "_manual_description": true
+    },
+    {
+      "key": "全店 客数（人）",
+      "name": "全店 客数（人）",
+      "row_label_regex": "全店.*平均客数",
+      "value_type": "integer",
+      "description": "全店の平均客数（人/日/店）。JPG画像テーブルから取得。例: 776",
+      "bc_key": "全店 客数（人）",
+      "_manual_description": true
+    },
+    {
+      "key": "全店 客単価（円）",
+      "name": "全店 客単価（円）",
+      "row_label_regex": "全店.*平均客単価",
+      "value_type": "integer",
+      "description": "全店の平均客単価（円）。JPG画像テーブルから取得。例: 707",
+      "bc_key": "全店 客単価（円）",
+      "_manual_description": true
+    },
+    {
+      "key": "ローソン・スリーエフ 店舗数",
+      "name": "ローソン・スリーエフ 店舗数",
+      "row_label_regex": "店舗数|総店舗数",
+      "value_type": "integer",
+      "description": "ローソン・スリーエフの店舗数（月末時点）。JPG画像テーブルから取得。例: 354",
+      "bc_key": "ローソン・スリーエフ 店舗数",
+      "_manual_description": true
+    }
+  ],
+  "custom_prompt": "スリーエフ（ローソン・スリーエフ）の直近の営業状況ページです。\n\n【ページ構造】\n- テキスト部分に「○月度の営業概況」があり、全店平均日販（千円）・既存店売上高前年比・既存店客数前年比・既存店客単価前年比が記載されています\n- JPG画像テーブル（/ir/images/46ki3.jpg等）に月次詳細データ（売上高・客数・客単価・店舗数など、全店・既存店の前年比と実数）が掲載されています\n\n【注意】\n- テキスト中の数値を優先して取得してください\n- テキストに無い項目（全店客数・全店客単価・店舗数・チェーン全店売上高前年比）はJPG画像テーブルから読み取ってください\n- 画像が2枚ある場合、最新期（第46期＝2027年2月期）の画像を使用してください\n- 「全店」と「既存店」を正確に区別してください",
+  "ticker": "7544",
+  "company_name": "スリーエフ",
+  "created_at": "2026-04-24T21:00:00+09:00",
+  "created_by": "manual",
+  "fields_count": 8,
+  "manual_override": true,
+  "manual_override_at": "2026-04-24T21:00:00+09:00",
+  "manual_override_note": "Phase 1 extract adapter新規作成。テキスト+JPG画像テーブルからGemini vision抽出"
+}

@@ -1,0 +1,55 @@
+{
+  "ticker": "5918",
+  "company_name": "滝上工",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "製品別の受注高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "製品別の受注残高",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "決算短信の第10ページ「3. 補足情報」において、販売実績、受注高、受注残高の製品別内訳（橋梁、鉄骨等）が詳細な表形式で提供されている。"
+    }
+  ],
+  "_source_pdf": "tdnet/5918/20260213_5918_滝上工_決算短信_2026年３月期 第３四半期決算短信〔日本基準〕（連結）_140120260212558482.pdf",
+  "_source_doc_id": "140120260212558482",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:34:12.815482+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      3,
+      4,
+      8,
+      12
+    ],
+    "table_count": 4,
+    "max_rows": 39,
+    "max_cols": 7,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 4"
+    ]
+  }
+}

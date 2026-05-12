@@ -1,0 +1,94 @@
+{
+  "ticker": "6501",
+  "company_name": "日立",
+  "current_version": "2025-04",
+  "versions": [
+    {
+      "valid_from": "2025-04",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "各セグメントおよび主要事業における受注合計額",
+          "unit": "億円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "年度末時点での未消化受注残高",
+          "unit": "兆円",
+          "is_total": true
+        },
+        {
+          "name": "日立エナジー 受注高",
+          "type": "order_intake",
+          "description": "日立エナジー事業の受注額（米ドルベース）",
+          "unit": "億ドル",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "日立エナジー 受注残",
+          "type": "backlog",
+          "description": "日立エナジー事業の受注残高（米ドルベース）",
+          "unit": "億ドル",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "DSS",
+            "フロントビジネス",
+            "ITサービス",
+            "サービス&プラットフォーム",
+            "GEM",
+            "原子力",
+            "日立パワーソリューションズ",
+            "日立エナジー",
+            "鉄道",
+            "CI",
+            "ビルシステム",
+            "生活・エコシステム",
+            "計測分析システム",
+            "インダストリアルデジタル",
+            "水・環境",
+            "インダストリアルプロダクツ"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "資料にはセグメント別の受注高、売上収益、受注残高が記載されている。円貨の受注残高はPDFで兆円表記のため億円単位に正規化した。日立エナジー個別の受注高・売上・受注残は億ドル表記のため除外した。\nユーザー指示により、金額以外の受注・受注残関連メトリクを復元。"
+    }
+  ],
+  "_source_pdf": "tdnet/6501/20250428_6501_日立_その他（未分類）_2025年3月期 連結決算の概要[FY2024]_140120250428525904.pdf",
+  "_source_doc_id": "140120250428525904",
+  "_source_type": "other",
+  "_generated_at": "2026-04-30T19:16:54.978868+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      6,
+      10,
+      12,
+      21,
+      22
+    ],
+    "table_count": 10,
+    "max_rows": 14,
+    "max_cols": 9,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 10"
+    ]
+  }
+}

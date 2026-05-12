@@ -1,0 +1,65 @@
+{
+  "ticker": "3690",
+  "company_name": "イルグルム",
+  "current_version": "2025-11",
+  "versions": [
+    {
+      "valid_from": "2025-11",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "EC構築領域における当連結会計年度の受注高",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "EC構築領域における期末受注残高",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "EC構築領域における当連結会計年度の売上高",
+          "unit": "千円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント・領域",
+          "items": [
+            "EC構築領域"
+          ]
+        }
+      ],
+      "presentation_format": "text",
+      "complexity": "no_table",
+      "notes": "本文の「（１）経営成績に関する説明」内、EC構築領域の概況において、当該領域の売上高、受注高、期末受注残高の金額が記載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/3690/20251106_3690_イルグルム_決算短信_2025年9月期　決算短信〔日本基準〕(連結)_140120251105588875.pdf",
+  "_source_doc_id": "140120251105588875",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:48:37.968678+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "no_table",
+    "relevant_pages": [
+      5
+    ],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "pdfplumber found no tables on relevant pages"
+    ]
+  }
+}

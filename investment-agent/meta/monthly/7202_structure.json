@@ -1,0 +1,16 @@
+{
+  "ticker": "7202",
+  "company_name": "7202",
+  "metrics": [
+    {
+      "name": "国内生産台数（台）",
+      "source": "bc"
+    },
+    {
+      "name": "輸出台数（台）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

@@ -1,0 +1,65 @@
+{
+  "ticker": "7013",
+  "company_name": "ＩＨＩ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "報告セグメント別の受注高および連結合計値",
+          "unit": "億円",
+          "is_total": true
+        },
+        {
+          "name": "売上収益",
+          "type": "completed",
+          "description": "報告セグメント別の売上収益および連結合計値",
+          "unit": "億円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "報告セグメント",
+          "items": [
+            "資源・エネルギー・環境",
+            "社会基盤",
+            "産業システム・汎用機械",
+            "航空・宇宙・防衛",
+            "その他",
+            "調整額"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "第2ページの「報告セグメント別の状況」テーブルに、受注高と売上収益のセグメント別内訳および連結合計が記載されています。なお、本資料（決算短信）内には受注残高（バックログ）の数値データは記載されていません。"
+    }
+  ],
+  "_source_pdf": "tdnet/7013/20260210_7013_ＩＨＩ_決算短信_2026年3月期 第3四半期決算短信 〔IFRS〕（連結）_140120260210553127.pdf",
+  "_source_doc_id": "140120260210553127",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:39:18.738959+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      5,
+      6
+    ],
+    "table_count": 1,
+    "max_rows": 11,
+    "max_cols": 10,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

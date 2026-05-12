@@ -1,0 +1,21 @@
+{
+  "ticker": "8515",
+  "company_name": "アイフル",
+  "updated_at": "2026-05-05T17:56:40.319318+09:00",
+  "ir_page_url": "https://www.muninova.co.jp/ir/finance/monthly_data.html",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": "\\d{4}年\\d{1,2}月|年度",
+  "link_href_pattern": "/ir/pdf/(?:MD\\d+[^.]*|pdf-\\d+-datafile)\\.pdf",
+  "table_selector": null,
+  "status": "active",
+  "skip_reason": null,
+  "note": "アイフル(ムニノバ)社名変更に伴いドメインaiful.co.jp->muninova.co.jpへ移行(2026-05-05確認)。月次データ集計PDF。",
+  "url_source": "manual_fix",
+  "last_checked": "2026-05-05",
+  "follow_links": false,
+  "playwright_required": false,
+  "manual_override": true,
+  "manual_override_at": "2026-05-05T17:56:40.319318+09:00",
+  "manual_override_note": "ドメイン移行 aiful.co.jp->muninova.co.jp (2026-05-05)"
+}

@@ -1,0 +1,19 @@
+{
+  "ticker": "8214_ent",
+  "company_name": "ＡＯＫＩホールディングス (Entertainment)",
+  "ir_page_url": "https://ir.aoki-hd.co.jp/ja/ir/finance/monthlyreport/entertainment.html",
+  "status": "active",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": "\\d{4}|月次|uriage|Entertainment",
+  "link_href_pattern": "teaserItems1/0/linkList/\\d+/link/\\d+(?:_Entertainment)?_?uriage[^\\\"']*\\.pdf",
+  "follow_links": false,
+  "playwright_required": false,
+  "note": "AOKI entertainment 事業の月次売上 PDF 専用アダプター。parent=8214 (fashion 側)。別 ticker 化により fashion/entertainment 両方を独立に処理 (2026-04-24 D4 対応)。",
+  "parent_ticker": "8214",
+  "updated_at": "2026-04-24T11:36:55.146931+09:00",
+  "last_checked": "2026-04-24",
+  "manual_override": true,
+  "manual_override_at": "2026-04-24T11:36:55.146931+09:00",
+  "manual_override_note": "23NG D1-D4 コード改修で修正 (2026-04-24)"
+}

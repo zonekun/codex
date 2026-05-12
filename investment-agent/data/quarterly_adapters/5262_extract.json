@@ -1,0 +1,28 @@
+{
+  "ticker": "5262",
+  "company_name": "日ヒューム",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/5262/20260225_5262_日ヒューム_決算短信_2026年３月期　第３四半期決算短信〔日本基準〕（連結）（公認会計士等による期中_140120260225568550.pdf",
+  "_source_doc_id": "140120260225568550",
+  "_generated_at": "2026-04-30T18:26:05.246820+09:00",
+  "_model_used": null
+}

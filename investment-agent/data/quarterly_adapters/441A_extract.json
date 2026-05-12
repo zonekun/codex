@@ -1,0 +1,28 @@
+{
+  "ticker": "441A",
+  "company_name": "Ｇ－ＮＥ",
+  "current_version": "2025-11",
+  "versions": [
+    {
+      "valid_from": "2025-11",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "other",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/441A/20251104_441A_Ｇ－ＮＥ_事業計画（グロース）_事業計画及び成長可能性に関する事項_140120251030583355.pdf",
+  "_source_doc_id": "140120251030583355",
+  "_generated_at": "2026-04-30T18:07:41.606878+09:00",
+  "_model_used": null
+}

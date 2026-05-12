@@ -1,0 +1,66 @@
+{
+  "ticker": "6023",
+  "company_name": "ダイハツインフィ",
+  "current_version": "2026-01",
+  "versions": [
+    {
+      "valid_from": "2026-01",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当四半期連結累計期間における受注金額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当四半期連結会計期間末における受注残高金額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注高（数量）",
+          "type": "order_intake",
+          "description": "当四半期連結累計期間における受注数量（馬力）",
+          "unit": "馬力",
+          "is_total": true
+        },
+        {
+          "name": "受注残高（数量）",
+          "type": "backlog",
+          "description": "当四半期連結会計期間末における受注残高数量（馬力）",
+          "unit": "馬力",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "補足情報の生産、受注および販売の状況表で、金額は百万円単位、数量は馬力単位として開示。抽出対象は金額指標に限定し、馬力の数量指標は除外した。\nユーザー指示により、金額以外の受注・受注残関連メトリクを復元。"
+    }
+  ],
+  "_source_pdf": "tdnet/6023/20260129_6023_ダイハツインフィ_決算短信_2026年3月期 第3四半期決算短信〔日本基準〕（連結）_140120260128540662.pdf",
+  "_source_doc_id": "140120260128540662",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:37:54.890288+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      11
+    ],
+    "table_count": 3,
+    "max_rows": 4,
+    "max_cols": 7,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

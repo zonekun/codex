@@ -1,0 +1,20 @@
+{
+  "ticker": "3086",
+  "company_name": "3086",
+  "metrics": [
+    {
+      "name": "大丸心斎橋店 取扱高（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "百貨店事業 客数（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "連結 売上（前年同月比）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

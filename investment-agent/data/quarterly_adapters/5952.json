@@ -1,0 +1,80 @@
+{
+  "ticker": "5952",
+  "company_name": "アマテイ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当第３四半期連結累計期間における受注実績の合計額",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当第３四半期連結累計期間末における受注残高の合計額",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "販売高",
+          "type": "completed",
+          "description": "当第３四半期連結累計期間における販売実績の合計額",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "生産高及び仕入実績",
+          "type": "other",
+          "description": "当第３四半期連結累計期間における生産高及び仕入実績の合計額",
+          "unit": "千円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "建設・梱包向",
+            "電気・輸送機器向"
+          ]
+        },
+        {
+          "dimension_name": "相手先",
+          "items": [
+            "大東スチール株式会社"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "補足情報として、生産・受注・販売の状況がセグメント別（建設・梱包向、電気・輸送機器向）に詳細な表で記載されています。また、主要な相手先別の販売実績も含まれています。"
+    }
+  ],
+  "_source_pdf": "tdnet/5952/20260209_5952_アマテイ_決算短信_2026年3月期　第３四半期決算短信〔日本基準〕（連結）_140120260209551195.pdf",
+  "_source_doc_id": "140120260209551195",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:36:16.595154+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      12
+    ],
+    "table_count": 4,
+    "max_rows": 3,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 4"
+    ]
+  }
+}

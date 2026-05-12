@@ -1,0 +1,12 @@
+{
+  "ticker": "8306",
+  "company_name": "三菱ＵＦＪフィナンシャル・グループ",
+  "ir_page_url": "https://stockevents.app/jp/stock/8306.TSE/dividends#:~:text=%E4%B8%89%E8%8F%B1UFJ%E3%83%95%E3%82%A3%E3%83%8A%E3%83%B3%E3%82%B7%E3%83%A3%E3%83%AB%E3%83%BB%E3%82%B0%E3%83%AB%E3%83%BC%E3%83%97%20(8306.TSE)%20%E3%81%AF%E5%8D%8A%E6%9C%9F,12%E6%9C%88%2004%2C%202026%E3%81%A7%E3%81%99%E3%80%82",
+  "updated_at": "2026-04-21T10:13:30.018976+09:00",
+  "last_checked": "2026-04-21",
+  "status": "active",
+  "type": "html_table",
+  "css_selector": null,
+  "table_selector": null,
+  "note": "HTML表に月次データ検出。table_selector要調整"
+}

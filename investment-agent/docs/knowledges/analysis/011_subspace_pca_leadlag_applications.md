@@ -2,7 +2,7 @@
 
 **カテゴリ**: analysis
 **作成日**: 2026-04-11
-**ステータス**: **011-4 が ANALYZED_PASS（条件付き）**。011-1/2/3 は FAIL。米国→日本のセクターETFロングショートのみが個人投資家で実用水準に到達
+**ステータス**: 011-1/2/3/4 すべて FAIL or RETIRED。ただし**論文の手法（部分空間正則化PCA）自体は汎用的**であり、他の市場ペア（A-1〜A-4, B, C等）への応用可能性は残る
 **アイデアソース**: 論文（中川ら, SIG-FIN-036-13「部分空間正則化付き主成分分析を用いた日米業種リードラグ投資戦略」）
 **原論文リファレンス**: `docs/references/japan_us_sector_leadlag_pca/`
 **関連ファイル**:
@@ -20,7 +20,7 @@
 | **011-1** | [`011-1_cluster_overnight_daytime_leadlag.md`](011-1_cluster_overnight_daytime_leadlag.md) | 残差相関クラスタ × overnight→daytime 自己リードラグ | **ANALYZED_FAIL**（個人投資家では1日ラグで崩壊） |
 | **011-2** | [`011-2_size_leadlag_multidef.md`](011-2_size_leadlag_multidef.md) | 大型→中小型 サイズリードラグ（大型定義の多重検証） | **ANALYZED_FAIL**（効果は存在するが弱い、税後 Sharpe 0.47） |
 | **011-3** | [`011-3_cluster_cross_leadlag.md`](011-3_cluster_cross_leadlag.md) | 残差相関クラスタ間クロスリードラグ（バリエーション3） | **ANALYZED_FAIL**（グロスでもマイナス、伝播効果なし） |
-| **011-4** | [`011-4_us_japan_sector_leadlag.md`](011-4_us_japan_sector_leadlag.md) | 米国セクターETF→日本セクターETF（論文再現、ロングショート） | **ANALYZED_PASS（条件付き）** Kill Switch 必須 |
+| **011-4** | [`011-4_us_japan_sector_leadlag.md`](011-4_us_japan_sector_leadlag.md) | 米国セクターETF→日本セクターETF（論文再現、ロングショート） | **RETIRED**（2026-04-26。3/19以降の優位性消失、戦略の認知拡大による crowding が原因と推定） |
 
 ---
 

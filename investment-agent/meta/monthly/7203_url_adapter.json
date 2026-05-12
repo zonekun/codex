@@ -1,0 +1,11 @@
+{
+  "ticker": "7203",
+  "company_name": "トヨタ自動車",
+  "ir_page_url": "https://mainichi.jp/wsj-monthly/",
+  "updated_at": "2026-04-21T12:53:31.980350+09:00",
+  "last_checked": "2026-04-21",
+  "status": "skip",
+  "type": null,
+  "skip_reason": "subpage_no_links",
+  "note": "月次ページリンク 2 件検出、サブページ踏み込み後にDLリンク無し（best=https://mainichi.jp/wsj-monthly/）"
+}

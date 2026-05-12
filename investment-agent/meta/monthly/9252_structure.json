@@ -1,0 +1,24 @@
+{
+  "ticker": "9252",
+  "company_name": "9252",
+  "metrics": [
+    {
+      "name": "ストック型売上 インターネット（円）",
+      "source": "bc"
+    },
+    {
+      "name": "ストック型売上 合計（円）",
+      "source": "bc"
+    },
+    {
+      "name": "ストック型売上 宅配水（円）",
+      "source": "bc"
+    },
+    {
+      "name": "ストック型売上 電気（円）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

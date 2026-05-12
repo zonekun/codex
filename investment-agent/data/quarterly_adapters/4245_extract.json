@@ -1,0 +1,26 @@
+{
+  "ticker": "4245",
+  "company_name": "ダイキアクシス",
+  "current_version": "2025-08",
+  "versions": [
+    {
+      "valid_from": "2025-08",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "再生可能エネルギー関連事業",
+        "売上高",
+        "当中間連結会計期間"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "再生可能エネルギー関連事業のセグメント売上高を抽出してください。表の中の「当中間連結会計期間」の列にある「売上高」の値を抽出してください。表記が「12億47百万円」となっている場合は、単位を百万円に換算した数値「1247」を返してください。",
+      "notes": "表内の数値が「12億47百万円」のように「億」と「百万円」を組み合わせた特殊な形式で記載されているため、Gemini Visionを使用して数値を正しく解釈し、百万円単位の整数値として抽出します。"
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/4245/20250808_4245_ダイキアクシス_決算短信_2025年12月期 第２四半期決算短信〔日本基準〕(連結)_140120250807535589.pdf",
+  "_source_doc_id": "140120250807535589",
+  "_generated_at": "2026-04-30T23:03:12.293486+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

@@ -1,0 +1,60 @@
+{
+  "ticker": "6225",
+  "company_name": "エコム",
+  "current_version": "2026-03",
+  "versions": [
+    {
+      "valid_from": "2026-03",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "セグメント別の四半期受注高",
+          "unit": "百万円",
+          "is_total": false
+        },
+        {
+          "name": "受注残",
+          "type": "backlog",
+          "description": "産業システムセグメントにおける四半期末時点の受注残高",
+          "unit": "百万円",
+          "is_total": false
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "産業システム",
+            "保守サービス"
+          ]
+        }
+      ],
+      "presentation_format": "chart",
+      "complexity": "ppt_chart",
+      "notes": "産業システムセグメントについては受注高と受注残高の両方が、保守サービスセグメントについては受注高のみが棒グラフで示されている。"
+    }
+  ],
+  "_source_pdf": "tdnet/6225/20260312_6225_エコム_決算説明資料_2026年７月期　第２四半期決算説明資料_140120260312580624.pdf",
+  "_source_doc_id": "140120260312580624",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T18:49:05.012396+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      26
+    ],
+    "table_count": 2,
+    "max_rows": 9,
+    "max_cols": 16,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "wide table: 16 columns"
+    ]
+  }
+}

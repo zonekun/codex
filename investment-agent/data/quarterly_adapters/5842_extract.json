@@ -1,0 +1,28 @@
+{
+  "ticker": "5842",
+  "company_name": "Ｇ－インテグラル",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "presentation",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/5842/20260210_5842_Ｇ－インテグラル_決算説明資料_2025年12月期 決算説明資料_140120260210554344.pdf",
+  "_source_doc_id": "140120260210554344",
+  "_generated_at": "2026-04-30T18:33:00.615857+09:00",
+  "_model_used": null
+}

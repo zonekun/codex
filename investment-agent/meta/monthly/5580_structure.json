@@ -1,0 +1,16 @@
+{
+  "ticker": "5580",
+  "company_name": "5580",
+  "metrics": [
+    {
+      "name": "INNOVERA アカウント数",
+      "source": "bc"
+    },
+    {
+      "name": "IP-Line チャネル数",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

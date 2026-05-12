@@ -1,0 +1,87 @@
+{
+  "ticker": "4719",
+  "company_name": "アルファシステムズ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当第3四半期累計期間における受注高の合計およびセグメント・事業区分別の内訳",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当第3四半期会計期間末における受注残高の合計およびセグメント・事業区分別の内訳",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "販売実績",
+          "type": "completed",
+          "description": "当第3四半期累計期間における販売実績（売上高）の合計およびセグメント・事業区分別の内訳",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "生産実績",
+          "type": "other",
+          "description": "当第3四半期累計期間における生産実績の合計およびセグメント・事業区分別の内訳",
+          "unit": "千円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント及び事業の区分",
+          "items": [
+            "通信システム",
+            "ノード",
+            "モバイルネットワーク",
+            "ネットワークマネジメント",
+            "オープンシステム",
+            "公共",
+            "流通・サービス",
+            "金融",
+            "情報通信",
+            "オープンシステム内その他",
+            "組み込みシステム",
+            "ソフトウェア開発関連事業",
+            "その他",
+            "合計"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "決算短信の「3. その他 (1) 生産、受注及び販売の状況」に、生産実績、受注高、受注残高、販売実績の4つの表が詳細な事業区分別に記載されています。ソフトウェア開発関連事業は、通信システム、オープンシステム、組み込みシステムの3つのセグメントの合算値として定義されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/4719/20260209_4719_アルファシステムズ_決算短信_2026年3月期 第3四半期決算短信〔日本基準〕（非連結）_140120260209551610.pdf",
+  "_source_doc_id": "140120260209551610",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:12:57.781190+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      10,
+      11
+    ],
+    "table_count": 4,
+    "max_rows": 15,
+    "max_cols": 7,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 4"
+    ]
+  }
+}

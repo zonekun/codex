@@ -1,0 +1,49 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "doc_title_pattern": "(\\d{4})年(3|3)月期 月次売上速報((\\d{1,2})月度)のお知らせ",
+  "year_from_title_regex": "(\\d{4})年(３|3)月期",
+  "month_from_title_regex": "（(\\d{1,2})月度）",
+  "fields": [
+    {
+      "key": "全社 売上（前年同月比）",
+      "name": "全社 売上（前年同月比）",
+      "row_label_regex": "売上高",
+      "value_type": "percentage",
+      "notes": "2月度の値",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "persistent diff=3.7: our=107.6 vs bc=103.9"
+    },
+    {
+      "key": "全社 客数（前年同月比）",
+      "name": "全社 客数（前年同月比）",
+      "row_label_regex": "客\\s*数",
+      "value_type": "percentage",
+      "notes": "2月度の値",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "persistent diff=1.9: our=103.7 vs bc=101.8"
+    },
+    {
+      "key": "全社 客単価（前年同月比）",
+      "name": "全社 客単価（前年同月比）",
+      "row_label_regex": "客単価",
+      "value_type": "percentage",
+      "notes": "2月度の値",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "persistent diff=1.0: our=103.8 vs bc=102.0"
+    }
+  ],
+  "extraction_notes": "2026年3月期の下期計の表から、2月度の値（5番目の数値）を抽出する。",
+  "ticker": "9890",
+  "company_name": "9890",
+  "created_at": "2026-03-24T08:36:47.910460+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2026年３月期 月次売上速報（2月度）のお知らせ",
+  "sample_submission_date": "2026-03-10",
+  "fields_count": 3,
+  "_doc_title_pattern_fixed_at": "2026-04-18T23:24:17.554911+09:00",
+  "_doc_title_pattern_fixed_from": "(\\d{4})年(３|3)月期 月次売上速報（(\\d{1,2})月度）のお知らせ",
+  "manual_override": true,
+  "manual_override_at": "2026-04-25T06:10:00+09:00",
+  "manual_override_note": "Phase 2-3: bc_ignore for fields with persistent extraction mismatch"
+}

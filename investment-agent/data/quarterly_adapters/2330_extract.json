@@ -1,0 +1,28 @@
+{
+  "ticker": "2330",
+  "company_name": "フォーサイド",
+  "current_version": "2025-11",
+  "versions": [
+    {
+      "valid_from": "2025-11",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Vision extraction selected because structure is complex or data is unavailable."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/2330/20251113_2330_フォーサイド_決算短信_2025年12月期 第３四半期決算短信〔日本基準〕（連結）_140120251113599433.pdf",
+  "_source_doc_id": "140120251113599433",
+  "_generated_at": "2026-04-30T17:20:44.979407+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

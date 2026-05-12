@@ -1,0 +1,80 @@
+{
+  "ticker": "1766",
+  "company_name": "東建コーポ",
+  "current_version": "2026-03",
+  "versions": [
+    {
+      "valid_from": "2026-03",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "連結受注実績",
+          "type": "order_intake",
+          "description": "連結ベースの受注高合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "期中受注高（単体）",
+          "type": "order_intake",
+          "description": "単体ベースの期中受注高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高（単体）",
+          "type": "backlog",
+          "description": "単体ベースの期末受注残高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "建設事業（連結受注）",
+          "type": "order_intake",
+          "description": "連結受注実績のうち建設事業分",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "連結受注実績"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "連結セグメント",
+          "items": [
+            "建設事業",
+            "不動産賃貸事業",
+            "その他"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "連結および単体の受注高、売上高、受注残高のデータが詳細な表形式で提供されている。"
+    }
+  ],
+  "_source_pdf": "tdnet/1766/20260313_1766_東建コーポ_決算短信_2026年４月期　第３四半期決算短信〔日本基準〕（連結）_140120260313581653.pdf",
+  "_source_doc_id": "140120260313581653",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T16:38:41.286111+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      3,
+      4,
+      7,
+      11,
+      12
+    ],
+    "table_count": 6,
+    "max_rows": 46,
+    "max_cols": 7,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 6"
+    ]
+  }
+}

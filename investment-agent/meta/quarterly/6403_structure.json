@@ -1,0 +1,52 @@
+{
+  "ticker": "6403",
+  "company_name": "水道機工",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "グループ全体の受注高合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "セグメント別受注高",
+          "type": "order_intake",
+          "description": "報告セグメント別の受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "セグメント別の受注高および売上高が表形式で開示されています。受注残高（手持受注残高）については、プラント建設セグメントにおいて「高水準」である旨の定性的な記述はありますが、具体的な金額データは本資料内には見当たりません。"
+    }
+  ],
+  "_source_pdf": "tdnet/6403/20260205_6403_水道機工_決算短信_2026年3月期 第3四半期決算短信〔日本基準〕（連結）_140120260205548490.pdf",
+  "_source_doc_id": "140120260205548490",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:12:23.504647+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4
+    ],
+    "table_count": 1,
+    "max_rows": 5,
+    "max_cols": 7,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

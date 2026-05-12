@@ -1,0 +1,16 @@
+{
+  "ticker": "8572",
+  "company_name": "アコム",
+  "ir_page_url": "https://www.acom.co.jp/corp/ir/library/monthly_report/",
+  "type": "scrape_links",
+  "status": "active",
+  "link_text_pattern": null,
+  "link_href_pattern": "/C8572/.*\\.pdf",
+  "playwright_required": true,
+  "manual_override": true,
+  "note": "2026-04-24修正: PDFリンクtext=日付のみでlink_text_patternマッチ不可。テキストフィルタ除去、hrefパターンでirpocket C8572に限定。playwright必須(JS描画)",
+  "updated_at": "2026-04-24T17:28:05.307145+09:00",
+  "css_selector": null,
+  "table_selector": null,
+  "follow_links": false
+}

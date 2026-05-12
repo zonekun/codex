@@ -1,0 +1,76 @@
+{
+  "ticker": "1726",
+  "company_name": "Ｂｒ．ＨＤ",
+  "current_version": "2025-11",
+  "versions": [
+    {
+      "valid_from": "2025-11",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "報告セグメント別の受注実績合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "販売実績",
+          "type": "completed",
+          "description": "報告セグメント別の販売実績（売上高）合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "手持工事高",
+          "type": "backlog",
+          "description": "建設事業における受注残高（手持工事高）",
+          "unit": "百万円",
+          "is_total": false
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "建設事業",
+            "製品販売事業",
+            "情報システム事業",
+            "不動産賃貸事業"
+          ]
+        },
+        {
+          "dimension_name": "建設事業内訳",
+          "items": [
+            "橋梁",
+            "その他"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "セグメント別の受注・販売実績テーブルに加え、建設事業の受注残（手持工事高）の推移グラフが掲載されている。"
+    }
+  ],
+  "_source_pdf": "tdnet/1726/20251107_1726_Ｂｒ．ＨＤ_決算短信_2026年３月期 第２四半期（中間期）決算短信〔日本基準〕（連結）_140120251104586571.pdf",
+  "_source_doc_id": "140120251104586571",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T16:36:14.231020+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      13
+    ],
+    "table_count": 3,
+    "max_rows": 6,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

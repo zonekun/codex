@@ -1,0 +1,32 @@
+{
+  "ticker": "7062",
+  "company_name": "7062",
+  "metrics": [
+    {
+      "name": "マッサージFC 加盟店数",
+      "source": "bc"
+    },
+    {
+      "name": "マッサージFC 売上（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "マッサージ直営 売上（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "マッサージ直営 拠点数",
+      "source": "bc"
+    },
+    {
+      "name": "連結 売上（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "連結 売上（百万円）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

@@ -1,0 +1,64 @@
+{
+  "source": "non-tdnet(pdf)",
+  "format": "pdf",
+  "fields": [
+    {
+      "key": "世界生産 台数（前年同月比）",
+      "name": "世界生産 台数（前年同月比）",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "url_adapter status=skip。GCSには公正取引委員会勧告関連PDFのみで月次生産販売データなし"
+    },
+    {
+      "key": "世界販売 台数（前年同月比）",
+      "name": "世界販売 台数（前年同月比）",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "同上"
+    },
+    {
+      "key": "国内生産 台数（前年同月比）",
+      "name": "国内生産 台数（前年同月比）",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "同上"
+    },
+    {
+      "key": "国内販売 台数（前年同月比）",
+      "name": "国内販売 台数（前年同月比）",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "同上"
+    },
+    {
+      "key": "海外生産 台数（前年同月比）",
+      "name": "海外生産 台数（前年同月比）",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "同上"
+    },
+    {
+      "key": "海外販売 台数（前年同月比）",
+      "name": "海外販売 台数（前年同月比）",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "同上"
+    },
+    {
+      "key": "輸出台数（前年同月比）",
+      "name": "輸出台数（前年同月比）",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "同上"
+    }
+  ],
+  "extraction_notes": "スズキ。url_adapter status=skip。GCSには公正取引委員会勧告関連PDF（スズキ直営販売代理店に対する排除措置命令）のみ。月次の生産・販売・輸出データを開示する文書が確認できないため全field bc_ignore。",
+  "ticker": "7269",
+  "company_name": "スズキ",
+  "created_at": "2026-04-05T10:01:56.046364+09:00",
+  "created_by": "gemini-2.5-flash",
+  "extraction_method": "gemini",
+  "manual_override": true,
+  "manual_override_note": "Codex成果物を自ら検証・再作成。月次文書不在のためbc_ignore",
+  "manual_override_at": "2026-05-08T00:25:00+09:00"
+}

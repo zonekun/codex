@@ -1,0 +1,36 @@
+{
+  "ticker": "7269",
+  "company_name": "7269",
+  "metrics": [
+    {
+      "name": "世界生産 台数（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "世界販売 台数（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "国内生産 台数（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "国内販売 台数（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "海外生産 台数（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "海外販売 台数（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "輸出台数（前年同月比）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

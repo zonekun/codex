@@ -1,0 +1,36 @@
+{
+  "ticker": "2330",
+  "company_name": "フォーサイド",
+  "current_version": "2025-11",
+  "versions": [
+    {
+      "valid_from": "2025-11",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "breakdown_dimensions": [],
+      "presentation_format": "text",
+      "complexity": "no_data",
+      "notes": "PDFを確認し、受注高または受注残高の数値データがないため抽出対象外。"
+    }
+  ],
+  "_source_pdf": "tdnet/2330/20251113_2330_フォーサイド_決算短信_2025年12月期 第３四半期決算短信〔日本基準〕（連結）_140120251113599433.pdf",
+  "_source_doc_id": "140120251113599433",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:20:44.979407+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "no_table",
+    "relevant_pages": [
+      5
+    ],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "pdfplumber found no tables on relevant pages"
+    ]
+  }
+}

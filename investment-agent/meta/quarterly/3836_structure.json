@@ -1,0 +1,51 @@
+{
+  "ticker": "3836",
+  "company_name": "アバントグループ",
+  "current_version": "2025-10",
+  "versions": [
+    {
+      "valid_from": "2025-10",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当第1四半期におけるセグメント別の受注高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当第1四半期末におけるセグメント別の受注残高",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "報告セグメント別の受注高、受注残高、および販売実績（売上高）が詳細な表形式で提供されています。また、直近4四半期の売上高推移も含まれています。"
+    }
+  ],
+  "_source_pdf": "tdnet/3836/20251031_3836_アバントグループ_決算短信_2026年6月期第1四半期決算短信〔日本基準〕(連結)_140120251031584768.pdf",
+  "_source_doc_id": "140120251031584768",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:52:31.929721+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      7
+    ],
+    "table_count": 3,
+    "max_rows": 9,
+    "max_cols": 7,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

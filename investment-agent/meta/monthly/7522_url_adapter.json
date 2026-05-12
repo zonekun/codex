@@ -1,0 +1,11 @@
+{
+  "ticker": "7522",
+  "company_name": "ワタミ",
+  "ir_page_url": "https://www.watami.co.jp/ir/library/recent/fy2025/",
+  "type": "html_table",
+  "status": "active",
+  "playwright_required": true,
+  "manual_override": true,
+  "manual_override_at": "2026-05-08T14:00:00+09:00",
+  "note": "旧adapter: link_href_patternが環境報告書PDFにマッチし誤設定。月次売上はHTML表形式で各年度ページに掲載。fy2025=2025年4月-2026年3月。年度ページURLは /ir/library/recent/fyXXXX/。年度変わりで更新要"
+}

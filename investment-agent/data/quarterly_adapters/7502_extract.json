@@ -1,0 +1,28 @@
+{
+  "ticker": "7502",
+  "company_name": "プラザＨＤ",
+  "current_version": "2025-11",
+  "versions": [
+    {
+      "valid_from": "2025-11",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/7502/20251110_7502_プラザＨＤ_決算短信_2026年３月期 第２四半期（中間期）決算短信〔日本基準〕（連結）_140120251110593866.pdf",
+  "_source_doc_id": "140120251110593866",
+  "_generated_at": "2026-04-30T19:50:50.535008+09:00",
+  "_model_used": null
+}

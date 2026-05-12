@@ -1,0 +1,20 @@
+{
+  "ticker": "8630",
+  "company_name": "ＳＯＭＰＯホールディングス",
+  "updated_at": "2026-04-20",
+  "ir_page_url": "http://www.sompo-hd.com/ir/financial/monthly.html",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": "月次|PDF",
+  "link_href_pattern": "/\\-/media/hd/files/doc/pdf/e_seiseki.*\\.(pdf)",
+  "table_selector": null,
+  "status": "active",
+  "skip_reason": null,
+  "note": "自動生成。ページ: http://www.sompo-hd.com/ir/financial/monthly.html / リンク12件検出",
+  "url_source": "recovered_from_index_csv",
+  "last_checked": "2026-04-20",
+  "follow_links": false,
+  "playwright_required": false,
+  "recovered_at": "2026-04-20T21:37:09.325193+09:00",
+  "recovery_reason": "sync_bug_overwrite_20260420"
+}

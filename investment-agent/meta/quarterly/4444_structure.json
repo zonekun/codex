@@ -1,0 +1,84 @@
+{
+  "ticker": "4444",
+  "company_name": "Ｇ－インフォネット",
+  "current_version": "2025-05",
+  "versions": [
+    {
+      "valid_from": "2025-05",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "INFONETおよびIACTの受託開発における四半期別の受注高実績。IACTの数値には運用保守の受注高が含まれる。",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "会社・セグメント",
+          "items": [
+            "INFONET",
+            "IACT"
+          ]
+        },
+        {
+          "dimension_name": "会計年度",
+          "items": [
+            "2023/3期",
+            "2024/3期",
+            "2025/3期"
+          ]
+        },
+        {
+          "dimension_name": "四半期",
+          "items": [
+            "1Q",
+            "2Q",
+            "3Q",
+            "4Q"
+          ]
+        },
+        {
+          "dimension_name": "事業区分",
+          "items": [
+            "Web/CMS関連事業",
+            "AI関連事業"
+          ]
+        },
+        {
+          "dimension_name": "売上区分",
+          "items": [
+            "ストック",
+            "フロー"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "ppt_chart",
+      "notes": "INFONETとIACTの2つの事業体について、2023年3月期から2025年3月期までの四半期別受注高の推移が積み上げ棒グラフで示されています。IACTの受注高には運用保守が含まれる旨の注釈があります。 pages 12および15に連結売上高、ストック/フロー売上高、Web/CMS関連事業とAI関連事業の売上高が記載されているため、completed metricとして追加。受注残高は数値記載なし。"
+    }
+  ],
+  "_source_pdf": "tdnet/4444/20250515_4444_Ｇ－インフォネット_決算説明資料_2025年3月期通期決算説明動画及び書き起こし記事公開に関するお知らせ_140120250515553163.pdf",
+  "_source_doc_id": "140120250515553163",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T18:08:46.868409+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      19
+    ],
+    "table_count": 19,
+    "max_rows": 4,
+    "max_cols": 2,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 19"
+    ]
+  }
+}

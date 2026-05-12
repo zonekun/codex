@@ -1,8 +1,7 @@
 """SKEW × VIX × Fear&Greed テールリスクシグナル 直近10日チェック.
 
-メニュー項目2: 起動時随時実行
-詳細: docs/knowledges/analysis/003_skew_vix_fg_tail_risk.md
-PS1メニュー: C:\\Users\\zonekun\\Dropbox\\stock\\script\\claude-investment-agent.ps1
+PSメニュー「テールリスクシグナル 直近10日チェック」
+詳細: docs/knowledges/analysis/003_skew_vix_fg_tail_risk.md, docs/knowledges/tools/023_powershell_menu.md
 """
 import os
 

@@ -187,16 +187,14 @@ def _tdnet_get_texts(ticker: str, delisting_date_str: str, client: bigquery.Clie
 def _gemini_classify(text: str, company_name: str) -> bool | None:
     """TDnet テキストを Gemini に渡して IS_TOB_MBO を True / False / None で返す。"""
     try:
-        import vertexai
-        from vertexai.generative_models import GenerativeModel
+        from google import genai
     except ImportError:
-        log("      vertexai 未インストール → None")
+        log("      google-genai 未インストール → None")
         return None
 
     try:
         creds = service_account.Credentials.from_service_account_file(KEY_FILE)
-        vertexai.init(project=PROJECT, location=VERTEXAI_REGION, credentials=creds)
-        model = GenerativeModel(GEMINI_MODEL)
+        client = genai.Client(vertexai=True, project=PROJECT, location=VERTEXAI_REGION, credentials=creds)
 
         prompt = f"""以下はTDnet（適時開示）に提出された書類のテキストです。
 {company_name}の上場廃止が「株主にプレミアムを付けた買収」によるものかを判定してください。
@@ -218,7 +216,7 @@ def _gemini_classify(text: str, company_name: str) -> bool | None:
 
 「True」または「False」の1単語のみで回答してください。"""
 
-        response = model.generate_content(prompt)
+        response = client.models.generate_content(model=GEMINI_MODEL, contents=prompt)
         answer = response.text.strip()
         if "true" in answer.lower():
             return True

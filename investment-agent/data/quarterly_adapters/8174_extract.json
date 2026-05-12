@@ -1,0 +1,28 @@
+{
+  "ticker": "8174",
+  "company_name": "日瓦斯",
+  "current_version": "2025-07",
+  "versions": [
+    {
+      "valid_from": "2025-07",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "presentation",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Vision extraction selected because structure is complex or data is unavailable."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/8174/20250729_8174_日瓦斯_決算説明資料_2026年３月期　第１四半期　決算説明資料_140120250728521844.pdf",
+  "_source_doc_id": "140120250728521844",
+  "_generated_at": "2026-04-30T20:05:57.848456+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

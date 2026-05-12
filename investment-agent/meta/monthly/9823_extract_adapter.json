@@ -1,0 +1,74 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "doc_title_pattern": "(\\d{4})年(\\d{1,2})月月次業績開示のお知らせ",
+  "year_from_title_regex": "(\\d{4})年",
+  "month_from_title_regex": "(\\d{1,2})月",
+  "fields": [
+    {
+      "key": "全店 売上（前年同月比）",
+      "name": "全店 売上（前年同月比）",
+      "row_label_regex": "全店\\s+前年比\\s+\\(%\\)\\s+売上高\\s+([\\d.]+(?:\\s+[\\d.]+)*)",
+      "use_last_number": true,
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "persistent diff=6.3: our=122.8 vs bc=116.5"
+    },
+    {
+      "key": "全店 客数（前年同月比）",
+      "name": "全店 客数（前年同月比）",
+      "row_label_regex": "全店\\s+前年比\\s+\\(%\\)\\s+売上高\\s+[\\d.]+(?:\\s+[\\d.]+)*\\s+客数\\s+([\\d.]+(?:\\s+[\\d.]+)*)",
+      "use_last_number": true,
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "persistent diff=4.3: our=117.1 vs bc=112.8"
+    },
+    {
+      "key": "全店 客単価（前年同月比）",
+      "name": "全店 客単価（前年同月比）",
+      "row_label_regex": "全店\\s+前年比\\s+\\(%\\)\\s+売上高\\s+[\\d.]+(?:\\s+[\\d.]+)*\\s+客数\\s+[\\d.]+(?:\\s+[\\d.]+)*\\s+客単価\\s+([\\d.]+(?:\\s+[\\d.]+)*)",
+      "use_last_number": true,
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "persistent diff=1.6: our=104.9 vs bc=103.3"
+    },
+    {
+      "key": "既存店 売上（前年同月比）",
+      "name": "既存店 売上（前年同月比）",
+      "row_label_regex": "既存店\\s+前年比\\s+\\(%\\)\\s+売上高\\s+([\\d.]+(?:\\s+[\\d.]+)*)",
+      "use_last_number": true,
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "persistent diff=7.4: our=110.1 vs bc=102.7"
+    },
+    {
+      "key": "既存店 客数（前年同月比）",
+      "name": "既存店 客数（前年同月比）",
+      "row_label_regex": "既存店\\s+前年比\\s+\\(%\\)\\s+売上高\\s+[\\d.]+(?:\\s+[\\d.]+)*\\s+客数\\s+([\\d.]+(?:\\s+[\\d.]+)*)",
+      "use_last_number": true,
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "persistent diff=5.4: our=106.5 vs bc=101.1"
+    },
+    {
+      "key": "既存店 客単価（前年同月比）",
+      "name": "既存店 客単価（前年同月比）",
+      "row_label_regex": "既存店\\s+前年比\\s+\\(%\\)\\s+売上高\\s+[\\d.]+(?:\\s+[\\d.]+)*\\s+客数\\s+[\\d.]+(?:\\s+[\\d.]+)*\\s+客単価\\s+([\\d.]+(?:\\s+[\\d.]+)*)",
+      "use_last_number": true,
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "persistent diff=1.8: our=103.4 vs bc=101.6"
+    }
+  ],
+  "extraction_notes": "月次業績の表から、文書タイトルで指定された月（2026年2月）に対応する値を抽出します。row_label_regexは、該当する行のラベルに続き、対象月の値が5番目の数値として出現することを前提に、その値をキャプチャするように記述されています。",
+  "ticker": "9823",
+  "company_name": "9823",
+  "created_at": "2026-03-24T08:15:10.236406+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2026年2月月次業績開示のお知らせ",
+  "sample_submission_date": "2026-03-09",
+  "fields_count": 6,
+  "manual_override": true,
+  "manual_override_at": "2026-04-25T06:10:00+09:00",
+  "manual_override_note": "Phase 2-3: bc_ignore for fields with persistent extraction mismatch"
+}

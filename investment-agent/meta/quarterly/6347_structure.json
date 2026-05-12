@@ -1,0 +1,44 @@
+{
+  "ticker": "6347",
+  "company_name": "プラコー",
+  "current_version": "2025-02",
+  "versions": [
+    {
+      "valid_from": "2025-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当第３四半期連結累計期間における事業部門別の受注実績",
+          "unit": "千円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "当該ページには受注高および販売高の事業部門別内訳と合計が記載されています。受注残高に関するデータは含まれていません。"
+    }
+  ],
+  "_source_pdf": "tdnet/6347/20250214_6347_プラコー_決算短信_2025年３月期　第３四半期決算短信〔日本基準〕（連結）_140120250213573479.pdf",
+  "_source_doc_id": "140120250213573479",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:05:42.744717+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      13
+    ],
+    "table_count": 3,
+    "max_rows": 6,
+    "max_cols": 3,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

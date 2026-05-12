@@ -1,0 +1,91 @@
+{
+  "ticker": "6240",
+  "company_name": "ヤマシンフィルタ",
+  "current_version": "2025-11",
+  "versions": [
+    {
+      "valid_from": "2025-11",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "売上高（建機用フィルタビジネス）",
+          "type": "completed",
+          "description": "建機用フィルタビジネスにおける四半期ごとの売上高推移",
+          "unit": "百万円",
+          "is_total": false
+        },
+        {
+          "name": "確定受注残高（建機用フィルタビジネス）",
+          "type": "backlog",
+          "description": "建機用フィルタビジネスにおける四半期末時点の確定受注残高推移",
+          "unit": "百万円",
+          "is_total": false
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "会計期間",
+          "items": [
+            "2020/3 Q1",
+            "2020/3 Q2",
+            "2020/3 Q3",
+            "2020/3 Q4",
+            "2021/3 Q1",
+            "2021/3 Q2",
+            "2021/3 Q3",
+            "2021/3 Q4",
+            "2022/3 Q1",
+            "2022/3 Q2",
+            "2022/3 Q3",
+            "2022/3 Q4",
+            "2023/3 Q1",
+            "2023/3 Q2",
+            "2023/3 Q3",
+            "2023/3 Q4",
+            "2024/3 Q1",
+            "2024/3 Q2",
+            "2024/3 Q3",
+            "2024/3 Q4",
+            "2025/3 Q1",
+            "2025/3 Q2",
+            "2025/3 Q3",
+            "2025/3 Q4",
+            "2026/3 Q1",
+            "2026/3 Q2"
+          ]
+        },
+        {
+          "dimension_name": "事業セグメント",
+          "items": [
+            "建機用フィルタビジネス"
+          ]
+        }
+      ],
+      "presentation_format": "chart",
+      "complexity": "ppt_chart",
+      "notes": "建機用フィルタビジネスにおける売上高と確定受注残高の四半期推移がグラフ形式で示されており、各データポイントに具体的な数値が記載されています。2020年3月期から2026年3月期第2四半期までの長期的な推移データが利用可能です。"
+    }
+  ],
+  "_source_pdf": "tdnet/6240/20251120_6240_ヤマシンフィルタ_決算説明資料_2026年3月期第２四半期決算説明資料（確定版）_140120251119506267.pdf",
+  "_source_doc_id": "140120251119506267",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T18:52:30.928764+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      29,
+      52
+    ],
+    "table_count": 1,
+    "max_rows": 15,
+    "max_cols": 26,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "wide table: 26 columns"
+    ]
+  }
+}

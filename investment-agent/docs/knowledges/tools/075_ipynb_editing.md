@@ -94,7 +94,24 @@ for i, c in enumerate(nb["cells"]):
 print("".join(nb["cells"][5]["source"]))
 ```
 
-### 6. 文字列検索による置換位置の特定
+### 6. source を `list()` で文字配列にすると `\n` がリテラル改行になる
+
+**症状**: `cell["source"] = list(python_string)` でソースを書き込むと、Python 文字列中の `\n`（エスケープシーケンス）がリテラル改行文字に展開される。`json.dump` がそれを JSON 内で改行として書き出すため、f-string が行をまたいで `SyntaxError: unterminated f-string literal` になる
+
+**トリガー**: `print(f"\nベース率...")` のように f-string 内に `\n` を含むコードを `list()` で文字配列化した場合
+
+**対策**: ソース文字列中のバックスラッシュエスケープが展開されないよう、`\\n` と二重エスケープするか、行分割 (`split("\n")`) で配列化する
+
+```python
+# ❌ \n がリテラル改行に展開される
+cell["source"] = list('print(f"\nfoo")')
+
+# ✅ 行分割で配列化（\n は各行内に文字列リテラルとして残る）
+lines = code_str.split("\n")
+cell["source"] = [line + "\n" for line in lines[:-1]] + [lines[-1]]
+```
+
+### 7. 文字列検索による置換位置の特定
 
 **症状**: `str.replace()` で意図しない箇所が置換される、または一意でなくて失敗
 

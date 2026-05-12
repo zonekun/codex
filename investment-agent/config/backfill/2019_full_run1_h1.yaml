@@ -1,0 +1,34 @@
+name: 2019_full_run1_h1
+
+loads:
+  - job: tdnet-load-daily
+    region: us-west1
+    env:
+      DATE_FROM: "20190101"
+      DATE_TO: "20190630"
+      ALLOW_FULL_BACKFILL: "1"
+    args: ["--job-mode=load"]
+
+workflows:
+  - name: ai_processing_flow
+    location: us-central1
+    data:
+      date_from: "20190101"
+      date_to: "20190331"
+  # Q2 OOM分割: 15,267 docs → 5/10で均等分割(各~7.5K docs)
+  - name: ai_processing_flow
+    location: us-central1
+    data:
+      date_from: "20190401"
+      date_to: "20190510"
+  - name: ai_processing_flow
+    location: us-central1
+    data:
+      date_from: "20190511"
+      date_to: "20190630"
+
+options:
+  parallel_loads: 1
+  poll_interval_s: 120
+  notify_on_start: true
+  notify_each_load: true

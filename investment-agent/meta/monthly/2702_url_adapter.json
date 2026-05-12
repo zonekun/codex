@@ -1,0 +1,17 @@
+{
+  "ticker": "2702",
+  "company_name": "日本マクドナルドホールディングス",
+  "ir_page_url": "https://www.mcd-holdings.co.jp/ir/",
+  "updated_at": "2026-04-24T13:56:32.655334+09:00",
+  "last_checked": "2026-04-21",
+  "status": "active",
+  "type": "html_table",
+  "css_selector": null,
+  "link_text_pattern": "月次",
+  "link_href_pattern": "/contents/data_file\\.php",
+  "note": "JS描画ページ。Playwright必要。ゼロDL修正 (2026-04-24)。",
+  "playwright_required": true,
+  "manual_override": true,
+  "manual_override_at": "2026-04-24T13:56:32.655334+09:00",
+  "manual_override_note": "ゼロDL修正 (2026-04-24)"
+}

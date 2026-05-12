@@ -1,0 +1,28 @@
+{
+  "ticker": "7433",
+  "company_name": "伯東",
+  "current_version": "2025-01",
+  "versions": [
+    {
+      "valid_from": "2025-01",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "presentation",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/7433/20250130_7433_伯東_決算説明資料_2025年3月期第3四半期決算補足説明資料_140120250129557528.pdf",
+  "_source_doc_id": "140120250129557528",
+  "_generated_at": "2026-04-30T19:49:57.790512+09:00",
+  "_model_used": null
+}

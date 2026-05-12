@@ -1,0 +1,16 @@
+{
+  "ticker": "1430",
+  "company_name": "1430",
+  "metrics": [
+    {
+      "name": "受注売上 年度累計（百万円）",
+      "source": "bc"
+    },
+    {
+      "name": "受注戸数 年度累計（戸）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

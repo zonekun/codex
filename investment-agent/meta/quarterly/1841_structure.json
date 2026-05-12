@@ -1,0 +1,45 @@
+{
+  "ticker": "1841",
+  "company_name": "サンユー建設",
+  "current_version": "2025-11",
+  "versions": [
+    {
+      "valid_from": "2025-11",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当期中に新たに受注した工事の総額。建築事業の数値がテキスト形式で開示されている。",
+          "unit": "百万円",
+          "is_total": false
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "PDF page 4 states building segment order intake of 6,312 million yen. PDF page 7 PL table is unit: thousand yen and includes completed construction sales of 3,515,817 thousand yen and total sales of 5,232,202 thousand yen. No numeric backlog was confirmed."
+    }
+  ],
+  "_source_pdf": "tdnet/1841/20251112_1841_サンユー建設_決算短信_2026年3月期 第2四半期(中間期)決算短信〔日本基準〕(連結)_140120251029581463.pdf",
+  "_source_doc_id": "140120251029581463",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T16:51:47.189974+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      7
+    ],
+    "table_count": 1,
+    "max_rows": 39,
+    "max_cols": 3,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

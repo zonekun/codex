@@ -1,0 +1,13 @@
+{
+  "ticker": "7088",
+  "company_name": "フォーラムエンジニアリング",
+  "ir_page_url": "https://www.forumeng.co.jp/ir/",
+  "status": "inactive",
+  "type": "html_table",
+  "note": "KKR TOB成立。2026-05-13上場廃止予定。月次データなし。inactive (2026-04-24)",
+  "updated_at": "2026-04-24T15:09:58.572853+09:00",
+  "last_checked": "2026-04-24",
+  "manual_override": true,
+  "manual_override_at": "2026-04-24T15:09:58.572853+09:00",
+  "manual_override_note": "TOB上場廃止→inactive (2026-04-24)"
+}

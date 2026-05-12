@@ -1,0 +1,44 @@
+{
+  "ticker": "9031",
+  "company_name": "9031",
+  "metrics": [
+    {
+      "name": "全ホテル Rev PAR（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "全ホテル 平均客室単価（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "全ホテル 稼働率（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "既存ホテル Rev PAR（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "既存ホテル 平均客室単価（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "既存ホテル 稼働率（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "輸送人員 合計（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "運輸収入 定期外（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "運輸収入 定期（前年同月比）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

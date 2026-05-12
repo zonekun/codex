@@ -36,6 +36,7 @@ KEY_FILE    = "keys/gcp-service-account.json"
 PROJECT     = "gmailpj-357912"
 BUFFETT_URL = "https://www.buffett-code.com/company/{code}/kpi"
 OUT_DIR     = Path(r"C:\tmp")
+INDEX_CSV   = Path(__file__).resolve().parent.parent / "data" / "monthly_adapter_index.csv"
 CHROME_EXE  = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
 JST         = timezone(timedelta(hours=9))
 
@@ -55,6 +56,18 @@ def log(msg: str) -> None:
 def get_gcs() -> storage.Client:
     creds = service_account.Credentials.from_service_account_file(KEY_FILE)
     return storage.Client(project=PROJECT, credentials=creds)
+
+
+def _load_excluded_tickers() -> set[str]:
+    """monthly_adapter_index.csv から category=excluded のティッカー集合を返す。"""
+    if not INDEX_CSV.exists():
+        return set()
+    try:
+        import pandas as pd
+        df = pd.read_csv(INDEX_CSV, dtype=str, encoding="utf-8-sig")
+        return set(df.loc[df["category"] == "excluded", "ticker"].tolist())
+    except Exception:
+        return set()
 
 
 def list_tickers_with_records(gcs: storage.Client) -> list[str]:
@@ -118,7 +131,7 @@ def load_structure_bc_names(gcs: storage.Client, ticker: str) -> set[str]:
     names: set[str] = set()
     for key in ("monthly_items", "metrics"):
         for it in structure.get(key, []):
-            if isinstance(it, dict) and it.get("name"):
+            if isinstance(it, dict) and it.get("name") and it.get("source", "bc") != "original":
                 names.add(str(it["name"]))
     return names
 
@@ -553,7 +566,15 @@ def main() -> None:
     else:
         log("GCS から monthly_records.json 保有ティッカーを列挙中...")
         tickers = list_tickers_with_records(gcs)
-        log(f"  → {len(tickers)}社")
+        log(f"  → {len(tickers)}社（GCS保有）")
+
+        excluded_tickers = _load_excluded_tickers()
+        if excluded_tickers:
+            before_count = len(tickers)
+            tickers = [t for t in tickers if t not in excluded_tickers]
+            if before_count != len(tickers):
+                log(f"  → index excluded {before_count - len(tickers)}社除外 → {len(tickers)}社")
+
         if args.limit:
             tickers = tickers[:args.limit]
 

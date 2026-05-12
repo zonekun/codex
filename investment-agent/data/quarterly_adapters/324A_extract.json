@@ -1,0 +1,28 @@
+{
+  "ticker": "324A",
+  "company_name": "Ｇ－ブッキングＲ",
+  "current_version": "2026-03",
+  "versions": [
+    {
+      "valid_from": "2026-03",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "presentation",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/324A/20260313_324A_Ｇ－ブッキングＲ_決算説明資料_2026年４月期　第３四半期決算説明資料_140120260313581627.pdf",
+  "_source_doc_id": "140120260313581627",
+  "_generated_at": "2026-04-30T17:35:52.600431+09:00",
+  "_model_used": null
+}

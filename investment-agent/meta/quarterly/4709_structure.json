@@ -1,0 +1,104 @@
+{
+  "ticker": "4709",
+  "company_name": "ＩＤホールディングス",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "サービス別の受注残高（累計）",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "システムマネジメント 受注残高",
+          "type": "backlog",
+          "description": "システムマネジメント部門の受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        },
+        {
+          "name": "アプリケーション開発 受注残高",
+          "type": "backlog",
+          "description": "アプリケーション開発部門の受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        },
+        {
+          "name": "ITインフラ 受注残高",
+          "type": "backlog",
+          "description": "ITインフラ部門の受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        },
+        {
+          "name": "サイバーセキュリティ 受注残高",
+          "type": "backlog",
+          "description": "サイバーセキュリティ部門の受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        },
+        {
+          "name": "コンサルティング・教育 受注残高",
+          "type": "backlog",
+          "description": "コンサルティング・教育部門の受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        },
+        {
+          "name": "その他 受注残高",
+          "type": "backlog",
+          "description": "その他部門の受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "サービス",
+          "items": [
+            "システムマネジメント",
+            "アプリケーション開発",
+            "ITインフラ",
+            "サイバーセキュリティ",
+            "コンサルティング・教育",
+            "その他"
+          ]
+        }
+      ],
+      "presentation_format": "chart",
+      "complexity": "ppt_chart",
+      "notes": "サービス別の受注残高（累計）が棒グラフで示されており、2024年12月末と2025年12月末の比較データが記載されている。"
+    }
+  ],
+  "_source_pdf": "tdnet/4709/20260206_4709_ＩＤホールディングス_決算説明資料_2026年３月期 第３四半期 決算説明資料_140120260206550131.pdf",
+  "_source_doc_id": "140120260206550131",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T18:12:44.703189+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      10
+    ],
+    "table_count": 1,
+    "max_rows": 1,
+    "max_cols": 2,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

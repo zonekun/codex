@@ -1,0 +1,68 @@
+{
+  "ticker": "1873",
+  "company_name": "日本ハウスＨＤ",
+  "current_version": "2026-03",
+  "versions": [
+    {
+      "valid_from": "2026-03",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当第３四半期連結累計期間における受注状況。住宅事業の建築部門および不動産部門の内訳が含まれる。",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "販売実績",
+          "type": "completed",
+          "description": "当第３四半期連結累計期間におけるセグメント別の販売実績（売上高に相当）。",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "住宅事業",
+            "ホテル事業",
+            "その他事業"
+          ]
+        },
+        {
+          "dimension_name": "部門",
+          "items": [
+            "建築部門",
+            "不動産部門"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "受注高については住宅事業の内訳（建築部門・不動産部門）が表形式で提供されている。販売実績については全セグメントの数値が表形式で提供されている。受注残高については、定性情報として期首受注残高の減少への言及はあるが、当期末の具体的な数値データは記載されていない。"
+    }
+  ],
+  "_source_pdf": "tdnet/1873/20260306_1873_日本ハウスＨＤ_決算短信_2026年４月期第３四半期決算短信〔日本基準〕(連結)_140120260305576938.pdf",
+  "_source_doc_id": "140120260305576938",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T16:57:19.690233+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      11
+    ],
+    "table_count": 2,
+    "max_rows": 5,
+    "max_cols": 4,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

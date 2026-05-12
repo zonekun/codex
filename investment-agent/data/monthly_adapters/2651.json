@@ -1,9 +1,0 @@
-{
-  "ticker": "2651",
-  "company_name": "ローソン",
-  "type": "scrape_links",
-  "url": "https://www.lawson.co.jp/company/ir/monthly/",
-  "manual_add": true,
-  "created_at": "2026-04-04T22:17:23.979397+09:00",
-  "created_by": "gemini_search"
-}

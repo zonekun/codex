@@ -1,0 +1,181 @@
+{
+  "ticker": "6503",
+  "company_name": "三菱電",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "extraction_method": "regex",
+      "source": "tanshin",
+      "page_keywords": [
+        "業績概要",
+        "部門別売上高",
+        "部門別受注高"
+      ],
+      "fields": [
+        {
+          "key": "売上高",
+          "row_label_regex": "^売上高$",
+          "value_type": "integer",
+          "unit": "億円",
+          "notes": "連結合計の売上高"
+        },
+        {
+          "key": "売上高",
+          "row_label_regex": "^インフラ\\s*売上高$",
+          "value_type": "integer",
+          "unit": "億円",
+          "notes": "セグメント別：インフラ"
+        },
+        {
+          "key": "売上高",
+          "row_label_regex": "^社会システム\\s*売上高$",
+          "value_type": "integer",
+          "unit": "億円",
+          "notes": "セグメント別：社会システム"
+        },
+        {
+          "key": "売上高",
+          "row_label_regex": "^エネルギーシステム\\s*売上高$",
+          "value_type": "integer",
+          "unit": "億円",
+          "notes": "セグメント別：エネルギーシステム"
+        },
+        {
+          "key": "売上高",
+          "row_label_regex": "^防衛・宇宙システム\\s*売上高$",
+          "value_type": "integer",
+          "unit": "億円",
+          "notes": "セグメント別：防衛・宇宙システム"
+        },
+        {
+          "key": "売上高",
+          "row_label_regex": "^インダストリー・モビリティ\\s*売上高$",
+          "value_type": "integer",
+          "unit": "億円",
+          "notes": "セグメント別：インダストリー・モビリティ"
+        },
+        {
+          "key": "売上高",
+          "row_label_regex": "^FAシステム\\s*売上高$",
+          "value_type": "integer",
+          "unit": "億円",
+          "notes": "セグメント別：FAシステム"
+        },
+        {
+          "key": "売上高",
+          "row_label_regex": "^自動車機器\\s*売上高$",
+          "value_type": "integer",
+          "unit": "億円",
+          "notes": "セグメント別：自動車機器"
+        },
+        {
+          "key": "売上高",
+          "row_label_regex": "^ライフ\\s*売上高$",
+          "value_type": "integer",
+          "unit": "億円",
+          "notes": "セグメント別：ライフ"
+        },
+        {
+          "key": "売上高",
+          "row_label_regex": "^ビルシステム\\s*売上高$",
+          "value_type": "integer",
+          "unit": "億円",
+          "notes": "セグメント別：ビルシステム"
+        },
+        {
+          "key": "売上高",
+          "row_label_regex": "^空調・家電\\s*売上高$",
+          "value_type": "integer",
+          "unit": "億円",
+          "notes": "セグメント別：空調・家電"
+        },
+        {
+          "key": "売上高",
+          "row_label_regex": "^デジタルイノベーション\\s*売上高$",
+          "value_type": "integer",
+          "unit": "億円",
+          "notes": "セグメント別：デジタルイノベーション"
+        },
+        {
+          "key": "売上高",
+          "row_label_regex": "^セミコンダクター・デバイス\\s*売上高$",
+          "value_type": "integer",
+          "unit": "億円",
+          "notes": "セグメント別：セミコンダクター・デバイス"
+        },
+        {
+          "key": "売上高",
+          "row_label_regex": "^その他\\s*売上高$",
+          "value_type": "integer",
+          "unit": "億円",
+          "notes": "セグメント別：その他"
+        },
+        {
+          "key": "受注高",
+          "row_label_regex": "^インフラ$",
+          "value_type": "integer",
+          "unit": "億円",
+          "notes": "受注高：インフラ"
+        },
+        {
+          "key": "受注高",
+          "row_label_regex": "^社会システム$",
+          "value_type": "integer",
+          "unit": "億円",
+          "notes": "受注高：社会システム"
+        },
+        {
+          "key": "受注高",
+          "row_label_regex": "^エネルギーシステム$",
+          "value_type": "integer",
+          "unit": "億円",
+          "notes": "受注高：エネルギーシステム"
+        },
+        {
+          "key": "受注高",
+          "row_label_regex": "^防衛・宇宙システム$",
+          "value_type": "integer",
+          "unit": "億円",
+          "notes": "受注高：防衛・宇宙システム"
+        },
+        {
+          "key": "受注高",
+          "row_label_regex": "^インダストリー・モビリティ\\(FAシステム\\)$",
+          "value_type": "integer",
+          "unit": "億円",
+          "notes": "受注高：インダストリー・モビリティ(FAシステム)"
+        },
+        {
+          "key": "受注高",
+          "row_label_regex": "^ライフ\\(ビルシステム\\)$",
+          "value_type": "integer",
+          "unit": "億円",
+          "notes": "受注高：ライフ(ビルシステム)"
+        },
+        {
+          "key": "受注高",
+          "row_label_regex": "^デジタルイノベーション$",
+          "value_type": "integer",
+          "unit": "億円",
+          "notes": "受注高：デジタルイノベーション"
+        },
+        {
+          "key": "受注高",
+          "row_label_regex": "^セミコンダクター・デバイス$",
+          "value_type": "integer",
+          "unit": "億円",
+          "notes": "受注高：セミコンダクター・デバイス"
+        }
+      ],
+      "gemini_custom_prompt": "",
+      "notes": "3ページ目の(1)業績概要、(2)部門別売上高、(3)部門別受注高の各テーブルから抽出します。売上高はセグメント名と「売上高」のラベルが組み合わさった行を対象とし、受注高は受注高専用テーブルのセグメント名ラベルを対象とします。"
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/6503/20260203_6503_三菱電_決算短信_2026年3月期 第3四半期決算短信〔IFRS〕（連結）_140120260202544714.pdf",
+  "_source_doc_id": "140120260202544714",
+  "_generated_at": "2026-04-30T23:27:48.059022+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

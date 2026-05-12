@@ -1,0 +1,36 @@
+{
+  "ticker": "280A",
+  "company_name": "Ｇ－ＴＭＨ",
+  "current_version": "2025-04",
+  "versions": [
+    {
+      "valid_from": "2025-04",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "breakdown_dimensions": [],
+      "presentation_format": "text",
+      "complexity": "no_table",
+      "notes": "本文の業績予想に関する説明の中で『受注残高等をもとに算出したところ』という言及はあるが、具体的な受注高や受注残高の数値データは記載されていないため、抽出対象データなしと判断した。"
+    }
+  ],
+  "_source_pdf": "tdnet/280A/20250414_280A_Ｇ－ＴＭＨ_決算短信_2025年11月期  第１四半期決算短信〔日本基準〕（非連結）_140120250409511893.pdf",
+  "_source_doc_id": "140120250409511893",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:28:41.478246+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "no_table",
+    "relevant_pages": [
+      4
+    ],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "pdfplumber found no tables on relevant pages"
+    ]
+  }
+}

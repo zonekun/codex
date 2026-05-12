@@ -1,0 +1,12 @@
+{
+  "ticker": "2769",
+  "company_name": "(株)ヴィレッジヴァンガードコーポレーション",
+  "ir_page_url": "https://www.village-v.co.jp/company/ir/sales_trend/",
+  "updated_at": "2026-04-21T12:39:34.763445+09:00",
+  "last_checked": "2026-04-21",
+  "status": "active",
+  "type": "html_table",
+  "css_selector": null,
+  "table_selector": null,
+  "note": "HTML表に月次データ検出。table_selector要調整"
+}

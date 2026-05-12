@@ -1,0 +1,32 @@
+{
+  "ticker": "7625",
+  "company_name": "7625",
+  "metrics": [
+    {
+      "name": "国内 全店 売上（百万円）",
+      "source": "bc"
+    },
+    {
+      "name": "国内 全店 店舗数",
+      "source": "bc"
+    },
+    {
+      "name": "国内 既存店 売上（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "国内 既存店 客単価（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "国内 既存店 客数（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "国内全店 売上（前年同月比）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

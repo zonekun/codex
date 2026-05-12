@@ -1,0 +1,104 @@
+{
+  "ticker": "3267",
+  "company_name": "フィル・カンパニー",
+  "current_version": "2026-04",
+  "versions": [
+    {
+      "valid_from": "2026-04",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "請負受注スキームにおける新規受注した案件及び追加工事の合計額",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "空中店舗フィル・パーク 受注高",
+          "type": "order_intake",
+          "description": "請負受注スキームのうち空中店舗フィル・パークの受注高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "プレミアムガレージハウス 受注高",
+          "type": "order_intake",
+          "description": "請負受注スキームのうちプレミアムガレージハウスの受注高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "請負受注スキームにおける期末時点の未売上計上の受注残高合計",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "開発プロジェクト残高",
+          "type": "backlog",
+          "description": "開発販売スキームにおける期末時点の土地及び建物の完成に要する原価見込額の合計",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "販売引渡数",
+          "type": "completed",
+          "description": "開発販売スキームにおける販売引渡件数",
+          "unit": "件",
+          "is_total": true
+        },
+        {
+          "name": "開発用地取得契約件数",
+          "type": "order_intake",
+          "description": "開発販売スキームにおける土地の取得契約を締結した件数",
+          "unit": "件",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "事業スキーム",
+          "items": [
+            "請負受注スキーム",
+            "開発販売スキーム"
+          ]
+        },
+        {
+          "dimension_name": "請負受注スキーム内訳",
+          "items": [
+            "空中店舗フィル・パーク",
+            "プレミアムガレージハウス"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "事業の状況表で受注高、受注残高、開発プロジェクト残高は千円単位の金額として開示。受注件数、販売引渡件数、開発用地取得契約件数は件数指標のため抽出対象外とした。\nユーザー指示により、金額以外の受注・受注残関連メトリクを復元。"
+    }
+  ],
+  "_source_pdf": "tdnet/3267/20260414_3267_フィル・カンパニー_決算短信_2026年11月期 第１四半期決算短信[日本基準](連結)_140120260413503112.pdf",
+  "_source_doc_id": "140120260413503112",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:36:25.064638+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      5,
+      6
+    ],
+    "table_count": 3,
+    "max_rows": 9,
+    "max_cols": 9,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

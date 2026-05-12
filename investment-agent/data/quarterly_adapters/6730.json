@@ -1,0 +1,75 @@
+{
+  "ticker": "6730",
+  "company_name": "アクセル",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "連結累計期間の売上高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "LSI開発販売関連 売上高",
+          "type": "completed",
+          "description": "LSI開発販売関連セグメントの売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "新規事業関連 売上高",
+          "type": "completed",
+          "description": "新規事業関連セグメントの売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "LSI開発販売関連 受注残高",
+          "type": "backlog",
+          "description": "LSI開発販売関連セグメントの第３四半期末時点における受注残高",
+          "unit": "百万円",
+          "is_total": false
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "LSI開発販売関連",
+            "新規事業関連"
+          ]
+        }
+      ],
+      "presentation_format": "text",
+      "complexity": "no_table",
+      "notes": "本文の「経営成績等の概況」セクションにおいて、売上高の合計およびセグメント別内訳、ならびにLSI開発販売関連セグメントの受注残高が記載されています。全社合計の受注残高や受注高の数値記載はありません。"
+    }
+  ],
+  "_source_pdf": "tdnet/6730/20260206_6730_アクセル_決算短信_2026年３月期 第３四半期決算短信〔日本基準〕（連結）_140120260206549821.pdf",
+  "_source_doc_id": "140120260206549821",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:25:57.759688+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "no_table",
+    "relevant_pages": [
+      4
+    ],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "pdfplumber found no tables on relevant pages"
+    ]
+  }
+}

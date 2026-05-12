@@ -1,0 +1,116 @@
+{
+  "ticker": "8023",
+  "company_name": "ＤＡＩＫＯＸＴ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当第３四半期連結累計期間における受注高の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "当第３四半期連結累計期間における売上高の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当第３四半期連結会計期間末における受注残高の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "事業区分別受注高",
+          "type": "order_intake",
+          "description": "事業区分（コアビジネス、重点ソリューション）別の受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "事業区分別売上高",
+          "type": "completed",
+          "description": "事業区分（コアビジネス、重点ソリューション）別の売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "ソリューション区分別受注高",
+          "type": "order_intake",
+          "description": "ソリューション区分（プロダクト、ソフトウェア、ネットワーク）別の受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "ソリューション区分別売上高",
+          "type": "completed",
+          "description": "ソリューション区分（プロダクト、ソフトウェア、ネットワーク）別の売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "ソリューション区分別受注残高",
+          "type": "backlog",
+          "description": "ソリューション区分別の受注残高（ソフトウェアソリューションについて具体的な記載あり）",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "事業区分",
+          "items": [
+            "コアビジネス",
+            "重点ソリューション"
+          ]
+        },
+        {
+          "dimension_name": "ソリューション区分",
+          "items": [
+            "プロダクトソリューション",
+            "ソフトウェアソリューション",
+            "ネットワークソリューション"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "受注高、売上高、受注残高の合計数値および、事業区分別・ソリューション区分別の内訳数値が「経営成績等の概況」のテキストセクションに詳細に記載されています。受注残高については、ソフトウェアソリューション区分の具体的な残高が言及されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/8023/20260210_8023_ＤＡＩＫＯＸＴ_決算短信_2026年３月期 第３四半期決算短信〔日本基準〕（連結）_140120260202545208.pdf",
+  "_source_doc_id": "140120260202545208",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T20:03:08.348350+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      5,
+      6
+    ],
+    "table_count": 1,
+    "max_rows": 6,
+    "max_cols": 2,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

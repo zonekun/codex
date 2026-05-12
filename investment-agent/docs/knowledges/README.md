@@ -92,18 +92,18 @@ BACKTEST_PASS → CANDIDATE（デモトレード中）→ TRADER（本運用）�
 ```
 ① docs/knowledges/ にファイルを追加・更新
     ↓
-② CLAUDE.md の「タスク別必読ファイル」一覧を確認
+② docs/knowledges/INDEX.md の知見索引テーブルを確認
    → 新しいファイルが特定タスクに対応するなら行を追加
    → 既存ファイルの内容が変わったなら説明を更新
     ↓
 ③ ①②をまとめて git commit
 ```
 
-**「タスク別必読ファイル」一覧の場所:**
-`CLAUDE.md` → `6. 知見蓄積（docs/knowledges/）` セクション内
+**知見索引の場所:**
+`docs/knowledges/INDEX.md`（全索引の正本。CLAUDE.mdには高頻度10件のみ残留）
 
 **追加が必要なケース（例）:**
-| 追加した知見ファイル | CLAUDE.md への追記内容 |
+| 追加した知見ファイル | INDEX.md への追記内容 |
 |--------------------|----------------------|
 | `api/003_edinet_api.md` | EDINET APIを使うタスク → このファイルを読め |
 | `tools/003_backtest_engine.md` | バックテストエンジンを使うタスク → このファイルを読め |

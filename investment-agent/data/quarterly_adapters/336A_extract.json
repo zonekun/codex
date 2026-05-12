@@ -1,0 +1,28 @@
+{
+  "ticker": "336A",
+  "company_name": "Ｇ－ダイナミクマップ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "presentation",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/336A/20260213_336A_Ｇ－ダイナミクマップ_決算説明資料_2026年３月期 第３四半期 決算説明資料_140120260213560967.pdf",
+  "_source_doc_id": "140120260213560967",
+  "_generated_at": "2026-04-30T17:38:35.109721+09:00",
+  "_model_used": null
+}

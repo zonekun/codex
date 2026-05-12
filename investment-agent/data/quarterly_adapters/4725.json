@@ -1,0 +1,149 @@
+{
+  "ticker": "4725",
+  "company_name": "ＣＡＣＨＤ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "連結受注高",
+          "type": "order_intake",
+          "description": "セグメント別の連結受注高合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "国内IT 受注高",
+          "type": "order_intake",
+          "description": "国内ITセグメントの受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "連結受注高"
+        },
+        {
+          "name": "海外IT 受注高",
+          "type": "order_intake",
+          "description": "海外ITセグメントの受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "連結受注高"
+        },
+        {
+          "name": "連結受注残高",
+          "type": "backlog",
+          "description": "セグメント別の連結受注残高合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "国内IT 受注残高",
+          "type": "backlog",
+          "description": "国内ITセグメントの受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "連結受注残高"
+        },
+        {
+          "name": "海外IT 受注残高",
+          "type": "backlog",
+          "description": "海外ITセグメントの受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "連結受注残高"
+        },
+        {
+          "name": "連結売上高",
+          "type": "completed",
+          "description": "業種別の連結売上高合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "金融 売上高",
+          "type": "completed",
+          "description": "金融業種の売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "連結売上高"
+        },
+        {
+          "name": "製薬 売上高",
+          "type": "completed",
+          "description": "製薬業種の売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "連結売上高"
+        },
+        {
+          "name": "製造 売上高",
+          "type": "completed",
+          "description": "製造業種の売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "連結売上高"
+        },
+        {
+          "name": "情報・通信 売上高",
+          "type": "completed",
+          "description": "情報・通信業種の売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "連結売上高"
+        },
+        {
+          "name": "サービス業など 売上高",
+          "type": "completed",
+          "description": "サービス業などの売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "連結売上高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "国内IT",
+            "海外IT"
+          ]
+        },
+        {
+          "dimension_name": "業種",
+          "items": [
+            "金融",
+            "製薬",
+            "製造",
+            "情報・通信",
+            "サービス業など"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "決算短信の20ページに、セグメント別の連結受注高、連結受注残高、および業種別の連結売上高の数値データが表形式で詳細に記載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/4725/20260213_4725_ＣＡＣＨＤ_決算短信_2025年12月期決算短信〔日本基準〕(連結)_140120260212556935.pdf",
+  "_source_doc_id": "140120260212556935",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:13:36.240138+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      3,
+      22
+    ],
+    "table_count": 3,
+    "max_rows": 8,
+    "max_cols": 7,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

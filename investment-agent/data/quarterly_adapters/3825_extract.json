@@ -1,0 +1,28 @@
+{
+  "ticker": "3825",
+  "company_name": "ＲＥＭＩＸ",
+  "current_version": "2025-08",
+  "versions": [
+    {
+      "valid_from": "2025-08",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/3825/20250814_3825_ＲＥＭＩＸ_決算短信_2026年３月期　第１四半期決算短信［日本基準］（連結）_140120250813541219.pdf",
+  "_source_doc_id": "140120250813541219",
+  "_generated_at": "2026-04-30T17:52:11.201637+09:00",
+  "_model_used": null
+}

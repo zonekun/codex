@@ -1,0 +1,53 @@
+{
+  "ticker": "6542",
+  "company_name": "ＦＣＨＤ",
+  "current_version": "2025-11",
+  "versions": [
+    {
+      "valid_from": "2025-11",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当四半期連結累計期間における受注高の合計",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "繰越残高",
+          "type": "backlog",
+          "description": "当四半期連結会計期間末における受注残高（繰越業務量）の合計",
+          "unit": "千円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "決算短信の補足情報ページにおいて、販売実績（売上高）、受注高、繰越残高の3つの指標について、事業分野別および国内・海外別の詳細な内訳表が記載されている。本文中では百万円単位、詳細表では千円単位でデータが提供されている。"
+    }
+  ],
+  "_source_pdf": "tdnet/6542/20251114_6542_ＦＣＨＤ_決算短信_2026年６月期第１四半期決算短信〔日本基準〕(連結)_140120251114502177.pdf",
+  "_source_doc_id": "140120251114502177",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:20:05.190718+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      11
+    ],
+    "table_count": 4,
+    "max_rows": 7,
+    "max_cols": 6,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 4"
+    ]
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "ticker": "9682",
+  "company_name": "ＤＴＳ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当第３四半期連結累計期間における受注実績",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当第３四半期連結累計期間における受注残高",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "生産実績、受注実績（受注高・受注残高）、販売実績の3つの表がセグメント別に記載されています。販売高は売上高に相当します。"
+    }
+  ],
+  "_source_pdf": "tdnet/9682/20260206_9682_ＤＴＳ_決算短信_2026年３月期第３四半期決算短信〔日本基準〕(連結)_140120260205548863.pdf",
+  "_source_doc_id": "140120260205548863",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T20:25:08.402675+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      15
+    ],
+    "table_count": 3,
+    "max_rows": 5,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

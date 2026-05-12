@@ -1,0 +1,49 @@
+{
+  "ticker": "1449",
+  "company_name": "ＦＵＪＩジャパン",
+  "current_version": "2024-11",
+  "versions": [
+    {
+      "valid_from": "2024-11",
+      "valid_until": null,
+      "extraction_method": "regex",
+      "source": "tanshin",
+      "page_keywords": [
+        "四半期損益計算書",
+        "完成工事高",
+        "材料売上高",
+        "売上高合計"
+      ],
+      "fields": [
+        {
+          "key": "完成工事高",
+          "row_label_regex": "^\\s*完成工事高",
+          "value_type": "integer",
+          "unit": "千円",
+          "use_last_number": true
+        },
+        {
+          "key": "材料売上高",
+          "row_label_regex": "^\\s*材料売上高",
+          "value_type": "integer",
+          "unit": "千円",
+          "use_last_number": true
+        },
+        {
+          "key": "売上高合計",
+          "row_label_regex": "^\\s*売上高合計",
+          "value_type": "integer",
+          "unit": "千円",
+          "use_last_number": true
+        }
+      ],
+      "gemini_custom_prompt": "",
+      "notes": "pdfplumberの解析結果がsimple_tableであるため、正規表現による抽出を採用しました。損益計算書の売上高内訳から、当第３四半期累計期間の数値を抽出します。"
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/1449/20241114_1449_ＦＵＪＩジャパン_決算短信_2024年12月期 第３四半期決算短信〔日本基準〕（非連結）_140120241031507523.pdf",
+  "_source_doc_id": "140120241031507523",
+  "_generated_at": "2026-04-30T22:41:12.012205+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

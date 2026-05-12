@@ -1,0 +1,20 @@
+{
+  "ticker": "212A",
+  "company_name": "212A",
+  "metrics": [
+    {
+      "name": "会員数（万人）",
+      "source": "bc"
+    },
+    {
+      "name": "会員数（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "全店 店舗数",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

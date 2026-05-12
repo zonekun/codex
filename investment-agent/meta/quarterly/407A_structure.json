@@ -1,0 +1,58 @@
+{
+  "ticker": "407A",
+  "company_name": "ＵＮＩＣＯＮ　ＨＤ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当該期間中に新たに受注した工事等の総額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "受注済みのうち、まだ売上収益として計上されていない未実施工事等の残高",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "ppt_chart",
+      "notes": "決算説明資料において、受注高、売上収益、受注残高の四半期推移および年度推移がグラフと数値で提示されている。売上収益については主要子会社別の内訳も開示されている。"
+    }
+  ],
+  "_source_pdf": "tdnet/407A/20260213_407A_ＵＮＩＣＯＮ　ＨＤ_決算説明資料_2026年６月期第２四半期　決算説明会資料_140120260213559920.pdf",
+  "_source_doc_id": "140120260213559920",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T18:00:29.584086+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      2,
+      17,
+      18,
+      25,
+      36,
+      48
+    ],
+    "table_count": 13,
+    "max_rows": 14,
+    "max_cols": 16,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 13",
+      "wide table: 16 columns"
+    ]
+  }
+}

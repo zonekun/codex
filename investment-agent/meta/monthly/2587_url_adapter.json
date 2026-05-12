@@ -1,0 +1,20 @@
+{
+  "ticker": "2587",
+  "company_name": "サントリー食品インターナショナル",
+  "updated_at": "2026-04-20",
+  "ir_page_url": "https://www.suntory.co.jp/softdrink/ir/library/monthly.html",
+  "type": "html_table",
+  "css_selector": null,
+  "link_text_pattern": null,
+  "link_href_pattern": ".*\\.(pdf|xlsx|xls)",
+  "table_selector": null,
+  "status": "active",
+  "skip_reason": null,
+  "note": "URL自体が月次ページだがコンテンツ未検出（JS遅延/SPA疑い）。要手動確認",
+  "url_source": "recovered_from_index_csv",
+  "last_checked": "2026-04-20",
+  "follow_links": false,
+  "playwright_required": false,
+  "recovered_at": "2026-04-20T21:37:09.325193+09:00",
+  "recovery_reason": "sync_bug_overwrite_20260420"
+}

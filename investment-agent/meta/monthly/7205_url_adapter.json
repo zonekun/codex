@@ -1,0 +1,18 @@
+{
+  "ticker": "7205",
+  "company_name": "日野自動車",
+  "ir_page_url": "https://www.hino.co.jp/corp/for_investors/",
+  "type": "scrape_links",
+  "status": "inactive",
+  "inactive_reason": "月次販売台数の適時開示なし。四半期のみ。エンジン不正対応・三菱ふそうとの統合中",
+  "excluded": true,
+  "link_text_pattern": null,
+  "link_href_pattern": null,
+  "manual_override": true,
+  "note": "2026-04-24確認: 月次販売開示なし。inactive",
+  "updated_at": "2026-04-24T17:15:36.150884+09:00",
+  "css_selector": null,
+  "table_selector": null,
+  "playwright_required": false,
+  "follow_links": false
+}

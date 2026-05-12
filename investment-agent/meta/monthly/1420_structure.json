@@ -1,0 +1,20 @@
+{
+  "ticker": "1420",
+  "company_name": "1420",
+  "metrics": [
+    {
+      "name": "受注金額 マンション事業（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "受注金額 住宅事業（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "受注金額 合計（前年同月比）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

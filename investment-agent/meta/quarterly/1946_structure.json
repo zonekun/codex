@@ -1,0 +1,53 @@
+{
+  "ticker": "1946",
+  "company_name": "トーエネック",
+  "current_version": "2025-10",
+  "versions": [
+    {
+      "valid_from": "2025-10",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当期における受注契約の総額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "期末手持工事高",
+          "type": "backlog",
+          "description": "期末時点における未完成工事の残高",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "決算短信の補足情報として、受注高、売上高、期末手持工事高の詳細な内訳（得意先別・部門別）および通期予想が表形式で記載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/1946/20251028_1946_トーエネック_決算短信_2026年3月期 第２四半期（中間期）決算短信〔日本基準〕（連結）_140120251027579639.pdf",
+  "_source_doc_id": "140120251027579639",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:06:38.400911+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      14,
+      15
+    ],
+    "table_count": 4,
+    "max_rows": 22,
+    "max_cols": 7,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 4"
+    ]
+  }
+}

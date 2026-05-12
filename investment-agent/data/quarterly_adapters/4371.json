@@ -1,0 +1,62 @@
+{
+  "ticker": "4371",
+  "company_name": "Ｇ－ＣＣＴ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "各サービス区分および合計の売上高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "決算日時点における各サービス区分および合計の受注残高",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "サービス区分",
+          "items": [
+            "DX支援",
+            "IT人材調達支援"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "スライド8、13、20において、DX支援およびIT人材調達支援の2つのセグメント別に、売上高と受注残高の四半期推移および半期実績が詳細な表形式で記載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/4371/20260219_4371_Ｇ－ＣＣＴ_決算説明資料_2025年12月期第4四半期決算説明資料（書き起こし）_140120260219565424.pdf",
+  "_source_doc_id": "140120260219565424",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T18:05:51.264904+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      8,
+      13,
+      20
+    ],
+    "table_count": 11,
+    "max_rows": 15,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 11"
+    ]
+  }
+}

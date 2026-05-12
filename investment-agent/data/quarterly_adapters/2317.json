@@ -1,0 +1,95 @@
+{
+  "ticker": "2317",
+  "company_name": "システナ",
+  "current_version": "2025-10",
+  "versions": [
+    {
+      "valid_from": "2025-10",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "セグメント別の受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高 合計"
+        },
+        {
+          "name": "受注高 合計",
+          "type": "order_intake",
+          "description": "受注高の総計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "セグメント別の受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高 合計"
+        },
+        {
+          "name": "受注残高 合計",
+          "type": "backlog",
+          "description": "受注残高の総計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "販売高",
+          "type": "completed",
+          "description": "セグメント別の販売高（売上高に相当）",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "販売高 合計"
+        },
+        {
+          "name": "販売高 合計",
+          "type": "completed",
+          "description": "販売高の総計",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "次世代モビリティ事業",
+            "プロジェクトマネジメントデザイン事業",
+            "デジタルインテグレーション事業",
+            "IT&DXサービス事業",
+            "ビジネスソリューション事業",
+            "DX&ストック型ビジネス事業",
+            "その他事業"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "決算短信の補足情報として、セグメント別の生産実績、受注実績（受注高・受注残高）、販売実績が詳細な表形式で開示されています。受注実績については、サービスの性格上受注生産活動を伴うセグメントのみが記載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/2317/20251030_2317_システナ_決算短信_2026年３月期 第２四半期（中間期）決算短信〔日本基準〕（連結）_140120251029581968.pdf",
+  "_source_doc_id": "140120251029581968",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:19:09.032314+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      13
+    ],
+    "table_count": 3,
+    "max_rows": 9,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

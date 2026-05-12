@@ -1,0 +1,66 @@
+{
+  "ticker": "7122",
+  "company_name": "近畿車輌",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当第３四半期連結累計期間における受注実績の合計額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当第３四半期連結累計期間末における受注残高の合計額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "販売高",
+          "type": "completed",
+          "description": "当第３四半期連結累計期間における販売実績の合計額",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "鉄道車両関連事業",
+            "不動産賃貸事業"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "資料には「生産実績」「受注実績」「販売実績」の3つの表が掲載されています。受注実績（受注高・受注残高）は鉄道車両関連事業のみの計上ですが、販売実績には鉄道車両関連事業と不動産賃貸事業の両方が含まれています。"
+    }
+  ],
+  "_source_pdf": "tdnet/7122/20260210_7122_近畿車輌_決算短信_2026年３月期 第３四半期決算短信〔日本基準〕(連結)_140120260210553368.pdf",
+  "_source_doc_id": "140120260210553368",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:44:52.159395+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      11
+    ],
+    "table_count": 3,
+    "max_rows": 4,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

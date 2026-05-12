@@ -1,0 +1,37 @@
+{
+  "ticker": "4426",
+  "company_name": "Ｐ－パスロジ",
+  "current_version": "2025-05",
+  "versions": [
+    {
+      "valid_from": "2025-05",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "breakdown_dimensions": [],
+      "presentation_format": "text",
+      "complexity": "no_table",
+      "notes": "受注額の増減に関する定性記載はあるが、受注高または受注残高の具体的な数値は確認できない。売上高のみのため受注関連データは利用不可と判断した。"
+    }
+  ],
+  "_source_pdf": "tdnet/4426/20250515_4426_Ｐ－パスロジ_決算短信_2025年６月期 第３四半期決算短信〔日本基準〕（非連結）_140120250515553820.pdf",
+  "_source_doc_id": "140120250515553820",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:08:14.432410+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "no_table",
+    "relevant_pages": [
+      4,
+      6
+    ],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "pdfplumber found no tables on relevant pages"
+    ]
+  }
+}

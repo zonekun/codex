@@ -1,0 +1,13 @@
+{
+  "ticker": "5938",
+  "company_name": "ＬＩＸＩＬ",
+  "ir_page_url": "https://www.lixil.com/jp/investor/financial/monthly.html",
+  "type": "scrape_links",
+  "status": "active",
+  "playwright_required": true,
+  "link_href_pattern": "\\.(pdf|xls|xlsx)",
+  "link_text_pattern": null,
+  "manual_override": true,
+  "note": "2026-04-24: eir_api→scrape_links変更。eIR APIのannouncement/new_releaseカテゴリに月次データなし(ir_material33にある)。Playwright必須(eIRシステムJS動的読み込み)",
+  "updated_at": "2026-04-24T20:00:00+09:00"
+}

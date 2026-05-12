@@ -23,7 +23,7 @@ now = datetime.now(JST).strftime('%Y-%m-%dT%H:%M:%S+09:00')
 creds = service_account.Credentials.from_service_account_file('keys/gcp-service-account.json')
 gcs = storage.Client(project='gmailpj-357912', credentials=creds)
 bucket = gcs.bucket('stock_data_1930932')
-adapters_dir = Path('data/monthly_adapters')
+adapters_dir = Path('meta/monthly')
 
 
 def apply_unit_scale_100_all_percentage(ticker: str, log: list):
@@ -44,7 +44,7 @@ def apply_unit_scale_100_all_percentage(ticker: str, log: list):
         d['manual_override'] = True
         d['p1_fix_at'] = now
         data_str = json.dumps(d, ensure_ascii=False, indent=2)
-        (adapters_dir / f'{ticker}.json').write_text(data_str, encoding='utf-8')
+        (adapters_dir / f'{ticker}_extract_adapter.json').write_text(data_str, encoding='utf-8')
         bucket.blob(blob_path).upload_from_string(data_str, content_type='application/json')
         log.append(f'  → {ticker}: {changed} fields updated, local+GCS saved')
     return changed
@@ -66,7 +66,7 @@ def apply_unit_scale_100_single(ticker: str, target_key: str, log: list):
         d['manual_override'] = True
         d['p1_fix_at'] = now
         data_str = json.dumps(d, ensure_ascii=False, indent=2)
-        (adapters_dir / f'{ticker}.json').write_text(data_str, encoding='utf-8')
+        (adapters_dir / f'{ticker}_extract_adapter.json').write_text(data_str, encoding='utf-8')
         bucket.blob(blob_path).upload_from_string(data_str, content_type='application/json')
         log.append(f'  → {ticker}: {changed} fields updated, local+GCS saved')
     return changed
@@ -90,7 +90,7 @@ def apply_yoy_offset_100_all_percentage(ticker: str, log: list):
         d['manual_override'] = True
         d['p1_fix_at'] = now
         data_str = json.dumps(d, ensure_ascii=False, indent=2)
-        (adapters_dir / f'{ticker}.json').write_text(data_str, encoding='utf-8')
+        (adapters_dir / f'{ticker}_extract_adapter.json').write_text(data_str, encoding='utf-8')
         bucket.blob(blob_path).upload_from_string(data_str, content_type='application/json')
         log.append(f'  → {ticker}: {changed} fields updated, local+GCS saved')
     return changed
@@ -113,7 +113,7 @@ def apply_description_add(ticker: str, updates: dict, log: list):
         d['manual_override'] = True
         d['p1_fix_at'] = now
         data_str = json.dumps(d, ensure_ascii=False, indent=2)
-        (adapters_dir / f'{ticker}.json').write_text(data_str, encoding='utf-8')
+        (adapters_dir / f'{ticker}_extract_adapter.json').write_text(data_str, encoding='utf-8')
         bucket.blob(blob_path).upload_from_string(data_str, content_type='application/json')
         log.append(f'  → {ticker}: {changed} fields updated, local+GCS saved')
     return changed

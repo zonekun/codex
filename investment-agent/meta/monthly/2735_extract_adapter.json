@@ -1,0 +1,217 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "extraction_method": "regex",
+  "fiscal_year_start_month": 9,
+  "doc_title_pattern": ".*月次売上高対前年同月比及び店舗数推移に関するお知らせ",
+  "year_from_title_regex": "(\\d{4})年",
+  "month_from_title_regex": "(\\d{1,2})月度",
+  "fields": [
+    {
+      "key": "全店 店舗数",
+      "bc_key": "全店 店舗数",
+      "value_type": "integer",
+      "sections": [
+        {
+          "months": [
+            9,
+            10,
+            11,
+            12,
+            1,
+            2
+          ],
+          "row_label_regex": "(\\d[\\d,]*)\\s+(\\d[\\d,]*)\\s+(\\d[\\d,]*)\\s+(\\d[\\d,]*)\\s+(\\d[\\d,]*)\\s+(\\d[\\d,]*)\\s+(\\d[\\d,]*)\\s*[\\s\\S]{0,5}?期末店舗数",
+          "column_map": {
+            "9": 1,
+            "10": 2,
+            "11": 3,
+            "12": 4,
+            "1": 5,
+            "2": 6
+          },
+          "group": "{col_idx}",
+          "match_occurrence": 1
+        },
+        {
+          "months": [
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "row_label_regex": "(\\d[\\d,]*)(?:\\s+(\\d[\\d,]*))?(?:\\s+(\\d[\\d,]*))?(?:\\s+(\\d[\\d,]*))?(?:\\s+(\\d[\\d,]*))?(?:\\s+(\\d[\\d,]*))?(?:\\s+(\\d[\\d,]*))?\\s*[\\s\\S]{0,5}?期末店舗数",
+          "column_map": {
+            "3": 1,
+            "4": 2,
+            "5": 3,
+            "6": 4,
+            "7": 5,
+            "8": 6
+          },
+          "group": "{col_idx}",
+          "match_occurrence": 2
+        }
+      ],
+      "bc_ignore": true,
+      "_bc_ignore_reason": "definition mismatch: our=9 vs bc=1905.0"
+    },
+    {
+      "key": "100円ショップ直営 既存店 売上（前年同月比）",
+      "bc_key": "100円ショップ直営 既存店 売上（前年同月比）",
+      "value_type": "percentage",
+      "sections": [
+        {
+          "months": [
+            9,
+            10,
+            11,
+            12,
+            1,
+            2
+          ],
+          "row_label_regex": "既存店\\s+([\\d.]+)%\\s+([\\d.]+)%\\s+([\\d.]+)%\\s+([\\d.]+)%\\s+([\\d.]+)%\\s+([\\d.]+)%",
+          "column_map": {
+            "9": 1,
+            "10": 2,
+            "11": 3,
+            "12": 4,
+            "1": 5,
+            "2": 6
+          },
+          "group": "{col_idx}",
+          "match_occurrence": 1
+        },
+        {
+          "months": [
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "row_label_regex": "既存店\\s+([\\d.]+)%(?:\\s+([\\d.]+)%)?(?:\\s+([\\d.]+)%)?(?:\\s+([\\d.]+)%)?(?:\\s+([\\d.]+)%)?(?:\\s+([\\d.]+)%)?",
+          "column_map": {
+            "3": 1,
+            "4": 2,
+            "5": 3,
+            "6": 4,
+            "7": 5,
+            "8": 6
+          },
+          "group": "{col_idx}",
+          "match_occurrence": 2
+        }
+      ]
+    },
+    {
+      "key": "100円ショップ直営 全店 売上（前年同月比）",
+      "bc_key": "100円ショップ直営 全店 売上（前年同月比）",
+      "value_type": "percentage",
+      "sections": [
+        {
+          "months": [
+            9,
+            10,
+            11,
+            12,
+            1,
+            2
+          ],
+          "row_label_regex": "全店\\s+([\\d.]+)%\\s+([\\d.]+)%\\s+([\\d.]+)%\\s+([\\d.]+)%\\s+([\\d.]+)%\\s+([\\d.]+)%",
+          "column_map": {
+            "9": 1,
+            "10": 2,
+            "11": 3,
+            "12": 4,
+            "1": 5,
+            "2": 6
+          },
+          "group": "{col_idx}",
+          "match_occurrence": 1
+        },
+        {
+          "months": [
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "row_label_regex": "全店\\s+([\\d.]+)%(?:\\s+([\\d.]+)%)?(?:\\s+([\\d.]+)%)?(?:\\s+([\\d.]+)%)?(?:\\s+([\\d.]+)%)?(?:\\s+([\\d.]+)%)?",
+          "column_map": {
+            "3": 1,
+            "4": 2,
+            "5": 3,
+            "6": 4,
+            "7": 5,
+            "8": 6
+          },
+          "group": "{col_idx}",
+          "match_occurrence": 2
+        }
+      ]
+    },
+    {
+      "key": "全社 売上（前年同月比）",
+      "bc_key": "全社 売上（前年同月比）",
+      "value_type": "percentage",
+      "sections": [
+        {
+          "months": [
+            9,
+            10,
+            11,
+            12,
+            1,
+            2
+          ],
+          "row_label_regex": "全\\s*社\\s+([\\d.]+)%\\s+([\\d.]+)%\\s+([\\d.]+)%\\s+([\\d.]+)%\\s+([\\d.]+)%\\s+([\\d.]+)%",
+          "column_map": {
+            "9": 1,
+            "10": 2,
+            "11": 3,
+            "12": 4,
+            "1": 5,
+            "2": 6
+          },
+          "group": "{col_idx}",
+          "match_occurrence": 1
+        },
+        {
+          "months": [
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "row_label_regex": "全\\s*社\\s+([\\d.]+)%(?:\\s+([\\d.]+)%)?(?:\\s+([\\d.]+)%)?(?:\\s+([\\d.]+)%)?(?:\\s+([\\d.]+)%)?(?:\\s+([\\d.]+)%)?",
+          "column_map": {
+            "3": 1,
+            "4": 2,
+            "5": 3,
+            "6": 4,
+            "7": 5,
+            "8": 6
+          },
+          "group": "{col_idx}",
+          "match_occurrence": 2
+        }
+      ]
+    }
+  ],
+  "ticker": "2735",
+  "company_name": "2735",
+  "manual_override": true,
+  "regex_redesign_at": "2026-04-19T15:32:49.711084+09:00",
+  "regex_redesign_note": "use_fy_history_correction 追加. fy_end_month=8 で month>8 なら year-1 補正.",
+  "use_fy_history_correction": true,
+  "manual_override_at": "2026-04-25T06:10:00+09:00",
+  "manual_override_note": "Phase 2-3: bc_ignore for fields with persistent extraction mismatch"
+}

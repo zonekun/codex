@@ -1,0 +1,16 @@
+{
+  "ticker": "8742",
+  "company_name": "8742",
+  "metrics": [
+    {
+      "name": "商品先物 取引売買高（枚）",
+      "source": "bc"
+    },
+    {
+      "name": "金融商品 取引売買高（枚）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

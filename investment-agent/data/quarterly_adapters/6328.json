@@ -1,0 +1,72 @@
+{
+  "ticker": "6328",
+  "company_name": "荏原実業",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当連結会計年度における受注の総額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "当連結会計年度における売上高（販売高）の総額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当連結会計年度末時点における未消化の受注残高",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "メーカー事業",
+            "エンジニアリング事業",
+            "商社事業"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "1ページ目の「受注状況」および「販売状況」の表に、セグメント別の受注高、受注残高、売上高（金額）が記載されています。また、2ページ目の「今後の見通し」には次期（2026年12月期）の受注高および売上高の通期予想値が記載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/6328/20260209_6328_荏原実業_決算短信_2025年12月期決算短信〔日本基準〕（連結）_140120251224525870.pdf",
+  "_source_doc_id": "140120251224525870",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:02:54.762254+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      6,
+      19,
+      21,
+      22
+    ],
+    "table_count": 7,
+    "max_rows": 46,
+    "max_cols": 10,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 7"
+    ]
+  }
+}

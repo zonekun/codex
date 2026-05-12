@@ -1,0 +1,101 @@
+{
+  "ticker": "3323",
+  "company_name": "レカム",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "売上収益",
+          "type": "completed",
+          "description": "当第1四半期の売上収益実績",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "総括に記載された過去最高の受注残高",
+          "unit": "億円",
+          "is_total": true
+        },
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "第1四半期における全体の受注高",
+          "unit": "億円",
+          "period": "current_period",
+          "is_total": true
+        },
+        {
+          "name": "売上収益（海外ソリューション事業）",
+          "type": "completed",
+          "description": "第1四半期における海外ソリューション事業の売上収益",
+          "unit": "百万円",
+          "period": "current_period",
+          "is_total": false,
+          "parent_metric": "売上収益",
+          "breakdown_dimension": "セグメント",
+          "breakdown_item": "海外ソリューション事業"
+        },
+        {
+          "name": "売上収益（国内ソリューション事業）",
+          "type": "completed",
+          "description": "第1四半期における国内ソリューション事業の売上収益",
+          "unit": "百万円",
+          "period": "current_period",
+          "is_total": false,
+          "parent_metric": "売上収益",
+          "breakdown_dimension": "セグメント",
+          "breakdown_item": "国内ソリューション事業"
+        },
+        {
+          "name": "売上収益（DX事業）",
+          "type": "completed",
+          "description": "第1四半期におけるDX事業の売上収益",
+          "unit": "百万円",
+          "period": "current_period",
+          "is_total": false,
+          "parent_metric": "売上収益",
+          "breakdown_dimension": "セグメント",
+          "breakdown_item": "DX事業"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "海外ソリューション事業",
+            "国内ソリューション事業",
+            "DX事業"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "売上収益はサマリー表内に、受注残高は下部の総括テキスト内に「受注残が12.8億円と過去最高」と記載されています。受注については「堅調に推移」との記述のみで具体的な数値はありません。"
+    }
+  ],
+  "_source_pdf": "tdnet/3323/20260213_3323_レカム_決算説明資料_2026年９月期第１四半期決算説明資料_140120260213561884.pdf",
+  "_source_doc_id": "140120260213561884",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T17:38:18.591279+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4
+    ],
+    "table_count": 2,
+    "max_rows": 6,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

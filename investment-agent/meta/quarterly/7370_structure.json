@@ -1,0 +1,62 @@
+{
+  "ticker": "7370",
+  "company_name": "Ｇ－Ｅｎｊｉｎ",
+  "current_version": "2026-04",
+  "versions": [
+    {
+      "valid_from": "2026-04",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "成約高（契約高）",
+          "type": "order_intake",
+          "description": "四半期ごとの成約高（契約高）の推移。将来の売上転換に直結する指標として提示されている。",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "売上高目標",
+          "type": "other",
+          "description": "着実に前進しているとされる売上高の目標値",
+          "unit": "億円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "四半期",
+          "items": [
+            "25-3Q",
+            "25-4Q",
+            "26-1Q",
+            "26-2Q",
+            "26-3Q"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "ppt_chart",
+      "notes": "スライドには成約高（契約高）の四半期推移を示す棒グラフが掲載されており、25-3Qから26-3Qまでの具体的な数値（432, 263, 358, 413, 513）が確認できる。グラフの単位は明記されていないが、売上高目標40億円との整合性から百万円単位と推測される。バックログ（受注残）については「四半期ごとに拡大中」との定性的な説明にとどまり、具体的な残高数値は記載されていない。"
+    }
+  ],
+  "_source_pdf": "tdnet/7370/20260413_7370_Ｇ－Ｅｎｊｉｎ_決算説明資料_2026年５月期 第３四半期決算説明資料_140120260412502181.pdf",
+  "_source_doc_id": "140120260412502181",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T19:48:31.472770+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      26
+    ],
+    "table_count": 1,
+    "max_rows": 12,
+    "max_cols": 12,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

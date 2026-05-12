@@ -1,0 +1,74 @@
+{
+  "ticker": "6763",
+  "company_name": "帝通工",
+  "current_version": "2025-05",
+  "versions": [
+    {
+      "valid_from": "2025-05",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当連結会計年度における受注高の合計額",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当連結会計年度末における受注残高の合計額",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "販売実績",
+          "type": "completed",
+          "description": "当連結会計年度における販売実績の合計額",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "生産実績",
+          "type": "other",
+          "description": "当連結会計年度における生産実績の合計額",
+          "unit": "千円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "電子部品",
+            "その他"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "生産実績、受注高、受注残高、販売実績の4つの表が掲載されており、それぞれセグメント別の内訳（電子部品、その他）と合計が示されている。"
+    }
+  ],
+  "_source_pdf": "tdnet/6763/20250513_6763_帝通工_決算短信_2025年３月期決算短信〔日本基準〕(連結)_140120250513544707.pdf",
+  "_source_doc_id": "140120250513544707",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:28:46.052677+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      22
+    ],
+    "table_count": 4,
+    "max_rows": 4,
+    "max_cols": 3,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 4"
+    ]
+  }
+}

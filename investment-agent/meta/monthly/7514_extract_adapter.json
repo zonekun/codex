@@ -1,0 +1,60 @@
+{
+  "ticker": "7514",
+  "company_name": "ヒマラヤ",
+  "source": "non-tdnet(html_table)",
+  "extraction_method": "gemini",
+  "gemini_multi_month": true,
+  "overwrite_past_months": true,
+  "fiscal_year_start_month": 9,
+  "custom_prompt": "このHTMLページはヒマラヤ（スポーツ用品店）の月次売上情報です。表から既存店・全店の売上前年比(%)と全店の店舗数を抽出してください。会計年度は9月始まり（9月～翌8月）。各月のデータを個別に返してください。",
+  "fields": [
+    {
+      "key": "既存店 売上（前年同月比）",
+      "bc_key": "既存店 売上（前年同月比）",
+      "description": "既存店 売上高前年比(%)",
+      "value_type": "percentage"
+    },
+    {
+      "key": "全店・ネット通販 売上（前年同月比）",
+      "bc_key": "全店・ネット通販 売上（前年同月比）",
+      "description": "全店 売上高前年比(%)",
+      "value_type": "percentage"
+    },
+    {
+      "key": "全店 店舗数",
+      "bc_key": "全店 店舗数",
+      "description": "月末店舗数",
+      "value_type": "integer"
+    },
+    {
+      "key": "全店・ネット通販 客単価（前年同月比）",
+      "bc_key": "全店・ネット通販 客単価（前年同月比）",
+      "bc_ignore": true,
+      "bc_ignore_reason": "E6-4: IRページ月次売上表に客単価データなし。掲載は既存店/全店の売上前年比と店舗数のみ",
+      "value_type": "percentage"
+    },
+    {
+      "key": "全店・ネット通販 客数（前年同月比）",
+      "bc_key": "全店・ネット通販 客数（前年同月比）",
+      "bc_ignore": true,
+      "bc_ignore_reason": "E6-4: IRページ月次売上表に客数データなし",
+      "value_type": "percentage"
+    },
+    {
+      "key": "既存店 客単価（前年同月比）",
+      "bc_key": "既存店 客単価（前年同月比）",
+      "bc_ignore": true,
+      "bc_ignore_reason": "E6-4: IRページ月次売上表に客単価データなし",
+      "value_type": "percentage"
+    },
+    {
+      "key": "既存店 客数（前年同月比）",
+      "bc_key": "既存店 客数（前年同月比）",
+      "bc_ignore": true,
+      "bc_ignore_reason": "E6-4: IRページ月次売上表に客数データなし",
+      "value_type": "percentage"
+    }
+  ],
+  "manual_override": true,
+  "manual_override_at": "2026-05-08T14:00:00+09:00"
+}

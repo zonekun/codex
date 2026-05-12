@@ -1,0 +1,37 @@
+{
+  "ticker": "8174",
+  "company_name": "日本瓦斯",
+  "source": "non-tdnet(html_table)",
+  "extraction_method": "gemini",
+  "gemini_multi_month": true,
+  "overwrite_past_months": true,
+  "custom_prompt": "このHTMLページは日本瓦斯の業績データ（ガス・電気販売量）です。月次データから以下を抽出してください：LPガス販売量（トン）、都市ガス販売量（トン）、電気販売量（MWh）、総お客さま数（件）。各月のデータを個別に返してください。",
+  "fields": [
+    {
+      "key": "LPガス販売量（トン）",
+      "bc_key": "LPガス販売量（トン）",
+      "description": "LPガス販売量（トン）",
+      "value_type": "number"
+    },
+    {
+      "key": "都市ガス販売量（トン）",
+      "bc_key": "都市ガス販売量（トン）",
+      "description": "都市ガス販売量（トン）",
+      "value_type": "number"
+    },
+    {
+      "key": "電気（MWh）",
+      "bc_key": "電気（MWh）",
+      "description": "電気販売量（MWh）",
+      "value_type": "number"
+    },
+    {
+      "key": "総お客様数（件）",
+      "bc_key": "総お客様数（件）",
+      "description": "総お客さま数（件）",
+      "value_type": "number"
+    }
+  ],
+  "manual_override": true,
+  "manual_override_at": "2026-05-08T14:00:00+09:00"
+}

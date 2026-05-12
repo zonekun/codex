@@ -1,0 +1,11 @@
+{
+  "ticker": "7611",
+  "company_name": "ハイデイ日高",
+  "ir_page_url": "https://www.hiday.co.jp/investor/monthly/index.html",
+  "updated_at": "2026-04-21T17:13:48.613551+09:00",
+  "last_checked": "2026-04-21",
+  "status": "skip",
+  "type": null,
+  "skip_reason": "月次開示ページ・ダウンロードリンク未発見",
+  "note": "no_links_confirmed"
+}

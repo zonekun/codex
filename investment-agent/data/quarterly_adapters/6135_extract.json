@@ -1,0 +1,50 @@
+{
+  "ticker": "6135",
+  "company_name": "牧野フライス",
+  "current_version": "2026-01",
+  "versions": [
+    {
+      "valid_from": "2026-01",
+      "valid_until": null,
+      "extraction_method": "regex",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注高",
+        "受注残高",
+        "販売実績",
+        "セグメントの名称",
+        "合計"
+      ],
+      "fields": [
+        {
+          "key": "受注高",
+          "row_label_regex": "^合計$",
+          "value_type": "integer",
+          "unit": "百万円",
+          "group": 1
+        },
+        {
+          "key": "受注残高",
+          "row_label_regex": "^合計$",
+          "value_type": "integer",
+          "unit": "百万円",
+          "group": 2
+        },
+        {
+          "key": "販売実績",
+          "row_label_regex": "^合計$",
+          "value_type": "integer",
+          "unit": "百万円",
+          "group": 3
+        }
+      ],
+      "gemini_custom_prompt": "",
+      "notes": "The page contains three separate tables for Order Intake (受注高), Backlog (受注残高), and Sales Performance (販売実績). Each table has a 'Total' (合計) row. The group index is used to distinguish between these three identical row labels on the same page."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/6135/20260130_6135_牧野フライス_決算短信_2026年３月期　第３四半期決算短信〔日本基準〕（連結）_140120260129542242.pdf",
+  "_source_doc_id": "140120260129542242",
+  "_generated_at": "2026-04-30T23:14:40.371617+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

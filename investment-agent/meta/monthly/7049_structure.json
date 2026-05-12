@@ -1,0 +1,28 @@
+{
+  "ticker": "7049",
+  "company_name": "7049",
+  "metrics": [
+    {
+      "name": "サービス 売上（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "サービス 売上（百万円）",
+      "source": "bc"
+    },
+    {
+      "name": "契約社数 識学クラウド",
+      "source": "bc"
+    },
+    {
+      "name": "契約社数 識学基本サービス",
+      "source": "bc"
+    },
+    {
+      "name": "契約社数 識学基本サービスライト",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

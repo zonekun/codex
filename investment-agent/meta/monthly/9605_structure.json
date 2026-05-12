@@ -1,0 +1,16 @@
+{
+  "ticker": "9605",
+  "company_name": "9605",
+  "metrics": [
+    {
+      "name": "映像関連事業 興行収入（億円）",
+      "source": "bc"
+    },
+    {
+      "name": "映像関連事業 興行収入（前年同月比）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

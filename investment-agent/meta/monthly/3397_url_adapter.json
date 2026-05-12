@@ -1,0 +1,13 @@
+{
+  "ticker": "3397",
+  "company_name": "トリドールホールディングス",
+  "ir_page_url": "https://www.toridoll.com/ir/finance/report/",
+  "updated_at": "2026-04-21T09:38:32.274417+09:00",
+  "last_checked": "2026-04-21",
+  "status": "active",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": null,
+  "link_href_pattern": "/assets/f30f9e21e8d64c57996ea55a4f9dc3dc/84c83ac6f18f4908a61769d1c0408870/monthly\\-sales\\-report_2603\\.xlsx",
+  "note": "月次PDFリンク1件検出 best=https://files.microcms-assets.io/assets/f30f9e21e8d64c57996ea55a4f9dc3dc/84c83ac6f18f4908a61769d1c0408870/monthly-sales-report_2603.xlsx"
+}

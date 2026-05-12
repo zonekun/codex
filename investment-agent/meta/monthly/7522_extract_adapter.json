@@ -1,0 +1,80 @@
+{
+  "ticker": "7522",
+  "company_name": "ワタミ",
+  "source": "non-tdnet(html_table)",
+  "extraction_method": "gemini",
+  "gemini_multi_month": true,
+  "overwrite_past_months": true,
+  "custom_prompt": "このHTMLページはワタミの月次売上情報です。以下のデータを抽出してください：国内外食事業の全店・既存店の売上・客数・客単価（前年同月比%）、国内サブウェイの既存店の売上・客数・客単価（前年同月比%）、全店の店舗数、宅食お届け数（千食単位の値を1000倍して食単位で返す）。各月のデータを個別に返してください。",
+  "fields": [
+    {
+      "key": "国内外食 全店 売上（前年同月比）",
+      "bc_key": "国内外食 全店 売上（前年同月比）",
+      "description": "国内外食事業 全店 売上高前年比(%)",
+      "value_type": "percentage"
+    },
+    {
+      "key": "国内外食 全店 客単価（前年同月比）",
+      "bc_key": "国内外食 全店 客単価（前年同月比）",
+      "description": "国内外食事業 全店 客単価前年比(%)",
+      "value_type": "percentage"
+    },
+    {
+      "key": "国内外食 全店 客数（前年同月比）",
+      "bc_key": "国内外食 全店 客数（前年同月比）",
+      "description": "国内外食事業 全店 客数前年比(%)",
+      "value_type": "percentage"
+    },
+    {
+      "key": "国内外食 既存店 売上（前年同月比）",
+      "bc_key": "国内外食 既存店 売上（前年同月比）",
+      "description": "国内外食事業 既存店 売上高前年比(%)",
+      "value_type": "percentage"
+    },
+    {
+      "key": "国内外食 既存店 客単価（前年同月比）",
+      "bc_key": "国内外食 既存店 客単価（前年同月比）",
+      "description": "国内外食事業 既存店 客単価前年比(%)",
+      "value_type": "percentage"
+    },
+    {
+      "key": "国内外食 既存店 客数（前年同月比）",
+      "bc_key": "国内外食 既存店 客数（前年同月比）",
+      "description": "国内外食事業 既存店 客数前年比(%)",
+      "value_type": "percentage"
+    },
+    {
+      "key": "国内サブウェイ 既存店 売上（前年同月比）",
+      "bc_key": "国内サブウェイ 既存店 売上（前年同月比）",
+      "description": "国内サブウェイ 既存店 売上高前年比(%)",
+      "value_type": "percentage"
+    },
+    {
+      "key": "国内サブウェイ 既存店 客単価（前年同月比）",
+      "bc_key": "国内サブウェイ 既存店 客単価（前年同月比）",
+      "description": "国内サブウェイ 既存店 客単価前年比(%)",
+      "value_type": "percentage"
+    },
+    {
+      "key": "国内サブウェイ 既存店 客数（前年同月比）",
+      "bc_key": "国内サブウェイ 既存店 客数（前年同月比）",
+      "description": "国内サブウェイ 既存店 客数前年比(%)",
+      "value_type": "percentage"
+    },
+    {
+      "key": "全店 店舗数",
+      "bc_key": "全店 店舗数",
+      "description": "全店合計 店舗数",
+      "value_type": "integer"
+    },
+    {
+      "key": "宅食お届け数（食）",
+      "bc_key": "宅食お届け数（食）",
+      "description": "宅食事業 お届け数（千食表記を食単位に変換: 値×1000）",
+      "value_type": "number",
+      "unit_scale": 1000
+    }
+  ],
+  "manual_override": true,
+  "manual_override_at": "2026-05-08T14:00:00+09:00"
+}

@@ -1,0 +1,34 @@
+{
+  "ticker": "2914",
+  "company_name": "ＪＴ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "no_relevant_pages",
+      "notes": "Gemini skipped; complexity-only dry run output."
+    }
+  ],
+  "_source_pdf": "tdnet/2914/20260212_2914_ＪＴ_決算説明資料_2025年度 決算説明会資料（Allプレゼンテーション）_140120260212555893.pdf",
+  "_source_doc_id": "140120260212555893",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T17:29:19.826528+09:00",
+  "_model_used": null,
+  "_complexity_report": {
+    "complexity": "no_relevant_pages",
+    "relevant_pages": [],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": false,
+    "notes": [
+      "keyword scan found no relevant pages"
+    ]
+  }
+}

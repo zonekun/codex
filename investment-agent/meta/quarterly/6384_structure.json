@@ -1,0 +1,69 @@
+{
+  "ticker": "6384",
+  "company_name": "昭和真空",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当第３四半期連結累計期間における受注の総額",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当第３四半期連結会計期間末における受注残高の総額",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "セグメント別受注高",
+          "type": "order_intake",
+          "description": "各報告セグメントおよび製品区分ごとの受注高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "セグメント別受注残高",
+          "type": "backlog",
+          "description": "各報告セグメントおよび製品区分ごとの受注残高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "定性的情報の本文（2-3ページ）に売上高と受注高の概数が百万円単位で記載され、補足説明資料（12ページ）の受注実績表に受注高と受注残高の詳細が千円単位で記載されています。受注実績表はセグメントと製品区分が階層構造を持つ複雑な形式です。"
+    }
+  ],
+  "_source_pdf": "tdnet/6384/20260210_6384_昭和真空_決算短信_2026年３月期　第３四半期決算短信〔日本基準〕（連結）_140120260209552136.pdf",
+  "_source_doc_id": "140120260209552136",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:10:47.445775+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      5,
+      14
+    ],
+    "table_count": 2,
+    "max_rows": 7,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

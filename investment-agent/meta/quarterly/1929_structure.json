@@ -1,0 +1,61 @@
+{
+  "ticker": "1929",
+  "company_name": "日特建",
+  "current_version": "2025-05",
+  "versions": [
+    {
+      "valid_from": "2025-05",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当連結会計年度における工事受注の総額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "繰越高",
+          "type": "backlog",
+          "description": "当連結会計年度末時点における未完成工事の残高",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "決算短信の26ページおよび27ページに、受注高・売上高・繰越高の詳細な工事区分別内訳が表形式で記載されています。基礎工事については、基礎・地盤改良、法面、補修の3つの小分類とその合計（基礎工事計）が示されています。また、27ページには麻生フオームクリート株式会社を含めた参考値としての繰越高も掲載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/1929/20250509_1929_日特建_決算短信_2025年３月期 決算短信〔日本基準〕（連結）_140120250505530872.pdf",
+  "_source_doc_id": "140120250505530872",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:03:47.404812+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      5,
+      7,
+      12,
+      22,
+      23,
+      26,
+      27,
+      29,
+      30
+    ],
+    "table_count": 12,
+    "max_rows": 52,
+    "max_cols": 9,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 12"
+    ]
+  }
+}

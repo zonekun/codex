@@ -1,0 +1,18 @@
+{
+  "ticker": "8163",
+  "company_name": "SRSホールディングス",
+  "updated_at": "2026-04-24",
+  "last_checked": "2026-04-24",
+  "ir_page_url": "https://srsholdings.com/pages/ir-library-monthly",
+  "type": "html_table",
+  "css_selector": null,
+  "link_text_pattern": null,
+  "link_href_pattern": null,
+  "table_selector": null,
+  "status": "active",
+  "skip_reason": null,
+  "playwright_required": false,
+  "follow_links": false,
+  "note": "月次業績はHTML表形式（PDF非公開）。https://srsholdings.com/pages/ir-library-monthly に売上高・既存店売上・客数・客単価前年比データあり（和食さと・握り長次郎等）。旧adapterはsrs-holdings.co.jpトップページURLでpatternなし。実際はsrsholdings.comにリダイレクト",
+  "url_source": "manual_fix_20260424"
+}

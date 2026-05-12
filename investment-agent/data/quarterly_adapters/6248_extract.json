@@ -1,0 +1,142 @@
+{
+  "ticker": "6248",
+  "company_name": "横田製作所",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "extraction_method": "regex",
+      "source": "tanshin",
+      "page_keywords": [
+        "生産実績",
+        "受注実績",
+        "販売実績",
+        "ポンプ製品",
+        "バルブ製品",
+        "部品・サービス"
+      ],
+      "fields": [
+        {
+          "key": "生産高",
+          "row_label_regex": "ポンプ製品",
+          "value_type": "integer",
+          "unit": "千円",
+          "group": 1
+        },
+        {
+          "key": "生産高",
+          "row_label_regex": "バルブ製品",
+          "value_type": "integer",
+          "unit": "千円",
+          "group": 1
+        },
+        {
+          "key": "生産高",
+          "row_label_regex": "部品・サービス",
+          "value_type": "integer",
+          "unit": "千円",
+          "group": 1
+        },
+        {
+          "key": "生産高",
+          "row_label_regex": "合計",
+          "value_type": "integer",
+          "unit": "千円",
+          "group": 1
+        },
+        {
+          "key": "受注高",
+          "row_label_regex": "ポンプ製品",
+          "value_type": "integer",
+          "unit": "千円",
+          "group": 1
+        },
+        {
+          "key": "受注高",
+          "row_label_regex": "バルブ製品",
+          "value_type": "integer",
+          "unit": "千円",
+          "group": 1
+        },
+        {
+          "key": "受注高",
+          "row_label_regex": "部品・サービス",
+          "value_type": "integer",
+          "unit": "千円",
+          "group": 1
+        },
+        {
+          "key": "受注高",
+          "row_label_regex": "合計",
+          "value_type": "integer",
+          "unit": "千円",
+          "group": 1
+        },
+        {
+          "key": "受注残高",
+          "row_label_regex": "ポンプ製品",
+          "value_type": "integer",
+          "unit": "千円",
+          "group": 3
+        },
+        {
+          "key": "受注残高",
+          "row_label_regex": "バルブ製品",
+          "value_type": "integer",
+          "unit": "千円",
+          "group": 3
+        },
+        {
+          "key": "受注残高",
+          "row_label_regex": "部品・サービス",
+          "value_type": "integer",
+          "unit": "千円",
+          "group": 3
+        },
+        {
+          "key": "受注残高",
+          "row_label_regex": "合計",
+          "value_type": "integer",
+          "unit": "千円",
+          "group": 3
+        },
+        {
+          "key": "販売高",
+          "row_label_regex": "ポンプ製品",
+          "value_type": "integer",
+          "unit": "千円",
+          "group": 1
+        },
+        {
+          "key": "販売高",
+          "row_label_regex": "バルブ製品",
+          "value_type": "integer",
+          "unit": "千円",
+          "group": 1
+        },
+        {
+          "key": "販売高",
+          "row_label_regex": "部品・サービス",
+          "value_type": "integer",
+          "unit": "千円",
+          "group": 1
+        },
+        {
+          "key": "販売高",
+          "row_label_regex": "合計",
+          "value_type": "integer",
+          "unit": "千円",
+          "group": 1
+        }
+      ],
+      "gemini_custom_prompt": "",
+      "notes": "The page contains three separate tables for Production, Orders (Intake and Backlog), and Sales. The regex groups are used to distinguish between columns in the multi-column order table."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/6248/20260205_6248_横田製作所_決算短信_2026年３月期　第３四半期決算短信〔日本基準〕（非連結）_140120260202544823.pdf",
+  "_source_doc_id": "140120260202544823",
+  "_generated_at": "2026-04-30T23:18:07.496597+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

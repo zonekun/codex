@@ -1,0 +1,54 @@
+{
+  "ticker": "1814",
+  "company_name": "大末建",
+  "current_version": "2025-11",
+  "versions": [
+    {
+      "valid_from": "2025-11",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当中間連結会計期間の受注実績、および個別受注実績の合計値",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "繰越工事高",
+          "type": "backlog",
+          "description": "当中間連結会計期間末における未消化の受注残高",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "2ページの定性的情報に連結の受注高、売上高、繰越工事高の数値が記載されています。5ページの損益計算書には売上高の内訳（完成工事高・不動産事業等）があり、7ページには個別受注実績のセグメント別および発注者別の詳細な内訳表が掲載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/1814/20251106_1814_大末建_決算短信_2026年３月期 第２四半期（中間期）決算短信〔日本基準〕（連結）_140120251105588450.pdf",
+  "_source_doc_id": "140120251105588450",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T16:47:47.045127+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      7,
+      9
+    ],
+    "table_count": 4,
+    "max_rows": 38,
+    "max_cols": 7,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 4"
+    ]
+  }
+}

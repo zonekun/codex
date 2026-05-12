@@ -1,0 +1,51 @@
+{
+  "ticker": "9974",
+  "company_name": "ベルク",
+  "source": "non-tdnet(html_table)",
+  "fields": [
+    {
+      "key": "全店 売上（前年同月比）",
+      "bc_key": "全店 売上（前年同月比）",
+      "bc_ignore": true,
+      "bc_ignore_reason": "E6-5: 企業IRページ(belc.jp/company/library/monthly)に「ただいま掲載すべき事項はございません」と表示。GCSのHTMLも同内容。月次売上開示を停止または未実施",
+      "value_type": "percentage"
+    },
+    {
+      "key": "全店 客単価（前年同月比）",
+      "bc_key": "全店 客単価（前年同月比）",
+      "bc_ignore": true,
+      "bc_ignore_reason": "E6-5: 同上",
+      "value_type": "percentage"
+    },
+    {
+      "key": "全店 客数（前年同月比）",
+      "bc_key": "全店 客数（前年同月比）",
+      "bc_ignore": true,
+      "bc_ignore_reason": "E6-5: 同上",
+      "value_type": "percentage"
+    },
+    {
+      "key": "既存店 売上（前年同月比）",
+      "bc_key": "既存店 売上（前年同月比）",
+      "bc_ignore": true,
+      "bc_ignore_reason": "E6-5: 同上",
+      "value_type": "percentage"
+    },
+    {
+      "key": "既存店 客単価（前年同月比）",
+      "bc_key": "既存店 客単価（前年同月比）",
+      "bc_ignore": true,
+      "bc_ignore_reason": "E6-5: 同上",
+      "value_type": "percentage"
+    },
+    {
+      "key": "既存店 客数（前年同月比）",
+      "bc_key": "既存店 客数（前年同月比）",
+      "bc_ignore": true,
+      "bc_ignore_reason": "E6-5: 同上",
+      "value_type": "percentage"
+    }
+  ],
+  "manual_override": true,
+  "manual_override_at": "2026-05-08T14:00:00+09:00"
+}

@@ -1,0 +1,59 @@
+{
+  "source": "non-tdnet(pdf)",
+  "format": "pdf",
+  "doc_title_pattern": "(\\d{4})年(\\d{1,2})月度",
+  "year_from_title_regex": "(\\d{4})年",
+  "month_from_title_regex": "(\\d{1,2})月",
+  "fields": [
+    {
+      "key": "既存店 売上（前年同月比）",
+      "name": "既存店 売上（前年同月比）",
+      "row_label_regex": "(\\d{1,2})月\\s+([\\d.]+)%\\s+([\\d.]+)%\\s+([\\d.]+)%\\s+([\\d.]+)%\\s+([\\d.]+)%\\s+([\\d.]+)%",
+      "value_type": "percentage",
+      "group": 2,
+      "use_last_number": true
+    },
+    {
+      "key": "既存店 客単価（前年同月比）",
+      "name": "既存店 客単価（前年同月比）",
+      "row_label_regex": "(\\d{1,2})月\\s+([\\d.]+)%\\s+([\\d.]+)%\\s+([\\d.]+)%\\s+([\\d.]+)%\\s+([\\d.]+)%\\s+([\\d.]+)%",
+      "value_type": "percentage",
+      "group": 4,
+      "use_last_number": true
+    },
+    {
+      "key": "既存店 客数（前年同月比）",
+      "name": "既存店 客数（前年同月比）",
+      "row_label_regex": "(\\d{1,2})月\\s+([\\d.]+)%\\s+([\\d.]+)%\\s+([\\d.]+)%\\s+([\\d.]+)%\\s+([\\d.]+)%\\s+([\\d.]+)%",
+      "value_type": "percentage",
+      "group": 3,
+      "use_last_number": true
+    },
+    {
+      "key": "全店 売上（前年同月比）",
+      "name": "全店 売上（前年同月比）",
+      "bc_ignore": true,
+      "bc_ignore_reason": "BC値102.0あり。2026年3月度TDnet PDF確認: 全店売上前年比データあり(102.3%検出=BC値近似)。ただしadapterは非TDnet旧フォーマット(既存店regex)のみ対応。TDnet版IRレポートのレイアウトが異なるためregex再設計必要。Gemini抽出化で取得可能性あり",
+      "bc_key": "全店 売上（前年同月比）"
+    },
+    {
+      "key": "全店 店舗数",
+      "name": "全店 店舗数",
+      "bc_ignore": true,
+      "bc_ignore_reason": "BC値3047あり。2026年3月度TDnet PDF確認: 店舗数データあり(3,090検出=時期差)。adapterは非TDnet旧フォーマット対応のためTDnet版レイアウトに未対応。Gemini抽出化で取得可能性あり",
+      "bc_key": "全店 店舗数"
+    }
+  ],
+  "extraction_notes": "「全店 売上（前年同月比）」および「全店 店舗数」は、サンプルテキスト中に該当する情報が見つからなかったため、抽出対象外としました。",
+  "ticker": "3197",
+  "company_name": "3197",
+  "created_at": "2026-04-05T18:06:45.887757+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "201409_3197_2014年9月度の月次売上高前年比等について_9944eb7c",
+  "sample_submission_date": "",
+  "report_url": "TDNET文書",
+  "sample_file": "201409_3197_2014年9月度の月次売上高前年比等について_9944eb7c",
+  "_source_renamed_at": "2026-04-18T16:36:34+09:00",
+  "_source_renamed_from": "pdf",
+  "manual_override": true
+}

@@ -1,0 +1,58 @@
+{
+  "source": "non-tdnet(pdf)",
+  "format": "pdf",
+  "doc_title_pattern": "\\d{6}_\\d{4}_(\\d{4})N.*(\\d)ú",
+  "year_from_title_regex": "(\\d{4})N",
+  "month_from_title_regex": "(\\d)",
+  "fields": [
+    {
+      "key": "山陽新幹線 利用状況（前年同月比）",
+      "name": "山陽新幹線 利用状況（前年同月比）",
+      "row_label_regex": "\\d+\\s*月\\s+\\d+\\s+\\d+\\s+\\d+\\s+(\\d+)",
+      "value_type": "percentage",
+      "group": 1,
+      "use_last_number": true
+    },
+    {
+      "key": "近畿圏 在来線 利用状況（前年同月比）",
+      "name": "近畿圏 在来線 利用状況（前年同月比）",
+      "row_label_regex": "\\d+\\s*月\\s+\\d+\\s+\\d+\\s+\\d+\\s+\\d+\\s+\\d+\\s+(\\d+)",
+      "value_type": "percentage",
+      "group": 1,
+      "use_last_number": true
+    },
+    {
+      "key": "運輸取扱収入 合計（前年同月比）",
+      "name": "運輸取扱収入 合計（前年同月比）",
+      "row_label_regex": "\\d+\\s*月\\s+[\\d\\s,]+\\s+(\\d+\\.\\d+)",
+      "value_type": "percentage",
+      "group": 1,
+      "use_last_number": true
+    },
+    {
+      "key": "運輸取扱収入 定期（前年同月比）",
+      "name": "運輸取扱収入 定期（前年同月比）",
+      "row_label_regex": "\\d+\\s*月\\s+[\\d\\s,]+\\s+\\d+\\.\\d+\\s+\\d+\\.\\d+\\s+\\d+\\.\\d+\\s+(\\d+\\.\\d+)",
+      "value_type": "percentage",
+      "group": 1,
+      "use_last_number": true
+    },
+    {
+      "key": "北陸新幹線 利用状況（前年同月比）",
+      "name": "北陸新幹線 利用状況（前年同月比）",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "BC値93.0あり。JR西IR掲載の月次利用状況PDFに北陸新幹線データは含まれるが、現行regexベース抽出では山陽新幹線・近畿圏在来線のみ対応。北陸新幹線行は表構造が異なり別regex必要"
+    }
+  ],
+  "ticker": "9021",
+  "company_name": "9021",
+  "created_at": "2026-04-05T10:24:33.143554+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "000000_9021_2003Ni½¬15Nj3úiPDF`®16Lo_630b113e",
+  "sample_submission_date": "",
+  "report_url": "TDNET文書",
+  "sample_file": "000000_9021_2003Ni½¬15Nj3úiPDF`®16Lo_630b113e",
+  "_source_renamed_at": "2026-04-18T16:36:34+09:00",
+  "_source_renamed_from": "pdf",
+  "manual_override": true
+}

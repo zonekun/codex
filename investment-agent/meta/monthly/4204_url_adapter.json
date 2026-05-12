@@ -1,0 +1,18 @@
+{
+  "ticker": "4204",
+  "company_name": "積水化学工業",
+  "updated_at": "2026-04-24",
+  "last_checked": "2026-04-24",
+  "ir_page_url": "https://www.sekisui.co.jp/ir/results/housing_order/",
+  "type": "html_table",
+  "css_selector": null,
+  "link_text_pattern": null,
+  "link_href_pattern": null,
+  "table_selector": null,
+  "status": "active",
+  "skip_reason": null,
+  "playwright_required": false,
+  "follow_links": false,
+  "note": "住宅受注速報はHTML表形式（PDF非公開）。https://www.sekisui.co.jp/ir/results/housing_order/ に金額ベース・棟数ベース前年比データあり。TDnetには住宅受注の月次開示なし。旧adapterは汎用IRページで.*\\.pdf",
+  "url_source": "manual_fix_20260424"
+}

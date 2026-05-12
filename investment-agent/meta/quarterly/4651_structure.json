@@ -1,0 +1,36 @@
+{
+  "ticker": "4651",
+  "company_name": "サニックスＨＤ",
+  "current_version": "2025-05",
+  "versions": [
+    {
+      "valid_from": "2025-05",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "presentation_format": "chart",
+      "complexity": "ppt_chart",
+      "notes": "18ページにエネルギー領域PV事業の受注高推移が棒グラフで示されている。27ページは配当に関する情報であり、受注関連のデータは含まれていない。 pages 3および5に連結売上高と領域別売上高が記載されているため、completed metricとして追加。PV事業の受注残高は数値記載なし。\nPDF??????????????????????????????Phase 6b #23?data_available=false????"
+    }
+  ],
+  "_source_pdf": "tdnet/4651/20250515_4651_サニックスＨＤ_決算説明資料_2025年３月期　決算説明資料_140120250515553021.pdf",
+  "_source_doc_id": "140120250515553021",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T18:11:04.607221+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "no_table",
+    "relevant_pages": [
+      19,
+      28
+    ],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "pdfplumber found no tables on relevant pages"
+    ]
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "ticker": "6613",
+  "company_name": "Ｇ－ＱＤレーザ",
+  "current_version": "2025-05",
+  "versions": [
+    {
+      "valid_from": "2025-05",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "breakdown_dimensions": [],
+      "presentation_format": "table",
+      "complexity": "no_relevant_pages",
+      "notes": "提供されたページ（貸借対照表および株主資本等変動計算書）には、受注高、売上高、受注残高に関するデータは含まれていません。"
+    }
+  ],
+  "_source_pdf": "tdnet/6613/20250514_6613_Ｇ－ＱＤレーザ_決算短信_2025年３月期 決算短信〔日本基準〕（非連結）_140120250512543011.pdf",
+  "_source_doc_id": "140120250512543011",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:21:50.074652+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      8,
+      11
+    ],
+    "table_count": 3,
+    "max_rows": 34,
+    "max_cols": 12,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

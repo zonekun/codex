@@ -2,13 +2,13 @@
 
 **カテゴリ**: strategies
 **作成日**: 2026-04-12
-**ステータス**: 有効
+**ステータス**: 全面停止（2026-04-27。air trade 含む完全停止。元は 2026-04-26 に本運用停止。3/19以降の優位性消失。参照: `docs/references/tweets/20260422_akkagi0416_us_japan_leadlag_edge_decay.md`）
 **関連ファイル**:
 - `docs/knowledges/analysis/011-4_us_japan_sector_leadlag.md` -- ANALYZED_PASS
 - `scripts/backtest_011_4_us_japan_sector.py` -- バックテストスクリプト
-- `scripts/factor_model/poc_011_4b_us_japan_longshort.py` -- PoC（Pass 1b）
-- `scripts/factor_model/poc_011_4_pass2.py` -- PoC（Pass 2）
-- `scripts/factor_model/poc_011_4_deep_dive.py` -- 深掘り（Rolling IC）
+- ~~`scripts/factor_model/poc_011_4b_us_japan_longshort.py`~~ -- PoC（Pass 1b）削除済み
+- ~~`scripts/factor_model/poc_011_4_pass2.py`~~ -- PoC（Pass 2）削除済み
+- ~~`scripts/factor_model/poc_011_4_deep_dive.py`~~ -- 深掘り（Rolling IC）削除済み
 
 ## 概要
 
@@ -110,6 +110,8 @@ Kill Switch: FLAT (IC_26w = -0.023, threshold = -0.01)
 ```
 
 ### ペーパートレード運用の特例（KS ON 時の air trade 継続）
+
+> **⛔ 2026-04-27 全面停止**: air trade 含む全運用を停止。Cloud Scheduler `signal-011-4-daily-scheduler` / `paper-trade-011-4-pnl-scheduler` を pause 済み。
 
 **2026-04-16 以降**、ペーパートレード（`paper_trade_011_4_pnl.py`）は KS ON 時も air trade として P&L 計算を継続する。
 

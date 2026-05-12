@@ -1,0 +1,14 @@
+{
+  "ticker": "9202",
+  "company_name": "ＡＮＡホールディングス",
+  "ir_page_url": "https://www.ana.co.jp/group/investors/irdata/transrecord.html",
+  "status": "active",
+  "type": "scrape_links",
+  "playwright_required": true,
+  "link_href_pattern": "eir-parts\\.net/doc/9202/ir_material/\\d+/00\\.pdf",
+  "link_text_pattern": "月次輸送実績",
+  "follow_links": false,
+  "manual_override": true,
+  "manual_override_at": "2026-05-08T14:00:00+09:00",
+  "note": "旧URL anahd.co.jp/ir/monthly/ は ana.co.jp にリダイレクト。正しいURL: transrecord.html。Playwright必須（JS描画）。年度別PDFリンク（ssl4.eir-parts.net/doc/9202/ir_material/{id}/00.pdf）をscrape_linksで取得"
+}

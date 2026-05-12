@@ -1,0 +1,76 @@
+{
+  "ticker": "4743",
+  "company_name": "アイティフォー",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当第３四半期連結累計期間における受注高の合計額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残",
+          "type": "backlog",
+          "description": "当第３四半期連結累計期間末における受注残高の合計額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "システム開発・販売 受注高",
+          "type": "order_intake",
+          "description": "システム開発・販売セグメントにおける受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "リカーリング 受注高",
+          "type": "order_intake",
+          "description": "リカーリングセグメントにおける受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "システム開発・販売",
+            "リカーリング"
+          ]
+        }
+      ],
+      "presentation_format": "text",
+      "complexity": "no_table",
+      "notes": "決算短信の定性的情報の本文中に、連結合計およびセグメント別の受注高、ならびに連結合計の受注残高の数値が記載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/4743/20260212_4743_アイティフォー_決算短信_2026年３月期 第３四半期決算短信〔日本基準〕(連結)_140120260212556976.pdf",
+  "_source_doc_id": "140120260212556976",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:13:55.564878+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "no_table",
+    "relevant_pages": [
+      4,
+      5
+    ],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "pdfplumber found no tables on relevant pages"
+    ]
+  }
+}

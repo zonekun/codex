@@ -1,0 +1,11 @@
+{
+  "ticker": "8698",
+  "company_name": "マネックスグループ",
+  "ir_page_url": "https://www.monexgroup.jp/jp/investor/finance/global.html",
+  "updated_at": "2026-04-21T13:02:06.185896+09:00",
+  "last_checked": "2026-04-21",
+  "status": "skip",
+  "type": null,
+  "skip_reason": "スクレイプエラー: timeout",
+  "note": "error: timeout"
+}

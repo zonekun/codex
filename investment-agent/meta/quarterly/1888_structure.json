@@ -1,0 +1,98 @@
+{
+  "ticker": "1888",
+  "company_name": "若築建",
+  "current_version": "2025-05",
+  "versions": [
+    {
+      "valid_from": "2025-05",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当期における受注高の合計額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "建設事業 受注高",
+          "type": "order_intake",
+          "description": "建設事業における受注高。内訳として海上土木、陸上土木、建築を含む。",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "開発事業等 受注高",
+          "type": "order_intake",
+          "description": "開発事業等における受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "繰越高",
+          "type": "backlog",
+          "description": "当期末における次期繰越工事高の合計額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "建設事業 繰越高",
+          "type": "backlog",
+          "description": "建設事業における次期繰越工事高。内訳として海上土木、陸上土木、建築を含む。",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "繰越高"
+        },
+        {
+          "name": "開発事業等 繰越高",
+          "type": "backlog",
+          "description": "開発事業等における次期繰越工事高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "繰越高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "建設事業",
+            "開発事業等"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "決算短信の22ページ「5. その他 個別受注・売上・繰越実績」に、受注高、売上高、繰越高のセグメント別および建設事業内の工種別（海上土木、陸上土木、建築）の詳細な表が掲載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/1888/20250514_1888_若築建_決算短信_2025年3月期決算短信〔日本基準〕（連結）_140120250512540502.pdf",
+  "_source_doc_id": "140120250512540502",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T16:59:57.945604+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      9,
+      19,
+      20,
+      22,
+      23,
+      24
+    ],
+    "table_count": 10,
+    "max_rows": 45,
+    "max_cols": 9,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 10"
+    ]
+  }
+}

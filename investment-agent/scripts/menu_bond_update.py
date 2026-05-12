@@ -1,7 +1,7 @@
 """BB_債券履歴_new.xlsx → data/csv/bond_history.csv 更新スクリプト.
 
-メニュー項目1: 起動時随時実行
-PS1メニュー: C:\\Users\\zonekun\\Dropbox\\stock\\script\\claude-investment-agent.ps1
+PSメニュー「BB_債券履歴_new 取り込み更新」
+詳細: docs/knowledges/tools/023_powershell_menu.md
 """
 import os
 

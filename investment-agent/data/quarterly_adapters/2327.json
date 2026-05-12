@@ -1,0 +1,152 @@
+{
+  "ticker": "2327",
+  "company_name": "ＮＳＳＯＬ",
+  "current_version": "2025-04",
+  "versions": [
+    {
+      "valid_from": "2025-04",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "生産高",
+          "type": "other",
+          "description": "サービス分野別の生産実績合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "ビジネスソリューション 生産高",
+          "type": "other",
+          "description": "ビジネスソリューション分野の生産実績",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "生産高"
+        },
+        {
+          "name": "コンサルティング＆デジタルサービス 生産高",
+          "type": "other",
+          "description": "コンサルティング＆デジタルサービス分野の生産実績",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "生産高"
+        },
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "サービス分野別の受注高合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "ビジネスソリューション 受注高",
+          "type": "order_intake",
+          "description": "ビジネスソリューション分野の受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "コンサルティング＆デジタルサービス 受注高",
+          "type": "order_intake",
+          "description": "コンサルティング＆デジタルサービス分野の受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "サービス分野別の受注残高合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "ビジネスソリューション 受注残高",
+          "type": "backlog",
+          "description": "ビジネスソリューション分野の受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        },
+        {
+          "name": "コンサルティング＆デジタルサービス 受注残高",
+          "type": "backlog",
+          "description": "コンサルティング＆デジタルサービス分野の受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        },
+        {
+          "name": "販売高",
+          "type": "completed",
+          "description": "サービス分野別の販売実績合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "ビジネスソリューション 販売高",
+          "type": "completed",
+          "description": "ビジネスソリューション分野の販売実績",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "販売高"
+        },
+        {
+          "name": "コンサルティング＆デジタルサービス 販売高",
+          "type": "completed",
+          "description": "コンサルティング＆デジタルサービス分野の販売実績",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "販売高"
+        },
+        {
+          "name": "日本製鉄(株) 販売高",
+          "type": "completed",
+          "description": "主要な相手先別の販売実績",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "販売高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "サービス分野",
+          "items": [
+            "ビジネスソリューション",
+            "コンサルティング＆デジタルサービス"
+          ]
+        },
+        {
+          "dimension_name": "相手先",
+          "items": [
+            "日本製鉄(株)"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "生産実績、受注実績（受注高・受注残高）、販売実績がサービス分野別に詳細に記載されています。また、主要な相手先である日本製鉄向けの販売実績も含まれています。"
+    }
+  ],
+  "_source_pdf": "tdnet/2327/20250428_2327_ＮＳＳＯＬ_決算短信_2025年３月期　決算短信〔ＩＦＲＳ〕（連結）_140120250424522801.pdf",
+  "_source_doc_id": "140120250424522801",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:20:21.446560+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      19
+    ],
+    "table_count": 4,
+    "max_rows": 4,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 4"
+    ]
+  }
+}

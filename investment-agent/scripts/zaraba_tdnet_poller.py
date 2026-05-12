@@ -24,7 +24,7 @@ import structlog
 logger = structlog.get_logger(__name__)
 
 JST = timezone(timedelta(hours=+9), "JST")
-CACHE_BASE = Path("/tmp/zaraba_cache") if sys.platform != "win32" else Path(r"C:\tmp\zaraba_cache")
+CACHE_BASE = Path.home() / "zaraba_cache" if sys.platform != "win32" else Path(r"C:\tmp\zaraba_cache")
 
 TDNET_BASE_URL = "https://www.release.tdnet.info/inbs/"
 YANOSHIN_BASE_URL = "https://webapi.yanoshin.jp/webapi/tdnet/list/"
@@ -288,13 +288,14 @@ TDNET_TAG_MAP: dict[str, list[str]] = {
         "RevenuesFromExternalCustomers",
     ],
     "OPERATING_PROFIT": [
-        "OperatingIncome", "OperatingProfit",
-        "OperatingIncomeIFRS", "OperatingProfitIFRS",
+        "OperatingIncomeIFRS", "OperatingProfitIFRS",    # IFRS連結を最優先
         "OperatingProfitLossIFRS",
         "BusinessProfitIFRS", "BusinessProfitLossIFRS",  # IFRS事業利益
         "CoreOperatingIncomeIFRS",                        # IFRS中核営業利益
-        "OperatingIncomeLoss", "OperatingIncomeLossIFRS",
+        "OperatingIncomeUS",                              # 米国基準
         "OperatingIncomeLossUSGAAP",
+        "OperatingIncome", "OperatingProfit",             # J-GAAP（IFRS/US該当なし時）
+        "OperatingIncomeLoss", "OperatingIncomeLossIFRS",
     ],
     "ORDINARY_PROFIT": ["OrdinaryIncome"],
     "PROFIT": [
@@ -312,21 +313,51 @@ TDNET_TAG_MAP: dict[str, list[str]] = {
     # 予想値: タグ名は実績と同一。contextRef の ForecastMember で区別する
     # 調査確定 2026-04-09: TDnet iXBRL サンプル検証済み（9972 1Q, 3382 FY, 4829 3Q）
     "FORECAST_OP": [
-        "OperatingIncome", "OperatingProfit",
         "OperatingIncomeIFRS", "OperatingProfitIFRS",
         "BusinessProfitIFRS", "BusinessProfitLossIFRS",
+        "OperatingIncomeUS",
+        "OperatingIncome", "OperatingProfit",
     ],
     "SHORT_TERM_FORECAST_OP": [
-        "OperatingIncome", "OperatingProfit",
         "OperatingIncomeIFRS", "OperatingProfitIFRS",
         "BusinessProfitIFRS", "BusinessProfitLossIFRS",
+        "OperatingIncomeUS",
+        "OperatingIncome", "OperatingProfit",
     ],
     "NEXT_YEAR_FORECAST_OP": [
-        "OperatingIncome", "OperatingProfit",
         "OperatingIncomeIFRS", "OperatingProfitIFRS",
         "BusinessProfitIFRS", "BusinessProfitLossIFRS",
+        "OperatingIncomeUS",
+        "OperatingIncome", "OperatingProfit",
+    ],
+    "NEXT_YEAR_FORECAST_NET_SALES": [
+        "NetSales", "OperatingRevenue", "GrossOperatingRevenues",
+        "Revenue", "SalesIFRS", "RevenueIFRS",
+        "NetSalesAndOperatingRevenue",
+        "NetSalesOfCompletedConstructionContracts",
+        "OrdinaryIncomeBNK", "OperatingIncomeINS",
+        "BusinessRevenue", "OperatingRevenue1", "OperatingRevenue2",
+        "RevenuesFromExternalCustomers",
+    ],
+    "NEXT_YEAR_FORECAST_ODP": ["OrdinaryIncome"],
+    "NEXT_YEAR_FORECAST_NP": [
+        "ProfitAttributableToOwnersOfParent", "NetIncome",
+        "ProfitLoss", "NetIncomeAttributableToOwnersOfParent",
+        "ProfitIFRS", "ProfitLossIFRS",
+        "ProfitLossAttributableToOwnersOfParent",
+        "ProfitLossAttributableToOwnersOfParentIFRS",
+    ],
+    "NEXT_YEAR_FORECAST_EPS": [
+        "BasicEarningsPerShareIFRS", "BasicEarningsLossPerShareIFRS",
+        "BasicEarningsPerShare", "NetIncomePerShare",
+        "BasicEarningsLossPerShare",
     ],
     "FORECAST_DIV_ANN": ["DividendPerShare"],
+    "FORECAST_EPS": [
+        "BasicEarningsPerShareIFRS", "BasicEarningsLossPerShareIFRS",
+        "BasicEarningsPerShare", "NetIncomePerShare",
+        "BasicEarningsLossPerShare",
+    ],
 }
 
 # 営業収入タグ（NET_SALESに加算して営業収益を算出）
@@ -386,6 +417,9 @@ def _parse_ixbrl(html_bytes: bytes) -> dict[str, list[dict[str, Any]]]:
         try:
             scale_factor = 10 ** int(scale)
             scaled_value = float(raw_value) * scale_factor
+            # iXBRL sign 属性 → 071_xbrl_to_jquants.md §注意事項
+            if attrs.get("sign") == "-":
+                scaled_value = -scaled_value
         except (ValueError, TypeError):
             scaled_value = raw_value
 
@@ -418,73 +452,80 @@ def _extract_tdnet_pl(
         is_div = "DIV" in jq_col
         found = None
 
+        # IFRS/米国基準対応: 全タグ候補を横断して連結エントリを収集し、
+        # 連結が見つかればそれを優先。タグ単位の break で単体を誤採用する問題を防ぐ。
+        all_consolidated: list[tuple[str, dict]] = []  # (tag_name, entry)
+        all_fallback: list[tuple[str, dict]] = []      # 単体フォールバック
+
         for tag_name in tag_candidates:
             if tag_name not in elements:
                 continue
 
             entries = elements[tag_name]
-            valid_entries = []
-            fallback_entries = []  # 単体（NonConsolidated）のフォールバック
             for e in entries:
                 ctx = e["context"]
-                # 前期は除外
                 if "Prior" in ctx:
                     continue
                 if is_forecast:
-                    # ForecastMember 必須
-                    if "ForecastMember" not in ctx:
-                        continue
+                    # 配当は FY 確定実績（ResultMember）も許可（FY では ForecastMember が無い）
+                    if is_div:
+                        if "ForecastMember" not in ctx and "ResultMember" not in ctx:
+                            continue
+                    else:
+                        if "ForecastMember" not in ctx:
+                            continue
                     if is_nextyear:
-                        # NEXT_YEAR_*: NextYearDuration を含む context のみ
                         if not any(p in ctx for p in TDNET_FORECAST_NEXTYEAR_PATTERNS):
                             continue
                     elif is_short_term:
-                        # SHORT_TERM_*: CurrentAccumulatedQ* の短期予想のみ。
-                        # 通期FOPとしては使わず、通期予想非開示の検知補助に使う。
                         if not any(p in ctx for p in TDNET_FORECAST_SHORT_TERM_PATTERNS):
                             continue
                     else:
-                        # FORECAST_*: CurrentYearDuration を含む context のみ
                         if not any(p in ctx for p in TDNET_FORECAST_CURRENT_PATTERNS):
                             continue
                     if is_div:
-                        # 配当: AnnualMember を含む context のみ（中間・期末ではなく年間）
                         if not any(p in ctx for p in TDNET_FORECAST_DIV_ANN_PATTERNS):
                             continue
-                    valid_entries.append(e)
+                    if any(p in ctx for p in TDNET_PREFER_CONSOLIDATED):
+                        all_consolidated.append((tag_name, e))
+                    else:
+                        all_fallback.append((tag_name, e))
                 else:
                     if any(p in ctx for p in TDNET_CURRENT_PATTERNS):
-                        # ForecastMember を含む context は実績では除外
                         if "ForecastMember" in ctx:
                             continue
-                        # 連結を優先
                         if any(p in ctx for p in TDNET_PREFER_CONSOLIDATED):
-                            valid_entries.append(e)
+                            all_consolidated.append((tag_name, e))
                         else:
-                            fallback_entries.append(e)
-            # 連結がなければ単体にフォールバック
-            if not valid_entries:
-                valid_entries = fallback_entries
+                            all_fallback.append((tag_name, e))
 
-            if not valid_entries:
-                continue
+        candidates = all_consolidated if all_consolidated else all_fallback
+        if not candidates:
+            result[jq_col] = None
+            continue
 
-            # 翌期予想: NextYearDuration（通期）を NextAccumulatedQ*Duration（累計）より優先
-            if is_nextyear and len(valid_entries) > 1:
-                yearly = [e for e in valid_entries if "NextYearDuration" in e["context"]]
-                if yearly:
-                    valid_entries = yearly
+        # 翌期予想: NextYearDuration（通期）を NextAccumulatedQ*Duration（累計）より優先
+        if is_nextyear and len(candidates) > 1:
+            yearly = [(t, e) for t, e in candidates if "NextYearDuration" in e["context"]]
+            if yearly:
+                candidates = yearly
 
-            entry = valid_entries[0]
-            try:
-                raw_val = entry["value"]
-                if jq_col == "EARNINGS_PER_SHARE":
-                    found = {"value": float(raw_val), "tag": tag_name, "context": entry["context"]}
-                else:
-                    found = {"value": int(float(raw_val)), "tag": tag_name, "context": entry["context"]}
-            except (ValueError, TypeError):
-                continue
-            break
+        # 実績値: YearDuration/AccumulatedQ（累計）を QuarterDuration（四半期単独）より優先
+        if not is_forecast and len(candidates) > 1:
+            cumul = [(t, e) for t, e in candidates
+                     if "YearDuration" in e["context"] or "AccumulatedQ" in e["context"]]
+            if cumul:
+                candidates = cumul
+
+        tag_name, entry = candidates[0]
+        try:
+            raw_val = entry["value"]
+            if jq_col == "EARNINGS_PER_SHARE":
+                found = {"value": float(raw_val), "tag": tag_name, "context": entry["context"]}
+            else:
+                found = {"value": int(float(raw_val)), "tag": tag_name, "context": entry["context"]}
+        except (ValueError, TypeError):
+            pass
 
         result[jq_col] = found
 
@@ -498,22 +539,30 @@ def _extract_tdnet_pl(
             # NET_SALES と同じタグなら二重加算しない
             if add_tag == ns["tag"]:
                 continue
+            add_candidates = []
             for e in elements[add_tag]:
                 ctx = e["context"]
                 if "Prior" in ctx or "ForecastMember" in ctx:
                     continue
                 if any(p in ctx for p in TDNET_CURRENT_PATTERNS):
-                    try:
-                        add_val = int(float(e["value"]))
-                        if add_val != 0:
-                            result["NET_SALES"] = {
-                                "value": ns["value"] + add_val,
-                                "tag": f'{ns["tag"]}+{add_tag}',
-                                "context": ns["context"],
-                            }
-                    except (ValueError, TypeError):
-                        pass
-                    break
+                    add_candidates.append(e)
+            # 累計優先（本体ループと同じロジック）
+            if len(add_candidates) > 1:
+                cumul = [e for e in add_candidates
+                         if "YearDuration" in e["context"] or "AccumulatedQ" in e["context"]]
+                if cumul:
+                    add_candidates = cumul
+            if add_candidates:
+                try:
+                    add_val = int(float(add_candidates[0]["value"]))
+                    if add_val != 0:
+                        result["NET_SALES"] = {
+                            "value": ns["value"] + add_val,
+                            "tag": f'{ns["tag"]}+{add_tag}',
+                            "context": ns["context"],
+                        }
+                except (ValueError, TypeError):
+                    pass
             break
 
     return result

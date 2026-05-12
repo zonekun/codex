@@ -1,0 +1,28 @@
+{
+  "ticker": "3674",
+  "company_name": "Ｇ－オークファン",
+  "current_version": "2024-12",
+  "versions": [
+    {
+      "valid_from": "2024-12",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "other",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/3674/20241225_3674_Ｇ－オークファン_事業計画（グロース）_事業計画及び成長可能性に関する説明資料_140120241225544373.pdf",
+  "_source_doc_id": "140120241225544373",
+  "_generated_at": "2026-04-30T17:47:49.443475+09:00",
+  "_model_used": null
+}

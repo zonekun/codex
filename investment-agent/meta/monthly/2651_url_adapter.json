@@ -1,0 +1,17 @@
+{
+  "ticker": "2651",
+  "company_name": "ローソン",
+  "ir_page_url": "https://www.lawson.co.jp/company/ir/financial/monthly/index.html",
+  "status": "active",
+  "type": "html_table",
+  "playwright_required": true,
+  "css_selector": null,
+  "link_text_pattern": "PDF|月次|ダウンロード|\\d{4}",
+  "link_href_pattern": "__icsFiles/afieldfile/\\d{4}/\\d{2}/\\d{2}/\\d{4}_\\d{2}\\.pdf",
+  "note": "JS描画ページ。Playwright必要。ゼロDL修正 (2026-04-24)。",
+  "updated_at": "2026-04-24T13:56:32.655334+09:00",
+  "last_checked": "2026-04-24",
+  "manual_override": true,
+  "manual_override_at": "2026-04-24T13:56:32.655334+09:00",
+  "manual_override_note": "ゼロDL修正 (2026-04-24)"
+}

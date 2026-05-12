@@ -6,12 +6,13 @@
 # Step 4: tdnet-ai-finalize Cloud Run Job 呼出（Gemini受注+Embedding+BQ）
 #
 # 起動:
-#   手動:     gcloud workflows execute ai_processing_flow
-#   自動:     Cloud Scheduler（毎日）
+#   手動:     gcloud workflows execute ai_processing_flow --location=us-central1 --data='{"date_from":"YYYYMMDD","date_to":"YYYYMMDD"}'
+#   週次:     Cloud Scheduler `tdnet-ai-weekly`（毎週土 07:00 JST、recent_only=true）
 #
 # 入力（オプション）:
 #   date_from   — YYYYMMDD（省略時は BQ 最古 pending 月を自動選択）
 #   date_to     — YYYYMMDD（省略時は date_from と同月末）
+#   recent_only — true の場合、直近14日以内の pending を日単位(MIN〜MAX)で対象（バックフィル除外）
 #   ticker_from — ticker下限（例 "1301"。省略時フィルタなし）
 #   ticker_to   — ticker上限（例 "1909"。省略時フィルタなし）
 #
@@ -36,6 +37,8 @@ main:
           - date_to: ""
           - ticker_from: ""
           - ticker_to: ""
+          - recent_only: false
+          - resume_run_id: ""
           - empty_map: {}
           - gemma_callback: {}
           - gemma_runner_result: {}
@@ -50,6 +53,12 @@ main:
               - date_from: ${input.date_from}
               - date_to: ${default(input.date_to, input.date_from)}
 
+    - extract_recent_only:
+        switch:
+          - condition: ${input != null and "recent_only" in input}
+            assign:
+              - recent_only: ${input.recent_only}
+
     - extract_ticker_range:
         switch:
           - condition: ${input != null and "ticker_from" in input}
@@ -57,26 +66,57 @@ main:
               - ticker_from: ${input.ticker_from}
               - ticker_to: ${default(input.ticker_to, input.ticker_from)}
 
+    - extract_resume_run_id:
+        switch:
+          - condition: ${input != null and "resume_run_id" in input}
+            assign:
+              - resume_run_id: ${input.resume_run_id}
+
     # ──────────────────────────────────────────
-    # pending 最古月自動選択（date_from 未指定時）
+    # pending 日付範囲自動選択（date_from 未指定時）
+    # recent_only=true: 直近14日以内の pending 全件を日単位で対象（バックフィル除外）
+    # recent_only=false: 全 pending から最古月を月単位で選択（バックフィル用）
+    #
+    # 注意: recent_only=true は月単位ではなく日単位（MIN〜MAX）で範囲を決定する。
+    # 月単位だと月境界で当日分が後回しになる問題があった（2026-05-07 事故）。
     - resolve_date_range:
         switch:
           - condition: ${date_from == ""}
             steps:
-              - find_oldest_pending:
-                  call: googleapis.bigquery.v2.jobs.query
-                  args:
-                    projectId: ${project_id}
-                    body:
-                      useLegacySql: false
-                      query: |
-                        SELECT
-                          FORMAT_DATE('%Y%m%d', DATE_TRUNC(MIN(SUBMISSION_DATE), MONTH)) AS dfrom,
-                          FORMAT_DATE('%Y%m%d',
-                            LAST_DAY(DATE_TRUNC(MIN(SUBMISSION_DATE), MONTH))) AS dto
-                        FROM `gmailpj-357912.STOCK.TDNET_DOCUMENTS_ENHANCED`
-                        WHERE AI_STATUS = 'pending'
-                  result: pending_query
+              - choose_query:
+                  switch:
+                    - condition: ${recent_only}
+                      steps:
+                        - find_recent_pending:
+                            call: googleapis.bigquery.v2.jobs.query
+                            args:
+                              projectId: ${project_id}
+                              body:
+                                useLegacySql: false
+                                query: |
+                                  SELECT
+                                    FORMAT_DATE('%Y%m%d', MIN(SUBMISSION_DATE)) AS dfrom,
+                                    FORMAT_DATE('%Y%m%d', MAX(SUBMISSION_DATE)) AS dto
+                                  FROM `gmailpj-357912.STOCK.TDNET_DOCUMENTS_ENHANCED`
+                                  WHERE AI_STATUS = 'pending'
+                                    AND SUBMISSION_DATE >= CURRENT_DATE() - 14
+                            result: pending_query
+                    - condition: true
+                      steps:
+                        - find_oldest_pending:
+                            call: googleapis.bigquery.v2.jobs.query
+                            args:
+                              projectId: ${project_id}
+                              body:
+                                useLegacySql: false
+                                query: |
+                                  SELECT
+                                    FORMAT_DATE('%Y%m%d', DATE_TRUNC(MIN(SUBMISSION_DATE), MONTH)) AS dfrom,
+                                    FORMAT_DATE('%Y%m%d',
+                                      LAST_DAY(DATE_TRUNC(MIN(SUBMISSION_DATE), MONTH))) AS dto
+                                  FROM `gmailpj-357912.STOCK.TDNET_DOCUMENTS_ENHANCED`
+                                  WHERE AI_STATUS = 'pending'
+                            result: pending_query
               - check_rows:
                   switch:
                     - condition: ${len(default(pending_query.rows, [])) == 0}
@@ -116,6 +156,26 @@ main:
         result: prepare_result
 
     # ──────────────────────────────────────────
+    # Guard: pending_gemma が 0 件なら Gemma/Finalize をスキップ（TPU 空振り防止）
+    - check_pending_gemma:
+        call: googleapis.bigquery.v2.jobs.query
+        args:
+          projectId: ${project_id}
+          body:
+            useLegacySql: false
+            query: ${"SELECT COUNT(DISTINCT DOC_ID) AS cnt FROM `gmailpj-357912.STOCK.TDNET_DOCUMENTS_ENHANCED` WHERE AI_STATUS = 'pending_gemma' AND SUBMISSION_DATE BETWEEN PARSE_DATE('%Y%m%d', '" + date_from + "') AND PARSE_DATE('%Y%m%d', '" + date_to + "')"}
+        result: gemma_count_query
+
+    - skip_if_no_pending_gemma:
+        switch:
+          - condition: ${int(gemma_count_query.rows[0].f[0].v) == 0}
+            return:
+              status: "no_pending_gemma"
+              run_id: ${run_id}
+              date_from: ${date_from}
+              date_to: ${date_to}
+
+    # ──────────────────────────────────────────
     # Step 2: Callback endpoint 作成
     - create_callback:
         call: events.create_callback_endpoint
@@ -149,18 +209,20 @@ main:
                                 - env:
                                     - name: RUN_ID
                                       value: ${run_id}
+                                    - name: RESUME_RUN_ID
+                                      value: ${resume_run_id}
                                     - name: BUCKET
                                       value: ${bucket}
                                     - name: CALLBACK_URL
                                       value: ${callback_details.url}
                         result: local_runner_result
                       retry:
-                        # TPU spot preemption / 一時的失敗 を 3回まで retry
+                        # TPU spot preemption / 一時的失敗 を 7回まで retry
                         # worker.py は GCS gemma_CURRENT.jsonl から resume するので冪等
-                        max_retries: 3
+                        max_retries: 7
                         backoff:
                           initial_delay: 60
-                          max_delay: 600
+                          max_delay: 900
                           multiplier: 2
                   # parallel branch の `result:` は local scope のみ。
                   # shared 変数に反映するには別途 assign step が必要（公式ドキュメント記載）。
@@ -201,6 +263,10 @@ main:
                 - env:
                     - name: RUN_ID
                       value: ${run_id}
+                    - name: DATE_FROM
+                      value: ${date_from}
+                    - name: DATE_TO
+                      value: ${date_to}
         result: finalize_result
 
     # ──────────────────────────────────────────

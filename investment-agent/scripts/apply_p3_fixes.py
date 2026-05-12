@@ -20,7 +20,7 @@ now = datetime.now(JST).strftime('%Y-%m-%dT%H:%M:%S+09:00')
 creds = service_account.Credentials.from_service_account_file('keys/gcp-service-account.json')
 gcs = storage.Client(project='gmailpj-357912', credentials=creds)
 bucket = gcs.bucket('stock_data_1930932')
-adapters_dir = Path('data/monthly_adapters')
+adapters_dir = Path('meta/monthly')
 
 # 手書き修正: {ticker: {key: {'description': new_desc, 'row_label_regex': new_regex_or_None}}}
 manual_fixes = {
@@ -120,7 +120,7 @@ def main():
             d['manual_override'] = True
             d['p3_fix_at'] = now
             data_str = json.dumps(d, ensure_ascii=False, indent=2)
-            (adapters_dir / f'{ticker}.json').write_text(data_str, encoding='utf-8')
+            (adapters_dir / f'{ticker}_extract_adapter.json').write_text(data_str, encoding='utf-8')
             bucket.blob(blob_path).upload_from_string(data_str, content_type='application/json')
             log.append(f'  → {changed} updates, local+GCS saved')
 

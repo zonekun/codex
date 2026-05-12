@@ -1,0 +1,89 @@
+{
+  "ticker": "4832",
+  "company_name": "ＪＦＥ－ＳＩ",
+  "current_version": "2026-04",
+  "versions": [
+    {
+      "valid_from": "2026-04",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "連結会計年度における売上高合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "連結会計年度における受注高合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "連結会計年度末における受注残高合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "事業別受注高",
+          "type": "order_intake",
+          "description": "セグメント別の受注高内訳",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "事業別受注残高",
+          "type": "backlog",
+          "description": "セグメント別の受注残高内訳",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "事業別",
+          "items": [
+            "デジタル製造",
+            "ERPソリューション",
+            "スマートソリューション",
+            "産業ソリューション",
+            "鉄鋼",
+            "基盤",
+            "子会社、他"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "6ページに連結の主要財務指標（売上高、受注高、受注残高）が、9ページに事業セグメント別の受注高および受注残高の詳細な内訳が表形式で記載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/4832/20260424_4832_ＪＦＥ－ＳＩ_決算説明資料_2026年3月期 決算説明会資料_140120260424510007.pdf",
+  "_source_doc_id": "140120260424510007",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T18:16:46.581682+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      6,
+      9
+    ],
+    "table_count": 4,
+    "max_rows": 15,
+    "max_cols": 9,
+    "broken_col0": true,
+    "unit_mixed": false,
+    "notes": [
+      "first-column labels appear merged",
+      "many tables: 4"
+    ]
+  }
+}

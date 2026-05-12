@@ -1,0 +1,11 @@
+{
+  "ticker": "9835",
+  "company_name": "ジュンテンドー",
+  "ir_page_url": "http://www.juntendo.co.jp/ir/ir-library/monthly/",
+  "updated_at": "2026-04-21T10:23:21.104113+09:00",
+  "last_checked": "2026-04-21",
+  "status": "active",
+  "type": "eir_api",
+  "eir_company_code": "9835",
+  "note": "eIRシステム検出。コード=9835"
+}

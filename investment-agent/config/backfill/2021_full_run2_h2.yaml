@@ -1,0 +1,34 @@
+name: 2021_full_run2_h2
+
+loads:
+  - job: tdnet-load-daily
+    region: us-west1
+    env:
+      DATE_FROM: "20210701"
+      DATE_TO: "20211231"
+      ALLOW_FULL_BACKFILL: "1"
+    args: ["--job-mode=load"]
+
+workflows:
+  - name: ai_processing_flow
+    location: us-central1
+    data:
+      date_from: "20210701"
+      date_to: "20210930"
+  # Q4 OOM分割: 17,156 docs → GCS実データ累積50%で分割(8,274/8,882 = 48.2%/51.8%)
+  - name: ai_processing_flow
+    location: us-central1
+    data:
+      date_from: "20211001"
+      date_to: "20211110"
+  - name: ai_processing_flow
+    location: us-central1
+    data:
+      date_from: "20211111"
+      date_to: "20211231"
+
+options:
+  parallel_loads: 1
+  poll_interval_s: 120
+  notify_on_start: true
+  notify_each_load: true

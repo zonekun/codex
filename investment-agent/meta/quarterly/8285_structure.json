@@ -1,0 +1,53 @@
+{
+  "ticker": "8285",
+  "company_name": "三谷産業",
+  "current_version": "2026-01",
+  "versions": [
+    {
+      "valid_from": "2026-01",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "セグメント別の受注実績額",
+          "unit": "百万円",
+          "is_total": false
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "セグメント別の受注残高",
+          "unit": "百万円",
+          "is_total": false
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "受注高および受注残高は、空調設備工事関連事業、情報システム関連事業、住宅設備機器関連事業の3セグメントのみ開示されています。売上高は全セグメントおよび連結合計が開示されています。数値は主に補足情報の表から抽出可能です。"
+    }
+  ],
+  "_source_pdf": "tdnet/8285/20260130_8285_三谷産業_決算短信_2026年3月期 第3四半期決算短信〔日本基準〕（連結）_140120260129541105.pdf",
+  "_source_doc_id": "140120260129541105",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T20:06:37.590716+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      5,
+      13
+    ],
+    "table_count": 2,
+    "max_rows": 10,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

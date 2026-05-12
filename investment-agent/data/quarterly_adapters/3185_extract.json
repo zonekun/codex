@@ -1,0 +1,28 @@
+{
+  "ticker": "3185",
+  "company_name": "Ｇ－夢展望",
+  "current_version": "2025-02",
+  "versions": [
+    {
+      "valid_from": "2025-02",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/3185/20250214_3185_Ｇ－夢展望_決算短信_2025年３月期　第３四半期決算短信〔ＩＦＲＳ〕（連結)_140120250213573379.pdf",
+  "_source_doc_id": "140120250213573379",
+  "_generated_at": "2026-04-30T17:33:51.519575+09:00",
+  "_model_used": null
+}

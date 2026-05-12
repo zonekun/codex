@@ -1,0 +1,114 @@
+{
+  "ticker": "6277",
+  "company_name": "ホソカワミクロン",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "連結累計期間の受注高合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "連結会計期間末の受注残高合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "連結累計期間の売上高合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "粉体関連事業 受注高",
+          "type": "order_intake",
+          "description": "粉体関連事業における受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "粉体関連事業 受注残高",
+          "type": "backlog",
+          "description": "粉体関連事業における受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        },
+        {
+          "name": "粉体関連事業 売上高",
+          "type": "completed",
+          "description": "粉体関連事業における売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "プラスチック薄膜関連事業 受注高",
+          "type": "order_intake",
+          "description": "プラスチック薄膜関連事業における受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "プラスチック薄膜関連事業 受注残高",
+          "type": "backlog",
+          "description": "プラスチック薄膜関連事業における受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        },
+        {
+          "name": "プラスチック薄膜関連事業 売上高",
+          "type": "completed",
+          "description": "プラスチック薄膜関連事業における売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "粉体関連事業",
+            "プラスチック薄膜関連事業"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "連結合計は表に、セグメント別内訳は本文中に記載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/6277/20260206_6277_ホソカワミクロン_決算短信_2026年９月期第１四半期決算短信〔日本基準〕(連結)_140120260204547334.pdf",
+  "_source_doc_id": "140120260204547334",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:56:27.984083+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4
+    ],
+    "table_count": 1,
+    "max_rows": 7,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "ticker": "3136",
+  "company_name": "3136",
+  "metrics": [
+    {
+      "name": "リユース店舗 全店 売上（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "リユース店舗 既存店 売上（前年同月比）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

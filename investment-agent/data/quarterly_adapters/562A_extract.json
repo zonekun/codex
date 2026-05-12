@@ -1,0 +1,28 @@
+{
+  "ticker": "562A",
+  "company_name": "Ｐ－寶結",
+  "current_version": "2026-04",
+  "versions": [
+    {
+      "valid_from": "2026-04",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "other",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Vision extraction selected because structure is complex or data is unavailable."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/562A/20260424_562A_Ｐ－寶結_その他（未分類）_東京証券取引所 TOKYO PRO Market 及び 福岡証券取引所 Fuku_140120260423509087.pdf",
+  "_source_doc_id": "140120260423509087",
+  "_generated_at": "2026-04-30T18:30:50.339677+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

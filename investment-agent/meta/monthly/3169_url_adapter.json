@@ -1,0 +1,20 @@
+{
+  "ticker": "3169",
+  "company_name": "ミサワホーム",
+  "updated_at": "2026-04-20",
+  "ir_page_url": "https://www.misawa.co.jp/corporate/irinfo/",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": null,
+  "link_href_pattern": "/corporate/irinfo/pdf/sokuhou/",
+  "table_selector": null,
+  "status": "active",
+  "skip_reason": null,
+  "note": "受注速報PDF。最新年度は月別(2026/MM.pdf)、過去年度は年間1ファイル(YYYY.pdf)。URL: /corporate/irinfo/pdf/sokuhou/YYYY[/MM].pdf",
+  "url_source": "recovered_from_index_csv",
+  "last_checked": "2026-04-20",
+  "follow_links": false,
+  "playwright_required": false,
+  "recovered_at": "2026-04-20T21:37:09.325193+09:00",
+  "recovery_reason": "sync_bug_overwrite_20260420"
+}

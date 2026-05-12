@@ -1,0 +1,51 @@
+{
+  "ticker": "6255",
+  "company_name": "Ｇ－ＮＰＣ",
+  "current_version": "2026-04",
+  "versions": [
+    {
+      "valid_from": "2026-04",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "装置関連事業における当中間連結会計期間の受注高",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "装置関連事業における当中間連結会計期間末の受注残高",
+          "unit": "千円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "補足情報として、装置関連事業の受注高・受注残高、および製品カテゴリ別の販売実績が表形式で記載されています。生産実績も記載されていますが、受注・売上関連の指標を優先して抽出しました。"
+    }
+  ],
+  "_source_pdf": "tdnet/6255/20260408_6255_Ｇ－ＮＰＣ_決算短信_2026年８月期  第２四半期（中間期）決算短信〔日本基準〕（連結）_140120260408599854.pdf",
+  "_source_doc_id": "140120260408599854",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:54:14.338569+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      11
+    ],
+    "table_count": 3,
+    "max_rows": 7,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

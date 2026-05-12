@@ -1,0 +1,159 @@
+{
+  "ticker": "1721",
+  "company_name": "コムシスＨＤ",
+  "current_version": "2025-11",
+  "versions": [
+    {
+      "valid_from": "2025-11",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当期における受注高の合計",
+          "unit": "億円",
+          "is_total": true
+        },
+        {
+          "name": "受注高（NTT設備事業）",
+          "type": "order_intake",
+          "description": "NTT設備事業における受注高",
+          "unit": "億円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "受注高（NTT設備事業 アクセス）",
+          "type": "order_intake",
+          "description": "NTT設備事業のアクセス分野における受注高",
+          "unit": "億円",
+          "is_total": false,
+          "parent_metric": "受注高（NTT設備事業）"
+        },
+        {
+          "name": "受注高（NTT設備事業 ネットワーク）",
+          "type": "order_intake",
+          "description": "NTT設備事業のネットワーク分野における受注高",
+          "unit": "億円",
+          "is_total": false,
+          "parent_metric": "受注高（NTT設備事業）"
+        },
+        {
+          "name": "受注高（NTT設備事業 モバイル）",
+          "type": "order_intake",
+          "description": "NTT設備事業のモバイル分野における受注高",
+          "unit": "億円",
+          "is_total": false,
+          "parent_metric": "受注高（NTT設備事業）"
+        },
+        {
+          "name": "受注高（NCC設備事業）",
+          "type": "order_intake",
+          "description": "NCC設備事業における受注高",
+          "unit": "億円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "受注高（ITソリューション事業）",
+          "type": "order_intake",
+          "description": "ITソリューション事業における受注高",
+          "unit": "億円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "受注高（社会システム関連事業）",
+          "type": "order_intake",
+          "description": "社会システム関連事業における受注高",
+          "unit": "億円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "繰越高",
+          "type": "backlog",
+          "description": "期末における受注残高（繰越工事高）の合計",
+          "unit": "億円",
+          "is_total": true
+        },
+        {
+          "name": "繰越高（NTT設備事業）",
+          "type": "backlog",
+          "description": "NTT設備事業における繰越高",
+          "unit": "億円",
+          "is_total": false,
+          "parent_metric": "繰越高"
+        },
+        {
+          "name": "繰越高（NCC設備事業）",
+          "type": "backlog",
+          "description": "NCC設備事業における繰越高",
+          "unit": "億円",
+          "is_total": false,
+          "parent_metric": "繰越高"
+        },
+        {
+          "name": "繰越高（ITソリューション事業）",
+          "type": "backlog",
+          "description": "ITソリューション事業における繰越高",
+          "unit": "億円",
+          "is_total": false,
+          "parent_metric": "繰越高"
+        },
+        {
+          "name": "繰越高（社会システム関連事業）",
+          "type": "backlog",
+          "description": "社会システム関連事業における繰越高",
+          "unit": "億円",
+          "is_total": false,
+          "parent_metric": "繰越高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "事業区分",
+          "items": [
+            "NTT設備事業",
+            "NCC設備事業",
+            "ITソリューション事業",
+            "社会システム関連事業"
+          ]
+        },
+        {
+          "dimension_name": "NTT設備事業内訳",
+          "items": [
+            "アクセス",
+            "ネットワーク",
+            "モバイル"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "事業区分別の受注高、売上高、繰越高が詳細に記載されている。NTT設備事業についてはさらにアクセス、ネットワーク、モバイルの内訳がある。シェアリング事業者からの数値について、集計区分をNTT設備事業からNCC設備事業へ変更した旨の注記あり。"
+    }
+  ],
+  "_source_pdf": "tdnet/1721/20251107_1721_コムシスＨＤ_決算短信_2026年3月期　第2四半期決算短信補足説明資料_140120251106590652.pdf",
+  "_source_doc_id": "140120251106590652",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T16:33:54.146936+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      5,
+      6
+    ],
+    "table_count": 8,
+    "max_rows": 11,
+    "max_cols": 7,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 8"
+    ]
+  }
+}

@@ -1,0 +1,45 @@
+# tdnet_schedule_revert — 決算特別スケジュールから通常スケジュールへの復帰
+#
+# 決算特別スケジュール終了時に自動実行:
+#   1. tdnet-daily-pipeline-scheduler を PAUSE
+#   2. tdnet-download-daily を RESUME
+#   3. tdnet-load-daily-daily を RESUME
+#
+# 起動:
+#   自動: one-shot Cloud Scheduler（特別スケジュール終了翌営業日の 00:00 JST）
+#   手動: gcloud workflows execute tdnet-schedule-revert --location=us-central1
+#
+# 冪等: 既にPAUSE/RESUME済みのジョブに対しても安全に実行可能（Cloud Scheduler APIは同一状態遷移をエラーにしない）
+
+main:
+  steps:
+    - init:
+        assign:
+          - project_id: "gmailpj-357912"
+          - scheduler_location: "us-west1"
+
+    - pause_pipeline:
+        call: googleapis.cloudscheduler.v1.projects.locations.jobs.pause
+        args:
+          name: ${"projects/" + project_id + "/locations/" + scheduler_location + "/jobs/tdnet-daily-pipeline-scheduler"}
+        result: pause_result
+
+    - resume_download:
+        call: googleapis.cloudscheduler.v1.projects.locations.jobs.resume
+        args:
+          name: ${"projects/" + project_id + "/locations/" + scheduler_location + "/jobs/tdnet-download-daily"}
+        result: resume_dl_result
+
+    - resume_load:
+        call: googleapis.cloudscheduler.v1.projects.locations.jobs.resume
+        args:
+          name: ${"projects/" + project_id + "/locations/" + scheduler_location + "/jobs/tdnet-load-daily-daily"}
+        result: resume_load_result
+
+    - done:
+        return:
+          status: "reverted_to_normal"
+          paused: "tdnet-daily-pipeline-scheduler"
+          resumed:
+            - "tdnet-download-daily"
+            - "tdnet-load-daily-daily"

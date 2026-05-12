@@ -1,0 +1,28 @@
+{
+  "ticker": "3134",
+  "company_name": "Ｈａｍｅｅ",
+  "current_version": "2024-12",
+  "versions": [
+    {
+      "valid_from": "2024-12",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "presentation",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/3134/20241213_3134_Ｈａｍｅｅ_決算説明資料_2025年４月期　第２四半期決算説明資料_140120241213538325.pdf",
+  "_source_doc_id": "140120241213538325",
+  "_generated_at": "2026-04-30T17:33:14.711218+09:00",
+  "_model_used": null
+}

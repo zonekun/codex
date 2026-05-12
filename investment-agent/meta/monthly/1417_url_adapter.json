@@ -1,0 +1,16 @@
+{
+  "ticker": "1417",
+  "company_name": "ミライト・ワン",
+  "ir_page_url": "https://ir.mirait-one.com/data/order01.html",
+  "type": "scrape_links",
+  "status": "active",
+  "link_text_pattern": null,
+  "link_href_pattern": "\\.pdf$",
+  "playwright_required": true,
+  "manual_override": true,
+  "note": "2026-04-24修正: xj-storageのJSローダーでPDFリンク動的生成。playwright必須。月次受注状況PDF",
+  "updated_at": "2026-04-24T17:28:05.307145+09:00",
+  "css_selector": null,
+  "table_selector": null,
+  "follow_links": false
+}

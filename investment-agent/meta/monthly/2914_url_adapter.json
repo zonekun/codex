@@ -1,0 +1,18 @@
+{
+  "ticker": "2914",
+  "company_name": "JT（日本たばこ産業）",
+  "ir_page_url": "https://www.jti.co.jp/investors/index.html",
+  "type": "scrape_links",
+  "status": "inactive",
+  "inactive_reason": "月次国内紙巻たばこ販売実績速報は2019年2月（2019年1月分）を最後に開示終了。月次開示廃止済み",
+  "excluded": true,
+  "link_text_pattern": null,
+  "link_href_pattern": null,
+  "manual_override": true,
+  "note": "2026-04-24確認: 月次販売速報は2019年廃止。inactive",
+  "updated_at": "2026-04-24T17:15:36.150884+09:00",
+  "css_selector": null,
+  "table_selector": null,
+  "playwright_required": false,
+  "follow_links": false
+}

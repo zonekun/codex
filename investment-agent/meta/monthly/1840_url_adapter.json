@@ -1,0 +1,20 @@
+{
+  "ticker": "1840",
+  "company_name": "土屋ホールディングス",
+  "updated_at": "2026-04-20",
+  "ir_page_url": "http://www.tsuchiya.co.jp/ir/order_report/",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": "受注速報|月次",
+  "link_href_pattern": "\\.pdf",
+  "table_selector": null,
+  "status": "active",
+  "skip_reason": null,
+  "note": "http://www.tsuchiya.co.jp/ir/order_report/ にWordPressベースで月次受注速報PDFリンクあり (例: wp-content/uploads/...pdf)",
+  "url_source": "recovered_from_index_csv",
+  "last_checked": "2026-04-20",
+  "follow_links": false,
+  "playwright_required": false,
+  "recovered_at": "2026-04-20T21:37:09.325193+09:00",
+  "recovery_reason": "sync_bug_overwrite_20260420"
+}

@@ -1,0 +1,140 @@
+{
+  "ticker": "8157",
+  "company_name": "都築電気",
+  "current_version": "2026-01",
+  "versions": [
+    {
+      "valid_from": "2026-01",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "販売実績",
+          "type": "completed",
+          "description": "ビジネスモデル別の販売実績合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "機器（販売実績）",
+          "type": "completed",
+          "description": "機器の販売実績",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "販売実績"
+        },
+        {
+          "name": "開発・構築（販売実績）",
+          "type": "completed",
+          "description": "開発・構築の販売実績",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "販売実績"
+        },
+        {
+          "name": "サービス（販売実績）",
+          "type": "completed",
+          "description": "サービスの販売実績",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "販売実績"
+        },
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "ビジネスモデル別の受注高合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "機器（受注高）",
+          "type": "order_intake",
+          "description": "機器の受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "開発・構築（受注高）",
+          "type": "order_intake",
+          "description": "開発・構築の受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "サービス（受注高）",
+          "type": "order_intake",
+          "description": "サービスの受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "ビジネスモデル別の受注残高合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "機器（受注残高）",
+          "type": "backlog",
+          "description": "機器の受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        },
+        {
+          "name": "開発・構築（受注残高）",
+          "type": "backlog",
+          "description": "開発・構築の受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        },
+        {
+          "name": "サービス（受注残高）",
+          "type": "backlog",
+          "description": "サービスの受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "ビジネスモデル",
+          "items": [
+            "機器",
+            "開発・構築",
+            "サービス"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "決算短信の定性的情報および補足資料として、販売実績、受注高、受注残高の3つの指標について、ビジネスモデル別（機器、開発・構築、サービス）の内訳が詳細な表形式で記載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/8157/20260130_8157_都築電気_決算短信_2026年３月期 第３四半期決算短信〔日本基準〕(連結)_140120260129542372.pdf",
+  "_source_doc_id": "140120260129542372",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T20:05:48.113629+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      5
+    ],
+    "table_count": 3,
+    "max_rows": 6,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

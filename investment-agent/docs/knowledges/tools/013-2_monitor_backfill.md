@@ -6,6 +6,7 @@
 **親**: `013_tdnet_load.md`
 **関連ファイル**:
 - `scripts/monitor_backfill.py` — 本体（Python + YAML）
+- `scripts/check_backfill_status.py` — BQ AI_STATUS 集計（monitor_backfill 完了通知に自動埋め込み + スタンドアロン実行可）
 - `config/backfill/*.yaml` — バッチ定義
 **関連ドキュメント**:
 - `068_line_ntfy_push.md` — LINE 通知の基盤
@@ -27,7 +28,21 @@ PYTHONUTF8=1 python scripts/monitor_backfill.py config/backfill/XXX.yaml --dry-r
 PYTHONUTF8=1 python scripts/monitor_backfill.py config/backfill/XXX.yaml
 
 # BG 実行（Claude Code の Bash tool から）
-# run_in_background=true で起動、完了時に task-notification が飛ぶ
+# 必ず Bash tool の run_in_background=true パラメータで起動する。
+# コマンド文字列内に & を付けてはいけない（下記⚠️参照）。
+#
+# 正しい呼び出し:
+#   Bash(command="PYTHONUTF8=1 python scripts/monitor_backfill.py config/backfill/XXX.yaml",
+#        run_in_background=true)
+#
+# ⚠️ 禁止パターン（& 併用）:
+#   Bash(command="PYTHONUTF8=1 python ... &",
+#        run_in_background=true)
+#   → bash が即 exit 0 → task-notification が「完了」と報告
+#   → 実際の Python プロセスは孤児化して生存中
+#   → ps grep で検出できず「死んだ」と誤判断 → resume で二重起動
+#
+# run_in_background=true 単独で十分。& は絶対に併用しない。
 ```
 
 ## YAML 形式
@@ -65,8 +80,10 @@ options:
 1. `loads[]` を順次（or 並列）Cloud Run Job として起動、全完了を待機
 2. load に失敗があれば即中断（workflows スキップ、LINE high priority）
 3. `workflows[]` を順次 Workflows として起動、逐次完了待機
-4. いずれかの workflow 失敗で即中断（以降の workflow を起動しない、LINE high priority）
-5. 全成功時に LINE 通知「完遂」
+4. いずれかの workflow 失敗/キャンセルで即中断（以降の workflow を起動しない）
+   - **BQ AI_STATUS 自動集計**: YAML `data.date_from`/`date_to` 範囲の completed/pending 件数を `check_backfill_status.py` で取得し LINE 通知に含める
+   - **CANCELLED 時**: BQ に completed がある場合「キャンセル前に処理完了の可能性あり」と通知（2026-04-25 事故対策）
+5. 全成功時に LINE 通知「完遂」+ BQ 集計結果を自動付与（pending > 0 なら high priority に昇格）
 
 ## パターン例
 
@@ -165,8 +182,27 @@ mcp__gcp__logging_read filter="textPayload=~\"terminated on signal 9\"" --freshn
 
 ### 7. chain プロセス稼働確認
 ```bash
+# Linux / macOS
 ps -ef | grep recover_batch  # or monitor_backfill
 ```
+
+**Windows Git Bash 代替手段**（`ps -ef | grep` は Python プロセスのコマンドライン引数を表示しないケースがある）:
+```bash
+# 方法 A: PID 指定で生存確認（run_in_background の task output から PID を確認済みの場合）
+tasklist /FI "PID eq <pid>"
+
+# 方法 B: python.exe プロセスのコマンドライン引数を一覧表示
+wmic process where "name='python.exe'" get processid,commandline
+
+# 方法 C: task output ファイルの更新時刻で判断（run_in_background=true の場合）
+# output ファイルの mtime が更新され続けていればプロセス稼働中
+stat /tmp/.claude/bg-task-*/output.txt 2>/dev/null | grep Modify
+
+# 方法 D: PID ロックファイルの確認（monitor_backfill.py の場合）
+cat "$TEMP/monitor_backfill_<config_filename>.lock"  # PID が書かれている
+tasklist /FI "PID eq <PID>"                           # そのPIDが生存中か確認
+```
+
 死んでいれば再起動、または仕掛かり分の手動リカバリ。
 
 ## 🚨 インシデント事例（2026-04-19 〜 20、再発防止用）
@@ -238,6 +274,21 @@ Python プロセス memory footprint から upload buffer を完全除去。
 
 **教訓**: Python 側 `_poll_batch_job` は `state` しか見ないので finalize lag 中は延々 poll し続ける。ai-finalize が長時間 Phase 3 RUNNING だったら、**まず API で completionStats を確認**してから stall 判定する。
 
+### #7 二重 monitor_backfill → 4 workflows 投入（`run_in_background=true` + `&` 併用事故、2026-04-26）
+
+**事象**: `monitor_backfill.py` を `Bash(run_in_background=true)` で起動する際、コマンド内にも `&` を付加。bash が即 return → task-notification が exit 0 で「完了」報告。実際の Python プロセスはバックグラウンドで生存中だったが、`ps aux | grep monitor_backfill` が空を返したため「プロセスなし」と誤判断。resume 用 YAML を作成して 2 つ目のプロセスを起動し、結果 **load 完了後に正規 2 + 重複 2 = 計 4 workflows が投入された**。
+
+**根本原因**:
+1. `run_in_background=true`（Bash tool パラメータ）と `&`（シェルのバックグラウンド演算子）を**併用**すると、bash 自体が即 exit 0 で終了し、Python プロセスは bash から切り離された孤児プロセスとして稼働する
+2. task-notification は bash の exit code を見るため「正常完了」と報告
+3. `ps -ef | grep` は Windows Git Bash で Python プロセスのコマンドライン引数を完全表示しないことがあり、grep が空振り
+
+**対処**:
+- `monitor_backfill.py` に **PID ロックファイル機構**を追加（`/tmp/monitor_backfill_<config>.lock`）。同一 config の多重起動を構造的に防止
+- 本 MD の「使い方」セクションに BG 起動テンプレートと `&` 併用禁止を明記
+
+**教訓**: `Bash(run_in_background=true)` を使う場合、コマンド内に `&` を**絶対に付けない**。`run_in_background=true` 単独で十分。
+
 ## 機能
 
 | 機能 | 説明 |
@@ -257,6 +308,8 @@ Python プロセス memory footprint から upload buffer を完全除去。
 - **Python subprocess の cp932 混入**（Windows 並列実行時）: gcloud 実行時の `UnicodeDecodeError` 対策として `errors='replace'` + `result.stdout or ""` ガード済（2026-04-19 修正）
 - **gcloud.cmd 発見**: `shutil.which("gcloud")` で Windows 上の `.cmd` 拡張子を解決済
 - **bash スクリプトの pipe で exit code 握りつぶし**（2026-04-20 再発、旧 `gemma_tpu_runner.sh` と同じ class bug）: `gcloud ... 2>&1 | tail -5; then` が tail 成功で gcloud 失敗を隠蔽。恒久対策は `gcloud ... > /tmp/log 2>&1; rc=$?; tail /tmp/log; [ "$rc" -eq 0 ]` のリダイレクト + rc 保存パターン。または `set -o pipefail` 併用
+
+- **大件数 Load のタイムアウト → 分割が第一選択**: 1本の Load が task-timeout に収まらない場合、タイムアウト延長ではなく **Load を複数に分割して `parallel_loads` で並行実行**する。Workflow 側が N 分割なら Load も同じ粒度に揃える（設計対称性）。事故事例: MR-093 — 2022-H1 の 32,400件を1本で投入→6h タイムアウト死。4分割 + parallel_loads: 2 で解決
 
 ## 既存 config リスト（2026-04-19 時点）
 

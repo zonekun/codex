@@ -1,0 +1,92 @@
+{
+  "ticker": "1948",
+  "company_name": "弘電社",
+  "current_version": "2025-10",
+  "versions": [
+    {
+      "valid_from": "2025-10",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "全セグメントの受注実績の合計値。",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "全セグメントの売上実績（完成工事高および商品売上高）の合計値。",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "前期繰越工事高",
+          "type": "backlog",
+          "description": "電気設備工事における期首時点の未完成工事残高。",
+          "unit": "百万円",
+          "is_total": false
+        },
+        {
+          "name": "当期受注工事高",
+          "type": "order_intake",
+          "description": "電気設備工事セグメントにおける当期間の受注高。",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "当期完成工事高",
+          "type": "completed",
+          "description": "電気設備工事セグメントにおける当期間の完成工事高。",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "次期繰越工事高",
+          "type": "backlog",
+          "description": "電気設備工事における期末時点の未完成工事残高（手持工事高）。",
+          "unit": "百万円",
+          "is_total": false
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "電気設備工事",
+            "商品販売"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "受注・売上・繰越のフローを網羅した「電気設備工事の受注工事高、完成工事高及び次期繰越工事高」テーブルが存在します。商品販売については、受注から販売までの期間が短いため、受注実績と売上実績を同額として計上しており、繰越（受注残）の概念は電気設備工事セグメントのみで開示されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/1948/20251031_1948_弘電社_決算短信_2026年３月期　第２四半期（中間期）決算短信〔日本基準〕（連結）_140120251029581753.pdf",
+  "_source_doc_id": "140120251029581753",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:07:06.663852+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      5,
+      8
+    ],
+    "table_count": 4,
+    "max_rows": 34,
+    "max_cols": 7,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 4"
+    ]
+  }
+}

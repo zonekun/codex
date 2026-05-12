@@ -1,0 +1,34 @@
+{
+  "ticker": "5570",
+  "company_name": "Ｇ－ジェノバ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "no_relevant_pages",
+      "notes": "提供されたページは活用事例（ケーススタディ）の紹介であり、受注高、売上高、受注残高などの数値データは含まれていません。"
+    }
+  ],
+  "_source_pdf": "tdnet/5570/20260210_5570_Ｇ－ジェノバ_決算説明資料_2026年９月期第１四半期　決算補足説明資料_140120260210553854.pdf",
+  "_source_doc_id": "140120260210553854",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T18:28:10.308547+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "simple_table",
+    "relevant_pages": [
+      26
+    ],
+    "table_count": 1,
+    "max_rows": 2,
+    "max_cols": 1,
+    "broken_col0": false,
+    "unit_mixed": false,
+    "notes": []
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "ticker": "9412",
+  "company_name": "(株)スカパーＪＳＡＴホールディングス",
+  "ir_page_url": "https://www.skyperfectjsat.space/ir/financial_data/month_count",
+  "updated_at": "2026-04-24T13:50:35.872586+09:00",
+  "last_checked": "2026-04-21",
+  "status": "inactive",
+  "type": "eir_api",
+  "eir_company_code": "9412",
+  "note": "eir月次データは2021年以前のみ、廃止済み → inactive (2026-04-24)"
+}

@@ -1,0 +1,36 @@
+{
+  "ticker": "8058",
+  "company_name": "三菱商事",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "breakdown_dimensions": [],
+      "presentation_format": "text",
+      "complexity": "no_table",
+      "notes": "提供された資料のページには、受注高、完成工事高、受注残高に関する具体的な数値データは含まれていません。千代田化工建設のGolden Pass LNGプロジェクトに関連する収益や利益への影響についての定性的な説明（注記）のみが記載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/8058/20260205_8058_三菱商事_決算短信_2026年3月期 第3四半期決算短信〔ＩＦＲＳ〕(連結)_140120260204546716.pdf",
+  "_source_doc_id": "140120260204546716",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T20:04:00.484599+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "no_table",
+    "relevant_pages": [
+      18
+    ],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "pdfplumber found no tables on relevant pages"
+    ]
+  }
+}

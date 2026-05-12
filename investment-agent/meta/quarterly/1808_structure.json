@@ -1,0 +1,36 @@
+{
+  "ticker": "1808",
+  "company_name": "長谷工",
+  "current_version": "2025-11",
+  "versions": [
+    {
+      "valid_from": "2025-11",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "breakdown_dimensions": [],
+      "presentation_format": "table",
+      "complexity": "simple_table",
+      "notes": "提供された画像は中間連結損益計算書であり、売上高（完成工事高を含む）の内訳が記載されています。受注高および受注残高に関するデータはこのページには含まれていません。 [2026-05-07] completedメトリクスのみのため収集対象外(false化)。"
+    }
+  ],
+  "_source_pdf": "tdnet/1808/20251112_1808_長谷工_決算短信_2026年３月期 第２四半期（中間期）決算短信〔日本基準〕（連結）_140120251111595557.pdf",
+  "_source_doc_id": "140120251111595557",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T16:44:00.330859+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      8
+    ],
+    "table_count": 1,
+    "max_rows": 34,
+    "max_cols": 4,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

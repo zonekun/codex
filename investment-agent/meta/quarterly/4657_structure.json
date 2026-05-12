@@ -1,0 +1,53 @@
+{
+  "ticker": "4657",
+  "company_name": "環境管理",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当中間連結会計期間の受注高",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当中間連結会計期間末の受注残高",
+          "unit": "千円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "第2四半期（中間期）決算短信。3ページ目に分野別および顧客区分別の受注高・受注残高の表（単位：千円）が詳細に記載されている。2ページ目には受注高・売上高の四半期推移表（単位：百万円）および分野別の受注状況に関するテキスト説明がある。"
+    }
+  ],
+  "_source_pdf": "tdnet/4657/20260213_4657_環境管理_決算短信_2026年６月期第２四半期（中間期）決算短信〔日本基準〕(連結)_140120260213559462.pdf",
+  "_source_doc_id": "140120260213559462",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:11:28.021738+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      3,
+      4,
+      12
+    ],
+    "table_count": 2,
+    "max_rows": 19,
+    "max_cols": 6,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "ticker": "3467",
+  "company_name": "アグレ都市デザイン",
+  "current_version": "2025-02",
+  "versions": [
+    {
+      "valid_from": "2025-02",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "生産実績",
+        "受注実績",
+        "販売実績",
+        "ハウジング事業",
+        "アセットソリューション事業",
+        "宿泊事業"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "Extract data from the three tables: (1) 生産実績 (Production), (2) 受注実績 (Orders), and (3) 販売実績 (Sales). For each table, identify the segments (ハウジング事業, アセットソリューション事業, 宿泊事業) and their sub-items (戸建住宅, 戸建用地, 収益マンション, マンション用地等, コンサルティング, その他). Extract the count (件数) and amount (生産高/受注高/販売高) for each. For the Orders table, extract values for 期首 (Beginning), 期中 (During), and 期末 (End) periods. Ensure that negative values (indicated by △) are captured correctly as negative numbers.",
+      "notes": "The page contains three distinct tables with overlapping row labels such as '合計', 'ハウジング事業 計', and 'その他'. Vision-based extraction is required to correctly map values to their respective tables and segments. The Orders table has a complex structure with three sets of count/amount columns for beginning, during, and end of the period."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/3467/20250203_3467_アグレ都市デザイン_決算短信_2025年３月期第３四半期決算短信〔日本基準〕(連結）_140120250131559513.pdf",
+  "_source_doc_id": "140120250131559513",
+  "_generated_at": "2026-04-30T22:54:55.012202+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

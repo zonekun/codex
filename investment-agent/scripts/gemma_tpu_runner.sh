@@ -27,6 +27,7 @@ set -u
 set -o pipefail
 
 : "${RUN_ID:?RUN_ID env required}"
+: "${RESUME_RUN_ID:-}"
 PROJECT="${PROJECT:-gmailpj-357912}"
 BUCKET="${BUCKET:-stock_data_1930932}"
 CALLBACK_URL="${CALLBACK_URL:-}"
@@ -233,6 +234,7 @@ set -e
 pip install --quiet --user httpx 2>/dev/null || pip3 install --quiet --user httpx 2>/dev/null || true
 cd /tmp
 export RUN_ID='${RUN_ID}'
+export RESUME_RUN_ID='${RESUME_RUN_ID}'
 export BUCKET_NAME='${BUCKET}'
 export CALLBACK_URL='${CALLBACK_URL}'
 export CONCURRENCY=8

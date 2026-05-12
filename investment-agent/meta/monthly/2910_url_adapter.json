@@ -1,0 +1,12 @@
+{
+  "ticker": "2910",
+  "company_name": "ロック・フィールド",
+  "ir_page_url": "http://www.rockfield.co.jp/ir/library/monthly/",
+  "updated_at": "2026-04-21T09:31:24.921433+09:00",
+  "last_checked": "2026-04-21",
+  "status": "active",
+  "type": "html_table",
+  "css_selector": null,
+  "table_selector": null,
+  "note": "HTML表に月次データ検出。table_selector要調整"
+}

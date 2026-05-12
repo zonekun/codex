@@ -93,7 +93,7 @@ B_t^(K) = V_follow,t^(K) @ V_lead,t^(K).T  ∈ ℝ^(20×20)
 | 残差相関クラスタ（20個） | `clusters_YYYY.csv` 出力（`factor_model_residual_corr.ipynb`） | **そのまま** |
 | 個別銘柄日次リターン | BQ `STOCK_PRICE_JQUANTS` | **そのまま** |
 | 業種33・サイズ分類 | BQ `STOCK_CODE_LIST` | **そのまま** |
-| 正則化PCA 実装 | `poc_overnight_daytime_leadlag.py` / `poc_011-2_size_leadlag.py` | **流用可能** |
+| 正則化PCA 実装 | `poc_overnight_daytime_leadlag.py`（削除済み）/ `poc_011-2_size_leadlag.py` | git log参照 |
 | バックテスト基盤 | 同上 | **流用可能** |
 
 **新規必要**: クラスタ代表リターンの構築ロジック（数十行）

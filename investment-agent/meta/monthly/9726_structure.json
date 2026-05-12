@@ -1,0 +1,28 @@
+{
+  "ticker": "9726",
+  "company_name": "9726",
+  "metrics": [
+    {
+      "name": "全店 売上（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "全店 売上（百万円）",
+      "source": "bc"
+    },
+    {
+      "name": "国内旅行 取扱額（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "海外旅行 取扱額（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "訪日旅行 取扱額（前年同月比）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

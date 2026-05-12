@@ -1,0 +1,20 @@
+{
+  "ticker": "3663",
+  "company_name": "3663",
+  "metrics": [
+    {
+      "name": "「CGI Studio」、「UI Conductor」の新規搭載台数の累計（万台）",
+      "source": "bc"
+    },
+    {
+      "name": "「CLIP STUDIO PAINT」サブスクリプション売上（百万円）",
+      "source": "bc"
+    },
+    {
+      "name": "「CLIP STUDIO PAINT」累計出荷本数（万本）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

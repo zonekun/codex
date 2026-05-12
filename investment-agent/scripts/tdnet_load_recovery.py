@@ -34,9 +34,8 @@ from pathlib import Path
 import PyPDF2
 from google.cloud import bigquery, storage
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-import vertexai
-from vertexai.language_models import TextEmbeddingInput, TextEmbeddingModel
-from vertexai.generative_models import GenerativeModel, GenerationConfig, Part
+from google import genai
+from google.genai import types
 
 # プロジェクトルートを import path に追加（src.llm.truncation 等を参照）
 _PROJECT_ROOT = Path(__file__).resolve().parent.parent
@@ -94,7 +93,8 @@ JST                = timezone(timedelta(hours=+9), "JST")
 
 _log_lock      = threading.Lock()
 _counter_lock  = threading.Lock()
-_vertexai_lock = threading.Lock()
+_genai_gemini_client    = None
+_genai_embedding_client = None
 _client_lock   = threading.RLock()
 
 # ============================================================
@@ -161,11 +161,21 @@ def _load_processed_file_names(date_from: str, date_to: str) -> set[str]:
         return set()
 
 
-def _init_vertexai(location: str) -> None:
-    with _vertexai_lock:
-        creds  = _get_credentials()
-        kwargs = {"credentials": creds} if creds else {}
-        vertexai.init(project=PROJECT_ID, location=location, **kwargs)
+def _get_genai_client(location: str) -> genai.Client:
+    global _genai_gemini_client, _genai_embedding_client
+    with _client_lock:
+        if location == LOCATION_GEMINI:
+            if _genai_gemini_client is None:
+                creds = _get_credentials()
+                kwargs = {"credentials": creds} if creds else {}
+                _genai_gemini_client = genai.Client(vertexai=True, project=PROJECT_ID, location=location, **kwargs)
+            return _genai_gemini_client
+        else:
+            if _genai_embedding_client is None:
+                creds = _get_credentials()
+                kwargs = {"credentials": creds} if creds else {}
+                _genai_embedding_client = genai.Client(vertexai=True, project=PROJECT_ID, location=location, **kwargs)
+            return _genai_embedding_client
 
 
 # ============================================================
@@ -203,8 +213,7 @@ def _correct_category_by_title(main_category: str, doc_title: str) -> str:
 
 
 def _check_monthly_by_gemini(doc_title: str) -> bool:
-    _init_vertexai(LOCATION_GEMINI)
-    model  = GenerativeModel("gemini-2.5-flash")
+    client = _get_genai_client(LOCATION_GEMINI)
     prompt = (
         "以下のTDnet適時開示のタイトルは「月次開示」（月次売上・月次業績・月次データ等の"
         "定期的な月次報告）ですか？\n"
@@ -212,8 +221,9 @@ def _check_monthly_by_gemini(doc_title: str) -> bool:
         "「はい」または「いいえ」のみ回答してください。"
     )
     try:
-        response = model.generate_content(
-            prompt, generation_config=GenerationConfig(temperature=0.0)
+        response = client.models.generate_content(
+            model="gemini-2.5-flash", contents=prompt,
+            config=types.GenerateContentConfig(temperature=0.0),
         )
         return "はい" in (response.text or "")
     except Exception:
@@ -306,14 +316,15 @@ def _extract_text_pdfminer(pdf_bytes: bytes) -> str:
 
 def _extract_text_gemini_vision(pdf_bytes: bytes, doc_title_hint: str) -> str:
     try:
-        _init_vertexai(LOCATION_GEMINI)
-        model    = GenerativeModel("gemini-2.5-flash")
-        pdf_part = Part.from_data(pdf_bytes, mime_type="application/pdf")
+        client   = _get_genai_client(LOCATION_GEMINI)
+        pdf_part = types.Part.from_bytes(data=pdf_bytes, mime_type="application/pdf")
         prompt   = (
             f"以下のPDF文書（タイトル: {doc_title_hint}）からすべてのテキストを抽出してください。"
             "表・数値・箇条書きも含め、元の内容をできる限り正確にテキストとして出力してください。"
         )
-        response = model.generate_content([pdf_part, prompt])
+        response = client.models.generate_content(
+            model="gemini-2.5-flash", contents=[pdf_part, prompt],
+        )
         return response.text.strip() if response.text else ""
     except Exception:
         return ""
@@ -357,12 +368,11 @@ def get_sub_categories(doc_title: str, text: str, main_category: str) -> list[st
     文書タイトル: {doc_title}
     テキスト: {truncated}
     """
-    _init_vertexai(LOCATION_GEMINI)
-    gemini_config = GenerationConfig(response_mime_type="application/json", temperature=0.1)
+    client        = _get_genai_client(LOCATION_GEMINI)
+    gemini_config = types.GenerateContentConfig(response_mime_type="application/json", temperature=0.1)
     model_name    = "gemini-2.5-pro" if main_category == "決算短信" else "gemini-2.5-flash"
-    target_model  = GenerativeModel(model_name)
     try:
-        response  = target_model.generate_content(prompt, generation_config=gemini_config)
+        response  = client.models.generate_content(model=model_name, contents=prompt, config=gemini_config)
         res_json  = json.loads(response.text)
         extracted = res_json.get("sub_categories", [])
         return [cat for cat in extracted if cat in VALID_CATEGORIES]
@@ -389,14 +399,16 @@ def get_embeddings_in_batches(texts: list[str], batch_size: int = 20) -> list:
     Quota 消費: batch_size=20, sleep=0.5s → 2 calls/sec = 120 req/min
     textembedding-gecko Quota 1500 req/min の 8% のみ使用。
     """
-    _init_vertexai(LOCATION_EMBEDDING)
-    model      = TextEmbeddingModel.from_pretrained("text-embedding-004")
+    client     = _get_genai_client(LOCATION_EMBEDDING)
     embeddings = []
     for i in range(0, len(texts), batch_size):
         batch   = texts[i:i + batch_size]
-        inputs  = [TextEmbeddingInput(t, "RETRIEVAL_DOCUMENT") for t in batch]
-        results = model.get_embeddings(inputs)
-        embeddings.extend([r.values for r in results])
+        result  = client.models.embed_content(
+            model="text-embedding-004",
+            contents=batch,
+            config=types.EmbedContentConfig(task_type="RETRIEVAL_DOCUMENT"),
+        )
+        embeddings.extend([e.values for e in result.embeddings])
         time.sleep(0.5)  # 120 req/min に制限（Quota 1500 の 8%）
     return embeddings
 
@@ -431,7 +443,7 @@ def _process_one_blob(
 
         _AMBIGUOUS_OVERWRITE   = {"その他（未分類）"}
         _AMBIGUOUS_SUBCATEGORY = {
-            "業績予想", "大型受注・契約", "受注・契約", "業績の重要な先行指標",
+            "業績予想", "大型受注・契約", "業績の重要な先行指標",
         }
         if main_category in _AMBIGUOUS_OVERWRITE:
             if _check_monthly_by_gemini(doc_title):
@@ -564,8 +576,8 @@ def run_tdnet_recovery(date_from: str, date_to: str,
     processed_files = _load_processed_file_names(date_from, date_to)
     add_log(f"取込済みファイル数: {len(processed_files)} 件（これらはスキップ）")
 
-    _init_vertexai(LOCATION_GEMINI)
-    _init_vertexai(LOCATION_EMBEDDING)
+    _get_genai_client(LOCATION_GEMINI)
+    _get_genai_client(LOCATION_EMBEDDING)
 
     processed_count = 0
     skipped_count   = 0

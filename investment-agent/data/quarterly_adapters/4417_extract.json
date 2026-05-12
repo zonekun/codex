@@ -1,0 +1,28 @@
+{
+  "ticker": "4417",
+  "company_name": "Ｇ－グローバルセキュ",
+  "current_version": "2024-11",
+  "versions": [
+    {
+      "valid_from": "2024-11",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "presentation",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/4417/20241111_4417_Ｇ－グローバルセキュ_決算説明資料_2025年３月期　第２四半期決算（中間期）決算説明会（質疑応答集）_140120241111518191.pdf",
+  "_source_doc_id": "140120241111518191",
+  "_generated_at": "2026-04-30T18:07:28.454709+09:00",
+  "_model_used": null
+}

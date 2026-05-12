@@ -1,0 +1,20 @@
+{
+  "ticker": "4839",
+  "company_name": "4839",
+  "metrics": [
+    {
+      "name": "新規加入件数",
+      "source": "bc"
+    },
+    {
+      "name": "正味加入件数",
+      "source": "bc"
+    },
+    {
+      "name": "解約件数",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

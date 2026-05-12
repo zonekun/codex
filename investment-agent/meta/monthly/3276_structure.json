@@ -1,0 +1,16 @@
+{
+  "ticker": "3276",
+  "company_name": "3276",
+  "metrics": [
+    {
+      "name": "申込戸数（戸）",
+      "source": "bc"
+    },
+    {
+      "name": "運用戸数（戸）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

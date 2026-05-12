@@ -69,6 +69,38 @@ EIR_BASE = "https://ssl4.eir-parts.net"
 
 DOWNLOAD_EXT = re.compile(r"\.(pdf|xlsx|xls|csv|html?)(\?.*)?$", re.IGNORECASE)
 
+# 拡張子なし PDF URL パス (2026-04-24 D1: 3548 Baroque 対応)
+# 例: /jp/notice/download/428/7314 → PDF として扱う
+# リンクテキストに月次キーワード (NON_MONTHLY除外 + EIR_MONTHLY 一致) が含まれる前提で
+# handle_scrape_links 内でのみ PDF 扱いする
+DOWNLOAD_PATH_EXT = re.compile(
+    r"/download/\d+/\d+/?$"                       # 3548 Baroque 形式
+    r"|/media-download/\d+/[0-9a-f]+/PDF/?$"      # 8160 木曽路 形式 (2026-04-24)
+    r"|/ir_disp\.php\?ir_no=\d+",                 # 7412 アトム ir_disp.php 直接PDF返却
+    re.IGNORECASE,
+)
+
+
+def _is_downloadable(url: str) -> bool:
+    """URL が PDF/Excel/CSV/HTML などダウンロード対象か判定する。
+
+    ① .pdf 等の拡張子付き URL → True
+    ② /download/<digits>/<digits> 形式 (拡張子なし) → True (2026-04-24: 3548 Baroque 対応)
+    ③ /media-download/<digits>/<hex>/PDF/ 形式 (拡張子なし) → True (2026-04-24: 8160 木曽路 対応)
+    """
+    return bool(DOWNLOAD_EXT.search(url) or DOWNLOAD_PATH_EXT.search(url))
+
+
+def _guess_ext(url: str, default: str = "pdf") -> str:
+    """URL から拡張子を推定する。拡張子なし URL は default ('pdf') を返す。"""
+    ext_m = DOWNLOAD_EXT.search(url)
+    if ext_m:
+        return ext_m.group(1).lower()
+    # 拡張子なしパスは PDF 扱い
+    if DOWNLOAD_PATH_EXT.search(url):
+        return "pdf"
+    return default
+
 # 明らかに月次でない文書を除外するキーワード（URL・ファイル名に含まれる場合スキップ）
 NON_MONTHLY_RE = re.compile(
     r"midmgtplan|mid.?term|中期経営|integrated.?report|統合報告|annual.?report|有価証券報告"
@@ -80,7 +112,7 @@ NON_MONTHLY_RE = re.compile(
 
 # 月次データと判定するキーワード
 EIR_MONTHLY_RE = re.compile(
-    r"月次|月度|monthly|マンスリー|売上速報|売上高|月別|受注速報|受注実績|販売台数|輸送実績|旅客数|搭乗実績|稼働実績|出荷量|KPI|Net Sales"
+    r"月次|月度|月分|monthly|マンスリー|売上速報|売上高|月別|受注速報|受注実績|販売台数|輸送実績|旅客数|搭乗実績|稼働実績|出荷量|KPI|Net Sales"
     r"|稼働率|入居率|来店|客数|セールス|オペレーション|生産実績|契約件数|新規契約|解約|ユーザー数|会員数|AUM|預かり",
     re.IGNORECASE,
 )
@@ -155,9 +187,12 @@ def _load_active_adapters(
     for blob in adapter_blobs:
         try:
             adapter = json.loads(blob.download_as_text())
-        except Exception:
+        except Exception as e:
+            logger.warning("adapter読み込み失敗: %s - %s", blob.name, e)
             continue
+        ticker = adapter.get("ticker", "(unknown)")
         if adapter.get("status") != "active":
+            logger.debug("非activeスキップ: ticker=%s status=%s", ticker, adapter.get("status"))
             continue
         if type_filter and adapter.get("type") != type_filter:
             continue
@@ -288,27 +323,23 @@ def _call_gemini_yyyymm(text: str, url: str) -> str | None:
     """Gemini で title+URL から年月を判定。"""
     prompt = _GEMINI_PROMPT_BASE.replace("{title}", text or "(なし)").replace("{url}", url or "(なし)")
     try:
+        from google import genai
+        from google.genai import types
         if IS_CLOUD_RUN:
-            # Vertex AI
-            import vertexai
-            from vertexai.generative_models import GenerativeModel, GenerationConfig
-            vertexai.init(project="gmailpj-357912", location="us-central1")
-            model = GenerativeModel(_GEMINI_MODEL_NAME)
-            cfg = GenerationConfig(response_mime_type="application/json", temperature=0)
-            resp = model.generate_content(prompt, generation_config=cfg)
-            txt = resp.text
+            client = genai.Client(vertexai=True, project="gmailpj-357912", location="global")
         else:
-            # ローカル: 個人 API key
-            from google import genai
             api_key = os.environ.get("GEMINI_API_KEY", "")
             if not api_key:
                 return None
             client = genai.Client(api_key=api_key)
-            resp = client.models.generate_content(
-                model=_GEMINI_MODEL_NAME,
-                contents=prompt,
-            )
-            txt = resp.text
+        resp = client.models.generate_content(
+            model=_GEMINI_MODEL_NAME,
+            contents=prompt,
+            config=types.GenerateContentConfig(
+                response_mime_type="application/json", temperature=0,
+            ),
+        )
+        txt = resp.text
         data = json.loads(txt)
         ym = str(data.get("year_month", ""))
         if ym == "UNKNOWN":
@@ -347,6 +378,30 @@ def _extract_yyyymm(text: str, url: str = "") -> str:
     if result != "000000":
         return result
     return _extract_yyyymm_gemini_cached(text or "", url or "")
+
+
+def _classify_error(e: Exception | None = None, status_code: int | None = None) -> str:
+    """例外またはHTTPステータスコードからエラー種別を判定する。"""
+    if status_code is not None:
+        if 400 <= status_code < 500:
+            return "http_4xx"
+        if 500 <= status_code < 600:
+            return "http_5xx"
+    if e is None:
+        return "unknown"
+    err_name = type(e).__name__.lower()
+    err_msg = str(e).lower()
+    if "timeout" in err_name or "timeout" in err_msg:
+        return "timeout"
+    if "connection" in err_name:
+        return "connection"
+    if "dns" in err_name or "name resolution" in err_msg or "nodename nor servname" in err_msg:
+        return "dns"
+    if "ssl" in err_name:
+        return "ssl"
+    if "importerror" in err_name or "modulenotfounderror" in err_name:
+        return "import_error"
+    return "unknown"
 
 
 def _ensure_dir(path: Path) -> Path:
@@ -641,12 +696,12 @@ def handle_eir_api(
                     logger.warning("ダウンロード失敗 HTTP %d  url=%s", resp.status_code, link)
                     stats["failed"] += 1
                     if file_log is not None:
-                        file_log.append({"ticker": ticker, "file": filename, "url": link, "status": f"http_{resp.status_code}", "bytes": 0, "yyyymm": yyyymm})
+                        file_log.append({"ticker": ticker, "file": filename, "url": link, "status": f"http_{resp.status_code}", "bytes": 0, "yyyymm": yyyymm, "error_type": _classify_error(None, resp.status_code), "response_size": len(resp.content)})
             except Exception as e:
                 logger.warning("ダウンロード例外 %s: %s", link, e)
                 stats["failed"] += 1
                 if file_log is not None:
-                    file_log.append({"ticker": ticker, "file": filename, "url": link, "status": f"error:{e}", "bytes": 0, "yyyymm": yyyymm})
+                    file_log.append({"ticker": ticker, "file": filename, "url": link, "status": f"error:{e}", "bytes": 0, "yyyymm": yyyymm, "error_type": _classify_error(e)})
             time.sleep(FILE_SLEEP)
 
         elif text_html:
@@ -693,7 +748,7 @@ def handle_eir_api(
                 logger.warning("HTML table 変換失敗 %s: %s", title, e)
                 stats["failed"] += 1
                 if file_log is not None:
-                    file_log.append({"ticker": ticker, "file": filename, "url": "", "status": f"error:{e}", "bytes": 0, "yyyymm": yyyymm})
+                    file_log.append({"ticker": ticker, "file": filename, "url": "", "status": f"error:{e}", "bytes": 0, "yyyymm": yyyymm, "error_type": _classify_error(e)})
         else:
             logger.debug("[%s] リンクなし・テキストなし: %s", ticker, item.get("title", ""))
 
@@ -704,7 +759,7 @@ def handle_eir_api(
 # scrape_links ハンドラー
 # ==========================================
 
-def _fetch_html_playwright(url: str, ticker: str, timeout_nav: int = 30000, timeout_idle: int = 20000) -> str | None:
+def _fetch_html_playwright(url: str, ticker: str, timeout_nav: int = 60000, timeout_idle: int = 30000) -> str | None:
     """Playwright（Chromium + stealth）で URL を取得して HTML を返す。失敗時は None。
 
     timeout_nav: goto のタイムアウト ms
@@ -779,7 +834,7 @@ def handle_scrape_links(
             # Playwright 失敗時は requests にフォールバック（HTTP2エラー対策）
             logger.info("[%s] Playwright 失敗 → requests にフォールバック", ticker)
             try:
-                resp = session.get(fetch_url, headers=HEADERS, timeout=15)
+                resp = session.get(fetch_url, headers=HEADERS, timeout=30)
                 if resp.status_code == 200:
                     soup = BeautifulSoup(resp.content, "html.parser")
                 else:
@@ -796,19 +851,27 @@ def handle_scrape_links(
         soup = None
         try:
             from curl_cffi import requests as cf_requests
+            _t0 = time.perf_counter()
             cf_resp = cf_requests.get(fetch_url, impersonate="chrome124", headers=HEADERS, timeout=20)
+            _elapsed = time.perf_counter() - _t0
             if cf_resp.status_code == 200:
+                logger.info("[%s] HTML取得: method=curl_cffi status=%d size=%d elapsed=%.1fs", ticker, cf_resp.status_code, len(cf_resp.content), _elapsed)
                 soup = BeautifulSoup(cf_resp.content, "html.parser")
             else:
+                logger.info("[%s] HTML取得: method=curl_cffi status=%d size=%d elapsed=%.1fs", ticker, cf_resp.status_code, len(cf_resp.content), _elapsed)
                 logger.warning("[%s] curl_cffi ページ取得失敗 HTTP %d: %s", ticker, cf_resp.status_code, fetch_url)
         except Exception as e:
             logger.debug("[%s] curl_cffi ページ取得例外: %s → requests フォールバック", ticker, e)
         if soup is None:
             try:
+                _t0 = time.perf_counter()
                 resp = session.get(fetch_url, headers=HEADERS, timeout=15)
+                _elapsed = time.perf_counter() - _t0
                 if resp.status_code == 200:
+                    logger.info("[%s] HTML取得: method=requests status=%d size=%d elapsed=%.1fs", ticker, resp.status_code, len(resp.content), _elapsed)
                     soup = BeautifulSoup(resp.content, "html.parser")
                 else:
+                    logger.info("[%s] HTML取得: method=requests status=%d size=%d elapsed=%.1fs", ticker, resp.status_code, len(resp.content), _elapsed)
                     logger.warning("[%s] ページ取得失敗 HTTP %d: %s", ticker, resp.status_code, fetch_url)
                     return stats
             except Exception as e:
@@ -819,6 +882,11 @@ def handle_scrape_links(
     link_text_pat = adapter.get("link_text_pattern")
     link_href_pat = adapter.get("link_href_pattern", r"\.(pdf|xlsx|xls|csv)")
     follow_links = adapter.get("follow_links", False)
+    follow_links_save_html = adapter.get("follow_links_save_html", False)
+    if follow_links_save_html and not follow_links:
+        logger.warning("[%s] follow_links_save_html=true だが follow_links=false のため無効", ticker)
+        follow_links_save_html = False
+    html_saved_count = 0
 
     text_re = re.compile(link_text_pat, re.IGNORECASE) if link_text_pat else None
     href_re = re.compile(link_href_pat, re.IGNORECASE) if link_href_pat else None
@@ -839,7 +907,7 @@ def handle_scrape_links(
             abs_url = urljoin(fetch_url, href)
             if not href or href.startswith("#"):
                 continue
-            if DOWNLOAD_EXT.search(abs_url):
+            if _is_downloadable(abs_url):
                 continue  # ファイル直リンクはスキップ（サブページではない）
             if text_re and (text_re.search(text) or text_re.search(href)):
                 sub_urls.append(abs_url)
@@ -870,20 +938,51 @@ def handle_scrape_links(
                             logger.debug("[%s] サブページ取得失敗 %d: %s", ticker, sub_resp.status_code, sub_url)
                             continue
                         sub_soup = BeautifulSoup(sub_resp.content, "html.parser")
+                if follow_links_save_html:
+                    sub_title_el = sub_soup.find("title")
+                    sub_title_text = sub_title_el.get_text(strip=True) if sub_title_el else "subpage"
+                    sub_title_safe = _safe_filename(sub_title_text, 40)
+                    sub_yyyymm = _extract_yyyymm(sub_title_text, sub_url)
+                    sub_h = _url_hash(sub_url)
+                    sub_filename = f"{sub_yyyymm}_{ticker}_{sub_title_safe}_{sub_h}.html"
+                    sub_content = str(sub_soup).encode("utf-8")
+                    if (existing_hashes is not None and sub_h in existing_hashes) or (company_dir.is_dir() and _already_local(company_dir, sub_h)):
+                        logger.debug("スキップ（既存HTML）: %s", sub_url)
+                    elif dry_run:
+                        logger.info("[dry-run] HTML保存: %s  url=%s", sub_filename, sub_url)
+                        html_saved_count += 1
+                        if file_log is not None:
+                            file_log.append({"ticker": ticker, "file": sub_filename, "url": sub_url, "status": "dry-run", "bytes": 0, "yyyymm": sub_yyyymm})
+                    else:
+                        size = len(sub_content)
+                        if IS_CLOUD_RUN and bucket:
+                            _upload_to_gcs(bucket, ticker, sub_filename, sub_content, "html")
+                            if existing_hashes is not None:
+                                existing_hashes.add(sub_h)
+                        else:
+                            _ensure_dir(company_dir)
+                            (company_dir / sub_filename).write_bytes(sub_content)
+                        logger.info("HTML保存: %s  %d bytes  url=%s", sub_filename, size, sub_url)
+                        html_saved_count += 1
+                        if file_log is not None:
+                            file_log.append({"ticker": ticker, "file": sub_filename, "url": sub_url, "status": "ok", "bytes": size, "yyyymm": sub_yyyymm})
                 for a in sub_soup.find_all("a", href=True):
                     href = re.sub(r"[\t\n\r]", "", a.get("href", "").strip())
                     text = a.get_text(strip=True)
                     abs_url2 = urljoin(sub_url, href)
                     if href_re and not href_re.search(abs_url2) and not href_re.search(href):
                         continue
-                    if not DOWNLOAD_EXT.search(abs_url2):
+                    if not _is_downloadable(abs_url2):
                         continue
                     links.append((text, abs_url2))
             except Exception as e:
                 logger.warning("[%s] サブページ取得例外 %s: %s", ticker, sub_url, e)
             time.sleep(0.5)
 
-        logger.info("[%s] %s follow_links: サブページ %d 件 → ファイル %d 件", ticker, company, len(seen_sub), len(links))
+        msg = f"[{ticker}] {company} follow_links: サブページ {len(seen_sub)} 件 → ファイル {len(links)} 件"
+        if follow_links_save_html:
+            msg += f" + HTML保存 {html_saved_count} 件"
+        logger.info(msg)
     else:
         for a in candidates:
             href = re.sub(r"[\t\n\r]", "", a.get("href", "").strip())  # 前後+埋め込みの制御文字を除去
@@ -897,7 +996,7 @@ def handle_scrape_links(
                 continue
             if text_re and not text_re.search(text) and not text_re.search(href):
                 continue
-            if not DOWNLOAD_EXT.search(abs_url):
+            if not _is_downloadable(abs_url):
                 continue
             links.append((text, abs_url))
 
@@ -937,6 +1036,8 @@ def handle_scrape_links(
                            link_href_pat or "(なし)", link_text_pat or "(なし)")
         else:
             logger.info("[%s] ダウンロード対象リンクなし（候補%d件が月次フィルタで除外）", ticker, len(links))
+        if html_saved_count:
+            stats["html_saved"] = html_saved_count
         return stats
 
     logger.info("[%s] %s リンク %d 件（月次絞り込み後 %d 件）", ticker, company, len(links), len(target_links))
@@ -944,8 +1045,7 @@ def handle_scrape_links(
         _ensure_dir(company_dir)
 
     for text, url in target_links:
-        ext_m = DOWNLOAD_EXT.search(url)
-        ext = ext_m.group(1).lower() if ext_m else "pdf"
+        ext = _guess_ext(url)
         h = _url_hash(url)
 
         if (existing_hashes is not None and h in existing_hashes) or (company_dir.is_dir() and _already_local(company_dir, h)):
@@ -1003,14 +1103,16 @@ def handle_scrape_links(
                 logger.warning("ダウンロード失敗 HTTP %d  url=%s", resp.status_code, url)
                 stats["failed"] += 1
                 if file_log is not None:
-                    file_log.append({"ticker": ticker, "file": filename, "url": url, "status": f"http_{resp.status_code}", "bytes": 0, "yyyymm": yyyymm})
+                    file_log.append({"ticker": ticker, "file": filename, "url": url, "status": f"http_{resp.status_code}", "bytes": 0, "yyyymm": yyyymm, "error_type": _classify_error(None, resp.status_code), "response_size": len(resp.content)})
         except Exception as e:
             logger.warning("ダウンロード例外 %s: %s", url, e)
             stats["failed"] += 1
             if file_log is not None:
-                file_log.append({"ticker": ticker, "file": filename, "url": url, "status": f"error:{e}", "bytes": 0, "yyyymm": yyyymm})
+                file_log.append({"ticker": ticker, "file": filename, "url": url, "status": f"error:{e}", "bytes": 0, "yyyymm": yyyymm, "error_type": _classify_error(e)})
         time.sleep(FILE_SLEEP)
 
+    if html_saved_count:
+        stats["html_saved"] = html_saved_count
     return stats
 
 
@@ -1203,6 +1305,255 @@ def handle_html_table(
     return stats
 
 
+# ==========================================
+# jsonp_api ハンドラー (2026-04-24 D3: 6412 平和 対応)
+# ==========================================
+
+_JSONP_CALLBACK_RE = re.compile(
+    r"^[^(]*?\(\s*(\{.*\}|\[.*\])\s*\)\s*;?\s*$", re.DOTALL
+)
+
+
+def _parse_jsonp(text: str, callback_hint: str | None = None) -> dict | list | None:
+    """JSONP 応答から内側の JSON を抽出してパースする。
+
+    Args:
+        text: JSONP 文字列 (例: `irvasset({"date":[...], ...})`)
+        callback_hint: callback 名のヒント。未指定なら汎用 regex で抽出。
+
+    Returns:
+        パース済み dict/list。失敗時 None。
+    """
+    if not text:
+        return None
+    text = text.strip()
+    # BOM 除去
+    if text.startswith("\ufeff"):
+        text = text[1:]
+
+    def _try_parse(s: str) -> dict | list | None:
+        try:
+            return json.loads(s)
+        except json.JSONDecodeError:
+            pass
+        # unquoted keys: {date:[...]} → {"date":[...]}
+        fixed = re.sub(r'(?<=[{,])(\w+):', r'"\1":', s)
+        try:
+            return json.loads(fixed)
+        except json.JSONDecodeError:
+            return None
+
+    # 1. callback_hint が指定されている場合、`<hint>(...)` を優先して剥がす
+    if callback_hint:
+        pattern = re.compile(
+            rf"^\s*{re.escape(callback_hint)}\s*\((.*)\)\s*;?\s*$", re.DOTALL
+        )
+        m = pattern.match(text)
+        if m:
+            result = _try_parse(m.group(1))
+            if result is not None:
+                return result
+
+    # 2. 汎用 regex フォールバック (`<anyname>({...})` or `<anyname>([...])`)
+    m = _JSONP_CALLBACK_RE.match(text)
+    if m:
+        result = _try_parse(m.group(1))
+        if result is not None:
+            return result
+
+    # 3. そのまま JSON としてパース試行
+    return _try_parse(text)
+
+
+def handle_jsonp_api(
+    adapter: dict,
+    company_dir: Path,
+    dry_run: bool,
+    file_log: list | None = None,
+    bucket=None,
+    existing_hashes: set | None = None,
+) -> dict:
+    """JSONP API から月次 PDF リスト を取得してダウンロードする。
+
+    adapter の期待スキーマ:
+      - type: "jsonp_api"
+      - jsonp_api_url: JSONP エンドポイント URL (required)
+      - jsonp_callback: callback 名 (任意、フォールバック regex あり)
+      - link_href_pattern: PDF URL の絞り込み正規表現 (任意)
+
+    JSON 構造は以下の2パターンを自動判定:
+      A. parallel arrays: {"date":[...], "title":[...], "url":[...], ...}
+         (例: azcms.ir-service.net/_irvassetctgry.aspx)
+      B. list of items: [{"date":..., "title":..., "url":...}, ...]
+    """
+    stats = {"downloaded": 0, "skipped": 0, "failed": 0}
+
+    try:
+        from curl_cffi import requests as cf_requests
+    except ImportError:
+        logger.error("curl_cffi が未インストール")
+        return stats
+
+    ticker = adapter["ticker"]
+    company = adapter.get("company_name", ticker)
+    api_url = adapter.get("jsonp_api_url", "")
+    callback = adapter.get("jsonp_callback")
+    href_pat = adapter.get("link_href_pattern")
+    href_re = re.compile(href_pat, re.IGNORECASE) if href_pat else None
+
+    if not api_url:
+        logger.warning("[%s] jsonp_api_url が未設定", ticker)
+        return stats
+
+    logger.info("[%s] %s JSONP API 取得: %s (callback=%s)", ticker, company, api_url, callback or "(auto)")
+    try:
+        resp = cf_requests.get(api_url, impersonate="chrome124", headers=HEADERS, timeout=20)
+        if resp.status_code != 200:
+            logger.warning("[%s] JSONP API HTTP %d", ticker, resp.status_code)
+            stats["failed"] += 1
+            return stats
+        try:
+            jsonp_text = resp.content.decode("utf-8-sig")
+        except UnicodeDecodeError:
+            jsonp_text = resp.content.decode("shift-jis", errors="replace")
+    except Exception as e:
+        logger.warning("[%s] JSONP API 取得例外: %s", ticker, e)
+        stats["failed"] += 1
+        return stats
+
+    data = _parse_jsonp(jsonp_text, callback_hint=callback)
+    if data is None:
+        logger.warning("[%s] JSONP パース失敗 (先頭 200 文字): %s", ticker, jsonp_text[:200])
+        stats["failed"] += 1
+        return stats
+
+    # parallel arrays → list of items に正規化
+    items: list[dict] = []
+    if isinstance(data, dict):
+        urls = data.get("url") or data.get("urls") or []
+        titles = data.get("title") or data.get("titles") or []
+        dates = data.get("date") or data.get("dates") or []
+        if isinstance(urls, list):
+            for i, u in enumerate(urls):
+                items.append({
+                    "url": u,
+                    "title": titles[i] if i < len(titles) else "",
+                    "date": dates[i] if i < len(dates) else "",
+                })
+        else:
+            # dict だが parallel arrays 構造でない → item キー試行
+            items = data.get("item", []) or data.get("items", [])
+    elif isinstance(data, list):
+        items = data
+    else:
+        logger.warning("[%s] JSONP 構造が未対応: type=%s", ticker, type(data).__name__)
+        return stats
+
+    logger.info("[%s] JSONP アイテム: %d 件", ticker, len(items))
+
+    # 月次フィルタ
+    text_pat = adapter.get("link_text_pattern")
+    text_re = re.compile(text_pat, re.IGNORECASE) if text_pat else None
+    filtered: list[dict] = []
+    for it in items:
+        url = str(it.get("url") or it.get("link") or "")
+        title = str(it.get("title") or "")
+        if not url:
+            continue
+        if href_re and not href_re.search(url):
+            continue
+        if NON_MONTHLY_RE.search(url) or NON_MONTHLY_RE.search(title):
+            continue
+        if text_re and not (text_re.search(title) or text_re.search(url)):
+            continue
+        if not (EIR_MONTHLY_RE.search(url) or EIR_MONTHLY_RE.search(title)):
+            continue
+        filtered.append({"url": url, "title": title, "date": str(it.get("date") or "")})
+
+    logger.info("[%s] 月次フィルタ後: %d 件", ticker, len(filtered))
+
+    if not filtered:
+        return stats
+
+    if not (IS_CLOUD_RUN and bucket):
+        _ensure_dir(company_dir)
+
+    for it in filtered:
+        url = it["url"]
+        title_src = it.get("title") or Path(urlparse(url).path).stem or "notitle"
+        title = _safe_filename(title_src, 40)
+        ext = _guess_ext(url)
+        h = _url_hash(url)
+        yyyymm = _extract_yyyymm(
+            (it.get("date") or "") + " " + (it.get("title") or ""),
+            url,
+        )
+        filename = f"{yyyymm}_{ticker}_{title}_{h}.{ext}"
+        out_path = company_dir / filename
+
+        _skip = (existing_hashes is not None and h in existing_hashes) or (
+            company_dir.is_dir() and _already_local(company_dir, h)
+        )
+        if _skip:
+            logger.debug("スキップ（既存）: %s", filename)
+            stats["skipped"] += 1
+            if file_log is not None:
+                file_log.append({
+                    "ticker": ticker, "file": filename, "url": url,
+                    "status": "skipped", "bytes": 0, "yyyymm": yyyymm,
+                })
+            continue
+
+        if dry_run:
+            logger.info("[dry-run] %s  url=%s", filename, url)
+            stats["downloaded"] += 1
+            if file_log is not None:
+                file_log.append({
+                    "ticker": ticker, "file": filename, "url": url,
+                    "status": "dry-run", "bytes": 0, "yyyymm": yyyymm,
+                })
+            continue
+
+        try:
+            dl = cf_requests.get(url, impersonate="chrome124", headers=HEADERS, timeout=30)
+            if dl.status_code == 200:
+                size = len(dl.content)
+                if IS_CLOUD_RUN and bucket:
+                    _upload_to_gcs(bucket, ticker, filename, dl.content, ext)
+                    if existing_hashes is not None:
+                        existing_hashes.add(h)
+                else:
+                    out_path.write_bytes(dl.content)
+                logger.info("保存: %s  %d bytes  url=%s", filename, size, url)
+                stats["downloaded"] += 1
+                if file_log is not None:
+                    file_log.append({
+                        "ticker": ticker, "file": filename, "url": url,
+                        "status": "ok", "bytes": size, "yyyymm": yyyymm,
+                    })
+            else:
+                logger.warning("DL 失敗 HTTP %d  url=%s", dl.status_code, url)
+                stats["failed"] += 1
+                if file_log is not None:
+                    file_log.append({
+                        "ticker": ticker, "file": filename, "url": url,
+                        "status": f"http_{dl.status_code}", "bytes": 0, "yyyymm": yyyymm,
+                        "error_type": _classify_error(None, dl.status_code), "response_size": len(dl.content),
+                    })
+        except Exception as e:
+            logger.warning("DL 例外 %s: %s", url, e)
+            stats["failed"] += 1
+            if file_log is not None:
+                file_log.append({
+                    "ticker": ticker, "file": filename, "url": url,
+                    "status": f"error:{e}", "bytes": 0, "yyyymm": yyyymm,
+                    "error_type": _classify_error(e),
+                })
+        time.sleep(FILE_SLEEP)
+
+    return stats
+
+
 def handle_disco_quarterly(
     adapter: dict,
     company_dir: Path,
@@ -1300,12 +1651,12 @@ def handle_disco_quarterly(
                     logger.warning("PDF ダウンロード失敗 HTTP %d  url=%s", pdf_resp.status_code, pdf_url)
                     stats["failed"] += 1
                     if file_log is not None:
-                        file_log.append({"ticker": ticker, "file": filename, "url": pdf_url, "status": f"http_{pdf_resp.status_code}", "bytes": 0, "yyyymm": yyyymm})
+                        file_log.append({"ticker": ticker, "file": filename, "url": pdf_url, "status": f"http_{pdf_resp.status_code}", "bytes": 0, "yyyymm": yyyymm, "error_type": _classify_error(None, pdf_resp.status_code), "response_size": len(pdf_resp.content)})
             except Exception as e:
                 logger.warning("PDF ダウンロード例外 %s: %s", pdf_url, e)
                 stats["failed"] += 1
                 if file_log is not None:
-                    file_log.append({"ticker": ticker, "file": filename, "url": pdf_url, "status": f"error:{e}", "bytes": 0, "yyyymm": yyyymm})
+                    file_log.append({"ticker": ticker, "file": filename, "url": pdf_url, "status": f"error:{e}", "bytes": 0, "yyyymm": yyyymm, "error_type": _classify_error(e)})
             time.sleep(FILE_SLEEP)
 
         time.sleep(RATE_SEC)
@@ -1323,7 +1674,7 @@ def main() -> None:
     parser.add_argument("--tickers", nargs="*", help="対象ティッカーを限定")
     parser.add_argument(
         "--type",
-        choices=["eir_api", "scrape_links", "disco_quarterly", "html_table"],
+        choices=["eir_api", "scrape_links", "disco_quarterly", "html_table", "jsonp_api"],
         help="処理タイプを限定",
     )
     parser.add_argument(
@@ -1391,6 +1742,7 @@ def main() -> None:
         # Cloud Run: GCS上の既存ファイルハッシュを取得してスキップ判定に使う
         existing_hashes = _get_ticker_gcs_hashes(bucket, ticker) if IS_CLOUD_RUN else None
 
+        _company_t0 = time.perf_counter()
         try:
             if a_type == "eir_api":
                 stats = handle_eir_api(adapter, company_dir, dry_run=args.dry_run, since_year=args.since, file_log=file_log, bucket=bucket, existing_hashes=existing_hashes)
@@ -1402,6 +1754,9 @@ def main() -> None:
             elif a_type == "html_table":
                 stats = handle_html_table(adapter, company_dir, session, dry_run=args.dry_run, file_log=file_log, bucket=bucket)
                 time.sleep(RATE_SEC)
+            elif a_type == "jsonp_api":
+                stats = handle_jsonp_api(adapter, company_dir, dry_run=args.dry_run, file_log=file_log, bucket=bucket, existing_hashes=existing_hashes)
+                time.sleep(RATE_SEC)
             else:
                 logger.debug("[%s] 未対応タイプ: %s", ticker, a_type)
                 continue
@@ -1410,10 +1765,13 @@ def main() -> None:
             error_msg = str(e)
             stats["failed"] += 1
 
+        _company_elapsed = time.perf_counter() - _company_t0
         logger.info(
-            "[%s] 完了: downloaded=%d skipped=%d failed=%d",
-            ticker, stats["downloaded"], stats["skipped"], stats["failed"],
+            "[%s] 完了: downloaded=%d skipped=%d failed=%d elapsed=%.1fs",
+            ticker, stats["downloaded"], stats["skipped"], stats["failed"], _company_elapsed,
         )
+        if _company_elapsed > 60:
+            logger.warning("[%s] 処理遅延: %.1fs (閾値 60s)", ticker, _company_elapsed)
 
         all_file_log.extend(file_log)
         results.append({

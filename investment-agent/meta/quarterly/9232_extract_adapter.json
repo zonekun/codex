@@ -1,0 +1,28 @@
+{
+  "ticker": "9232",
+  "company_name": "パスコ",
+  "current_version": "2024-11",
+  "versions": [
+    {
+      "valid_from": "2024-11",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Vision extraction selected because structure is complex or data is unavailable."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/9232/20241107_9232_パスコ_決算短信_2025年3月期 第2四半期（中間期）決算短信〔日本基準〕（連結）_140120241106512265.pdf",
+  "_source_doc_id": "140120241106512265",
+  "_generated_at": "2026-04-30T20:15:58.584993+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

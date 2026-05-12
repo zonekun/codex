@@ -1,0 +1,28 @@
+{
+  "ticker": "2388",
+  "company_name": "Ｇ－ウェッジＨＤ",
+  "current_version": "2025-12",
+  "versions": [
+    {
+      "valid_from": "2025-12",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "other",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/2388/20251229_2388_Ｇ－ウェッジＨＤ_事業計画（グロース）_事業計画及び成長可能性に関する事項_140120251229527907.pdf",
+  "_source_doc_id": "140120251229527907",
+  "_generated_at": "2026-04-30T17:21:56.663540+09:00",
+  "_model_used": null
+}

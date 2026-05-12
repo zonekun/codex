@@ -1,0 +1,68 @@
+{
+  "ticker": "7771",
+  "company_name": "日本精密",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当第３四半期連結累計期間における受注実績の合計額",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "受注高（セグメント別）",
+          "type": "order_intake",
+          "description": "セグメント別の受注高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当第３四半期連結累計期間末における受注残高の合計額",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高（セグメント別）",
+          "type": "backlog",
+          "description": "セグメント別の受注残高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "受注実績（受注高・受注残高）および販売実績について、セグメント別の詳細なデータが表形式で記載されています。また、販売実績については主要な相手先別の内訳も提供されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/7771/20260213_7771_日本精密_決算短信_令和８年３月期 第３四半期決算短信〔日本基準〕(連結)_140120260210553345.pdf",
+  "_source_doc_id": "140120260210553345",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:58:02.257983+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      12
+    ],
+    "table_count": 4,
+    "max_rows": 5,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 4"
+    ]
+  }
+}

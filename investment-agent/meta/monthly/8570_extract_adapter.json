@@ -1,0 +1,27 @@
+{
+  "source": "non-tdnet(html_table)",
+  "format": "html",
+  "fields": [
+    {
+      "key": "カードショッピング 取扱高（前年同月比）",
+      "name": "カードショッピング 取扱高（前年同月比）",
+      "description": "IR「月次取扱高情報」HTMLページ。monthly-tblテーブル。「カードショッピング」行の下「増減率」行。値はYoY%(例: 2.7%)。",
+      "value_type": "percentage"
+    },
+    {
+      "key": "カードキャッシング 取扱高（前年同月比）",
+      "name": "カードキャッシング 取扱高（前年同月比）",
+      "description": "同HTMLテーブル。「カードキャッシング」行の下「増減率」行。値はYoY%(例: -5.9%)。",
+      "value_type": "percentage"
+    }
+  ],
+  "extraction_notes": "イオンフィナンシャルサービス。IR「月次取扱高情報」HTMLページに月度別・期間累計のカードショッピング/キャッシング取扱高(百万円)と増減率(%)を開示。2月期決算。2テーブル構成(月度/累計)×4行(ショッピング実額/増減率/キャッシング実額/増減率)。url_adapter html_table(active)で取得。",
+  "ticker": "8570",
+  "company_name": "イオンフィナンシャルサービス",
+  "created_at": "2026-04-05T10:20:12.553985+09:00",
+  "created_by": "gemini-2.5-flash",
+  "extraction_method": "gemini",
+  "manual_override": true,
+  "manual_override_note": "Codex成果物を自ら検証・再作成。月次取扱高HTMLから2メトリクス抽出可能",
+  "manual_override_at": "2026-05-08T01:00:00+09:00"
+}

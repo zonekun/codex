@@ -1,0 +1,91 @@
+{
+  "ticker": "7717",
+  "company_name": "Ｖテク",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注金額",
+          "type": "order_intake",
+          "description": "当第３四半期連結累計期間の当社グループの受注金額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当第３四半期連結累計期間末の当社グループの受注残高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "FPD装置事業 受注金額",
+          "type": "order_intake",
+          "description": "FPD装置事業における受注金額",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注金額"
+        },
+        {
+          "name": "FPD装置事業 受注残高",
+          "type": "backlog",
+          "description": "FPD装置事業における受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        },
+        {
+          "name": "半導体・フォトマスク装置事業 受注金額",
+          "type": "order_intake",
+          "description": "半導体・フォトマスク装置事業における受注金額",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注金額"
+        },
+        {
+          "name": "半導体・フォトマスク装置事業 受注残高",
+          "type": "backlog",
+          "description": "半導体・フォトマスク装置事業における受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "FPD装置事業",
+            "半導体・フォトマスク装置事業"
+          ]
+        }
+      ],
+      "presentation_format": "text",
+      "complexity": "no_table",
+      "notes": "決算短信の「１．経営成績等の概況」のテキスト内から、連結およびセグメント別の受注高、受注残高、売上高のデータを抽出。表形式での記載はなく、全て文章中に数値が含まれている。"
+    }
+  ],
+  "_source_pdf": "tdnet/7717/20260210_7717_Ｖテク_決算短信_2026年３月期 第３四半期決算短信〔日本基準〕（連結）_140120260202545131.pdf",
+  "_source_doc_id": "140120260202545131",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:54:19.658104+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "no_table",
+    "relevant_pages": [
+      4
+    ],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "pdfplumber found no tables on relevant pages"
+    ]
+  }
+}

@@ -2,9 +2,9 @@
 
 **カテゴリ**: tools
 **作成日**: 2026-03-21
-**更新日**: 2026-04-09
+**更新日**: 2026-04-28
 **ステータス**: 有効
-**関連ファイル**: `scripts/sync_secrets_push.sh`, `scripts/sync_secrets_pull.sh`, `.claude/settings.local.json`
+**関連ファイル**: `scripts/sync_push.sh`, `scripts/sync_pull.sh`, `.claude/settings.local.json`
 
 ---
 
@@ -19,13 +19,22 @@
 
 ### SSH接続
 
+**`--tunnel-through-iap` は全SSH接続で必須。** VMに外部IPが無いため、IAP Tunnel経由でないと到達できない。
+
 ```bash
-# claude-dev-vm
+# claude-dev-vm（対話）
 gcloud compute ssh zonekun@claude-dev-vm --zone=us-west1-a --tunnel-through-iap
 
-# claude-high-vm
+# claude-high-vm（対話）
 gcloud compute ssh claude-high-vm --zone=us-west1-a --tunnel-through-iap
+
+# claude-high-vm（非対話 — Windowsから1コマンド実行）
+gcloud compute ssh claude-high-vm --zone=us-west1-a --tunnel-through-iap --command="cd ~/project/claude/investment-agent && git pull origin master"
 ```
+
+**禁止:**
+- `ssh user@host` での直接接続（外部IP無し・IAP未経由のため接続不可）
+- `gcloud compute ssh` で `--tunnel-through-iap` を省略（接続失敗する）
 
 ### 新規VMプロビジョニング手順
 
@@ -60,11 +69,17 @@ claude --version  # 確認
 | `.env`, `keys/`, `data/logs/` | GCS経由（sync_secrets_*.sh） | 双方向 |
 | `.claude/settings.local.json` | **git管理外・端末固有** | 同期しない |
 
+> **注意**: VM には Google Drive は入っていない。Windows の `C:\gdrive\...` パスは Google Drive のローカルジャンクションだが、VM には自動同期されない。同期手段は上記の **git + GCS のみ**。
+
 ---
 
 ## Windows → Linux VM
 
-### Step 1: git push（コード）
+### 送り出し側（Windows で実行）
+
+「linuxへの同期」「linuxに反映して」等の指示は、以下の2ステップで完了する。
+
+**Step 1: git push（コード）**
 
 ```bash
 # Windows Git Bash
@@ -72,22 +87,40 @@ cd /g/マイドライブ/claude
 git push origin master
 ```
 
-### Step 2: secrets を GCS へプッシュ
+**Step 2: secrets を GCS へプッシュ**
 
 ```bash
 # Windows Git Bash
-bash scripts/push_to_linux.sh
+bash scripts/sync_push.sh
 ```
 
-対象: `.env`, `keys/gcp-service-account.json`, `data/logs/`
+対象: `.env`, `keys/gcp-service-account.json`
 
-### Step 3: VM側で受け取る
+**送り出し側の操作はここまでで完了。** 以降の受け取り操作はユーザーから明示的に指示された場合にのみ実行する。
+
+---
+
+### 受け取り側（Linux VM で実行）
+
+以下はVM側で変更を受け取る操作。送り出し側の「linuxへの同期」指示の範囲には含まれない。
+
+**Windowsから非対話で実行する場合（`--tunnel-through-iap` 必須）:**
 
 ```bash
-# Linux VM
-cd ~/project/claude
+gcloud compute ssh claude-high-vm --zone=us-west1-a --tunnel-through-iap \
+  --command="cd ~/project/claude/investment-agent && git pull origin master && bash scripts/sync_pull.sh"
+```
+
+**VMにSSHログインしてから実行する場合（`--tunnel-through-iap` 必須）:**
+
+```bash
+# 先にSSHログイン
+gcloud compute ssh claude-high-vm --zone=us-west1-a --tunnel-through-iap
+
+# VM内で実行
+cd ~/project/claude/investment-agent
 git pull origin master
-bash ~/project/claude/investment-agent/scripts/sync_secrets_pull.sh
+bash scripts/sync_pull.sh
 ```
 
 ---

@@ -1,0 +1,20 @@
+{
+  "ticker": "3834",
+  "company_name": "3834",
+  "metrics": [
+    {
+      "name": "ADSL 契約数（ID）",
+      "source": "bc"
+    },
+    {
+      "name": "FTTH 契約数（ID）",
+      "source": "bc"
+    },
+    {
+      "name": "モバイル接続 契約数（ID）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

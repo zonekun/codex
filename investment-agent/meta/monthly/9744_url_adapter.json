@@ -1,0 +1,16 @@
+{
+  "ticker": "9744",
+  "company_name": "メイテックグループホールディングス",
+  "ir_page_url": "https://www.meitecgroup-holdings.com/ja/ir/finance/rate.html",
+  "type": "scrape_links",
+  "status": "active",
+  "link_text_pattern": "稼働率|エンジニア社員数|月次",
+  "link_href_pattern": "\\d{8}_(recent|past)\\.pdf",
+  "manual_override": true,
+  "note": "2026-04-24修正: 旧URLはIRトップで決算短信混入。正しい月次ページはrate.html。稼働率+エンジニア社員数を毎月更新",
+  "updated_at": "2026-04-24T17:15:36.150884+09:00",
+  "css_selector": null,
+  "table_selector": null,
+  "playwright_required": false,
+  "follow_links": false
+}

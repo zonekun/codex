@@ -1,0 +1,14 @@
+{
+  "ticker": "9850",
+  "company_name": "グルメ杵屋",
+  "ir_page_url": "https://gourmet-kineya-hd.co.jp/ir/monthly/",
+  "updated_at": "2026-04-24T13:52:42.252045+09:00",
+  "last_checked": "2026-04-21",
+  "status": "inactive",
+  "type": "eir_api",
+  "eir_company_code": "9850",
+  "note": "IRページに月次データ無し。eir特殊設定だったがAPIにも月次なし → inactive (2026-04-24)。",
+  "manual_override": true,
+  "manual_override_at": "2026-04-24T13:52:42.252045+09:00",
+  "manual_override_note": "inactive化 (2026-04-24)"
+}

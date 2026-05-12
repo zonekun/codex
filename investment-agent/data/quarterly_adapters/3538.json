@@ -1,0 +1,36 @@
+{
+  "ticker": "3538",
+  "company_name": "ウイルプラスＨＤ",
+  "current_version": "2025-02",
+  "versions": [
+    {
+      "valid_from": "2025-02",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "breakdown_dimensions": [],
+      "presentation_format": "text",
+      "complexity": "no_table",
+      "notes": "本文の負債に関する説明の中で『受注残増加より前受金が445百万円増加』という言及はあるものの、受注高や受注残高そのものの具体的な金額データは記載されていないため、抽出対象データなしと判断しました。"
+    }
+  ],
+  "_source_pdf": "tdnet/3538/20250213_3538_ウイルプラスＨＤ_決算短信_2025年６月期第２四半期（中間期）決算短信〔日本基準〕(連結)_140120250213572560.pdf",
+  "_source_doc_id": "140120250213572560",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:44:51.169961+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "no_table",
+    "relevant_pages": [
+      6
+    ],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "pdfplumber found no tables on relevant pages"
+    ]
+  }
+}

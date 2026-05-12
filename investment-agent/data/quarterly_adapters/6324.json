@@ -1,0 +1,69 @@
+{
+  "ticker": "6324",
+  "company_name": "ハーモニック",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当第３四半期連結累計期間における受注実績額",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当第３四半期連結累計期間末における受注残高",
+          "unit": "千円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "地域",
+          "items": [
+            "日本",
+            "中国",
+            "北米",
+            "欧州"
+          ]
+        },
+        {
+          "dimension_name": "製品群",
+          "items": [
+            "減速装置",
+            "メカトロニクス製品"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "13ページの「② 受注実績」表に、地域別および製品群別の受注高と受注残高が詳細に記載されている。"
+    }
+  ],
+  "_source_pdf": "tdnet/6324/20260210_6324_ハーモニック_決算短信_2026年３月期　第３四半期決算短信〔日本基準〕（連結）_140120260205548087.pdf",
+  "_source_doc_id": "140120260205548087",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:02:09.987609+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      15
+    ],
+    "table_count": 1,
+    "max_rows": 10,
+    "max_cols": 6,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

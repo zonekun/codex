@@ -1,0 +1,23 @@
+{
+  "ticker": "9024",
+  "company_name": "西武ホールディングス",
+  "updated_at": "2026-04-24T13:56:32.655334+09:00",
+  "ir_page_url": "http://www.seibuholdings.co.jp/ir/ir_material/monthly/",
+  "type": "html_table",
+  "css_selector": null,
+  "link_text_pattern": "月次|データ",
+  "link_href_pattern": ".*\\.(pdf|xlsx|xls)",
+  "table_selector": null,
+  "status": "active",
+  "skip_reason": null,
+  "note": "JS描画ページ。Playwright必要。ゼロDL修正 (2026-04-24)。",
+  "url_source": "recovered_from_index_csv",
+  "last_checked": "2026-04-20",
+  "follow_links": false,
+  "playwright_required": true,
+  "recovered_at": "2026-04-20T21:37:09.325193+09:00",
+  "recovery_reason": "sync_bug_overwrite_20260420",
+  "manual_override": true,
+  "manual_override_at": "2026-04-24T13:56:32.655334+09:00",
+  "manual_override_note": "ゼロDL修正 (2026-04-24)"
+}

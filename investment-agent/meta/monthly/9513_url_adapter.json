@@ -1,0 +1,13 @@
+{
+  "ticker": "9513",
+  "company_name": "電源開発",
+  "ir_page_url": "http://www.jpower.co.jp/ir/",
+  "updated_at": "2026-04-21T10:22:19.181729+09:00",
+  "last_checked": "2026-04-21",
+  "status": "active",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": "月別|PDF",
+  "link_href_pattern": "/ir/pdf/monthly/2602\\.pdf",
+  "note": "月次PDFリンク1件検出 best=http://www.jpower.co.jp/ir/pdf/monthly/2602.pdf"
+}

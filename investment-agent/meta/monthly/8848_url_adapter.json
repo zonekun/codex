@@ -1,0 +1,13 @@
+{
+  "ticker": "8848",
+  "company_name": "レオパレス２１",
+  "ir_page_url": "http://www.leopalace21.co.jp/ir/finance/monthly/index.html",
+  "updated_at": "2026-04-21T10:16:51.079884+09:00",
+  "last_checked": "2026-04-21",
+  "status": "active",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": "月次",
+  "link_href_pattern": "/ir/finance/monthly/xls/dl_2025\\.xls",
+  "note": "月次PDFリンク1件検出 best=http://www.leopalace21.co.jp/ir/finance/monthly/xls/dl_2025.xls"
+}

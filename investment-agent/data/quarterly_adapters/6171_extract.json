@@ -1,0 +1,28 @@
+{
+  "ticker": "6171",
+  "company_name": "土木管理総合試験所",
+  "current_version": "2025-02",
+  "versions": [
+    {
+      "valid_from": "2025-02",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/6171/20250213_6171_土木管理総合試験所_決算短信_令和６年12月期決算短信〔日本基準〕（連結）_140120250213572908.pdf",
+  "_source_doc_id": "140120250213572908",
+  "_generated_at": "2026-04-30T18:45:31.165963+09:00",
+  "_model_used": null
+}

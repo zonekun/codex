@@ -1,0 +1,73 @@
+# tdnet_daily_pipeline — TDnet 日次パイプライン（決算繁忙期用）
+#
+# DL → Load → AI のチェーン実行（各ステップは前段完了後に開始）
+# Step 1: tdnet-download Cloud Run Job（TDnet → GCS PDF）
+# Step 2: tdnet-load-daily Cloud Run Job（GCS PDF → テキスト抽出 → BQ, DATE_MODE=t）
+# Step 3: ai_processing_flow Workflows（AI判定, recent_only=true）
+#
+# 起動:
+#   手動:     gcloud workflows execute tdnet_daily_pipeline --location=us-central1
+#   スケジューラ: tdnet-daily-pipeline-scheduler（20:03 JST Mon-Fri）
+#
+# 所要時間目安: DL ~30min + Load ~1-2h + AI ~2-4h = 合計 4-7h
+#
+# 参照:
+#   docs/knowledges/tools/013_tdnet_load.md
+#   docs/knowledges/tools/003_tdnet_download.md
+
+main:
+  steps:
+    - init:
+        assign:
+          - project_id: "gmailpj-357912"
+          - cloudrun_region: "us-west1"
+          - ai_workflow_location: "us-central1"
+          - ai_poll_interval: 120
+
+    # ──────────────────────────────────────────
+    # Step 1: TDnet PDF ダウンロード（TDnet → GCS）
+    - run_download:
+        call: googleapis.run.v2.projects.locations.jobs.run
+        args:
+          name: ${"projects/" + project_id + "/locations/" + cloudrun_region + "/jobs/tdnet-download"}
+          connector_params:
+            timeout: 10800
+        result: download_result
+
+    # ──────────────────────────────────────────
+    # Step 2: テキスト抽出 + BQ ロード（GCS PDF → BQ）
+    # DATE_MODE=t: 当日分を処理（20:00起動のため当日の開示が対象）
+    - run_load:
+        call: googleapis.run.v2.projects.locations.jobs.run
+        args:
+          name: ${"projects/" + project_id + "/locations/" + cloudrun_region + "/jobs/tdnet-load-daily"}
+          connector_params:
+            timeout: 21600
+          body:
+            overrides:
+              containerOverrides:
+                - env:
+                    - name: DATE_MODE
+                      value: "t"
+        result: load_result
+
+    # ──────────────────────────────────────────
+    # Step 3: AI処理（ai_processing_flow を起動して完了待ち）
+    # recent_only=true: 直近14日以内の pending のみ（バックフィル除外）
+    - trigger_ai:
+        call: googleapis.workflowexecutions.v1.projects.locations.workflows.executions.create
+        args:
+          parent: ${"projects/" + project_id + "/locations/" + ai_workflow_location + "/workflows/ai_processing_flow"}
+          connector_params:
+            timeout: 43200
+          body:
+            argument: '{"recent_only": true}'
+        result: ai_execution
+
+    # ──────────────────────────────────────────
+    - done:
+        return:
+          status: "succeeded"
+          download: "completed"
+          load: "completed"
+          ai: "completed"

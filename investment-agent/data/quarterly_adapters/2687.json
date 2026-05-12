@@ -1,0 +1,39 @@
+{
+  "ticker": "2687",
+  "company_name": "ＣＶＳベイ",
+  "current_version": "2026-04",
+  "versions": [
+    {
+      "valid_from": "2026-04",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "breakdown_dimensions": [],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "提供された決算短信の財務諸表（貸借対照表および株主資本等変動計算書）には、受注高、完成工事高、受注残高に関する具体的な数値データの記載は確認できませんでした。"
+    }
+  ],
+  "_source_pdf": "tdnet/2687/20260413_2687_ＣＶＳベイ_決算短信_2026年２月期 決算短信〔日本基準〕（連結）_140120260413502881.pdf",
+  "_source_doc_id": "140120260413502881",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:26:51.048166+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      24,
+      26,
+      27
+    ],
+    "table_count": 5,
+    "max_rows": 38,
+    "max_cols": 8,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 5"
+    ]
+  }
+}

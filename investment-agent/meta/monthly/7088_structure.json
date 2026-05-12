@@ -1,0 +1,16 @@
+{
+  "ticker": "7088",
+  "company_name": "7088",
+  "metrics": [
+    {
+      "name": "エンジニア在籍数（人）",
+      "source": "bc"
+    },
+    {
+      "name": "エンジニア稼働率（%）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

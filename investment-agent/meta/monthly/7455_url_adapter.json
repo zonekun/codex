@@ -1,0 +1,12 @@
+{
+  "ticker": "7455",
+  "company_name": "パリミキホールディングス",
+  "ir_page_url": "https://www.paris-miki.com/hd/investor/finance_and_performance/monthly_sales_index.html",
+  "updated_at": "2026-04-21T10:05:08.807365+09:00",
+  "last_checked": "2026-04-21",
+  "status": "active",
+  "type": "html_table",
+  "css_selector": null,
+  "table_selector": null,
+  "note": "HTML表型。table_selector要調整"
+}

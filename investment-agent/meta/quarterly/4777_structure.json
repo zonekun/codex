@@ -1,0 +1,37 @@
+{
+  "ticker": "4777",
+  "company_name": "ガーラ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "breakdown_dimensions": [],
+      "presentation_format": "text",
+      "complexity": "no_table",
+      "notes": "本文中にROAD101 Co., Ltd.の売上高（451,417千円）が受注残の売上実現によるものである旨の記載があるため、売上高（完成工事高相当）として抽出。受注高や受注残高の期末時点での具体的な金額数値は記載されていない。 [2026-05-07] completedメトリクスのみのため収集対象外(false化)。"
+    }
+  ],
+  "_source_pdf": "tdnet/4777/20260213_4777_ガーラ_決算短信_2025年12月期決算短信〔日本基準〕（連結）_140120260204547610.pdf",
+  "_source_doc_id": "140120260204547610",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:15:02.146551+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "no_table",
+    "relevant_pages": [
+      4,
+      20
+    ],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "pdfplumber found no tables on relevant pages"
+    ]
+  }
+}

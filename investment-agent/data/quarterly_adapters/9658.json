@@ -1,0 +1,91 @@
+{
+  "ticker": "9658",
+  "company_name": "ビジ太田昭和",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当第３四半期連結累計期間における受注高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当第３四半期連結累計期間末における受注残高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "売上収益",
+          "type": "completed",
+          "description": "当第３四半期連結累計期間における売上収益",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "売上収益（コンサルティング・システム開発事業）",
+          "type": "completed",
+          "description": "コンサルティング・システム開発事業の売上収益",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上収益"
+        },
+        {
+          "name": "売上収益（SES共創ビジネス事業）",
+          "type": "completed",
+          "description": "SES共創ビジネス事業の売上収益",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上収益"
+        },
+        {
+          "name": "売上収益（BPO＆マネージドサービス事業）",
+          "type": "completed",
+          "description": "BPO＆マネージドサービス事業の売上収益",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上収益"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "コンサルティング・システム開発事業",
+            "SES共創ビジネス事業",
+            "BPO＆マネージドサービス事業"
+          ]
+        }
+      ],
+      "presentation_format": "text",
+      "complexity": "no_table",
+      "notes": "本文中に受注高、受注残高、売上収益の合計値およびセグメント別の売上収益が記載されています。セグメント別の受注高・受注残高の内訳数値は記載されていません。"
+    }
+  ],
+  "_source_pdf": "tdnet/9658/20260212_9658_ビジ太田昭和_決算短信_2026年3月期 第3四半期決算短信〔ＩＦＲＳ〕（連結）_140120260212556201.pdf",
+  "_source_doc_id": "140120260212556201",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T20:24:24.884180+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "no_table",
+    "relevant_pages": [
+      4
+    ],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "pdfplumber found no tables on relevant pages"
+    ]
+  }
+}

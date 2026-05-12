@@ -1,0 +1,61 @@
+{
+  "ticker": "7719",
+  "company_name": "東京衡機",
+  "current_version": "2026-04",
+  "versions": [
+    {
+      "valid_from": "2026-04",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "当連結会計年度の連結売上高",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "セグメント別売上高",
+          "type": "completed",
+          "description": "各事業セグメント（試験機事業、エンジニアリング事業、デジタル事業）の売上高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "試験機事業",
+            "エンジニアリング事業",
+            "デジタル事業"
+          ]
+        }
+      ],
+      "presentation_format": "text",
+      "complexity": "no_table",
+      "notes": "本文中に「受注残高が過去最高水準」や「受注が順調」といった定性的な記述はあるが、具体的な金額データは売上高（連結およびセグメント別）のみが記載されている。"
+    }
+  ],
+  "_source_pdf": "tdnet/7719/20260414_7719_東京衡機_決算短信_2026年２月期 決算短信〔日本基準〕(連結)_140120260414503458.pdf",
+  "_source_doc_id": "140120260414503458",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:54:43.562858+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "no_table",
+    "relevant_pages": [
+      5
+    ],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "pdfplumber found no tables on relevant pages"
+    ]
+  }
+}

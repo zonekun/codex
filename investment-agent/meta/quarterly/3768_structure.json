@@ -1,0 +1,36 @@
+{
+  "ticker": "3768",
+  "company_name": "リスクモンスター",
+  "current_version": "2025-08",
+  "versions": [
+    {
+      "valid_from": "2025-08",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "「その他サービス」の本文中において、中国における信用調査レポートの受注残が積み上がっている旨の定性的な記載があるが、具体的な数値データは示されていないため、売上高（完成高）のみを抽出した。 [2026-05-07] completedメトリクスのみのため収集対象外(false化)。"
+    }
+  ],
+  "_source_pdf": "tdnet/3768/20250808_3768_リスクモンスター_決算短信_2026年3月期第1四半期決算短信〔日本基準〕（連結）_140120250729522654.pdf",
+  "_source_doc_id": "140120250729522654",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:50:28.053186+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      7
+    ],
+    "table_count": 3,
+    "max_rows": 3,
+    "max_cols": 4,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

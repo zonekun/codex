@@ -1,0 +1,12 @@
+{
+  "ticker": "7211",
+  "company_name": "三菱自動車工業",
+  "ir_page_url": "https://www.mitsubishi-motors.com/jp/investors/finance_result/result.html",
+  "updated_at": "2026-04-21T10:04:24.002706+09:00",
+  "last_checked": "2026-04-21",
+  "status": "active",
+  "type": "html_table",
+  "css_selector": null,
+  "table_selector": null,
+  "note": "HTML表に月次データ検出。table_selector要調整"
+}

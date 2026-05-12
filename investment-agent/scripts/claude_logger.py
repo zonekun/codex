@@ -99,11 +99,16 @@ def get_log_paths(session_id: str) -> tuple[Path, Path, Path]:
     )
 
 
-def parse_session_id() -> str:
-    """コマンドライン引数から --session-id=<id> を取得する.
+def resolve_session_id(data: dict) -> str:
+    """hook stdin JSON の session_id を取得する.
 
-    未指定の場合は 'default' を返す。
+    Claude Code は全イベント（UserPromptSubmit/Stop/PostToolUse）で
+    session_id (UUID) を stdin JSON に含む。
+    フォールバック: CLI 引数 --session-id=<id>、最終手段は 'default'。
     """
+    sid = data.get("session_id", "")
+    if sid:
+        return sid
     for arg in sys.argv:
         if arg.startswith("--session-id="):
             return arg.split("=", 1)[1]
@@ -214,6 +219,33 @@ def cleanup_old_sessions() -> None:
         except (ValueError, OSError):
             # 空ディレクトリやアクセスエラー
             shutil.rmtree(session_dir, ignore_errors=True)
+
+
+# ==========================================
+# セッションラベル
+# ==========================================
+
+LABEL_MAX_CHARS = 40
+
+
+def _make_label(prompt: str) -> str:
+    """プロンプトから短いセッションラベルを生成する."""
+    single = " ".join(prompt.split())
+    if len(single) <= LABEL_MAX_CHARS:
+        return single
+    return single[:LABEL_MAX_CHARS] + "…"
+
+
+def save_session_label(session_id: str, prompt: str) -> None:
+    """セッションの初回プロンプトからラベルを保存する.
+
+    label.txt が既に存在する場合は上書きしない（初回のみ）。
+    """
+    label_path = get_session_dir(session_id) / "label.txt"
+    if label_path.exists():
+        return
+    label_path.parent.mkdir(parents=True, exist_ok=True)
+    label_path.write_text(_make_label(prompt), encoding="utf-8")
 
 
 # ==========================================
@@ -394,15 +426,15 @@ def handle_tool(data: dict, tool_log: Path, console_log: Path) -> None:
 
 def main() -> None:
     event = sys.argv[1] if len(sys.argv) > 1 else ""
-    session_id = parse_session_id()
-
-    log_path, tool_log, console_log = get_log_paths(session_id)
 
     try:
         data = json.load(sys.stdin)
     except Exception as e:
         write_debug(f"[{event}] JSON parse error: {e}")
         sys.exit(0)
+
+    session_id = resolve_session_id(data)
+    log_path, tool_log, console_log = get_log_paths(session_id)
 
     try:
         if event == "--event=prompt":
@@ -411,8 +443,8 @@ def main() -> None:
             prompt = data.get("prompt", "").strip()
             if prompt:
                 append_log(log_path, "User", prompt)
-                # ユーザーメッセージ時にツールログにもマーカーを打つ
                 append_tool_log(tool_log, f"[User] {prompt[:80]}")
+                save_session_label(session_id, prompt)
 
         elif event == "--event=stop":
             handle_stop(data, log_path)

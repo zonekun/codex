@@ -1,0 +1,48 @@
+{
+  "ticker": "1899",
+  "company_name": "福田組",
+  "current_version": "2025-11",
+  "versions": [
+    {
+      "valid_from": "2025-11",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "連結および個別の受注実績。個別については工種別（建築・土木）および発注者別（官公庁・民間）の内訳が提供されている。通期予想も含む。",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "第4ページに詳細な個別受注実績の内訳表（工種別・発注者別）が掲載されている。また、第1ページおよび第4ページに通期の受注高予想が記載されている。手持工事高（受注残高）については定性的な言及はあるが、当四半期末時点の具体的な金額の記載は確認できない。"
+    }
+  ],
+  "_source_pdf": "tdnet/1899/20251107_1899_福田組_決算短信_2025年12月期 第3四半期決算短信〔日本基準〕（連結）_140120251106589275.pdf",
+  "_source_doc_id": "140120251106589275",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:01:50.122314+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      5,
+      8,
+      16,
+      17
+    ],
+    "table_count": 4,
+    "max_rows": 45,
+    "max_cols": 7,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 4"
+    ]
+  }
+}

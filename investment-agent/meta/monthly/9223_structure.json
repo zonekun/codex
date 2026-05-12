@@ -1,0 +1,28 @@
+{
+  "ticker": "9223",
+  "company_name": "9223",
+  "metrics": [
+    {
+      "name": "国内総売上（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "国内総売上（百万円）",
+      "source": "bc"
+    },
+    {
+      "name": "拠点数 合計",
+      "source": "bc"
+    },
+    {
+      "name": "足場レンタル 国内売上（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "顧客数（社）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

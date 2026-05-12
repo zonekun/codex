@@ -1,0 +1,28 @@
+{
+  "ticker": "8410",
+  "company_name": "セブン銀行",
+  "current_version": "2025-11",
+  "versions": [
+    {
+      "valid_from": "2025-11",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "presentation",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/8410/20251107_8410_セブン銀行_決算説明資料_2026年３月期　第２四半期（中間期）決算説明資料_140120251106590940.pdf",
+  "_source_doc_id": "140120251106590940",
+  "_generated_at": "2026-04-30T20:06:51.717975+09:00",
+  "_model_used": null
+}

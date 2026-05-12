@@ -1,0 +1,62 @@
+{
+  "ticker": "1949",
+  "company_name": "住友電設",
+  "current_version": "2025-10",
+  "versions": [
+    {
+      "valid_from": "2025-10",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当連結会計期間における受注高の合計額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "期末手持工事高",
+          "type": "backlog",
+          "description": "当連結会計期間末における未消化の工事残高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注高予想",
+          "type": "order_intake",
+          "description": "通期連結業績予想における受注高",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "補足情報として、受注高、売上高、期末手持工事高の工事種別ごとの詳細な実績値および通期予想値が表形式で記載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/1949/20251030_1949_住友電設_決算短信_2026年3月期第2四半期(中間期)決算短信〔日本基準〕(連結)_140120251028580216.pdf",
+  "_source_doc_id": "140120251028580216",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:07:20.218364+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      3,
+      4,
+      11,
+      12
+    ],
+    "table_count": 4,
+    "max_rows": 8,
+    "max_cols": 10,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 4"
+    ]
+  }
+}

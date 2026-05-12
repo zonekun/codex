@@ -3,7 +3,7 @@
 
 reconcile_bc_key_from_compare.py の出力 CSV を（人間がレビューして承認した後）
 読み込み、各 adapter.fields[*] に bc_key / yoy_offset / unit_scale を書き込む。
-ローカル `data/monthly_adapters/<ticker>.json` と GCS `monthly/meta/<ticker>/extract_adapter.json`
+ローカル `meta/monthly/<ticker>_extract_adapter.json` と GCS `monthly/meta/<ticker>/extract_adapter.json`
 の両方に反映する。
 
 【使い方】
@@ -41,7 +41,7 @@ from pathlib import Path
 JST = timezone(timedelta(hours=9))
 GCS_BUCKET = "stock_data_1930932"
 GCS_META = "monthly/meta"
-ADAPTER_DIR = Path("data/monthly_adapters")
+ADAPTER_DIR = Path("meta/monthly")
 
 
 def log(msg: str) -> None:
@@ -152,7 +152,7 @@ def main() -> None:
     failed_tickers: list[str] = []
 
     for ticker, t_rows in sorted(by_ticker.items()):
-        adapter_path = ADAPTER_DIR / f"{ticker}.json"
+        adapter_path = ADAPTER_DIR / f"{ticker}_extract_adapter.json"
         if not adapter_path.exists():
             log(f"[{ticker}] adapter.json なし → スキップ")
             failed_tickers.append(ticker)

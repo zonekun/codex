@@ -172,12 +172,13 @@ docs/plans/YYYYMMDD_HHMMSS_<slug>.md   ← 廃止形式
 
 **クイックスタート**: ゼロから書かず `docs/plans/_template_refactor.md` をコピーして差分編集する。
 
-プランは以下の構造で書く。**適合性チェックはレビュアー（`skills/code-reviewer.md`）側の責務**なので、プラン本体には禁止事項・自己チェックリストは書かない。
+プランは以下の構造で書く。**適合性の正式チェックはレビュアー（`skills/code-reviewer.md`）側の責務**だが、**作成者はテンプレート末尾の「提出前セルフチェック」を通す義務がある**。セルフチェック未済のプランはレビュー差戻し対象。頻出のフォーマット違反（アンチパターン対応表欠落・検証戦略不足・ロールバック手順欠落）は作成段階で防止する。
 
 ### 1. 冒頭メタ情報（必須）
 
 ```markdown
 **作成日時**: YYYY-MM-DD HH:MM JST
+**ステータス**: 未着手 / 進行中 / 完了 / 中止
 **対象ファイル**: `scripts/foo/bar.py`（N 行、commit <hash> 時点）
 **対象読者**: code-reviewer サブエージェント / 次セッション担当
 **目的**: <1-2文で改修の主旨>
@@ -259,6 +260,17 @@ docs/plans/YYYYMMDD_HHMMSS_<slug>.md   ← 廃止形式
 - 関連 commit（hash と 1 行要約）
 - 関連 incident / 実機ログ（あれば）
 
+### 8. 実装記録（実装後に記入）
+
+実装完了時に以下を記入する。CLAUDE.md §4.3「プランMD更新」義務の具体的実現。
+
+- **ステータス更新**: 冒頭メタ情報の `**ステータス**` を `完了` または `中止` に変更
+- **実装 commit**: hash と日時
+- **検証結果**: smoke test / dev 実機 / 本番適用の各結果
+- **code-reviewer 推奨の採否**: 推奨ごとに 採用 / 不採用 / 次回対応 + 理由
+- **実装後チェック**: テンプレート末尾のチェックリストを全消化
+- **archive 移動**: 完了プランは `docs/plans/archive/YYYYMM/` に移動（§完了後の配置ルール）
+
 ### 書く時のポイント
 
 - 基準 commit hash を冒頭に置く（行番号の根拠）
@@ -272,10 +284,14 @@ docs/plans/YYYYMMDD_HHMMSS_<slug>.md   ← 廃止形式
 - 汎用のバッチ・ETL アンチパターン集 (A-x〜F-x) は `docs/knowledges/tools/004_coding_conventions.md` を参照
 - 適合性チェック（禁止パターン・抜け漏れ）は `skills/code-reviewer.md` 側で実施
 - レビューで検出された不備は `docs/knowledges/tools/004-1_code_review_findings_log.md` に蓄積され、**傾向が見えた段階で本節のルールに反映**される（一件一件の即時対策はしない）
+- 新規開発計画（汎用テンプレート形式）の内容妥当性レビューは `skills/code-reviewer.md` パターン4 で実施
 
 ---
 
 ## テンプレート
+
+> **レビュー**: このテンプレートで作成した計画は `skills/code-reviewer.md` パターン4 で内容妥当性レビューが可能。AI可読性レビューは `skills/md-reviewer.md`。
+
 以下のテンプレートで計画ファイルを生成する:
 
 ```markdown
@@ -350,6 +366,8 @@ docs/plans/YYYYMMDD_HHMMSS_<slug>.md   ← 廃止形式
 - 作業完了時: ステータスを「完了」に変更し、振り返りセクションを記入
   - その後 `docs/plans/archive/YYYYMM/` に移動
 - 中止時: ステータスを「中止」に変更し、理由を記載。archive へ移動
+
+> **改修プラン**の場合は上記に加えて §8「実装記録」のフィールドを全て記入し、実装後チェックを消化すること。
 
 ## 計画の一覧・参照
 ```

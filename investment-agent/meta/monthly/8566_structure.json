@@ -1,0 +1,20 @@
+{
+  "ticker": "8566",
+  "company_name": "8566",
+  "metrics": [
+    {
+      "name": "リース件数（件）",
+      "source": "bc"
+    },
+    {
+      "name": "リース取扱高（億円）",
+      "source": "bc"
+    },
+    {
+      "name": "リース取扱高（前年同月比）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

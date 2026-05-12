@@ -1,0 +1,37 @@
+{
+  "ticker": "1449",
+  "company_name": "ＦＵＪＩジャパン",
+  "current_version": "2024-11",
+  "versions": [
+    {
+      "valid_from": "2024-11",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "breakdown_dimensions": [],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "提供された四半期損益計算書（6ページ）より、売上高の内訳として完成工事高および材料売上高が確認できる。受注高および受注残高（繰越工事高）に関する専用の表は、提供された画像（5-6ページ）内には含まれていない。 [2026-05-07] completedメトリクスのみのため収集対象外(false化)。"
+    }
+  ],
+  "_source_pdf": "tdnet/1449/20241114_1449_ＦＵＪＩジャパン_決算短信_2024年12月期 第３四半期決算短信〔日本基準〕（非連結）_140120241031507523.pdf",
+  "_source_doc_id": "140120241031507523",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T16:30:08.588383+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      7,
+      8
+    ],
+    "table_count": 2,
+    "max_rows": 34,
+    "max_cols": 3,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

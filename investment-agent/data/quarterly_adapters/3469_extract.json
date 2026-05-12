@@ -1,0 +1,28 @@
+{
+  "ticker": "3469",
+  "company_name": "デュアルタップ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "presentation",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/3469/20260213_3469_デュアルタップ_決算説明資料_株式会社デュアルタップ 2026年6月期 第2四半期 決算補足説明会資料_140120260213560693.pdf",
+  "_source_doc_id": "140120260213560693",
+  "_generated_at": "2026-04-30T17:43:02.623582+09:00",
+  "_model_used": null
+}

@@ -38,6 +38,7 @@ HEADER_RE = re.compile(
     r"^=== (\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) JST \[(User|Claude)\] ===\s*$"
 )
 PROMPT_PREVIEW_CHARS = 80
+LABEL_MAX_CHARS = 40
 
 
 @dataclass
@@ -53,6 +54,16 @@ class SessionInfo:
     first_user_prompt: str
     last_user_prompt: str
     last_user_prompt_ts: str
+    label: str
+
+
+def _read_label(session_dir: Path) -> str:
+    """セッションディレクトリから label.txt を読み取る."""
+    label_path = session_dir / "label.txt"
+    try:
+        return label_path.read_text(encoding="utf-8").strip()
+    except OSError:
+        return ""
 
 
 def _read_text(path: Path) -> str:
@@ -164,6 +175,10 @@ def collect_sessions() -> list[SessionInfo]:
         last_prompt = user_entries[-1][1] if user_entries else ""
         last_prompt_ts = user_entries[-1][0] if user_entries else ""
 
+        label = _read_label(d)
+        if not label and first_prompt:
+            label = _preview(first_prompt, LABEL_MAX_CHARS)
+
         sessions.append(
             SessionInfo(
                 session_id=d.name,
@@ -177,24 +192,29 @@ def collect_sessions() -> list[SessionInfo]:
                 first_user_prompt=_preview(first_prompt),
                 last_user_prompt=_preview(last_prompt),
                 last_user_prompt_ts=last_prompt_ts,
+                label=label,
             )
         )
     sessions.sort(key=lambda s: s.last_mtime, reverse=True)
     return sessions
 
 
-def render(sessions: list[SessionInfo], limit: int | None = None) -> str:
+def render(
+    sessions: list[SessionInfo],
+    limit: int | None = None,
+) -> str:
     if not sessions:
         return f"セッションが見つかりません: {LOG_BASE}"
 
     now = datetime.now(JST)
+
     if limit is not None:
         sessions = sessions[:limit]
 
     out: list[str] = []
-    out.append(f"# Claude Code セッション一覧（最新順）")
+    out.append("# Claude Code セッション一覧（最新順）")
     out.append(f"場所: {LOG_BASE}")
-    out.append(f"件数: {len(sessions)}")
+    out.append(f"セッション数: {len(sessions)}")
     out.append("")
 
     for i, s in enumerate(sessions, 1):
@@ -209,7 +229,8 @@ def render(sessions: list[SessionInfo], limit: int | None = None) -> str:
             files.append("console")
         files_str = ", ".join(files) if files else "(なし)"
 
-        out.append(f"[{i}] session_id = {s.session_id}")
+        label_display = f" 「{s.label}」" if s.label else ""
+        out.append(f"[{i}]{label_display}  (id: {s.session_id})")
         out.append(f"    最終更新   : {mtime_str}  ({elapsed})")
         out.append(f"    User発話   : {s.user_prompt_count}件 / Tool呼出 : {s.tool_call_count}件")
         out.append(f"    ログ種別   : {files_str}")

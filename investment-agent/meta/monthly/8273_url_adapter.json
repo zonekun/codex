@@ -1,0 +1,20 @@
+{
+  "ticker": "8273",
+  "company_name": "イズミ",
+  "updated_at": "2026-04-20",
+  "ir_page_url": "https://www.izumi.co.jp/ir/finance/monthly/",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": "月次推移表_\\d{4}",
+  "link_href_pattern": "/corp/ir/pdf/backnumber/\\d{4}\\.pdf",
+  "table_selector": null,
+  "status": "active",
+  "skip_reason": null,
+  "note": "年度別PDFリンクが静的HTMLに存在。最新年度のPDFが年次更新される形式。URL: /corp/ir/pdf/backnumber/{YYYY}.pdf",
+  "url_source": "recovered_from_index_csv",
+  "last_checked": "2026-04-20",
+  "follow_links": false,
+  "playwright_required": false,
+  "recovered_at": "2026-04-20T21:37:09.325193+09:00",
+  "recovery_reason": "sync_bug_overwrite_20260420"
+}

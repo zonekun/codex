@@ -291,8 +291,7 @@ def _gemini_extract(
     monthly_items: list[dict],
 ) -> dict:
     """Gemini でテキストから月次数値を抽出する。"""
-    import vertexai
-    from vertexai.generative_models import GenerativeModel
+    from google import genai
 
     if not monthly_items:
         return {}
@@ -309,12 +308,11 @@ def _gemini_extract(
 
     rt = _detect_runtime()
     if rt in ("cloudrun", "colab_enterprise"):
-        vertexai.init(project=BQ_PROJECT, location=GEMINI_LOCATION)
+        client = genai.Client(vertexai=True, project=BQ_PROJECT, location=GEMINI_LOCATION)
     else:
-        vertexai.init(project=BQ_PROJECT, location=GEMINI_LOCATION, credentials=_get_credentials())
+        client = genai.Client(vertexai=True, project=BQ_PROJECT, location=GEMINI_LOCATION, credentials=_get_credentials())
 
-    model = GenerativeModel(GEMINI_MODEL)
-    response = model.generate_content(prompt)
+    response = client.models.generate_content(model=GEMINI_MODEL, contents=prompt)
     raw = re.sub(r"```(?:json)?\s*", "", response.text.strip()).strip("`").strip()
     m = re.search(r"\{.*\}", raw, re.DOTALL)
     if not m:

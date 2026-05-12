@@ -1,0 +1,173 @@
+{
+  "ticker": "1420",
+  "company_name": "サンヨーＨ",
+  "current_version": "2025-08",
+  "versions": [
+    {
+      "valid_from": "2025-08",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当第１四半期連結累計期間における受注高の合計",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "住宅事業 受注高",
+          "type": "order_intake",
+          "description": "住宅事業における受注高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "マンション事業 受注高",
+          "type": "order_intake",
+          "description": "マンション事業における受注高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "その他 受注高",
+          "type": "order_intake",
+          "description": "その他セグメントにおける受注高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "関東地方 受注高",
+          "type": "order_intake",
+          "description": "関東地方における受注高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "中部地方 受注高",
+          "type": "order_intake",
+          "description": "中部地方における受注高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "近畿地方 受注高",
+          "type": "order_intake",
+          "description": "近畿地方における受注高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "九州地方 受注高",
+          "type": "order_intake",
+          "description": "九州地方における受注高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "当第１四半期連結累計期間における売上高の合計",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "住宅事業 売上高",
+          "type": "completed",
+          "description": "住宅事業における売上高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "マンション事業 売上高",
+          "type": "completed",
+          "description": "マンション事業における売上高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "その他 売上高",
+          "type": "completed",
+          "description": "その他セグメントにおける売上高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当第１四半期連結会計期間末における受注残高の合計",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "住宅事業 受注残高",
+          "type": "backlog",
+          "description": "住宅事業における受注残高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        },
+        {
+          "name": "マンション事業 受注残高",
+          "type": "backlog",
+          "description": "マンション事業における受注残高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "住宅事業",
+            "マンション事業",
+            "その他"
+          ]
+        },
+        {
+          "dimension_name": "地域",
+          "items": [
+            "関東地方",
+            "中部地方",
+            "近畿地方",
+            "九州地方"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "受注高、売上高、受注残高について、セグメント別および地域別の詳細な内訳が表形式で記載されています。「その他」セグメントは売上高と同額を受注高として計上しており、受注残高は発生しません。"
+    }
+  ],
+  "_source_pdf": "tdnet/1420/20250807_1420_サンヨーＨ_決算短信_2026年３月期 第１四半期決算短信〔日本基準〕（連結）_140120250807534138.pdf",
+  "_source_doc_id": "140120250807534138",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T16:26:37.498862+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      13
+    ],
+    "table_count": 4,
+    "max_rows": 5,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 4"
+    ]
+  }
+}

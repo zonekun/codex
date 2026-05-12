@@ -1,0 +1,93 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "extraction_method": "gemini",
+  "fields": [
+    {
+      "key": "全社 売上（前年同月比）",
+      "name": "全社 売上（前年同月比）",
+      "description": "「《下期》」表の「全 社 売上高」行、前年同月比の数値（%）。または「《概況》」セクションに記載されている「全社合計売上高前年比」の数値（%）。",
+      "value_type": "percentage",
+      "_manual_description": true,
+      "bc_ignore": true,
+      "_bc_ignore_reason": "定義差: 店舗数 records=481 vs BC=224 (2.15倍), 売上前年比も大差 → 全 field bc_ignore"
+    },
+    {
+      "key": "全社 客数（前年同月比）",
+      "name": "全社 客数（前年同月比）",
+      "description": "「《下期》」表の「全 社」セクションの「客 数」行、前年同月比の数値（%）。",
+      "value_type": "percentage",
+      "_manual_description": true,
+      "bc_ignore": true,
+      "_bc_ignore_reason": "定義差: 店舗数 records=481 vs BC=224 (2.15倍), 売上前年比も大差 → 全 field bc_ignore"
+    },
+    {
+      "key": "全社 客単価（前年同月比）",
+      "name": "全社 客単価（前年同月比）",
+      "description": "「《下期》」表の「全 社」セクションの「客単価」行、前年同月比の数値（%）。",
+      "value_type": "percentage",
+      "_manual_description": true,
+      "bc_ignore": true,
+      "_bc_ignore_reason": "定義差: 店舗数 records=481 vs BC=224 (2.15倍), 売上前年比も大差 → 全 field bc_ignore"
+    },
+    {
+      "key": "全店 店舗数",
+      "name": "全店 店舗数",
+      "description": "「・月度末店舗数」の項目に記載されている店舗数（店舗）。",
+      "value_type": "integer",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "定義差: 店舗数 records=481 vs BC=224 (2.15倍), 売上前年比も大差 → 全 field bc_ignore"
+    },
+    {
+      "key": "既存店 売上（前年同月比）",
+      "name": "既存店 売上（前年同月比）",
+      "description": "「《概況》」セクションに記載されている「既存店売上高は前年比」の数値（%）。",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "定義差: 店舗数 records=481 vs BC=224 (2.15倍), 売上前年比も大差 → 全 field bc_ignore"
+    },
+    {
+      "key": "既存店 客数（前年同月比）",
+      "name": "既存店 客数（前年同月比）",
+      "description": "文書冒頭の表の「客 数」行（「既 存 店」の下）、一番右端にある前年同月比の数値（%）。",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "定義差: 店舗数 records=481 vs BC=224 (2.15倍), 売上前年比も大差 → 全 field bc_ignore"
+    },
+    {
+      "key": "既存店 客単価（前年同月比）",
+      "name": "既存店 客単価（前年同月比）",
+      "description": "文書冒頭の表の「客単価」行（「既 存 店」の下）、一番右端にある前年同月比の数値（%）。",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "定義差: 店舗数 records=481 vs BC=224 (2.15倍), 売上前年比も大差 → 全 field bc_ignore"
+    }
+  ],
+  "extraction_notes": "既存店売上（前年同月比）は、表の数値と概況の記述で異なるため、概況の記述を優先して抽出する。その他の既存店指標は、冒頭の表の右端の値を当月分として抽出する。",
+  "ticker": "2778",
+  "company_name": "2778",
+  "created_at": "2026-03-29T17:55:02.351849+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "(株)パレモの月次売上高前年比情報に関するお知らせ",
+  "sample_submission_date": "2026-02-26",
+  "fields_count": 7,
+  "custom_prompt": "あなたは ticker 2778 の月次開示 PDF から KPI を抽出するアシスタントです.\n\n抽出対象月: {year}年{month}月度\n\n重要ルール:\n  - 当月 (指定月) の値のみ採用\n  - 四半期累計・上期累計・通期・前年同期実績 等の集計値は絶対に拾わない\n  - サブブランド行ではなく「全店」「既存店」「合計」等の集約行を採用\n  - 前年同月比 field には 「+X.X%増」「−X.X%減」の narrative が該当する場合は\n    100 を加算した値 (例: +5.2% → 105.2, -4.9% → 95.1) を返す\n  - 見つからない field は null\n\n出力形式: JSON\n{\n  - \"全社 売上（前年同月比）\": 前年同月比 (例 105.2)\n  - \"全社 客数（前年同月比）\": 前年同月比 (例 105.2)\n  - \"全社 客単価（前年同月比）\": 前年同月比 (例 105.2)\n  - \"全店 店舗数\": 整数\n  - \"既存店 売上（前年同月比）\": 前年同月比 (例 105.2)\n  - \"既存店 客数（前年同月比）\": 前年同月比 (例 105.2)\n  - \"既存店 客単価（前年同月比）\": 前年同月比 (例 105.2)\n}\n",
+  "manual_override": true,
+  "manual_override_note": "NG21調査に基づくcustom_prompt/yoy_offset/unit_scale/overwrite_past_months修正",
+  "manual_override_at": "2026-04-09T09:12:28.445893+09:00",
+  "desc_rewrite_at": "2026-04-17T23:15:49+09:00",
+  "doc_title_pattern": "月次|月度|月間|売上|速報|実績|業績|概況|KPI|ＫＰＩ|状況|報告|推移|月末",
+  "_agent_loosened_from": "",
+  "_agent_patched_at": "2026-04-20T07:00:59.210478+09:00",
+  "_agent_patch_history": [
+    {
+      "ts": "2026-04-19T19:58:55.689908+09:00",
+      "applied": [
+        "top-level: ['doc_title_pattern', '_agent_loosened_from']"
+      ]
+    }
+  ],
+  "overwrite_past_months": true,
+  "regex_redesign_at": "2026-04-19T21:29:09.550402+09:00",
+  "regex_redesign_note": "Gemini 切替 (regex 限界 or 誤マッチのため)."
+}

@@ -1,0 +1,28 @@
+{
+  "ticker": "8917",
+  "company_name": "ファースト住建",
+  "current_version": "2024-12",
+  "versions": [
+    {
+      "valid_from": "2024-12",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/8917/20241216_8917_ファースト住建_決算短信_令和６年10月期　決算短信〔日本基準〕（連結）_140120241215538820.pdf",
+  "_source_doc_id": "140120241215538820",
+  "_generated_at": "2026-04-30T20:10:54.483093+09:00",
+  "_model_used": null
+}

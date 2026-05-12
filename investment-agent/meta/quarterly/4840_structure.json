@@ -1,0 +1,40 @@
+{
+  "ticker": "4840",
+  "company_name": "トライアイズ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "breakdown_dimensions": [],
+      "presentation_format": "text",
+      "complexity": "complex_table",
+      "notes": "提供された資料の『1. 経営成績等の概況』のテキストより、セグメント別の売上高（完成高）を抽出しました。受注高および受注残高については、定性的な記述のみで具体的な金額の記載が確認できませんでした。事前判定に基づき complexity は complex_table としています。 [2026-05-07] completedメトリクスのみのため収集対象外(false化)。"
+    }
+  ],
+  "_source_pdf": "tdnet/4840/20260213_4840_トライアイズ_決算短信_2025年12月期 決算短信〔日本基準〕（連結）_140120260213561958.pdf",
+  "_source_doc_id": "140120260213561958",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:18:41.012310+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      28,
+      30,
+      31
+    ],
+    "table_count": 5,
+    "max_rows": 36,
+    "max_cols": 9,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 5"
+    ]
+  }
+}

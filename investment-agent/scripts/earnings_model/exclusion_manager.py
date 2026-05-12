@@ -5,7 +5,7 @@
 レポート表示上は全件維持し、学習時のフィルタ情報として併記する。
 
 管理単位: ``{ticker, predict_date}`` ペア。
-蓄積先: ``gs://stock_data_1930932/earnings_model/exclusions/exclusions.json``
+蓄積先: ``gs://stock_data_1930932/earnings_model/earnings_reaction_exclusions/exclusions.json``
 
 Usage:
     # 追加
@@ -38,7 +38,7 @@ from google.oauth2 import service_account
 log = structlog.get_logger()
 
 GCS_BUCKET = "stock_data_1930932"
-GCS_BLOB_PATH = "earnings_model/exclusions/exclusions.json"
+GCS_BLOB_PATH = "earnings_model/earnings_reaction_exclusions/exclusions.json"
 KEY_PATH = "C:/gdrive/claude/investment-agent/keys/gcp-service-account.json"
 JST = timezone(timedelta(hours=9))
 

@@ -1,0 +1,50 @@
+{
+  "ticker": "5586",
+  "company_name": "Ｇ－ＬａｂｏｒｏＡＩ",
+  "current_version": "2025-08",
+  "versions": [
+    {
+      "valid_from": "2025-08",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "確定済案件の4Q受注残",
+          "type": "backlog",
+          "description": "第4四半期に売上計上予定の確定済案件の受注残高（Laboro.AI単体）",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "ppt_chart",
+      "notes": "資料内では、第3四半期までの累計売上実績（1,370百万円）と第4四半期の確定済案件の受注残（518百万円）を合算し、通期見込に対する進捗状況（約98%）を説明するグラフが提示されている。受注残高はLaboro.AI単体の数値として開示されている。"
+    }
+  ],
+  "_source_pdf": "tdnet/5586/20250813_5586_Ｇ－ＬａｂｏｒｏＡＩ_決算説明資料_2025年９月期 第３四半期 決算説明資料_140120250813540946.pdf",
+  "_source_doc_id": "140120250813540946",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T18:29:09.322033+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      2,
+      4,
+      5,
+      18,
+      36
+    ],
+    "table_count": 9,
+    "max_rows": 10,
+    "max_cols": 10,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 9"
+    ]
+  }
+}

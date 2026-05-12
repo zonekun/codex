@@ -1,0 +1,13 @@
+{
+  "ticker": "9842",
+  "company_name": "アークランズ",
+  "ir_page_url": "https://www.arclands.co.jp/ja/english/trend1.html",
+  "updated_at": "2026-04-21T10:23:28.828062+09:00",
+  "last_checked": "2026-04-21",
+  "status": "active",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": "\\d{4}",
+  "link_href_pattern": "/ja/english/trend1/main/00/teaserItems1.*\\.(pdf)",
+  "note": "月次PDFリンク8件検出 best=https://www.arclands.co.jp/ja/english/trend1/main/00/teaserItems1/00/linkList/0/link/MonthlySalesReport202502%20(2).pdf"
+}

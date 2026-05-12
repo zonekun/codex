@@ -1,0 +1,28 @@
+{
+  "ticker": "3976",
+  "company_name": "Ｇ－シャノン",
+  "current_version": "2025-09",
+  "versions": [
+    {
+      "valid_from": "2025-09",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "presentation",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/3976/20250912_3976_Ｇ－シャノン_決算説明資料_2025年12月期第３四半期決算説明資料（テキスト詳細版）_140120250912557732.pdf",
+  "_source_doc_id": "140120250912557732",
+  "_generated_at": "2026-04-30T17:57:36.359113+09:00",
+  "_model_used": null
+}

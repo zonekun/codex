@@ -1,0 +1,28 @@
+{
+  "ticker": "6798",
+  "company_name": "ＳＭＫ",
+  "current_version": "2026-01",
+  "versions": [
+    {
+      "valid_from": "2026-01",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/6798/20260127_6798_ＳＭＫ_決算短信_2026年３月期第３四半期決算短信〔日本基準〕(連結)_140120260126538375.pdf",
+  "_source_doc_id": "140120260126538375",
+  "_generated_at": "2026-04-30T19:29:06.325768+09:00",
+  "_model_used": null
+}

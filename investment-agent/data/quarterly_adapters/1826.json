@@ -1,0 +1,116 @@
+{
+  "ticker": "1826",
+  "company_name": "佐田建",
+  "current_version": "2025-05",
+  "versions": [
+    {
+      "valid_from": "2025-05",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "建設工事の受注高と兼業事業の受注高の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注工事高",
+          "type": "order_intake",
+          "description": "建設工事（土木・建築）の受注高合計",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "兼業事業受注高",
+          "type": "order_intake",
+          "description": "兼業事業における受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "完成工事高と兼業事業売上高の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "完成工事高",
+          "type": "completed",
+          "description": "建設工事の完成高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "兼業事業売上高",
+          "type": "completed",
+          "description": "兼業事業における売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "繰越工事高",
+          "type": "backlog",
+          "description": "次期へ繰り越される未完成工事の残高",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "事業区分",
+          "items": [
+            "土木関連",
+            "建築関連",
+            "兼業事業"
+          ]
+        },
+        {
+          "dimension_name": "発注者別",
+          "items": [
+            "官公庁",
+            "民間"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "決算短信の概況説明（テキスト）および、巻末の「受注・完成・繰越工事高及び兼業事業比較」表に詳細なデータが記載されています。連結および個別（非連結）の両方のデータが含まれており、事業区分別および発注者別の内訳が網羅されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/1826/20250512_1826_佐田建_決算短信_2025年３月期　決算短信〔日本基準〕(連結)_140120250512539830.pdf",
+  "_source_doc_id": "140120250512539830",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T16:49:20.110815+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      5,
+      8,
+      11,
+      20,
+      21,
+      23,
+      24,
+      25,
+      26
+    ],
+    "table_count": 11,
+    "max_rows": 48,
+    "max_cols": 9,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 11"
+    ]
+  }
+}

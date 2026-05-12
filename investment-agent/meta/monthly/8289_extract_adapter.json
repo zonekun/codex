@@ -1,0 +1,57 @@
+{
+  "source": "non-tdnet(html_table)",
+  "format": "html",
+  "fields": [
+    {
+      "key": "食品部門 既存店 売上（前年同月比）",
+      "name": "食品部門 既存店 売上（前年同月比）",
+      "description": "IR「月次レポート」HTMLページ。「食品部門（単位：百万円、％）」セクション表。「既存店」行の「昨年比」列。",
+      "value_type": "percentage"
+    },
+    {
+      "key": "食品部門 全店 売上（前年同月比）",
+      "name": "食品部門 全店 売上（前年同月比）",
+      "description": "同HTML表。「全 店」行の「昨年比」列。",
+      "value_type": "percentage"
+    },
+    {
+      "key": "食品部門 全店 売上（百万円）",
+      "name": "食品部門 全店 売上（百万円）",
+      "description": "同HTML表。「全 店」行の実額列。単位: 百万円。",
+      "value_type": "integer"
+    },
+    {
+      "key": "食品部門 既存店 客数（前年同月比）",
+      "name": "食品部門 既存店 客数（前年同月比）",
+      "description": "同HTMLページ。「食品部門（単位：千人、％）」セクション表。「既存店」行の「昨年比」列。",
+      "value_type": "percentage"
+    },
+    {
+      "key": "食品部門 全店 客数（前年同月比）",
+      "name": "食品部門 全店 客数（前年同月比）",
+      "description": "同HTML表。「全 店」行の「昨年比」列。",
+      "value_type": "percentage"
+    },
+    {
+      "key": "食品部門 既存店 客単価（前年同月比）",
+      "name": "食品部門 既存店 客単価（前年同月比）",
+      "description": "同HTMLページ。「食品部門（単位：円、％）」セクション表。「既存店」行の「昨年比」列。",
+      "value_type": "percentage"
+    },
+    {
+      "key": "食品部門 全店 客単価（前年同月比）",
+      "name": "食品部門 全店 客単価（前年同月比）",
+      "description": "同HTML表。「全 店」行の「昨年比」列。",
+      "value_type": "percentage"
+    }
+  ],
+  "extraction_notes": "Olympicグループ。IR「月次レポート」HTMLページに食品部門/非食品部門 × 既存店/全店 × 売上(百万円)/客数(千人)/客単価(円)の昨年比を月別に開示。6テーブル構成（食品売上・非食品売上・食品客数・非食品客数・食品客単価・非食品客単価）。url_adapter html_table(active)で取得。",
+  "ticker": "8289",
+  "company_name": "Olympicグループ",
+  "created_at": "2026-04-05T10:18:47.777590+09:00",
+  "created_by": "gemini-2.5-flash",
+  "extraction_method": "gemini",
+  "manual_override": true,
+  "manual_override_note": "Codex成果物を自ら検証・再作成。月次レポートHTMLから食品部門7メトリクス抽出可能",
+  "manual_override_at": "2026-05-08T01:00:00+09:00"
+}

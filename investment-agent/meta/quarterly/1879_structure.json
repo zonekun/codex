@@ -1,0 +1,45 @@
+{
+  "ticker": "1879",
+  "company_name": "新日本建",
+  "current_version": "2025-02",
+  "versions": [
+    {
+      "valid_from": "2025-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "個別受注実績の合計額",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "損益計算書（連結）に売上高の内訳が、個別受注の概況に受注高のセグメント別および詳細な内訳（住宅、非住宅、分譲マンション等）が記載されている。受注残高（繰越工事高）の記載は本ページ群には含まれていない。"
+    }
+  ],
+  "_source_pdf": "tdnet/1879/20250214_1879_新日本建_決算短信_2025年３月期第３四半期決算短信〔日本基準〕(連結)_140120250210568546.pdf",
+  "_source_doc_id": "140120250210568546",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T16:58:01.592592+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      7,
+      10
+    ],
+    "table_count": 3,
+    "max_rows": 30,
+    "max_cols": 8,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

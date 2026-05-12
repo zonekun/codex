@@ -1,0 +1,44 @@
+{
+  "ticker": "4673",
+  "company_name": "川崎地質",
+  "current_version": "2026-04",
+  "versions": [
+    {
+      "valid_from": "2026-04",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当第１四半期連結累計期間の受注高",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "text",
+      "complexity": "no_table",
+      "notes": "「1. 当四半期決算に関する定性的情報 (1) 経営成績に関する説明」の本文中に、第1四半期累計期間の受注高（917百万円）および売上高（2,856百万円）の数値が記載されています。受注残高（繰越工事高）に関する具体的な数値はこのページには含まれていません。"
+    }
+  ],
+  "_source_pdf": "tdnet/4673/20260410_4673_川崎地質_決算短信_2026年11月期第１四半期決算短信〔日本基準〕(連結)_140120260410501740.pdf",
+  "_source_doc_id": "140120260410501740",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:11:56.155306+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "no_table",
+    "relevant_pages": [
+      4
+    ],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "pdfplumber found no tables on relevant pages"
+    ]
+  }
+}

@@ -14,16 +14,17 @@
 
 ## Cloud Scheduler 全スケジューラー一覧（実態）
 
-> 確認日: 2026-03-31。`gcloud scheduler jobs list --location=us-west1` の結果を反映。
+> 確認日: 2026-05-12。`gcloud scheduler jobs list --location=us-west1` の結果を反映。
 
 | スケジューラー名 | Cloud Run Job | cron（JST） | 実行時刻 JST | 備考 |
 |----------------|--------------|------------|------------|------|
 | `tdnet-download-daily` | `tdnet-download` | `50 23 * * 1-5` | 平日 23:50 | GCS保存のみ |
-| `tdnet-load-parallel-daily` | `tdnet-load-parallel` | `0 2 * * 2-6` | 火〜土 02:00 | BQ `TDNET_DOCUMENTS_ENHANCED`。DATE_MODE="y"（昨日分） |
+| `tdnet-load-daily-daily` | `tdnet-load-daily` | `0 2 * * 2-6` | 火〜土 02:00 | BQ `TDNET_DOCUMENTS_ENHANCED`（--job-mode=load、AI_STATUS='pending'で投入） |
+| `tdnet-load-parallel-daily` | `tdnet-load-parallel` | `0 2 * * 2-6` | 火〜土 02:00 | **PAUSED**（旧アーキ。`tdnet-load-daily-daily` に置換済み） |
 | `edinet-download-daily` | `edinet-download` | `0 23 * * 1-5` | 平日 23:00 | GCS保存のみ |
 | `edinet-delay-daily` | `edinet-delay` | `30 18 * * 1-5` | 平日 18:30 | 遅延開示の追加取得 |
 | `edinet-load-parallel-daily` | `edinet-load-parallel` | `0 1 * * 2-6` | 火〜土 01:00 | BQ `IR_DOCUMENTS_ENHANCED` |
-| `jquants-fin-summary-daily` | `jquants-fin-summary` | `0 21 * * *` | 毎日 21:00 | BQ `FIN_SUMMARY` |
+| `jquants-fin-summary-daily` | `jquants-fin-summary` | `0 2 * * 2-6` | 火〜土 02:00 | BQ `FIN_SUMMARY` |
 | `is-holiday-daily` | `is-holiday` | `0 8 * * *` | 毎日 08:00 | 休日マスタ更新 |
 | `shina-margin-balance-load-17` | `shina-margin-balance-load` | `0 17 * * 1-5` | 平日 17:00 | BQ `SHINA_RATES`, `MARGIN_BALANCE` |
 | `shina-margin-balance-load-20` | `shina-margin-balance-load` | `0 20 * * 1-5` | 平日 20:00 | 同上（1日2回） |
@@ -36,7 +37,7 @@
 | `earnings-schedule-load-late` | `earnings-schedule-load` | `0 5 18-31 * 0-5` | 18-31日 05:00（土曜除く） | 同上 |
 | `earnings-actual-load-weekly` | `earnings-actual-load` | `0 5 * * 0` | 毎週日曜 05:00 | TDNET実績→BQ（--week: 過去7日分） |
 
-**日次フロー**: `tdnet-download-daily`（23:50）→ GCS保存 → `tdnet-load-parallel-daily`（翌02:00）→ BQ格納
+**日次フロー（新アーキ 2026-04-17〜）**: `tdnet-download-daily`（23:50）→ GCS保存 → `tdnet-load-daily-daily`（翌02:00、--job-mode=load）→ BQ格納（AI_STATUS='pending'）→ `ai_processing_flow` Workflows（**Scheduler 未設定、要手動起動**）→ AI判定 + Embedding → AI_STATUS='completed'
 
 ---
 
@@ -136,6 +137,10 @@ gcloud run jobs create stock-price-load \
 # 手動実行
 gcloud run jobs execute stock-price-load --region us-west1
 ```
+
+**落とし穴: yfinance 空取得は失敗扱いにする（2026-04-22）**
+
+`main()` で `fetch_stock_data()` 後に `target_data.empty` の場合は `RuntimeError` を raise して異常終了させる。「空なら何もせず return でいいのでは」と見えるが、空を正常扱いにすると Cloud Run Job が `Container called exit(0)` で成功マークされ、GCS/BQ/Dropbox 保存スキップが見逃される（2026-04-20 実行 `stock-price-load-2p7nd` で発生。yfinance が `possibly delisted; no price data found` を大量に返し、全銘柄空になっていたのに Job ステータスは成功）。例外化することで既存の `except Exception` → `[STOCK_PRICE] エラー` メール送信 + Job 失敗判定に乗せる。休場日スキップは `resolve_target_date()` 側で従来どおり `return` するため、この変更の影響を受けない。
 
 ---
 

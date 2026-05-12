@@ -1,0 +1,61 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "doc_title_pattern": "^(\\d{4}年\\d{1,2}月度.*?に関するお知らせ)$",
+  "year_from_title_regex": "(\\d{4})年",
+  "month_from_title_regex": "(\\d{1,2})月",
+  "fields": [
+    {
+      "key": "全店 売上（前年同月比）",
+      "name": "全店 売上（前年同月比）",
+      "row_label_regex": "前年対比全店",
+      "value_type": "percentage"
+    },
+    {
+      "key": "既存店 売上（前年同月比）",
+      "name": "既存店 売上（前年同月比）",
+      "row_label_regex": "前年対比全店.*?既存店",
+      "value_type": "percentage",
+      "bc_key": "全店 売上（前年同月比）"
+    },
+    {
+      "key": "FC店 既存店 売上（前年同月比）",
+      "name": "FC店 既存店 売上（前年同月比）",
+      "row_label_regex": "FC店.*?既存店",
+      "value_type": "percentage",
+      "bc_key": "全店 売上（前年同月比）"
+    },
+    {
+      "key": "FC店舗 既存店（前年同月比）",
+      "name": "FC店舗 既存店（前年同月比）",
+      "row_label_regex": "FC.*?既存店",
+      "value_type": "percentage",
+      "notes": "FC店セクションの既存店売上前年対比。既存のFC店 既存店 売上（前年同月比）と同一データ"
+    },
+    {
+      "key": "直営店舗 既存店（前年同月比）",
+      "name": "直営店舗 既存店（前年同月比）",
+      "row_label_regex": "直営.*?既存店",
+      "value_type": "percentage",
+      "notes": "直営店セクションの既存店売上前年対比"
+    },
+    {
+      "key": "全店 店舗数",
+      "name": "全店 店舗数",
+      "bc_ignore": true,
+      "bc_ignore_reason": "BC値77あり。月次PDFに出退店数の記載はあるが全店舗数合計の数値ポイントなし（2026年3月度PDF pdftotext+値検索で未検出）",
+      "bc_key": "全店 店舗数"
+    }
+  ],
+  "extraction_notes": "row_label_regexは、セクションヘッダー（例: ■全店）を後方参照（lookbehind）で指定し、そのセクション内の該当する行ラベルを特定することで、同じラベル名（例: 既存店）が複数セクションに存在する場合でも正確に抽出できるようにしています。.*?は非貪欲マッチで、セクションヘッダーから行ラベルまでの任意の文字（改行含む）にマッチします。\\s*は行ラベル前の空白や改行を許容します。",
+  "ticker": "3032",
+  "company_name": "3032",
+  "created_at": "2026-03-21T20:04:31.348201+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2025年7月度 ゴルフドゥ！店舗売上高前年対比に関するお知らせ",
+  "sample_submission_date": "2025-08-12",
+  "fields_count": 4,
+  "note": "lookbehind除去 (Round9 2026-03-24)",
+  "updated_at": "2026-03-24",
+  "_reverse_mapping_applied_at": "2026-04-19T00:15:07.583039+09:00"
+}

@@ -1,0 +1,66 @@
+{
+  "source": "download",
+  "format": "xlsx",
+  "sheet_name": "Production",
+  "label_col_index": 1,
+  "month_row_index": 18,
+  "data_start_row": 19,
+  "fields": [
+    {
+      "key": "国内 生産台数（前年同月比）",
+      "name": "国内 生産台数（前年同月比）",
+      "row_label_regex": "Domestic",
+      "value_type": "percentage",
+      "group": 1
+    },
+    {
+      "key": "海外 生産台数（前年同月比）",
+      "name": "海外 生産台数（前年同月比）",
+      "row_label_regex": "Overseas",
+      "value_type": "percentage",
+      "group": 1
+    },
+    {
+      "key": "グローバル 生産台数（前年同月比）",
+      "name": "グローバル 生産台数（前年同月比）",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "BC値108.1あり。ダウンロードxlsx(Productionシート)にはDomestic/OverseasのYOY%のみでGlobal合計行なし。国内+海外の加重平均で算出可能だが単純抽出不可"
+    },
+    {
+      "key": "グローバル 販売台数（前年同月比）",
+      "name": "グローバル 販売台数（前年同月比）",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "BC値84.9あり。ダウンロードxlsx(Productionシート)は生産台数のみ。販売台数(Sales)は別シートまたは別ファイルで開示されている可能性があるが、現行adapterの対象外"
+    },
+    {
+      "key": "国内 販売台数（前年同月比）",
+      "name": "国内 販売台数（前年同月比）",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "BC値77.2あり。ダウンロードxlsx(Productionシート)は生産台数のみ。国内販売台数は別シートまたは別ファイルの開示データ"
+    },
+    {
+      "key": "海外 販売台数（前年同月比）",
+      "name": "海外 販売台数（前年同月比）",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "BC値83.7あり。ダウンロードxlsx(Productionシート)は生産台数のみ。海外販売台数は別シートまたは別ファイルの開示データ"
+    },
+    {
+      "key": "輸出 出荷台数（前年同月比）",
+      "name": "輸出 出荷台数（前年同月比）",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "BC値118.6あり。ダウンロードxlsx(Productionシート)は生産台数のみ。輸出出荷台数は別シートまたは別ファイルの開示データ"
+    }
+  ],
+  "extraction_notes": "提供されたDataFrameプレビューには、「グローバル 生産台数（前年同月比）」、「グローバル 販売台数（前年同月比）」、「国内 販売台数（前年同月比）」、「海外 販売台数（前年同月比）」、「輸出 出荷台数（前年同月比）」に該当するデータが見つかりませんでした。プレビューの「YOY %」セクションには「Domestic」と「Overseas」の生産台数（前年同月比）のみが含まれています。",
+  "ticker": "7261",
+  "company_name": "7261",
+  "created_at": "2026-04-05T10:01:29.564717+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_file": "000000_7261_Excel[40KB]_5930edee.xlsx",
+  "month_direction": "row"
+}

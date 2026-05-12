@@ -1,0 +1,94 @@
+{
+  "ticker": "6402",
+  "company_name": "兼松エンジニア",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当第3四半期累計期間における受注実績の合計額",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "品目別受注高",
+          "type": "order_intake",
+          "description": "品目別の受注高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "販売高",
+          "type": "completed",
+          "description": "当第3四半期累計期間における販売実績の合計額",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "品目別販売高",
+          "type": "completed",
+          "description": "品目別の販売高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "販売高"
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当第3四半期会計期間末における受注残高の合計額",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "品目別受注残高",
+          "type": "backlog",
+          "description": "品目別の受注残高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "品目",
+          "items": [
+            "強力吸引作業車",
+            "高圧洗浄車",
+            "粉粒体吸引・圧送車",
+            "部品売上",
+            "その他"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "決算短信の「3. その他 (1) 生産、受注及び販売の状況」に、品目別の受注高、販売高、受注残高が詳細な表形式で記載されています。単位は千円です。 page 9の品目別表は品目ディメンションで表現できるため、個別品目メトリクスを総額と品目別メトリクスに集約。"
+    }
+  ],
+  "_source_pdf": "tdnet/6402/20260206_6402_兼松エンジニア_決算短信_2026年3月期 第3四半期決算短信[日本基準](非連結)_140120260204547219.pdf",
+  "_source_doc_id": "140120260204547219",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:12:03.415299+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      9
+    ],
+    "table_count": 3,
+    "max_rows": 7,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

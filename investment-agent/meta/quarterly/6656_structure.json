@@ -1,0 +1,65 @@
+{
+  "ticker": "6656",
+  "company_name": "ＩＮＳＰＥＣ",
+  "current_version": "2026-03",
+  "versions": [
+    {
+      "valid_from": "2026-03",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当第３四半期累計期間の受注高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当第３四半期会計期間末における受注残高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注高（発表日現在）",
+          "type": "order_intake",
+          "description": "期初から発表日現在までの受注高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高（発表日現在）",
+          "type": "backlog",
+          "description": "発表日現在の受注残高",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "text",
+      "complexity": "no_table",
+      "notes": "第3四半期累計期間の実績および発表日現在（2026年3月13日）の受注状況が本文中に記載されています。単一セグメント（基板検査装置関連事業）のため、セグメント別の内訳は存在しません。"
+    }
+  ],
+  "_source_pdf": "tdnet/6656/20260313_6656_ＩＮＳＰＥＣ_決算短信_2026年４月期 第３四半期決算短信〔日本基準〕（非連結）_140120260313581320.pdf",
+  "_source_doc_id": "140120260313581320",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:24:18.678215+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "no_table",
+    "relevant_pages": [
+      4
+    ],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "pdfplumber found no tables on relevant pages"
+    ]
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "ticker": "7177",
+  "company_name": "GMOフィナンシャルホールディングス",
+  "ir_page_url": "https://www.gmofh.com/ir/monthly_report.html",
+  "updated_at": "2026-04-24T13:56:32.655334+09:00",
+  "last_checked": "2026-04-21",
+  "status": "active",
+  "type": "html_table",
+  "css_selector": null,
+  "link_text_pattern": null,
+  "link_href_pattern": "/ir/monthlyreport/monthlyreport\\.xlsx.*\\.(xlsx)",
+  "note": "月次HTMLテーブル (5テーブル)。Playwright不要 (2026-04-24)。",
+  "playwright_required": false,
+  "manual_override": true,
+  "manual_override_at": "2026-04-24T13:56:32.655334+09:00",
+  "manual_override_note": "ゼロDL修正 (2026-04-24)"
+}

@@ -1,0 +1,28 @@
+{
+  "ticker": "1766",
+  "company_name": "東建コーポ",
+  "current_version": "2026-03",
+  "versions": [
+    {
+      "valid_from": "2026-03",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Vision extraction selected because structure is complex or data is unavailable."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/1766/20260313_1766_東建コーポ_決算短信_2026年４月期　第３四半期決算短信〔日本基準〕（連結）_140120260313581653.pdf",
+  "_source_doc_id": "140120260313581653",
+  "_generated_at": "2026-04-30T16:38:41.286111+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

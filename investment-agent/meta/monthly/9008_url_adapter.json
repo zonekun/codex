@@ -1,0 +1,17 @@
+{
+  "ticker": "9008",
+  "company_name": "京王電鉄",
+  "ir_page_url": "https://www.keio.co.jp/company/stockholder/finance/monthly_report/",
+  "status": "active",
+  "type": "scrape_links",
+  "playwright_required": true,
+  "link_text_pattern": "月次営業概況",
+  "link_href_pattern": "contents\\.xj-storage\\.jp/xcontents/AS01800/.*\\.pdf",
+  "follow_links": false,
+  "note": "月次営業概況ページ。年度選択ドロップダウンでJS動的にPDFリスト表示。PDFはcontents.xj-storage.jp配信。デフォルト表示の最新年度分を取得 (2026-05-08)",
+  "updated_at": "2026-05-08T15:00:00+09:00",
+  "last_checked": "2026-05-08",
+  "manual_override": true,
+  "manual_override_at": "2026-05-08T15:00:00+09:00",
+  "manual_override_note": "html_table→scrape_links変更。xj-storage PDF直リンクをhref_patternで取得 (2026-05-08)"
+}

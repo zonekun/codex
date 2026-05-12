@@ -1,0 +1,101 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "doc_title_pattern": "(\\d{4})年\\d{1,2}月期(\\d{1,2})月度 売上速報についてのお知らせ",
+  "year_from_title_regex": "(\\d{4})年",
+  "month_from_title_regex": "(\\d{1,2})月度",
+  "fields": [
+    {
+      "key": "大黒・魚椿 直営 全店 売上（前年同月比）",
+      "name": "大黒・魚椿 直営 全店 売上（前年同月比）",
+      "row_label_regex": "全店\\s+売上高\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)",
+      "value_type": "percentage",
+      "group": 3,
+      "use_last_number": true,
+      "bc_key": "大黒・魚椿 直営 全店 売上（前年同月比）"
+    },
+    {
+      "key": "大黒・魚椿 直営 全店 客数（前年同月比）",
+      "name": "大黒・魚椿 直営 全店 客数（前年同月比）",
+      "row_label_regex": "全店\\s+客数\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)",
+      "value_type": "percentage",
+      "group": 3,
+      "use_last_number": true,
+      "bc_key": "大黒・魚椿 直営 全店 客数（前年同月比）"
+    },
+    {
+      "key": "大黒・魚椿 直営 全店 客単価（前年同月比）",
+      "name": "大黒・魚椿 直営 全店 客単価（前年同月比）",
+      "row_label_regex": "全店\\s+客単価\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)",
+      "value_type": "percentage",
+      "group": 3,
+      "use_last_number": true,
+      "bc_key": "大黒・魚椿 直営 全店 客単価（前年同月比）"
+    },
+    {
+      "key": "大黒・魚椿 店舗数",
+      "name": "大黒・魚椿 店舗数",
+      "row_label_regex": "計\\s",
+      "value_type": "integer",
+      "group": 3,
+      "use_last_number": true
+    },
+    {
+      "key": "大黒・魚椿 直営 既存店 売上（前年同月比）",
+      "name": "大黒・魚椿 直営 既存店 売上（前年同月比）",
+      "row_label_regex": "既存店\\s+売上高\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)",
+      "value_type": "percentage",
+      "group": 3,
+      "use_last_number": true,
+      "bc_key": "大黒・魚椿 直営 既存店 売上（前年同月比）"
+    },
+    {
+      "key": "大黒・魚椿 直営 既存店 客数（前年同月比）",
+      "name": "大黒・魚椿 直営 既存店 客数（前年同月比）",
+      "row_label_regex": "既存店\\s+客数\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)",
+      "value_type": "percentage",
+      "group": 3,
+      "use_last_number": true,
+      "bc_key": "大黒・魚椿 直営 既存店 客数（前年同月比）"
+    },
+    {
+      "key": "大黒・魚椿 直営 既存店 客単価（前年同月比）",
+      "name": "大黒・魚椿 直営 既存店 客単価（前年同月比）",
+      "row_label_regex": "既存店\\s+客単価\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)",
+      "value_type": "percentage",
+      "group": 3,
+      "use_last_number": true,
+      "bc_key": "大黒・魚椿 直営 既存店 客単価（前年同月比）"
+    },
+    {
+      "key": "全店 店舗数",
+      "name": "全店 店舗数",
+      "description": "店舗数テーブルの「計」行の合計値。大黒・魚椿 店舗数と同じソース行。",
+      "row_label_regex": "計\\s",
+      "value_type": "integer",
+      "group": 3,
+      "use_last_number": true,
+      "bc_key": "全店 店舗数"
+    }
+  ],
+  "extraction_notes": "The document contains data for multiple fiscal years. `use_last_number: true` is used to extract data for the most recent fiscal year (2026年11月期) where row labels might be duplicated.",
+  "ticker": "138A",
+  "company_name": "138A",
+  "created_at": "2026-03-28T16:30:49.811084+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2026年11月期２月度 売上速報についてのお知らせ",
+  "sample_submission_date": "2026-03-06",
+  "fields_count": 8,
+  "extraction_method": "gemini",
+  "manual_override": true,
+  "manual_override_note": "NG21調査に基づくcustom_prompt/yoy_offset/unit_scale/overwrite_past_months修正",
+  "manual_override_at": "2026-04-09T09:12:28.671902+09:00",
+  "custom_prompt": "店舗数テーブルには「直営店」「業務委託店」「FC店」「計」の行があります。\n「店舗数」フィールドには「計」行の値を取得してください。「直営店」行ではありません。\n売上高前年同月比テーブルには「全店」「既存店」の行があります。正確に区別してください。",
+  "p1_fix_at": "2026-04-18T15:46:51+09:00",
+  "_reverse_mapping_applied_at": "2026-04-18T22:57:19.583882+09:00",
+  "_doc_title_pattern_fixed_at": "2026-04-18T23:23:58.420760+09:00",
+  "_doc_title_pattern_fixed_from": "(Ⅰ{4})年\\d{1,2}月期(\\d{1,2})月度 売上速報についてのお知らせ",
+  "_doc_title_pattern_manual_fix_at": "2026-04-18T23:25:26.528719+09:00",
+  "_doc_title_pattern_manual_fix_from": "(I{4})年\\d{1,2}月期(\\d{1,2})月度 売上速報についてのお知らせ",
+  "_unit_scale_cleanup_at": "2026-04-18T23:36:59.487081+09:00"
+}

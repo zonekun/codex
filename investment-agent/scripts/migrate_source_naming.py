@@ -8,7 +8,7 @@ Old → New:
 
 対象:
 - GCS monthly/meta/{ticker}/extract_adapter.json (全 ~493社)
-- ローカル data/monthly_adapters/*.json
+- ローカル meta/monthly/*_extract_adapter.json
 
 並行で extract_monthly_data.py と build_monthly_extractor.py のソース判定も新表記に対応
 （旧表記も後方互換でacceptする）
@@ -34,7 +34,7 @@ SOURCE_MAP = {
 
 renamed_log = []
 unchanged = 0
-adapters_dir = Path('data/monthly_adapters')
+adapters_dir = Path('meta/monthly')
 
 # GCS全extract_adapter.json をrename
 for blob in bucket.list_blobs(prefix='monthly/meta/'):
@@ -56,7 +56,7 @@ for blob in bucket.list_blobs(prefix='monthly/meta/'):
         data_str = json.dumps(d, ensure_ascii=False, indent=2)
         blob.upload_from_string(data_str, content_type='application/json')
         # ローカルも更新
-        local = adapters_dir / f'{ticker}.json'
+        local = adapters_dir / f'{ticker}_extract_adapter.json'
         if local.exists():
             local.write_text(data_str, encoding='utf-8')
         renamed_log.append({'ticker': ticker, 'old': old_source, 'new': new_source})

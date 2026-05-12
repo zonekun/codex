@@ -1,0 +1,24 @@
+{
+  "ticker": "7605",
+  "company_name": "7605",
+  "metrics": [
+    {
+      "name": "全売上（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "全売上（百万円）",
+      "source": "bc"
+    },
+    {
+      "name": "全店 店舗数",
+      "source": "bc"
+    },
+    {
+      "name": "既存店 売上（前年同月比）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

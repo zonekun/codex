@@ -1,0 +1,59 @@
+{
+  "ticker": "1897",
+  "company_name": "金下建設",
+  "current_version": "2025-02",
+  "versions": [
+    {
+      "valid_from": "2025-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注工事高",
+          "type": "order_intake",
+          "description": "当期中に新たに受注した工事の総額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "繰越工事高",
+          "type": "backlog",
+          "description": "次期以降に繰り越される未完成工事の残高",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "連結および個別の両方で、受注工事高、売上高、繰越工事高の詳細な内訳表が掲載されています。セグメント（土木・建築）と顧客区分（官公庁・民間）のクロス集計表形式でデータが提供されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/1897/20250207_1897_金下建設_決算短信_2024年12月期  決算短信〔日本基準〕（連結）_140120250206564969.pdf",
+  "_source_doc_id": "140120250206564969",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:00:59.304525+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      3,
+      4,
+      20,
+      21,
+      22,
+      23,
+      25,
+      26
+    ],
+    "table_count": 14,
+    "max_rows": 44,
+    "max_cols": 11,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 14"
+    ]
+  }
+}

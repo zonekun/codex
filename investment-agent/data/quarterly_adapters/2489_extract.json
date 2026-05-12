@@ -1,0 +1,28 @@
+{
+  "ticker": "2489",
+  "company_name": "ＡＤＷＡＹＳ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "presentation",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/2489/20260210_2489_ＡＤＷＡＹＳ_決算説明資料_2025年12月期決算説明会資料_140120260209552881.pdf",
+  "_source_doc_id": "140120260209552881",
+  "_generated_at": "2026-04-30T17:24:18.319019+09:00",
+  "_model_used": null
+}

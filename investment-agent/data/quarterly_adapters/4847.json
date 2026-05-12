@@ -1,0 +1,105 @@
+{
+  "ticker": "4847",
+  "company_name": "ＩＷＩ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当中間会計期間の受注高合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "当中間会計期間の売上高合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当中間会計期間末の受注残高合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "決済",
+          "type": "completed",
+          "description": "決済領域の売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "うちクラウドサービス",
+          "type": "completed",
+          "description": "決済領域のうちクラウドサービスの売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "決済"
+        },
+        {
+          "name": "セキュリティ",
+          "type": "completed",
+          "description": "セキュリティ領域の売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "データ通信・分析基盤",
+          "type": "completed",
+          "description": "データ通信・分析基盤領域の売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "事業領域",
+          "items": [
+            "決済",
+            "セキュリティ",
+            "データ通信・分析基盤"
+          ]
+        },
+        {
+          "dimension_name": "決済内訳",
+          "items": [
+            "うちクラウドサービス"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "売上高の内訳は表形式で、受注高および受注残高の合計値は本文中に記載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/4847/20260204_4847_ＩＷＩ_決算短信_2026年６月期 第２四半期（中間期）決算短信〔日本基準〕(非連結)_140120260203546509.pdf",
+  "_source_doc_id": "140120260203546509",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:18:56.924857+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4
+    ],
+    "table_count": 1,
+    "max_rows": 6,
+    "max_cols": 4,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

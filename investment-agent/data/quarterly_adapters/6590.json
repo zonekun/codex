@@ -1,0 +1,109 @@
+{
+  "ticker": "6590",
+  "company_name": "芝浦",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "連結合計の受注高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "連結合計の売上高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "ファインメカトロニクス部門 受注高",
+          "type": "order_intake",
+          "description": "ファインメカトロニクス部門の受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "ファインメカトロニクス部門 売上高",
+          "type": "completed",
+          "description": "ファインメカトロニクス部門の売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "メカトロニクスシステム部門 受注高",
+          "type": "order_intake",
+          "description": "メカトロニクスシステム部門の受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "メカトロニクスシステム部門 売上高",
+          "type": "completed",
+          "description": "メカトロニクスシステム部門の売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "流通機器システム部門 売上高",
+          "type": "completed",
+          "description": "流通機器システム部門の売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "不動産賃貸部門 売上高",
+          "type": "completed",
+          "description": "不動産賃貸部門の売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "ファインメカトロニクス部門",
+            "メカトロニクスシステム部門",
+            "流通機器システム部門",
+            "不動産賃貸部門"
+          ]
+        }
+      ],
+      "presentation_format": "text",
+      "complexity": "no_table",
+      "notes": "本文中に受注高および売上高の数値が記載されています。受注残高の数値はこのページには含まれていません。"
+    }
+  ],
+  "_source_pdf": "tdnet/6590/20260205_6590_芝浦_決算短信_2026年3月期 第3四半期決算短信[日本基準]（連結）_140120260203545879.pdf",
+  "_source_doc_id": "140120260203545879",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:21:38.136110+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "no_table",
+    "relevant_pages": [
+      4
+    ],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "pdfplumber found no tables on relevant pages"
+    ]
+  }
+}

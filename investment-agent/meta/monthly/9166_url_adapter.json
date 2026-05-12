@@ -1,0 +1,17 @@
+{
+  "ticker": "9166",
+  "company_name": "ＧＥＮＤＡ",
+  "ir_page_url": "https://genda.jp/ir/monthly/",
+  "updated_at": "2026-04-24T14:03:22.404564+09:00",
+  "last_checked": "2026-04-24",
+  "status": "active",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": "\\d{4}|月次|進捗",
+  "link_href_pattern": "wp-content/uploads/.*GENDAグループ.+\\.pdf",
+  "note": "GENDA月次店舗展開進捗レポート。ir/monthly/ → 各投稿ページ → PDF。follow_links=True。wp-content/uploads/ 配下の GENDA* PDF (2026-04-24修正)",
+  "follow_links": true,
+  "manual_override": true,
+  "manual_override_at": "2026-04-24T14:03:22.404564+09:00",
+  "manual_override_note": "D群DL0件 scrape_links pattern修正 (2026-04-24)"
+}

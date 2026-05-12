@@ -1,0 +1,69 @@
+{
+  "ticker": "6340",
+  "company_name": "渋谷工",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "セグメント別の受注高の合計額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "セグメント別の受注残高の合計額",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "パッケージングプラント事業",
+            "メカトロシステム事業",
+            "農業用設備事業"
+          ]
+        },
+        {
+          "dimension_name": "パッケージングプラント事業内訳",
+          "items": [
+            "酒類用プラント",
+            "食品用プラント",
+            "薬品・化粧品用プラント",
+            "その他"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "セグメント別の受注高および受注残高が表形式で記載されています。パッケージングプラント事業については、さらに4つの製品区分（酒類用、食品用、薬品・化粧品用、その他）に細分化されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/6340/20260213_6340_渋谷工_決算短信_2026年6月期　第2四半期(中間期)決算短信〔日本基準〕(連結)_140120260131544048.pdf",
+  "_source_doc_id": "140120260131544048",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:05:27.455853+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      12
+    ],
+    "table_count": 2,
+    "max_rows": 3,
+    "max_cols": 4,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

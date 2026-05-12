@@ -1,0 +1,47 @@
+{
+  "source": "non-tdnet(pdf)",
+  "format": "pdf",
+  "fields": [
+    {
+      "key": "鉄道 運輸収入 合計（前年同月比）",
+      "name": "鉄道 運輸収入 合計（前年同月比）",
+      "description": "「月次営業概況のお知らせ」PDF。近畿日本鉄道セクション。旅客運輸収入 合計の前年同月比。",
+      "value_type": "percentage"
+    },
+    {
+      "key": "鉄道 運輸収入 定期外（前年同月比）",
+      "name": "鉄道 運輸収入 定期外（前年同月比）",
+      "description": "同PDF。旅客運輸収入 定期外の前年同月比。",
+      "value_type": "percentage"
+    },
+    {
+      "key": "鉄道 運輸収入 定期（前年同月比）",
+      "name": "鉄道 運輸収入 定期（前年同月比）",
+      "description": "同PDF。旅客運輸収入 定期の前年同月比。",
+      "value_type": "percentage"
+    },
+    {
+      "key": "航空 輸入通関件数（前年同月比）",
+      "name": "航空 輸入通関件数（前年同月比）",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "月次営業概況PDFは鉄道運輸実績のみ。近鉄エクスプレスの航空貨物データは月次開示に含まれない"
+    },
+    {
+      "key": "航空 輸出混載重量（前年同月比）",
+      "name": "航空 輸出混載重量（前年同月比）",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "同上"
+    }
+  ],
+  "extraction_notes": "近鉄グループホールディングス。IR「月次営業概況のお知らせ」PDFを年度別(2018〜2026)にGCS保存。14件。PDF内に近畿日本鉄道の旅客運輸収入(定期外/定期/合計)前年同月比を開示。航空貨物関連(近鉄エクスプレス)は月次PDFに含まれないためbc_ignore。url_adapter scrape_links(active)で取得。",
+  "ticker": "9041",
+  "company_name": "近鉄グループホールディングス",
+  "created_at": "2026-04-05T10:26:17.508715+09:00",
+  "created_by": "gemini-2.5-flash",
+  "extraction_method": "gemini",
+  "manual_override": true,
+  "manual_override_note": "Codex成果物を自ら検証・再作成。月次営業概況PDF 14件確認。鉄道3メトリクス抽出可能、航空2メトリクスbc_ignore",
+  "manual_override_at": "2026-05-08T01:00:00+09:00"
+}

@@ -1,0 +1,58 @@
+{
+  "ticker": "8881",
+  "company_name": "日神グループＨＤ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "期首繰越残高",
+          "type": "backlog",
+          "description": "期首時点における未消化の受注残高",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "期中受注高",
+          "type": "order_intake",
+          "description": "当期間中に新たに受注した工事の総額",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "期末繰越残高",
+          "type": "backlog",
+          "description": "期末時点における未消化の受注残高",
+          "unit": "千円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "建設事業（多田建設株式会社）の受注・完成工事・繰越残高の詳細な内訳表、および不動産管理事業の営業収入内訳に含まれる工事完成売上高が記載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/8881/20260206_8881_日神グループＨＤ_決算短信_2026年３月期 第３四半期決算短信〔日本基準〕（連結）_140120260205548999.pdf",
+  "_source_doc_id": "140120260205548999",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T20:10:09.202504+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      6
+    ],
+    "table_count": 2,
+    "max_rows": 11,
+    "max_cols": 7,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

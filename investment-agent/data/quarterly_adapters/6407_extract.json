@@ -1,0 +1,56 @@
+{
+  "ticker": "6407",
+  "company_name": "ＣＫＤ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "extraction_method": "regex",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注実績",
+        "販売実績",
+        "自動機械部門",
+        "機器部門",
+        "受注高",
+        "受注残高",
+        "販売高"
+      ],
+      "fields": [
+        {
+          "key": "受注高",
+          "row_label_regex": "^\\s*自動機械部門\\s*",
+          "value_type": "integer",
+          "unit": "百万円",
+          "group": 1,
+          "notes": "受注実績の表（2番目の表）から自動機械部門の受注高を抽出します。"
+        },
+        {
+          "key": "受注残高",
+          "row_label_regex": "^\\s*自動機械部門\\s*",
+          "value_type": "integer",
+          "unit": "百万円",
+          "group": 3,
+          "notes": "受注実績の表（2番目の表）から自動機械部門の受注残高（3番目の数値）を抽出します。"
+        },
+        {
+          "key": "販売高",
+          "row_label_regex": "^\\s*合計\\s*",
+          "value_type": "integer",
+          "unit": "百万円",
+          "group": 1,
+          "use_last_number": true,
+          "notes": "販売実績の表（3番目の表）の合計値を抽出します。ページ内に複数の合計行があるため、最後の表の数値を優先します。"
+        }
+      ],
+      "gemini_custom_prompt": "",
+      "notes": "受注実績は自動機械部門のみが開示されており、販売実績は全セグメントの合計値を抽出対象としています。ページ内に類似の表（生産実績）が存在するため、抽出順序やグループ指定に留意しています。"
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/6407/20260213_6407_ＣＫＤ_決算短信_2026年３月期第３四半期決算短信〔日本基準〕(連結)_140120260212555888.pdf",
+  "_source_doc_id": "140120260212555888",
+  "_generated_at": "2026-04-30T23:26:19.277791+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

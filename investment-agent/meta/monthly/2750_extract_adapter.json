@@ -1,0 +1,71 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "doc_title_pattern": "月次|月度|月間|売上|速報|実績|業績|概況|KPI|ＫＰＩ|状況|報告|推移|月末",
+  "year_from_title_regex": "(\\d{4})年\\d{1,2}月度",
+  "month_from_title_regex": "\\d{4}年(\\d{1,2})月度",
+  "fields": [
+    {
+      "key": "連結 売上（百万円）",
+      "name": "連結 売上（百万円）",
+      "row_label_regex": "売上高\\s+[\\d,]+\\s+[\\d,]+\\s+([\\d,]+)",
+      "value_type": "integer",
+      "group": 1,
+      "bc_ignore": true,
+      "_bc_ignore_reason": "extraction discrepancy: our=5395 vs bc=5419.0"
+    },
+    {
+      "key": "連結 売上（前年同月比）",
+      "name": "連結 売上（前年同月比）",
+      "row_label_regex": "前年比\\s+[\\d.]+\\s+[\\d.]+\\s+([\\d.]+)",
+      "value_type": "percentage",
+      "group": 1
+    },
+    {
+      "key": "コーヒー・飲料事業 売上（前年同月比）",
+      "name": "コーヒー・飲料事業 売上（前年同月比）",
+      "bc_ignore": true,
+      "bc_ignore_reason": "BC値88.9あり。月次売上高（速報）PDFに連結合計のみ記載。セグメント別の個別売上データなし（2026年3月度PDF pdftotext+値検索で未検出）",
+      "bc_key": "コーヒー・飲料事業 売上（前年同月比）"
+    },
+    {
+      "key": "海外事業 売上（前年同月比）",
+      "name": "海外事業 売上（前年同月比）",
+      "bc_ignore": true,
+      "bc_ignore_reason": "BC値94.7あり。月次速報PDFにセグメント別データなし（値検索で未検出）",
+      "bc_key": "海外事業 売上（前年同月比）"
+    },
+    {
+      "key": "食品事業 売上（前年同月比）",
+      "name": "食品事業 売上（前年同月比）",
+      "bc_ignore": true,
+      "bc_ignore_reason": "BC値80.9あり。月次速報PDFにセグメント別データなし（値検索で未検出）",
+      "bc_key": "食品事業 売上（前年同月比）"
+    }
+  ],
+  "ticker": "2750",
+  "company_name": "2750",
+  "created_at": "2026-03-28T16:34:28.083587+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2026年１月度　月次売上高（速報）に関するお知らせ",
+  "sample_submission_date": "2026-02-13",
+  "fields_count": 2,
+  "overwrite_past_months": true,
+  "manual_override": true,
+  "manual_override_note": "Phase 2-3: bc_ignore for fields with persistent extraction mismatch",
+  "manual_override_at": "2026-04-25T06:10:00+09:00",
+  "custom_prompt": "「連結 直近3ヵ月及び期初からの累計」表から抽出してください。\n\n「連結 売上（百万円）」→ 「売上高」行の対象月列の値。百万円単位の数値。\n「連結 売上（前年同月比）」→ 「前年比」行の対象月列の値。100+変化率の形式（例: 122.7 = 前年比22.7%増）。そのまま返してください。\n\n注意: 1セルに金額と前年比が結合されている場合があります。売上高と前年比を正確に区別してください。",
+  "extraction_method": "gemini",
+  "_doc_title_pattern_fixed_at": "2026-04-18T23:24:01.862290+09:00",
+  "_doc_title_pattern_fixed_from": "\\d{4}年\\d{1,2}月度\\s+月次売上高（速報）に関するお知らせ",
+  "_agent_loosened_from": "\\d{4}年\\d{1,2}月度\\s+月次売上高(速報)に関するお知らせ",
+  "_agent_patched_at": "2026-04-19T19:56:30.109020+09:00",
+  "_agent_patch_history": [
+    {
+      "ts": "2026-04-19T19:56:30.109020+09:00",
+      "applied": [
+        "top-level: ['doc_title_pattern', '_agent_loosened_from']"
+      ]
+    }
+  ]
+}

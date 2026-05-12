@@ -195,7 +195,7 @@ GCP の ASN（AS396982 Google LLC）を識別しており、IP を変えても�
 # structure.json が存在する銘柄（= BCにデータがある銘柄）
 # monthly_records.json ではない（月次開示パイプライン対象のみになってしまう）
 def list_tickers_with_records(gcs) -> list[str]:
-    inactive = {p.stem for p in Path("data/monthly_adapters").glob("*.json")
+    inactive = {p.stem for p in Path("meta/monthly").glob("*.json")
                 if json.loads(p.read_text("utf-8")).get("inactive_reason")}
     tickers = []
     for blob in gcs.list_blobs(BUCKET, prefix="monthlydata/"):

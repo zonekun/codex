@@ -1,0 +1,52 @@
+{
+  "ticker": "6137",
+  "company_name": "小池酸工",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "機械装置セグメントにおける当第３四半期連結累計期間の受注高",
+          "unit": "百万円",
+          "is_total": false
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "機械装置セグメントにおける当第３四半期連結会計期間末の受注残高",
+          "unit": "百万円",
+          "is_total": false
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "売上高は全セグメントおよび連結合計の数値が本文中に記載されています。受注高および受注残高については、補足情報の「受注状況」テーブルにて機械装置セグメントのみ開示されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/6137/20260209_6137_小池酸工_決算短信_2026年３月期 第３四半期決算短信〔日本基準〕（連結）_140120260209552027.pdf",
+  "_source_doc_id": "140120260209552027",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:43:02.707232+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      14
+    ],
+    "table_count": 1,
+    "max_rows": 2,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

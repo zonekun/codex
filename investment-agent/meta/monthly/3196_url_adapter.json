@@ -1,0 +1,15 @@
+{
+  "ticker": "3196",
+  "company_name": "ホットランドホールディングス",
+  "ir_page_url": "https://www.hotland.co.jp/policy/monthlyinfo/",
+  "updated_at": "2026-04-24T13:52:42.252045+09:00",
+  "last_checked": "2026-04-21",
+  "status": "active",
+  "type": "html_table",
+  "eir_company_code": "3196",
+  "note": "月次情報ページ。静的404だがPlaywriteでJS描画後に取れる可能性。取れなければinactive化 (2026-04-24)。",
+  "playwright_required": true,
+  "manual_override": true,
+  "manual_override_at": "2026-04-24T13:52:42.252045+09:00",
+  "manual_override_note": "type=html_table+playwright変更 (2026-04-24)"
+}

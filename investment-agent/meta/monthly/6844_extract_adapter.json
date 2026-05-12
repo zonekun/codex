@@ -1,0 +1,64 @@
+{
+  "source": "non-tdnet(pdf)",
+  "format": "pdf",
+  "fields": [
+    {
+      "key": "その他 受注金額（前年同月比）",
+      "name": "その他 受注金額（前年同月比）",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "url_adapter status=skip。GCSには統合レポート(Integrated Report)のみで月次受注データなし"
+    },
+    {
+      "key": "デバイス 受注金額 （前年同月比）",
+      "name": "デバイス 受注金額 （前年同月比）",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "同上"
+    },
+    {
+      "key": "パワーシステム 受注金額 （前年同月比）",
+      "name": "パワーシステム 受注金額 （前年同月比）",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "同上"
+    },
+    {
+      "key": "パワーデバイス 受注金額 （前年同月比）",
+      "name": "パワーデバイス 受注金額 （前年同月比）",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "同上"
+    },
+    {
+      "key": "パワーユニット 受注金額 （前年同月比）",
+      "name": "パワーユニット 受注金額 （前年同月比）",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "同上"
+    },
+    {
+      "key": "全社 受注金額（前年同月比）",
+      "name": "全社 受注金額（前年同月比）",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "同上"
+    },
+    {
+      "key": "電装 受注金額 （前年同月比）",
+      "name": "電装 受注金額 （前年同月比）",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "同上"
+    }
+  ],
+  "extraction_notes": "新電元工業。url_adapter status=skip。GCSには統合レポート(2025IntegratedReport)のみ。月次の受注金額データを開示する文書が確認できないため全field bc_ignore。",
+  "ticker": "6844",
+  "company_name": "新電元工業",
+  "created_at": "2026-04-05T09:59:52.065479+09:00",
+  "created_by": "gemini-2.5-flash",
+  "extraction_method": "gemini",
+  "manual_override": true,
+  "manual_override_note": "Codex成果物を自ら検証・再作成。月次文書不在のためbc_ignore",
+  "manual_override_at": "2026-05-08T00:25:00+09:00"
+}

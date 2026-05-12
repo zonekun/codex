@@ -1,0 +1,18 @@
+{
+  "ticker": "3548",
+  "company_name": "(株)バロックジャパンリミテッド",
+  "ir_page_url": "https://www.baroque-global.com/jp/ir/monthly",
+  "status": "active",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": "月次売上|出退店|売上速報|月次",
+  "link_href_pattern": "/jp/notice/download/\\d+/\\d+",
+  "follow_links": false,
+  "playwright_required": false,
+  "note": "月次 PDF は /jp/notice/download/428/\\d+ 形式で拡張子なし。download_monthly.py の DOWNLOAD_PATH_EXT で PDF 扱い (2026-04-24 D1 対応)。",
+  "updated_at": "2026-04-24T11:36:55.146931+09:00",
+  "last_checked": "2026-04-24",
+  "manual_override": true,
+  "manual_override_at": "2026-04-24T11:36:55.146931+09:00",
+  "manual_override_note": "23NG D1-D4 コード改修で修正 (2026-04-24)"
+}

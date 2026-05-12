@@ -1,0 +1,16 @@
+{
+  "ticker": "9830",
+  "company_name": "トラスコ中山",
+  "ir_page_url": "http://www.trusco.co.jp/ir/financial/monthly/",
+  "updated_at": "2026-04-24T14:03:22.404564+09:00",
+  "last_checked": "2026-04-24",
+  "status": "active",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": "PDFダウンロード|月次売上高",
+  "link_href_pattern": "monthly/files/月次売上高_トラスコ中山株式会社_\\d{4}年\\d{1,2}月\\.pdf",
+  "note": "トラスコ中山月次売上高PDF。ファイル名: 月次売上高_トラスコ中山株式会社_YYYY年M月.pdf。汎用パターンに修正 (2026-04-24修正)",
+  "manual_override": true,
+  "manual_override_at": "2026-04-24T14:03:22.404564+09:00",
+  "manual_override_note": "D群DL0件 scrape_links pattern修正 (2026-04-24)"
+}

@@ -1,0 +1,63 @@
+{
+  "ticker": "6506",
+  "company_name": "安川電",
+  "current_version": "2025-10",
+  "versions": [
+    {
+      "valid_from": "2025-10",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "売上収益",
+          "type": "completed",
+          "description": "連結会計期間における売上収益の合計額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "セグメント別売上収益",
+          "type": "completed",
+          "description": "各報告セグメントにおける外部顧客への売上収益",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上収益"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "モーションコントロール",
+            "ロボット",
+            "システムエンジニアリング",
+            "その他"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "売上収益（完成工事高に相当）の合計およびセグメント別内訳が記載されています。受注高および受注残高については、本文中に定性的な言及はありますが、具体的な金額データの記載はありません。"
+    }
+  ],
+  "_source_pdf": "tdnet/6506/20251003_6506_安川電_決算短信_2026年2月期 第2四半期（中間期）決算短信〔ＩＦＲＳ〕（連結）_140120251003568157.pdf",
+  "_source_doc_id": "140120251003568157",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:18:08.883311+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      5
+    ],
+    "table_count": 2,
+    "max_rows": 12,
+    "max_cols": 4,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

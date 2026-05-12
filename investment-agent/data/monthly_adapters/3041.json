@@ -1,8 +1,0 @@
-{
-  "ticker": "3041",
-  "company_name": "ビューティカダンHD",
-  "inactive_reason": "BC月次データ 2020-06 以降停止（管理対象外判断 2026-04-17）",
-  "excluded": true,
-  "manual_override": true,
-  "inactive_set_at": "2026-04-17T19:33:20+09:00"
-}

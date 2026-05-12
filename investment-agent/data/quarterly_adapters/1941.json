@@ -1,0 +1,93 @@
+{
+  "ticker": "1941",
+  "company_name": "中電工",
+  "current_version": "2025-10",
+  "versions": [
+    {
+      "valid_from": "2025-10",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "個別業績における当期の中間受注高合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "個別業績における当期の中間売上高（完成工事高）合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "次期繰越高",
+          "type": "backlog",
+          "description": "個別業績における中間期末時点の手持工事高（受注残高）",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注高予想",
+          "type": "order_intake",
+          "description": "通期の個別受注高の見通し",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "売上高予想",
+          "type": "completed",
+          "description": "通期の個別売上高の見通し",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "部門",
+          "items": [
+            "屋内電気工事",
+            "空調管工事",
+            "情報通信工事",
+            "配電線工事",
+            "送変電地中線工事"
+          ]
+        },
+        {
+          "dimension_name": "得意先",
+          "items": [
+            "中国電力グループ",
+            "一般得意先"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "個別業績の補足情報として、部門別および得意先別の受注高、売上高、次期繰越高の詳細な実績データが表形式で提供されています。また、通期の個別業績予想についても部門別の内訳が記載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/1941/20251031_1941_中電工_決算短信_2026年3月期第2四半期（中間期）決算短信〔日本基準〕(連結)_140120251030583556.pdf",
+  "_source_doc_id": "140120251030583556",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:05:37.349194+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      6,
+      12,
+      13
+    ],
+    "table_count": 11,
+    "max_rows": 8,
+    "max_cols": 7,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 11"
+    ]
+  }
+}

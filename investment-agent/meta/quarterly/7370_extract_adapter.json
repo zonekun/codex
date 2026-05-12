@@ -1,0 +1,26 @@
+{
+  "ticker": "7370",
+  "company_name": "Ｇ－Ｅｎｊｉｎ",
+  "current_version": "2026-04",
+  "versions": [
+    {
+      "valid_from": "2026-04",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "presentation",
+      "page_keywords": [
+        "バックログ回復と成長への道筋",
+        "成約高（契約高）四半期推移",
+        "売上高40億円"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "成約高（契約高）の四半期推移（25-3Q, 25-4Q, 26-1Q, 26-2Q, 26-3Q）の数値と、売上高目標の数値を抽出してください。",
+      "notes": "本ページは棒グラフとテキストボックスで構成されており、表形式ではないためgemini_visionを選択しました。"
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/7370/20260413_7370_Ｇ－Ｅｎｊｉｎ_決算説明資料_2026年５月期 第３四半期決算説明資料_140120260412502181.pdf",
+  "_source_doc_id": "140120260412502181",
+  "_generated_at": "2026-04-30T23:35:35.699706+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

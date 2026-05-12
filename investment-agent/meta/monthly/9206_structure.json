@@ -1,0 +1,24 @@
+{
+  "ticker": "9206",
+  "company_name": "9206",
+  "metrics": [
+    {
+      "name": "国内線 座席利用率 実績（%）",
+      "source": "bc"
+    },
+    {
+      "name": "国内線 提供座席数（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "国内線 旅客数（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "国内線 運行回数（回）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

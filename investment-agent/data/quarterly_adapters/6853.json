@@ -1,0 +1,114 @@
+{
+  "ticker": "6853",
+  "company_name": "共和電",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当連結会計年度における受注高の合計",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当連結会計年度末における受注残高の合計",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "当連結会計年度における売上高の合計",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "計測機器 受注高",
+          "type": "order_intake",
+          "description": "計測機器セグメントの受注高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "コンサルティング 受注高",
+          "type": "order_intake",
+          "description": "コンサルティングセグメントの受注高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "計測機器 受注残高",
+          "type": "backlog",
+          "description": "計測機器セグメントの受注残高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        },
+        {
+          "name": "コンサルティング 受注残高",
+          "type": "backlog",
+          "description": "コンサルティングセグメントの受注残高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        },
+        {
+          "name": "計測機器 売上高",
+          "type": "completed",
+          "description": "計測機器セグメントの売上高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "コンサルティング 売上高",
+          "type": "completed",
+          "description": "コンサルティングセグメントの売上高",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "計測機器",
+            "コンサルティング"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "セグメント別の受注高、受注残高、売上高が表形式で詳細に記載されている。単位は千円。"
+    }
+  ],
+  "_source_pdf": "tdnet/6853/20260209_6853_共和電_決算短信_2025年12月期決算短信〔日本基準〕(連結)_140120260123537964.pdf",
+  "_source_doc_id": "140120260123537964",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:31:36.570175+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4
+    ],
+    "table_count": 2,
+    "max_rows": 5,
+    "max_cols": 7,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

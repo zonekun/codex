@@ -1,0 +1,46 @@
+{
+  "ticker": "6702",
+  "company_name": "富士通",
+  "current_version": "2025-10",
+  "versions": [
+    {
+      "valid_from": "2025-10",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "unit": "億円",
+          "description": "PDF??????????????"
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "ppt_chart",
+      "notes": "国内サービスソリューションの売上計画達成に向けた受注残高の状況、および重点領域であるUvanceとモダナイゼーションの受注・売上実績がグラフと表で示されている。\nPhase 6b #23: ??JSON?PDF???????????????????????????"
+    }
+  ],
+  "_source_pdf": "tdnet/6702/20251030_6702_富士通_その他（未分類）_2025年度第2四半期決算概要_140120251030582929.pdf",
+  "_source_doc_id": "140120251030582929",
+  "_source_type": "other",
+  "_generated_at": "2026-04-30T19:25:06.355703+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      10,
+      12,
+      13
+    ],
+    "table_count": 19,
+    "max_rows": 3,
+    "max_cols": 4,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 19"
+    ]
+  }
+}

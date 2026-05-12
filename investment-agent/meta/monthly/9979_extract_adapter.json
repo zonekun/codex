@@ -1,0 +1,47 @@
+{
+  "source": "non-tdnet(pdf)",
+  "format": "pdf",
+  "fields": [
+    {
+      "key": "直営 既存店 売上（前年同月比）",
+      "name": "直営 既存店 売上（前年同月比）",
+      "description": "「月次売上状況について」PDF。直営店の既存店売上高前年同月比。",
+      "value_type": "percentage"
+    },
+    {
+      "key": "直営 全店 売上（前年同月比）",
+      "name": "直営 全店 売上（前年同月比）",
+      "description": "同PDF。直営店の全店売上高前年同月比。",
+      "value_type": "percentage"
+    },
+    {
+      "key": "直営 全店 客単価（前年同月比）",
+      "name": "直営 全店 客単価（前年同月比）",
+      "description": "同PDF。直営店の全店客単価前年同月比。",
+      "value_type": "percentage"
+    },
+    {
+      "key": "直営 全店 客数（前年同月比）",
+      "name": "直営 全店 客数（前年同月比）",
+      "description": "同PDF。直営店の全店客数前年同月比。",
+      "value_type": "percentage"
+    },
+    {
+      "key": "直営 全店 店舗数",
+      "name": "直営 全店 店舗数",
+      "description": "同PDF。直営店の全店店舗数。",
+      "value_type": "number"
+    }
+  ],
+  "extraction_notes": "大庄。IR「月次売上状況について」PDFをGCS保存(2015〜2026)。12件。2020年4月〜一時中断、2021年8月〜再開。PDF内に直営店の全店/既存店売上高・客数・客単価の前年比+店舗数を開示。8月期決算。url_adapter scrape_links(active)で取得。",
+  "ticker": "9979",
+  "company_name": "大庄",
+  "created_at": "2026-04-04T01:38:11.496285+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "月次売上状況について",
+  "sample_file": "202603_9979_2026年3月の月次売上状況について_62239400.pdf",
+  "extraction_method": "gemini",
+  "manual_override": true,
+  "manual_override_note": "Codex成果物を自ら検証・再作成。月次売上状況PDF 12件確認。2020中断→2021再開。5メトリクス抽出可能",
+  "manual_override_at": "2026-05-08T01:00:00+09:00"
+}

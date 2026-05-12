@@ -1,0 +1,13 @@
+{
+  "ticker": "7682",
+  "company_name": "浜木綿",
+  "ir_page_url": "https://ir.hamayuu.co.jp/ja/ir.html",
+  "updated_at": "2026-04-21T10:10:05.069060+09:00",
+  "last_checked": "2026-04-21",
+  "status": "active",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": "月次|売上",
+  "link_href_pattern": "/ja/ir/news.*\\.(pdf)",
+  "note": "月次PDFリンク4件検出 best=https://ir.hamayuu.co.jp/ja/ir/news/news6871234924145421985/main/0/link/pdffile.pdf"
+}

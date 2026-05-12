@@ -1,0 +1,11 @@
+{
+  "ticker": "9994",
+  "company_name": "やまや",
+  "ir_page_url": "https://e-actionlearning.jp/companies/9994/performance/month",
+  "updated_at": "2026-04-21T13:05:56.977936+09:00",
+  "last_checked": "2026-04-21",
+  "status": "skip",
+  "type": null,
+  "skip_reason": "subpage_no_links",
+  "note": "月次ページリンク 2 件検出、サブページ踏み込み後にDLリンク無し（best=N/A）"
+}

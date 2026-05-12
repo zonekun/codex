@@ -1,0 +1,16 @@
+{
+  "ticker": "8511",
+  "company_name": "日本証券金融",
+  "ir_page_url": "https://www.jsf.co.jp/ja/news.html",
+  "type": "scrape_links",
+  "status": "active",
+  "link_text_pattern": "平均残高|貸借取引貸付金|月次",
+  "link_href_pattern": "data\\.swcms\\.net/file/jsf/ja/news/auto_",
+  "manual_override": true,
+  "note": "2026-04-24修正: 旧URL jsf.co.jp/ir/monthly/はリダイレクト済。月次貸借取引レポートはnews.htmlからswcms.net PDF。link_text_patternで月次に絞込",
+  "updated_at": "2026-04-24T17:15:36.150884+09:00",
+  "css_selector": null,
+  "table_selector": null,
+  "playwright_required": false,
+  "follow_links": false
+}

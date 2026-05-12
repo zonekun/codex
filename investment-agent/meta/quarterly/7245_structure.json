@@ -1,0 +1,44 @@
+{
+  "ticker": "7245",
+  "company_name": "大同メタル",
+  "current_version": "2026-03",
+  "versions": [
+    {
+      "valid_from": "2026-03",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "手持ち工事量",
+          "type": "backlog",
+          "description": "マリン・エネルギー事業（大型船舶）における手持ち工事量",
+          "unit": "万総トン",
+          "is_total": false
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "text",
+      "complexity": "no_table",
+      "notes": "本文中に連結およびセグメント別の売上高、ならびにマリン・エネルギー事業における手持ち工事量（万総トン単位）の記載があります。受注高（金額）の具体的な数値記載はありません。\nユーザー指示により、金額以外または外貨単位の受注関連メトリクも必要なため復元。"
+    }
+  ],
+  "_source_pdf": "tdnet/7245/20260310_7245_大同メタル_決算短信_2026年3月期第3四半期決算短信〔日本基準〕（連結）（公認会計士等による期中レ_140120260217564052.pdf",
+  "_source_doc_id": "140120260217564052",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:46:05.694473+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "no_table",
+    "relevant_pages": [
+      5
+    ],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "pdfplumber found no tables on relevant pages"
+    ]
+  }
+}

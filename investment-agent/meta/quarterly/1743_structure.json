@@ -1,0 +1,59 @@
+{
+  "ticker": "1743",
+  "company_name": "コーアツ工業",
+  "current_version": "2025-11",
+  "versions": [
+    {
+      "valid_from": "2025-11",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "前期繰越高",
+          "type": "backlog",
+          "description": "期首時点における受注残高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "当期受注高",
+          "type": "order_intake",
+          "description": "当連結会計年度における受注高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "次期繰越高",
+          "type": "backlog",
+          "description": "期末時点における受注残高",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "決算短信の2ページ目に「事業の種類別」の受注高、売上高、および繰越高（受注残高）の推移をまとめた表が記載されている。"
+    }
+  ],
+  "_source_pdf": "tdnet/1743/20251113_1743_コーアツ工業_決算短信_2025年９月期決算短信〔日本基準〕(連結)_140120251113500207.pdf",
+  "_source_doc_id": "140120251113500207",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T16:37:14.023552+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      9
+    ],
+    "table_count": 2,
+    "max_rows": 50,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

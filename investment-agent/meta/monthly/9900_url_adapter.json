@@ -1,0 +1,14 @@
+{
+  "ticker": "9900",
+  "company_name": "(株)サガミホールディングス",
+  "ir_page_url": "https://www.sagami-holdings.co.jp/ir/month/",
+  "updated_at": "2026-04-24T13:38:50.822255+09:00",
+  "last_checked": "2026-04-21",
+  "status": "active",
+  "type": "html_table",
+  "note": "月次データHTMLテーブル(10テーブル)。PDF無し (2026-04-24 URL修正)。",
+  "playwright_required": false,
+  "manual_override": true,
+  "manual_override_at": "2026-04-24T13:38:50.822255+09:00",
+  "manual_override_note": "URL修正+type変更 (2026-04-24)"
+}

@@ -1,0 +1,56 @@
+{
+  "ticker": "6269",
+  "company_name": "三井海洋",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当連結会計年度における受注高の総額",
+          "unit": "千米ドル",
+          "is_total": true
+        },
+        {
+          "name": "売上収益",
+          "type": "completed",
+          "description": "当連結会計年度における売上収益の総額",
+          "unit": "千米ドル",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当連結会計年度末における受注残高の総額",
+          "unit": "千米ドル",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "text",
+      "complexity": "simple_table",
+      "notes": "受注高、売上収益、受注残高の数値が本文中に記載されている。財政状態については表形式で記載がある。セグメントは単一のため内訳の記載はない。\nユーザー指示により、金額以外または外貨単位の受注関連メトリクも必要なため復元。"
+    }
+  ],
+  "_source_pdf": "tdnet/6269/20260213_6269_三井海洋_決算短信_2025年12月期決算短信〔ＩＦＲＳ〕(連結)_140120260213558977.pdf",
+  "_source_doc_id": "140120260213558977",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:55:54.074439+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "simple_table",
+    "relevant_pages": [
+      5
+    ],
+    "table_count": 1,
+    "max_rows": 4,
+    "max_cols": 4,
+    "broken_col0": false,
+    "unit_mixed": false,
+    "notes": []
+  }
+}

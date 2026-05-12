@@ -1,0 +1,88 @@
+{
+  "ticker": "1890",
+  "company_name": "東洋建",
+  "current_version": "2025-11",
+  "versions": [
+    {
+      "valid_from": "2025-11",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当第2四半期累計期間における受注高の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "当第2四半期累計期間における完成工事高（売上高）の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "繰越高",
+          "type": "backlog",
+          "description": "当第2四半期末における手持工事高（繰越高）の合計",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "工種別",
+          "items": [
+            "国内海洋土木",
+            "国内陸上土木",
+            "国内建築",
+            "海外海洋土木",
+            "海外陸上土木",
+            "海外建築",
+            "その他"
+          ]
+        },
+        {
+          "dimension_name": "施主別",
+          "items": [
+            "土木国内官庁",
+            "土木国内民間",
+            "土木海外",
+            "建築国内官庁",
+            "建築国内民間",
+            "建築海外",
+            "その他"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "決算短信の補足情報として、受注高、売上高、繰越高の3つの主要メトリクスについて、工種別（国内・海外および海洋土木・陸上土木・建築の組み合わせ）と施主別（官庁・民間・海外）の2つの切り口で詳細な数値データが提供されている。"
+    }
+  ],
+  "_source_pdf": "tdnet/1890/20251110_1890_東洋建_決算短信_2026年3月期 第2四半期（中間期）決算短信〔日本基準〕（連結）_140120251110594074.pdf",
+  "_source_doc_id": "140120251110594074",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:00:15.472553+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      5,
+      6,
+      7,
+      8,
+      13
+    ],
+    "table_count": 7,
+    "max_rows": 48,
+    "max_cols": 6,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 7"
+    ]
+  }
+}

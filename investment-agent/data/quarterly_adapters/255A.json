@@ -1,0 +1,69 @@
+{
+  "ticker": "255A",
+  "company_name": "ジーエルテクノＨＤ",
+  "current_version": "2025-08",
+  "versions": [
+    {
+      "valid_from": "2025-08",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "当第１四半期連結累計期間の連結売上高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "分析機器事業 売上高",
+          "type": "completed",
+          "description": "分析機器事業における売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "半導体事業 売上高",
+          "type": "completed",
+          "description": "半導体事業における売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "分析機器事業",
+            "半導体事業",
+            "自動認識事業"
+          ]
+        }
+      ],
+      "presentation_format": "text",
+      "complexity": "no_table",
+      "notes": "本文中に売上高の数値は記載されているが、受注高および受注残高の具体的な数値記載はない。半導体事業において「豊富な受注残高」がある旨の定性的な記述のみ存在する。"
+    }
+  ],
+  "_source_pdf": "tdnet/255A/20250808_255A_ジーエルテクノＨＤ_決算短信_2026年３月期第１四半期決算短信〔日本基準〕(連結)_140120250807534862.pdf",
+  "_source_doc_id": "140120250807534862",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:25:17.914705+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "no_table",
+    "relevant_pages": [
+      4
+    ],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "pdfplumber found no tables on relevant pages"
+    ]
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "ticker": "3771",
+  "company_name": "システムリサーチ",
+  "current_version": "2025-10",
+  "versions": [
+    {
+      "valid_from": "2025-10",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当中間連結会計期間における業務区分別の受注高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当中間連結会計期間末における業務区分別の受注残高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "販売高",
+          "type": "completed",
+          "description": "当中間連結会計期間における業務区分別および主要な相手先別の販売高",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "業務区分",
+          "items": [
+            "SIサービス業務",
+            "ソフトウエア開発業務",
+            "ソフトウエアプロダクト業務",
+            "商品販売",
+            "その他"
+          ]
+        },
+        {
+          "dimension_name": "相手先",
+          "items": [
+            "(株)トヨタシステムズ"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "業務区分別の受注高、受注残高、販売高のデータが提供されています。また、販売高については主要な相手先別の内訳も記載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/3771/20251028_3771_システムリサーチ_決算短信_2026年３月期第２四半期（中間期）決算短信〔日本基準〕(連結)_140120251024578863.pdf",
+  "_source_doc_id": "140120251024578863",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:50:46.436465+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      13
+    ],
+    "table_count": 3,
+    "max_rows": 8,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

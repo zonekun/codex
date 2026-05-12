@@ -1,0 +1,16 @@
+{
+  "ticker": "6412",
+  "company_name": "平和",
+  "ir_page_url": "https://www.heiwanet.co.jp/ir/library/finance4/",
+  "status": "active",
+  "type": "jsonp_api",
+  "jsonp_api_url": "https://azcms.ir-service.net/_irvassetctgry.aspx?private=52,53,54tu4TGf35",
+  "jsonp_callback": "irvasset",
+  "link_text_pattern": "月次営業実績",
+  "note": "PGM 月次営業実績は azcms.ir-service.net の JSONP API で配信 (callback=irvasset, parallel arrays: date/title/url/size/category/type)。download_monthly.py の handle_jsonp_api ハンドラで処理 (2026-04-24 D3 対応)。",
+  "updated_at": "2026-04-24T11:46:19.081526+09:00",
+  "last_checked": "2026-04-24",
+  "manual_override": true,
+  "manual_override_at": "2026-04-24T11:46:19.081526+09:00",
+  "manual_override_note": "23NG D1-D4 コード改修で修正 (2026-04-24)"
+}

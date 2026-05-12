@@ -1,0 +1,28 @@
+{
+  "ticker": "8934",
+  "company_name": "サンフロンティア",
+  "current_version": "2025-08",
+  "versions": [
+    {
+      "valid_from": "2025-08",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/8934/20250807_8934_サンフロンティア_決算短信_2026年３月期第１四半期　決算短信〔日本基準〕(連結)_140120250807534286.pdf",
+  "_source_doc_id": "140120250807534286",
+  "_generated_at": "2026-04-30T20:11:55.875749+09:00",
+  "_model_used": null
+}

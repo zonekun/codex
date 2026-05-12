@@ -1,0 +1,15 @@
+{
+  "ticker": "3407",
+  "company_name": "旭化成",
+  "ir_page_url": "https://www.asahi-kasei.com/jp/ir/library/finance/index.html",
+  "type": "html_table",
+  "status": "active",
+  "link_text_pattern": null,
+  "link_href_pattern": null,
+  "playwright_required": false,
+  "note": "ホームズ受注速報はHTMLテーブル埋め込み。唯一のダウンロードリンクはFinancial Factbook Excel（factbook.xlsx）であり非月次。typeをhtml_tableに変更してPDFリンクスクレイピングを回避。2026-04-24修正",
+  "manual_override": true,
+  "manual_override_note": "2026-04-24 type=html_table に修正（月次受注データはHTMLテーブルのみ、factbook.xlsx汚染を排除）",
+  "manual_override_at": "2026-04-24T00:00:00+09:00",
+  "updated_at": "2026-04-24T00:00:00+09:00"
+}

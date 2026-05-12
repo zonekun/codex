@@ -1,0 +1,28 @@
+name: 2025_gap_run2_h2
+
+loads:
+  - job: tdnet-load-daily
+    region: us-west1
+    env:
+      DATE_FROM: "20250701"
+      DATE_TO: "20251231"
+      ALLOW_FULL_BACKFILL: "1"
+    args: ["--job-mode=load"]
+
+workflows:
+  - name: ai_processing_flow
+    location: us-central1
+    data:
+      date_from: "20250701"
+      date_to: "20250930"
+  - name: ai_processing_flow
+    location: us-central1
+    data:
+      date_from: "20251001"
+      date_to: "20251231"
+
+options:
+  parallel_loads: 1
+  poll_interval_s: 120
+  notify_on_start: true
+  notify_each_load: true

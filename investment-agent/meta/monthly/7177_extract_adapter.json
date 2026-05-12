@@ -1,0 +1,40 @@
+{
+  "source": "tdnet",
+  "format": "xlsx",
+  "sheet_name": "monthlyreport",
+  "label_col_index": 0,
+  "month_row_index": 2,
+  "data_start_row": 3,
+  "fields": [
+    {
+      "key": "株式 売買代金（円）",
+      "name": "株式 売買代金（円）",
+      "value_type": "integer",
+      "bc_key": "株式 売買代金（円）"
+    },
+    {
+      "key": "株式 約定件数（件）",
+      "name": "株式 約定件数（件）",
+      "value_type": "integer",
+      "bc_key": "株式 約定件数（件）"
+    },
+    {
+      "key": "証券取引 口座数",
+      "name": "証券取引 口座数",
+      "value_type": "integer",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "BC値286647あり。月次開示情報(速報)PDFには総口座数(549,370)・FX口座数(862,968)等は開示されるが、『証券取引口座数』単独での開示なし。月次業績(速報)PDFにも口座数セクションなし"
+    }
+  ],
+  "extraction_notes": "月次開示データの一般的な構造に基づき、月ヘッダーは3行目（インデックス2）、データ開始行は4行目（インデックス3）と仮定しています。実際のデータ構造によっては調整が必要です。",
+  "ticker": "7177",
+  "company_name": "7177",
+  "created_at": "2026-04-04T00:55:28.792883+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_file": "000000_7177_Excelダウンロード_f32a7950.xlsx",
+  "extraction_method": "gemini",
+  "gemini_custom_prompt": "月次業績速報PDFの「営業収益」内訳から、「受入手数料」「トレーディング損益」等の合計ではなく、株式関連の売買代金と約定件数を抽出してください。表にない場合はnullを返してください。",
+  "manual_override": true,
+  "manual_override_at": "2026-05-05T18:24:12.610448+09:00",
+  "manual_override_note": "Gemini化: PDFフォーマット変更で旧regex不適(2026-05-05)"
+}

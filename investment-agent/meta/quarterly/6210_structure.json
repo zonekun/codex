@@ -1,0 +1,68 @@
+{
+  "ticker": "6210",
+  "company_name": "ＴＯＹＯイノベックス",
+  "current_version": "2026-01",
+  "versions": [
+    {
+      "valid_from": "2026-01",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "連結合計の受注高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "射出成形機 受注高",
+          "type": "order_intake",
+          "description": "射出成形機セグメントの受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "ダイカストマシン 受注高",
+          "type": "order_intake",
+          "description": "ダイカストマシンセグメントの受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "射出成形機",
+            "ダイカストマシン"
+          ]
+        }
+      ],
+      "presentation_format": "text",
+      "complexity": "no_table",
+      "notes": "本文中に受注高および売上高の合計値とセグメント別の数値が記載されています。受注残高に関する具体的な数値記載はありません。"
+    }
+  ],
+  "_source_pdf": "tdnet/6210/20260130_6210_ＴＯＹＯイノベックス_決算短信_2026年３月期 第３四半期決算短信〔日本基準〕（連結）_140120260129540867.pdf",
+  "_source_doc_id": "140120260129540867",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:47:37.221974+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "no_table",
+    "relevant_pages": [
+      4
+    ],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "pdfplumber found no tables on relevant pages"
+    ]
+  }
+}

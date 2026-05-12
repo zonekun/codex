@@ -1,0 +1,38 @@
+{
+  "ticker": "1934",
+  "company_name": "ユアテック",
+  "current_version": "2025-04",
+  "versions": [
+    {
+      "valid_from": "2025-04",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "連結売上高およびセグメント別の売上高は、1ページ目の「経営成績等の概況」テキストより抽出。3ページ目の損益計算書には個別ベースの完成工事高が記載されている。受注高および手持工事高（受注残高）については、テキスト内で言及はあるものの、具体的な数値を含む表は提供された画像範囲内（1-3ページ）には含まれていない（事前判定の通り、通常は23-24ページ等の補足資料に記載される）。 [2026-05-07] completedメトリクスのみのため収集対象外(false化)。"
+    }
+  ],
+  "_source_pdf": "tdnet/1934/20250428_1934_ユアテック_決算短信_2025年３月期　決算短信〔日本基準〕（連結）_140120250424523003.pdf",
+  "_source_doc_id": "140120250424523003",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:04:45.692132+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      5,
+      23,
+      24
+    ],
+    "table_count": 2,
+    "max_rows": 38,
+    "max_cols": 7,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "ticker": "9854",
+  "company_name": "愛眼",
+  "ir_page_url": "https://www.aigan.co.jp/corporate/ir/other/",
+  "updated_at": "2026-04-21T10:24:13.159032+09:00",
+  "last_checked": "2026-04-21",
+  "status": "active",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": "月次",
+  "link_href_pattern": "/wp/wp\\-content/uploads/feature.*\\.(pdf)",
+  "note": "月次PDFリンク2件検出 best=https://www.aigan.co.jp/wp/wp-content/uploads/feature/sokuhou202603.pdf"
+}

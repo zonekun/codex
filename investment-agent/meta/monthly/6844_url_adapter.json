@@ -1,0 +1,11 @@
+{
+  "ticker": "6844",
+  "company_name": "新電元工業",
+  "ir_page_url": "https://shikiho.toyokeizai.net/news/search/category?query=%E6%9C%88%E6%AC%A1%E5%A0%B1%E5%91%8A%E6%9B%B8%E9%80%9F%E5%A0%B1",
+  "updated_at": "2026-04-21T12:49:42.313718+09:00",
+  "last_checked": "2026-04-21",
+  "status": "skip",
+  "type": null,
+  "skip_reason": "subpage_no_links",
+  "note": "月次ページリンク 3 件検出、サブページ踏み込み後にDLリンク無し（best=https://shikiho.toyokeizai.net/news/search/category?query=%E6%9C%88%E6%AC%A1%E5%A0%B1%E5%91%8A%E6%9B%B8%E9%80%9F%E5%A0%B1）"
+}

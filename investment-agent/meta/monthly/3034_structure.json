@@ -1,0 +1,20 @@
+{
+  "ticker": "3034",
+  "company_name": "3034",
+  "metrics": [
+    {
+      "name": "グループ店舗数",
+      "source": "bc"
+    },
+    {
+      "name": "処方箋応需枚数（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "調剤報酬（前年同月比）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

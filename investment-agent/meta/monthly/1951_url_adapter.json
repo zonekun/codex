@@ -1,0 +1,20 @@
+{
+  "ticker": "1951",
+  "company_name": "エクシオグループ",
+  "updated_at": "2026-04-20",
+  "ir_page_url": "https://www.exeo.co.jp/ir/ir.html",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": "月次受注",
+  "link_href_pattern": "\\.pdf",
+  "table_selector": null,
+  "status": "active",
+  "skip_reason": null,
+  "note": "https://www.exeo.co.jp/ir/ir.html に月次受注状況PDF直リンクあり。毎月翌月8営業日に公表",
+  "url_source": "recovered_from_index_csv",
+  "last_checked": "2026-04-20",
+  "follow_links": false,
+  "playwright_required": false,
+  "recovered_at": "2026-04-20T21:37:09.325193+09:00",
+  "recovery_reason": "sync_bug_overwrite_20260420"
+}

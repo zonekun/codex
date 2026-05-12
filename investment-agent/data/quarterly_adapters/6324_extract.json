@@ -1,0 +1,28 @@
+{
+  "ticker": "6324",
+  "company_name": "ハーモニック",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Vision extraction selected because structure is complex or data is unavailable."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/6324/20260210_6324_ハーモニック_決算短信_2026年３月期　第３四半期決算短信〔日本基準〕（連結）_140120260205548087.pdf",
+  "_source_doc_id": "140120260205548087",
+  "_generated_at": "2026-04-30T19:02:09.987609+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

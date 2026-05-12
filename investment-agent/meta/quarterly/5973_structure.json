@@ -1,0 +1,53 @@
+{
+  "ticker": "5973",
+  "company_name": "トーアミ",
+  "current_version": "2025-05",
+  "versions": [
+    {
+      "valid_from": "2025-05",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当連結会計年度における受注実績の合計",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当連結会計年度末における受注残高の合計",
+          "unit": "千円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "受注状況（受注高・受注残高）は土木・建築工事セグメントのみが対象であり、土木建築用資材セグメントは見込生産のため記載がありません。販売実績は全セグメントの合計値が提供されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/5973/20250513_5973_トーアミ_決算短信_2025年３月期　決算短信〔日本基準〕（連結）_140120250512539982.pdf",
+  "_source_doc_id": "140120250512539982",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:36:37.675498+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      21
+    ],
+    "table_count": 4,
+    "max_rows": 4,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 4"
+    ]
+  }
+}

@@ -99,7 +99,7 @@ def main():
     args = parser.parse_args()
 
     now = datetime.now(JST).strftime('%Y-%m-%dT%H:%M:%S+09:00')
-    adapters_dir = Path('data/monthly_adapters')
+    adapters_dir = Path('meta/monthly')
 
     diffs = []
     applied = 0
@@ -135,7 +135,7 @@ def main():
                 d['manual_override'] = True
                 d['desc_rewrite_at'] = now
                 data_str = json.dumps(d, ensure_ascii=False, indent=2)
-                (adapters_dir / f'{ticker}.json').write_text(data_str, encoding='utf-8')
+                (adapters_dir / f'{ticker}_extract_adapter.json').write_text(data_str, encoding='utf-8')
                 bucket.blob(f'monthly/meta/{ticker}/extract_adapter.json').upload_from_string(
                     data_str, content_type='application/json',
                 )

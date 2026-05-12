@@ -1,0 +1,48 @@
+{
+  "ticker": "389A",
+  "company_name": "Ｐ－八光オート",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "セグメント別の受注高",
+          "unit": "千円",
+          "is_total": false
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "text",
+      "complexity": "complex_table",
+      "notes": "セグメント別の受注高および売上高が「1. 経営成績等の概況」の本文中に記載されています。受注残高（バックログ）に関する具体的な数値の記載は確認できませんでした。"
+    }
+  ],
+  "_source_pdf": "tdnet/389A/20260213_389A_Ｐ－八光オート_決算短信_2025年12月期決算短信〔日本基準〕(非連結)_140120260213561437.pdf",
+  "_source_doc_id": "140120260213561437",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:55:13.473810+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      5,
+      7,
+      10
+    ],
+    "table_count": 4,
+    "max_rows": 9,
+    "max_cols": 7,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 4"
+    ]
+  }
+}

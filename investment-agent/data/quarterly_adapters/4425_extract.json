@@ -1,0 +1,28 @@
+{
+  "ticker": "4425",
+  "company_name": "Ｇ－Ｋｕｄａｎ",
+  "current_version": "2024-11",
+  "versions": [
+    {
+      "valid_from": "2024-11",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "presentation",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/4425/20241118_4425_Ｇ－Ｋｕｄａｎ_決算説明資料_2025年３月期　第２四半期決算説明に関する質疑応答内容の公開のお知らせ_140120241118525842.pdf",
+  "_source_doc_id": "140120241118525842",
+  "_generated_at": "2026-04-30T18:07:57.468984+09:00",
+  "_model_used": null
+}

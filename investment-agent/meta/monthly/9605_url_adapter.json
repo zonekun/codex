@@ -1,0 +1,13 @@
+{
+  "ticker": "9605",
+  "company_name": "東映",
+  "ir_page_url": "https://www.toei.co.jp/ir/monthly/",
+  "updated_at": "2026-04-21T10:22:44.565194+09:00",
+  "last_checked": "2026-04-21",
+  "status": "active",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": "PDF",
+  "link_href_pattern": "/ir.*\\.(pdf)",
+  "note": "月次PDFリンク3件検出 best=https://www.toei.co.jp/ir/library/integration/__icsFiles/afieldfile/2025/12/19/TOEI_IR_2025_hi.pdf"
+}

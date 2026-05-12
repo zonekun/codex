@@ -1,0 +1,28 @@
+{
+  "ticker": "1850",
+  "company_name": "南海辰村建設",
+  "current_version": "2025-10",
+  "versions": [
+    {
+      "valid_from": "2025-10",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Vision extraction selected because structure is complex or data is unavailable."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/1850/20251030_1850_南海辰村建設_決算短信_2026年３月期 第２四半期　決算短信〔日本基準〕（連結）_140120251021576689.pdf",
+  "_source_doc_id": "140120251021576689",
+  "_generated_at": "2026-04-30T16:53:12.330525+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

@@ -1,0 +1,28 @@
+{
+  "ticker": "8604",
+  "company_name": "8604",
+  "metrics": [
+    {
+      "name": "オンラインサービス口座数（千口座）",
+      "source": "bc"
+    },
+    {
+      "name": "残あり顧客口座数（千口座）",
+      "source": "bc"
+    },
+    {
+      "name": "総募集買付額（十億円）",
+      "source": "bc"
+    },
+    {
+      "name": "運用資産残高 ネット（兆円）",
+      "source": "bc"
+    },
+    {
+      "name": "顧客資産残高（兆円）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """adapter.json の doc_title_pattern 健全性チェック.
 
-全 monthly_adapters/*.json の doc_title_pattern を走査し、以下を検出:
+全 meta/monthly/*_extract_adapter.json の doc_title_pattern を走査し、以下を検出:
   - 全角英数・全角記号の混入（Ⅰ-Ⅻ / ０-９ / ａ-ｚ / ｛｝（）等）
   - re.compile 失敗（正規表現として無効）
   - 直近の GCS 文書タイトルに対する re.search 不一致（採取した全文書にマッチゼロ）
@@ -30,7 +30,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 JST = timezone(timedelta(hours=9))
-ADAPTER_DIR = Path("data/monthly_adapters")
+ADAPTER_DIR = Path("meta/monthly")
 GCS_BUCKET = "stock_data_1930932"
 
 
@@ -142,8 +142,8 @@ def main() -> None:
     broken = 0
     normalize_fix = 0
 
-    for path in sorted(ADAPTER_DIR.glob("*.json")):
-        ticker = path.stem
+    for path in sorted(ADAPTER_DIR.glob("*_extract_adapter.json")):
+        ticker = path.name.removesuffix("_extract_adapter.json")
         try:
             with open(path, encoding="utf-8") as f:
                 adapter = json.load(f)

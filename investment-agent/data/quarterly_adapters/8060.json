@@ -1,0 +1,96 @@
+{
+  "ticker": "8060",
+  "company_name": "キヤノンＭＪ",
+  "current_version": "2026-01",
+  "versions": [
+    {
+      "valid_from": "2026-01",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "エンタープライズセグメントの売上高合計",
+          "unit": "億円",
+          "is_total": true
+        },
+        {
+          "name": "キヤノン製品他",
+          "type": "completed",
+          "description": "エンタープライズセグメントにおけるキヤノン製品等の売上高",
+          "unit": "億円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "ITソリューション",
+          "type": "completed",
+          "description": "エンタープライズセグメントにおけるITソリューションの売上高",
+          "unit": "億円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "売上高（キヤノンITソリューションズ）",
+          "type": "completed",
+          "description": "主要関係会社であるキヤノンITソリューションズ単体の売上高",
+          "unit": "億円",
+          "is_total": false
+        },
+        {
+          "name": "キヤノンITソリューションズ受注高前年比",
+          "type": "order_intake",
+          "description": "主要関係会社であるキヤノンITソリューションズの受注高の対前年伸び率",
+          "unit": "%",
+          "is_total": false
+        },
+        {
+          "name": "キヤノンITソリューションズ受注残高前年比",
+          "type": "backlog",
+          "description": "主要関係会社であるキヤノンITソリューションズの受注残高の対前年伸び率",
+          "unit": "%",
+          "is_total": false
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "製品・サービス別内訳",
+          "items": [
+            "キヤノン製品他",
+            "ITソリューション"
+          ]
+        },
+        {
+          "dimension_name": "主要関係会社",
+          "items": [
+            "キヤノンITソリューションズ"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "エンタープライズセグメントおよび主要子会社の売上高（金額）が記載されています。 補完チェッカー精査により、金額ではないが受注高・受注残高の対前年伸び率が数値付き先行指標として開示されているためメトリクスに追加。"
+    }
+  ],
+  "_source_pdf": "tdnet/8060/20260128_8060_キヤノンＭＪ_決算説明資料_2025年度決算説明資料_140120260122537346.pdf",
+  "_source_doc_id": "140120260122537346",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T20:04:21.678459+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      11
+    ],
+    "table_count": 5,
+    "max_rows": 8,
+    "max_cols": 10,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 5"
+    ]
+  }
+}

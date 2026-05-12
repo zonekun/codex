@@ -1,0 +1,39 @@
+{
+  "ticker": "2590",
+  "company_name": "ＤｙＤｏ",
+  "current_version": "2026-03",
+  "versions": [
+    {
+      "valid_from": "2026-03",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "breakdown_dimensions": [],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "提供された資料（貸借対照表および株主資本等変動計算書）には、受注高、売上高、受注残高に関する数値データは含まれていません。"
+    }
+  ],
+  "_source_pdf": "tdnet/2590/20260304_2590_ＤｙＤｏ_決算短信_2026年1月期 決算短信〔日本基準〕（連結）_140120260304575305.pdf",
+  "_source_doc_id": "140120260304575305",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:25:56.108319+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      35,
+      37,
+      38
+    ],
+    "table_count": 5,
+    "max_rows": 42,
+    "max_cols": 12,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 5"
+    ]
+  }
+}

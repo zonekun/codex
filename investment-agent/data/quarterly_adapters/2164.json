@@ -1,0 +1,36 @@
+{
+  "ticker": "2164",
+  "company_name": "Ｇ－地域新聞社",
+  "current_version": "2025-04",
+  "versions": [
+    {
+      "valid_from": "2025-04",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "breakdown_dimensions": [],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "当該ページは中間貸借対照表であり、受注高、売上高、受注残高（またはそれに準ずる完成工事高・繰越工事高）の数値データは含まれていません。"
+    }
+  ],
+  "_source_pdf": "tdnet/2164/20250410_2164_Ｇ－地域新聞社_決算短信_2025年８月期 第２四半期（中間期）決算短信〔日本基準〕（非連結）_140120250410512567.pdf",
+  "_source_doc_id": "140120250410512567",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:16:04.009185+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      6
+    ],
+    "table_count": 1,
+    "max_rows": 54,
+    "max_cols": 3,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

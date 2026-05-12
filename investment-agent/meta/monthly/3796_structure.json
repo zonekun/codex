@@ -1,0 +1,20 @@
+{
+  "ticker": "3796",
+  "company_name": "3796",
+  "metrics": [
+    {
+      "name": "クラウドソリューション事業 売上（百万円）",
+      "source": "bc"
+    },
+    {
+      "name": "サブスクリプション（円）",
+      "source": "bc"
+    },
+    {
+      "name": "ソリューション（円）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

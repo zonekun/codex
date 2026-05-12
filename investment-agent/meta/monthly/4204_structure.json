@@ -1,0 +1,16 @@
+{
+  "ticker": "4204",
+  "company_name": "4204",
+  "metrics": [
+    {
+      "name": "住宅受注 棟数ベース（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "住宅受注 金額ベース（前年同月比）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

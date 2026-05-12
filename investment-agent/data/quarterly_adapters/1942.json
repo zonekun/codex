@@ -1,0 +1,61 @@
+{
+  "ticker": "1942",
+  "company_name": "関電工",
+  "current_version": "2025-10",
+  "versions": [
+    {
+      "valid_from": "2025-10",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "完成工事高",
+          "type": "completed",
+          "description": "損益計算書における売上高に相当する、当期間中に完成した工事の代金総額。",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "新規受注高",
+          "type": "order_intake",
+          "description": "当期間中に新たに契約を締結した工事の受注総額。",
+          "unit": "百万円",
+          "is_total": false
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "会計区分",
+          "items": [
+            "連結",
+            "個別"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "サマリー情報および中間損益計算書より、連結および個別の完成工事高、ならびに個別の新規受注高の数値が確認できます。受注残高（繰越工事高）については、提示されたページ内には具体的な数値の記載がありません。"
+    }
+  ],
+  "_source_pdf": "tdnet/1942/20251031_1942_関電工_決算短信_2026年3月期 第2四半期（中間期）決算短信[日本基準](連結)_140120251030582344.pdf",
+  "_source_doc_id": "140120251030582344",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:05:52.179087+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      7,
+      13
+    ],
+    "table_count": 1,
+    "max_rows": 29,
+    "max_cols": 3,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

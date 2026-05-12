@@ -1,0 +1,50 @@
+{
+  "ticker": "8511",
+  "company_name": "日本証券金融",
+  "source": "non-tdnet(pdf)",
+  "format": "pdf",
+  "extraction_method": "gemini",
+  "gemini_multi_month": true,
+  "overwrite_past_months": true,
+  "doc_title_pattern": "貸借取引貸付金|平均残高",
+  "monthly_kw_override": "貸借取引貸付金|平均残高",
+  "custom_prompt": "この文書は日本証券金融の「貸借取引貸付金・貸付有価証券等平均残高」の月次データです。表の列は「貸借取引貸付金」「貸付有価証券」「貸株超過残高」で、単位は百万円です。各月（YYYY年M月）の行から値を抽出してください。年度通期・上期・下期の集計行は除外し、個別月のみ返してください。",
+  "fields": [
+    {
+      "key": "賃借取引貸付金 平均残高（百万円）",
+      "bc_key": "賃借取引貸付金 平均残高（百万円）",
+      "description": "貸借取引貸付金 (A) Margin Loans の月次平均残高（百万円）",
+      "value_type": "number"
+    },
+    {
+      "key": "貸付有価証券 平均残高（百万円）",
+      "bc_key": "貸付有価証券 平均残高（百万円）",
+      "description": "貸付有価証券 (B) Stock Loans の月次平均残高（百万円）",
+      "value_type": "number"
+    },
+    {
+      "key": "貸株超過残高 平均残高（百万円）",
+      "bc_key": "貸株超過残高 平均残高（百万円）",
+      "description": "貸株超過残高 (C) Over-lent Stock Loans の月次平均残高（百万円）",
+      "value_type": "number"
+    },
+    {
+      "key": "うち現金担保付取引（億円）",
+      "bc_key": "うち現金担保付取引（億円）",
+      "bc_ignore": true,
+      "bc_ignore_reason": "月次PDFに当該項目なし。PDF「貸借取引貸付金・貸付有価証券等平均残高」には貸借取引貸付金/貸付有価証券/貸株超過残高の3列のみ。現金担保付取引の内訳は別資料の可能性",
+      "description": "うち現金担保付取引（億円）",
+      "value_type": "number"
+    },
+    {
+      "key": "債権賃借取引 成約額（億円）",
+      "bc_key": "債権賃借取引 成約額（億円）",
+      "bc_ignore": true,
+      "bc_ignore_reason": "月次PDFに当該項目なし。PDF「貸借取引貸付金・貸付有価証券等平均残高」には貸借取引貸付金/貸付有価証券/貸株超過残高の3列のみ。債権賃借取引成約額は別資料の可能性",
+      "description": "債権賃借取引 成約額（億円）",
+      "value_type": "number"
+    }
+  ],
+  "manual_override": true,
+  "manual_override_at": "2026-05-08T14:00:00+09:00"
+}

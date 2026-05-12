@@ -7,6 +7,12 @@
 
 ---
 
+## カラム名・テーブル名の推測禁止（最重要）
+
+**SQLを書く前に `data_catalog.md` → 該当 `docs/data_catalog/bq_*.md` のスキーマ定義でカラム名を確認する。記憶・推測・他テーブルからの類推でカラム名を書くことを禁止する。** 違反すると `400 Unrecognized name` で試行錯誤ループに陥り、ユーザーの時間を浪費する（2026-05-10事故: DISTRIBUTION_DATE/D_CATEGORY推測→正解はSUBMISSION_DATE/MAIN_CATEGORY）。
+
+---
+
 ## BigQuery オフロード原則
 
 **BigQuery で実行できる処理は Python に持ち込まない。**

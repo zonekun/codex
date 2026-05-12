@@ -1,0 +1,83 @@
+{
+  "ticker": "6728",
+  "company_name": "アルバック",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "連結合計の受注高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "連結合計の売上高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "セグメント別受注高",
+          "type": "order_intake",
+          "description": "各報告セグメントにおける受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "セグメント別売上高",
+          "type": "completed",
+          "description": "各報告セグメントにおける売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "セグメント別受注残高",
+          "type": "backlog",
+          "description": "各報告セグメントにおける期末時点の受注残高（本文中に記載）",
+          "unit": "百万円",
+          "is_total": false
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "真空機器事業",
+            "真空応用事業"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "連結およびセグメント別の受注高・売上高は表形式で提供されているが、受注残高については表にはなく、各セグメントの経営成績に関する説明文（2ページおよび3ページ）の中で具体的な金額が言及されている。"
+    }
+  ],
+  "_source_pdf": "tdnet/6728/20260210_6728_アルバック_決算短信_2026年６月期 第２四半期（中間期）決算短信〔日本基準〕（連結）_140120260210553956.pdf",
+  "_source_doc_id": "140120260210553956",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:25:44.019183+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      5
+    ],
+    "table_count": 3,
+    "max_rows": 6,
+    "max_cols": 4,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

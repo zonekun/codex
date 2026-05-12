@@ -30,22 +30,18 @@ import argparse
 import csv
 import json
 import math
-import sys
 from pathlib import Path
 from typing import Any
 
-import structlog
 from google.cloud import bigquery, storage
 from google.oauth2 import service_account
-
-log = structlog.get_logger()
 
 LOCAL_DIR = Path("C:/tmp/earnings_review")
 KEY_PATH = Path("C:/gdrive/claude/investment-agent/keys/gcp-service-account.json")
 BQ_PROJECT = "gmailpj-357912"
 MARKET_CAP_TABLE = "gmailpj-357912.STOCK.YF_STOCK_INFO"
 EXCLUSIONS_BUCKET = "stock_data_1930932"
-EXCLUSIONS_BLOB_PATH = "earnings_model/exclusions/exclusions.json"
+EXCLUSIONS_BLOB_PATH = "earnings_model/earnings_reaction_exclusions/exclusions.json"
 
 
 def _is_nan(v: Any) -> bool:
@@ -93,8 +89,7 @@ def load_json(predict_date: str, kind: str) -> dict[str, Any]:
     """prediction または actual JSON をローカルからロードする."""
     path = LOCAL_DIR / f"{kind}_{predict_date}.json"
     if not path.exists():
-        log.error("not_found", path=str(path))
-        sys.exit(1)
+        raise FileNotFoundError(path)
     with open(path, encoding="utf-8") as f:
         return json.load(f)
 
@@ -167,7 +162,6 @@ def fetch_exclusions(predict_date: str) -> dict[str, str]:
     bucket = client.bucket(EXCLUSIONS_BUCKET)
     blob = bucket.blob(EXCLUSIONS_BLOB_PATH)
     if not blob.exists():
-        log.info("exclusions_not_found", path=f"gs://{EXCLUSIONS_BUCKET}/{EXCLUSIONS_BLOB_PATH}")
         return {}
     raw = blob.download_as_text(encoding="utf-8")
     if not raw.strip():
@@ -180,7 +174,6 @@ def fetch_exclusions(predict_date: str) -> dict[str, str]:
             and r.get("removed_at") is None
         ):
             result[r.get("ticker", "")] = r.get("reason", "")
-    log.info("exclusions_fetched", predict_date=predict_date, count=len(result))
     return result
 
 
@@ -195,7 +188,7 @@ def classify(pred: str, direction_match: bool, actual_return: Any) -> str:
 
 _POS_PREFIX = (
     "進捗率高", "上方修正", "来期OP増益", "成長加速", "記念配当", "特別配当",
-    "テーマブースト", "自社株買い", "増配", "PEG割安", "QoQ OP急伸",
+    "自社株買い", "増配", "PEG割安", "QoQ OP急伸",
 )
 _NEG_PREFIX = (
     "進捗率低", "下方修正", "来期OP減益", "売り圧力", "成長減速",
@@ -221,7 +214,7 @@ def split_reasons(reasons_str: str) -> tuple[str, str]:
             pos.append(frag)
         elif frag.startswith(_NEG_PREFIX):
             neg.append(frag)
-        elif frag.startswith("YoY OP") or frag.startswith("コンセ乖離"):
+        elif frag.startswith("YoY OP") or frag.startswith("純利コンセ乖離") or frag.startswith("コンセ乖離"):
             # 符号で判定
             if "-" in frag.split(" ", 1)[-1]:
                 neg.append(frag)
@@ -292,12 +285,8 @@ def build_rows(predict_date: str) -> tuple[list[dict[str, str]], dict[str, int]]
     p_by_t = {p["ticker"]: p for p in pred["predictions"]}
     tickers = [a["ticker"] for a in actual["actuals"]]
     mc = fetch_market_caps(tickers, predict_date)
-    log.info("market_cap_fetched", count=len(mc), requested=len(tickers))
-    # market_division: prediction JSON に埋め込まれていなければBQから取得
     missing_mkt = [t for t in tickers if not p_by_t.get(t, {}).get("market_division")]
     mkt_fallback = fetch_market_divisions(missing_mkt) if missing_mkt else {}
-    if missing_mkt:
-        log.info("market_division_fetched", count=len(mkt_fallback), requested=len(missing_mkt))
     exclusions = fetch_exclusions(predict_date)
 
     rows = []
@@ -385,13 +374,7 @@ def main() -> None:
     write_csv(rows, csv_path)
     write_md(rows, counts, args.predict_date, actual_meta, md_path)
 
-    log.info(
-        "done",
-        csv=str(csv_path),
-        md=str(md_path),
-        total=sum(counts.values()),
-        **counts,
-    )
+    print(f"done: {csv_path}, {md_path}")
 
 
 if __name__ == "__main__":

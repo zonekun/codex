@@ -1,0 +1,67 @@
+{
+  "ticker": "6888",
+  "company_name": "アクモス",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "ITソリューション事業 受注残高",
+          "type": "backlog",
+          "description": "ITソリューション事業の受注残高",
+          "unit": "百万円",
+          "is_total": false
+        },
+        {
+          "name": "ITインフラ事業 受注残高",
+          "type": "backlog",
+          "description": "ITインフラ事業の受注残高",
+          "unit": "百万円",
+          "is_total": false
+        },
+        {
+          "name": "ITサービス事業 受注残高",
+          "type": "backlog",
+          "description": "ITサービス事業の受注残高",
+          "unit": "百万円",
+          "is_total": false
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "ITソリューション事業",
+            "ITインフラ事業",
+            "ITサービス事業"
+          ]
+        }
+      ],
+      "presentation_format": "text",
+      "complexity": "no_table",
+      "notes": "本文の「経営成績に関する説明」のセグメント別の状況において、各セグメントの売上高および受注残高の具体的な数値が記載されています。グループ全体の受注残高の合計値は明記されていません。"
+    }
+  ],
+  "_source_pdf": "tdnet/6888/20260203_6888_アクモス_決算短信_2026年6月期 第2四半期（中間期）決算短信〔日本基準〕（連結）_140120260127539406.pdf",
+  "_source_doc_id": "140120260127539406",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:34:07.535523+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "no_table",
+    "relevant_pages": [
+      4
+    ],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "pdfplumber found no tables on relevant pages"
+    ]
+  }
+}

@@ -18,7 +18,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 JST = timezone(timedelta(hours=9))
-ADAPTER_DIR = Path("data/monthly_adapters")
+ADAPTER_DIR = Path("meta/monthly")
 PREV_CSV = Path(r"C:\tmp\buffett_compare_20260418_173658.csv")
 PY = r"C:/venvs/investment-agent/Scripts/python.exe"
 
@@ -30,14 +30,14 @@ def log(msg: str) -> None:
 
 def find_fixed_tickers() -> list[str]:
     fixed = []
-    for path in sorted(ADAPTER_DIR.glob("*.json")):
+    for path in sorted(ADAPTER_DIR.glob("*_extract_adapter.json")):
         try:
             with open(path, encoding="utf-8") as f:
                 a = json.load(f)
         except Exception:
             continue
         if a.get("_doc_title_pattern_fixed_at") or a.get("_doc_title_pattern_manual_fix_at"):
-            fixed.append(path.stem)
+            fixed.append(path.name.removesuffix("_extract_adapter.json"))
     return fixed
 
 

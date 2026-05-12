@@ -1,0 +1,36 @@
+{
+  "ticker": "6976",
+  "company_name": "太陽誘電",
+  "current_version": "2025-05",
+  "versions": [
+    {
+      "valid_from": "2025-05",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "breakdown_dimensions": [],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "製品区分（コンデンサ、インダクタ、複合デバイス、その他）ごとの受注高および受注残高が表形式で詳細に開示されている。生産実績の表も含まれているが、抽出対象外とした。 [2026-05-07] 抽出バッチ結果FAIL: 対象メトリクスの数値がPDF内に見つからなかったためfalse化。"
+    }
+  ],
+  "_source_pdf": "tdnet/6976/20250509_6976_太陽誘電_決算短信_2025年３月期　決算短信〔日本基準〕（連結）_140120250423521720.pdf",
+  "_source_doc_id": "140120250423521720",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:36:46.622138+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      17
+    ],
+    "table_count": 3,
+    "max_rows": 7,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

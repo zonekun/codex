@@ -1,0 +1,24 @@
+{
+  "ticker": "2997",
+  "company_name": "2997",
+  "metrics": [
+    {
+      "name": "トランクルーム 2年以上稼働率",
+      "source": "bc"
+    },
+    {
+      "name": "トランクルーム 稼働率",
+      "source": "bc"
+    },
+    {
+      "name": "トランクルーム 部屋数",
+      "source": "bc"
+    },
+    {
+      "name": "稼働数",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

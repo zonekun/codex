@@ -1,0 +1,11 @@
+{
+  "ticker": "3649",
+  "company_name": "ファインデックス",
+  "ir_page_url": "https://finance-frontend-pc-dist.west.edge.storage-yahoo.jp/disclosure/20251113/20251113500151.pdf",
+  "updated_at": "2026-04-21T12:42:31.437181+09:00",
+  "last_checked": "2026-04-21",
+  "status": "skip",
+  "type": null,
+  "skip_reason": "スクレイプエラー: Page.goto: Download is starting\nCall log:\n  - navigating to \"https://finance-frontend-pc-dist.west.edge.storage-yahoo.jp/disclosure/20251113/20251113500151.pdf\", waiting until \"load\"\n",
+  "note": "error: Page.goto: Download is starting\nCall log:\n  - navigating to \"https://finance-frontend-pc-dist.west.edge.storage-yahoo.jp/disclosure/20251113/20251113500151.pdf\", waiting until \"load\"\n"
+}

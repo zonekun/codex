@@ -1,0 +1,44 @@
+{
+  "ticker": "5936",
+  "company_name": "洋シヤター",
+  "current_version": "2026-01",
+  "versions": [
+    {
+      "valid_from": "2026-01",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当第３四半期連結累計期間における受注高",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "text",
+      "complexity": "no_table",
+      "notes": "本文中に当第3四半期累計期間の受注高（15,883百万円）および売上高（15,626百万円）の記載がありますが、受注残高に関する具体的な金額の記載はありません。"
+    }
+  ],
+  "_source_pdf": "tdnet/5936/20260130_5936_洋シヤター_決算短信_2026年３月期 第３四半期決算短信〔日本基準〕（連結）_140120260129541634.pdf",
+  "_source_doc_id": "140120260129541634",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:35:18.562190+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "no_table",
+    "relevant_pages": [
+      4
+    ],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "pdfplumber found no tables on relevant pages"
+    ]
+  }
+}

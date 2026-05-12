@@ -1,0 +1,12 @@
+{
+  "ticker": "3902",
+  "company_name": "3902",
+  "metrics": [
+    {
+      "name": "診療データベース 実患者数（万人）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

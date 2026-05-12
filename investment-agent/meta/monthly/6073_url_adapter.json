@@ -1,0 +1,13 @@
+{
+  "ticker": "6073",
+  "company_name": "アサンテ",
+  "ir_page_url": "https://www.asante.co.jp/ir/",
+  "updated_at": "2026-04-21T09:58:10.248669+09:00",
+  "last_checked": "2026-04-21",
+  "status": "active",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": "\\d{4}",
+  "link_href_pattern": "/xcontents/60730.*\\.(pdf)",
+  "note": "月次PDFリンク3件検出 best=https://contents.xj-storage.jp/xcontents/60730/24b60b42/93f4/450d/9d20/450a149c235b/140120260403598417.pdf"
+}

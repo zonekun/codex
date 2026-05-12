@@ -19,7 +19,7 @@ from google.oauth2 import service_account
 # ==========================================
 _BASE = os.path.join(os.path.dirname(__file__), "..")
 KEY_FILE = os.path.join(_BASE, "keys", "gcp-service-account.json")
-BQ_TABLE = "gmailpj-357912.STOCK.CONSENSUS"
+BQ_TABLE = "gmailpj-357912.STOCK.V_CONSENSUS_MERGED"
 
 # Dropbox
 DBX_APP_KEY = "t8feblcw74hoeky"
@@ -31,33 +31,52 @@ log = structlog.get_logger()
 
 
 def fetch_latest_consensus() -> pd.DataFrame:
-    """BQ から最新 DATAAT の全件を取得し、ピボット形式に変換する.
+    """BQ VIEW から全件取得し、C案PERIOD_REL判定でピボット形式に変換する.
 
     出力カラム: code, 1Q, 2Q, 3Q, 4Q, NEXT
-    - 1Q〜3Q: QUARTER='1Q'〜'3Q', TARGET='CURRENT'
-    - 4Q: QUARTER='FY', TARGET='CURRENT'
-    - NEXT: QUARTER='FY', TARGET='NEXT'
+    - 1Q〜3Q: ORD_PROFIT（四半期）
+    - 4Q: 当期FYのORD_PROFIT（fin_summary最新FY直後）
+    - NEXT: 来期FYのORD_PROFIT
     """
     creds = service_account.Credentials.from_service_account_file(KEY_FILE)
     client = bigquery.Client(credentials=creds, project="gmailpj-357912")
     sql = f"""
-        SELECT *
+        SELECT TICKER, FY, QUARTER, ORD_PROFIT
         FROM `{BQ_TABLE}`
-        WHERE DATAAT = (SELECT MAX(DATAAT) FROM `{BQ_TABLE}`)
     """
     raw = client.query(sql).to_dataframe()
     log.info("BQ取得完了", rows=len(raw))
 
-    # ピボット用ラベル: FY/CURRENT→4Q, FY/NEXT→NEXT, それ以外はQUARTERそのまま
-    raw["col"] = raw.apply(
-        lambda r: "NEXT" if r["QUARTER"] == "FY" and r["TARGET"] == "NEXT"
-        else "4Q" if r["QUARTER"] == "FY"
-        else r["QUARTER"],
-        axis=1,
-    )
-    pivot = raw.pivot_table(index="TICKER", columns="col", values="PROFIT", aggfunc="first")
-    pivot = pivot.reindex(columns=["1Q", "2Q", "3Q", "4Q", "NEXT"])
-    pivot = pivot.reset_index().rename(columns={"TICKER": "code"})
+    fy_sql = "SELECT TICKER, CURRENT_FY FROM `gmailpj-357912.STOCK.V_LATEST_DISCLOSURE`"
+    fy_df = client.query(fy_sql).to_dataframe()
+    current_fy_map: dict[str, str] = dict(zip(fy_df["TICKER"], fy_df["CURRENT_FY"]))
+    log.info("FYルックアップ完了", tickers=len(current_fy_map))
+
+    result_rows: list[dict[str, object]] = []
+    for ticker, group in raw.groupby("TICKER"):
+        data: dict[str, object] = {"code": ticker}
+        current_fy = current_fy_map.get(str(ticker))
+        future_fys: list[tuple[str, int]] = []
+
+        for _, row in group.iterrows():
+            profit = row["ORD_PROFIT"]
+            if pd.isna(profit):
+                continue
+            quarter = row["QUARTER"]
+            if quarter in ("1Q", "2Q", "3Q"):
+                data[quarter] = int(profit)
+            elif quarter == "FY" and current_fy and row["FY"] >= current_fy:
+                future_fys.append((row["FY"], int(profit)))
+
+        future_fys.sort()
+        if len(future_fys) >= 1:
+            data["4Q"] = future_fys[0][1]
+        if len(future_fys) >= 2:
+            data["NEXT"] = future_fys[1][1]
+        result_rows.append(data)
+
+    pivot = pd.DataFrame(result_rows)
+    pivot = pivot.reindex(columns=["code", "1Q", "2Q", "3Q", "4Q", "NEXT"])
     pivot = pivot.sort_values("code").reset_index(drop=True)
     return pivot
 

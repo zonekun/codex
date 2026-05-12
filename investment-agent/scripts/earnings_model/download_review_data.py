@@ -19,11 +19,8 @@ import json
 import sys
 from pathlib import Path
 
-import structlog
 from google.cloud import storage
 from google.oauth2 import service_account
-
-log = structlog.get_logger()
 
 GCS_BUCKET = "stock_data_1930932"
 GCS_PREFIX = "earnings_model"
@@ -42,15 +39,14 @@ def download_prediction(
 ) -> Path | None:
     """予測ファイルをDLする（命名規約: prediction_{PREDICT_DATE}_{HHMMSS}.json）."""
     bucket = client.bucket(GCS_BUCKET)
-    search = f"{GCS_PREFIX}/predictions/prediction_{predict_date}"
+    search = f"{GCS_PREFIX}/earnings_reaction_predictions/prediction_{predict_date}"
     blobs = sorted(bucket.list_blobs(prefix=search), key=lambda b: b.name)
     if not blobs:
-        log.warning("not_found", prefix=search)
+        print(f"not found: {search}")
         return None
     blob = blobs[-1]
     local_path = LOCAL_DIR / local_name
     blob.download_to_filename(str(local_path))
-    log.info("downloaded", gcs=blob.name, local=str(local_path))
     return local_path
 
 
@@ -65,29 +61,27 @@ def download_actual(
     両方を探索し、作成時刻最新のファイルを採用する.
     """
     bucket = client.bucket(GCS_BUCKET)
-    all_blobs = list(bucket.list_blobs(prefix=f"{GCS_PREFIX}/actuals/actual_"))
+    all_blobs = list(bucket.list_blobs(prefix=f"{GCS_PREFIX}/earnings_reaction_actuals/actual_"))
 
     suffix_new = f"_for_{predict_date}.json"
-    prefix_old = f"{GCS_PREFIX}/actuals/actual_{predict_date}_"
+    prefix_old = f"{GCS_PREFIX}/earnings_reaction_actuals/actual_{predict_date}_"
 
     candidates = [
         b for b in all_blobs
         if b.name.endswith(suffix_new) or b.name.startswith(prefix_old)
     ]
     if not candidates:
-        log.warning("not_found", predict_date=predict_date)
+        print(f"actual not found: {predict_date}")
         return None
 
     blob = max(candidates, key=lambda b: b.time_created)
     local_path = LOCAL_DIR / local_name
     blob.download_to_filename(str(local_path))
-    log.info("downloaded", gcs=blob.name, local=str(local_path))
     return local_path
 
 
 def download_for_date(client: storage.Client, predict_date: str) -> None:
     """指定日の prediction + actual をDLする."""
-    log.info("processing", date=predict_date)
     download_prediction(client, predict_date, f"prediction_{predict_date}.json")
     download_actual(client, predict_date, f"actual_{predict_date}.json")
 
@@ -102,7 +96,6 @@ def show_summary(predict_date: str) -> None:
     pred_path = LOCAL_DIR / f"prediction_{predict_date}.json"
 
     if not actual_path.exists():
-        log.info("no_actual", date=predict_date)
         return
 
     with open(actual_path, encoding="utf-8") as f:
@@ -115,14 +108,6 @@ def show_summary(predict_date: str) -> None:
     corr = actual.get("score_return_correlation", 0)
     pred_count = len(pred.get("predictions", []))
 
-    log.info(
-        "summary",
-        date=predict_date,
-        predictions=pred_count,
-        actuals=count,
-        direction_accuracy=f"{acc:.1%}",
-        correlation=f"{corr:.3f}",
-    )
 
 
 def main() -> None:
@@ -138,7 +123,7 @@ def main() -> None:
         download_for_date(client, d)
         show_summary(d)
 
-    log.info("done", local_dir=str(LOCAL_DIR), dates=args.dates)
+    print(f"done: {LOCAL_DIR}")
 
 
 if __name__ == "__main__":

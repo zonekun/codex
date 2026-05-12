@@ -1,0 +1,22 @@
+{
+  "source": "non-tdnet(pdf)",
+  "format": "pdf",
+  "fields": [
+    {
+      "key": "診療データベース 実患者数（万人）",
+      "name": "診療データベース 実患者数（万人）",
+      "value_type": "number",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "GCSには中期経営計画・ストックオプションPDFのみ。月次KPIの開示文書なし"
+    }
+  ],
+  "extraction_notes": "メディカル・データ・ビジョン。GCSには中期経営計画（売上高100億円目標ストックオプション）のみ。月次の診療データベース実患者数を開示する文書が確認できないためbc_ignore。",
+  "ticker": "3902",
+  "company_name": "メディカル・データ・ビジョン",
+  "created_at": "2026-04-05T09:50:11.906782+09:00",
+  "created_by": "gemini-2.5-flash",
+  "extraction_method": "gemini",
+  "manual_override": true,
+  "manual_override_note": "Codex成果物を自ら検証・再作成。月次文書不在のためbc_ignore",
+  "manual_override_at": "2026-05-08T00:25:00+09:00"
+}

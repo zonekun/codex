@@ -1,0 +1,28 @@
+{
+  "ticker": "4015",
+  "company_name": "Ｇ－ペイクラウドＨＤ",
+  "current_version": "2025-10",
+  "versions": [
+    {
+      "valid_from": "2025-10",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "presentation",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/4015/20251015_4015_Ｇ－ペイクラウドＨＤ_決算説明資料_2025年8月期通期 決算説明資料_140120251015573997.pdf",
+  "_source_doc_id": "140120251015573997",
+  "_generated_at": "2026-04-30T17:58:11.888957+09:00",
+  "_model_used": null
+}

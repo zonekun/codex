@@ -1,0 +1,51 @@
+{
+  "source": "non-tdnet(pdf)",
+  "format": "pdf",
+  "year_from_title_regex": "(\\d{4})å¹´",
+  "month_from_title_regex": "(\\d{1,2})æ",
+  "fields": [
+    {
+      "key": "国内ユニクロ事業 直営店数",
+      "name": "国内ユニクロ事業 直営店数",
+      "row_label_regex": "直営店：.*（\\d+年\\d+月末現在 (\\d+)店舗）",
+      "value_type": "integer",
+      "group": 1
+    },
+    {
+      "key": "国内ユニクロ事業 既存店・Eコマース 売上（前年同月比）",
+      "name": "国内ユニクロ事業 既存店・Eコマース 売上（前年同月比）",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "BC値101.3あり。月次PDFにEコマース含むメトリクスの記載なし（旧フォーマット）。近年のPDFにはEC含む数値が追加されている可能性あるがGCSに該当PDF未格納"
+    },
+    {
+      "key": "国内ユニクロ事業 直営店・Eコマース 売上（前年同月比）",
+      "name": "国内ユニクロ事業 直営店・Eコマース 売上（前年同月比）",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "BC値102.3あり。同上。EC含む直営店売上前年同月比は旧フォーマットPDFに記載なし"
+    },
+    {
+      "key": "国内ユニクロ事業 直営店・Eコマース 客単価（前年同月比）",
+      "name": "国内ユニクロ事業 直営店・Eコマース 客単価（前年同月比）",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "BC値109.1あり。同上。EC含む客単価は旧フォーマットPDFに記載なし"
+    },
+    {
+      "key": "国内ユニクロ事業 直営店・Eコマース 客数（前年同月比）",
+      "name": "国内ユニクロ事業 直営店・Eコマース 客数（前年同月比）",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "BC値93.8あり。同上。EC含む客数は旧フォーマットPDFに記載なし"
+    }
+  ],
+  "extraction_notes": "Eコマースを含むメトリクスは、サンプルテキストにEコマースの記載がないため、厳格なルールに基づき抽出対象外としました。",
+  "ticker": "9983",
+  "company_name": "9983",
+  "created_at": "2026-04-05T10:37:29.813758+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "000000_9983_1997å¹´8ææ_(10KB)_1a8db618",
+  "sample_submission_date": "",
+  "report_url": "TDNET文書",
+  "sample_file": "000000_9983_1997å¹´8ææ_(10KB)_1a8db618",
+  "_source_renamed_at": "2026-04-18T16:36:34+09:00",
+  "_source_renamed_from": "pdf",
+  "manual_override": true
+}

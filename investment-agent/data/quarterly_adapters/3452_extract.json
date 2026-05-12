@@ -1,0 +1,28 @@
+{
+  "ticker": "3452",
+  "company_name": "ビーロット",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "presentation",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/3452/20260213_3452_ビーロット_決算説明資料_2025年12月期 決算説明資料_140120260213559514.pdf",
+  "_source_doc_id": "140120260213559514",
+  "_generated_at": "2026-04-30T17:42:06.307976+09:00",
+  "_model_used": null
+}

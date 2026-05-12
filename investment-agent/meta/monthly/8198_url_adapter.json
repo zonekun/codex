@@ -1,0 +1,11 @@
+{
+  "ticker": "8198",
+  "company_name": "マックスバリュ東海",
+  "ir_page_url": "https://www.mv-tokai.co.jp/ir/",
+  "updated_at": "2026-04-21T10:11:36.170223+09:00",
+  "last_checked": "2026-04-21",
+  "status": "active",
+  "type": "eir_api",
+  "eir_company_code": "8198",
+  "note": "eIRシステム検出。コード=8198"
+}

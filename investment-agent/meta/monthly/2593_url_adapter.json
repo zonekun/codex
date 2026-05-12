@@ -1,0 +1,21 @@
+{
+  "ticker": "2593",
+  "company_name": "伊藤園",
+  "updated_at": "2026-04-24T13:32:21.840743+09:00",
+  "ir_page_url": "http://www.itoen.co.jp/ir/library/monthly_sales_backnumber/",
+  "type": "eir_api",
+  "css_selector": null,
+  "link_text_pattern": null,
+  "link_href_pattern": null,
+  "table_selector": null,
+  "status": "active",
+  "skip_reason": null,
+  "note": "eir_company_code復旧 (sync_bug_overwrite_20260420)。eIRシステム（動的ロード）。URL: http://www.itoen.co.jp/ir/library/monthl",
+  "url_source": "recovered_from_index_csv",
+  "last_checked": "2026-04-20",
+  "follow_links": false,
+  "playwright_required": false,
+  "recovered_at": "2026-04-20T21:37:09.325193+09:00",
+  "recovery_reason": "sync_bug_overwrite_20260420",
+  "eir_company_code": "2593"
+}

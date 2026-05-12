@@ -1,0 +1,53 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "extraction_method": "gemini",
+  "fields": [
+    {
+      "key": "ZAC 契約ライセンス数",
+      "name": "ZAC 契約ライセンス数",
+      "description": "クラウドソリューション事業のZACライセンスに関する表の「契約ライセンス数」行、数値（千ライセンス）。",
+      "value_type": "float",
+      "unit_scale": 1000,
+      "_manual_description": true
+    },
+    {
+      "key": "ZAC 新規獲得ライセンス数",
+      "name": "ZAC 新規獲得ライセンス数",
+      "description": "クラウドソリューション事業のZACライセンスに関する表の「新規獲得 ライセンス数」行、数値（千ライセンス）。",
+      "value_type": "float",
+      "unit_scale": 1000,
+      "_manual_description": true
+    },
+    {
+      "key": "Reforma PSA契約社数",
+      "name": "Reforma PSA契約社数",
+      "bc_ignore": true,
+      "bc_ignore_reason": "BC値2あり。月次開示はZACライセンス数のみ。Reforma PSA関連データの記載なし（2026年2月度PDF確認済み）",
+      "bc_key": "Reforma PSA契約社数"
+    },
+    {
+      "key": "ZACライセンス契約社数",
+      "name": "ZACライセンス契約社数",
+      "bc_ignore": true,
+      "bc_ignore_reason": "BC値5あり。月次開示にはZAC「契約ライセンス数」（千ライセンス=351.1）はあるが「契約社数」の記載なし。BC定義の社数と開示のライセンス数は異なるメトリクス",
+      "bc_key": "ZACライセンス契約社数"
+    },
+    {
+      "key": "ZACライセンス契約額（円）",
+      "name": "ZACライセンス契約額（円）",
+      "bc_ignore": true,
+      "bc_ignore_reason": "BC値55000000あり。月次開示に契約額の記載なし（2026年2月度PDF確認済み）",
+      "bc_key": "ZACライセンス契約額（円）"
+    }
+  ],
+  "ticker": "3983",
+  "company_name": "3983",
+  "created_at": "2026-03-29T18:38:58.857344+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "2026年12月期月次情報のお知らせ（1月度）",
+  "sample_submission_date": "2026-02-13",
+  "fields_count": 2,
+  "manual_override": true,
+  "desc_rewrite_at": "2026-04-17T23:15:49+09:00"
+}

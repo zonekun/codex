@@ -298,6 +298,7 @@ PYTHONUTF8=1 python scripts/factor_model/factor_model_residual_corr_unique_mover
 - **2026-04-03**: `pivot()` で `ValueError: Index contains duplicate entries` → `drop_duplicates(subset=['DATE','TICKER'], keep='last')` を追加して解消
 - **2026-04-17**: 子ツール `factor_model_residual_corr_same_sector_pairs.py` を追加（同業種×低残差相関ペア抽出）
 - **2026-04-17**: 子ツール `factor_model_residual_corr_unique_movers.py` を追加（個別株の因子除去後ユニーク動意抽出）. 初期実装は raw リターン比較だったが「市場全体の動きが残差に混ざって意味がない」との指摘を受けて3因子除去版に全面書き換え. 同時に β 暴走銘柄のフィルタ (`--beta-cap`) を追加
+- **2026-04-30 [BUG]**: ユニバースから大型電機（NEC 6701、日立、富士通等）が脱落している。479銘柄中、電気機器はコニカミノルタ/日清紡HD/キオクシア/イビデンの4社のみ。時価総額500億以上・欠損率5%以下の条件を満たすはずの銘柄が除外されており、`build_universe()` のフィルタロジックにバグがある可能性。決算波及分析（同クラスタ先行決算→連れ安予測）に使うにはユニバースの網羅性が致命的に不足。要修正
 
 ---
 

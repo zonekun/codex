@@ -239,12 +239,10 @@ _GEMINI_SKIP_DOMAINS = {
 def _gemini_call(model_name: str, prompt: str) -> str:
     """Vertex AI Gemini を呼び出してテキストを返す。失敗時は空文字。"""
     try:
-        import vertexai
-        from vertexai.generative_models import GenerativeModel
+        from google import genai
         creds = _get_credentials()
-        vertexai.init(project="gmailpj-357912", location="us-central1", credentials=creds)
-        model = GenerativeModel(model_name)
-        response = model.generate_content(prompt)
+        client = genai.Client(vertexai=True, project="gmailpj-357912", location="us-central1", credentials=creds)
+        response = client.models.generate_content(model=model_name, contents=prompt)
         return (response.text or "").strip()
     except Exception as e:
         logger.debug("Gemini呼び出しエラー [%s]: %s", model_name, e)

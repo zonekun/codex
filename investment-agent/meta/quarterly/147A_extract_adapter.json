@@ -1,0 +1,30 @@
+{
+  "ticker": "147A",
+  "company_name": "Ｇ－ソラコム",
+  "current_version": "2025-11",
+  "versions": [
+    {
+      "valid_from": "2025-11",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "presentation",
+      "page_keywords": [
+        "エグゼクティブサマリー",
+        "2026年3月期",
+        "第2四半期",
+        "業績サマリー",
+        "売上高",
+        "リカーリング収益",
+        "KDDI"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "以下の項目について、2026年3月期 第2四半期累計の数値を抽出してください。\n1. 売上高 (単位: 億円)\n2. リカーリング収益 (単位: 億円)\n3. KDDIとの包括契約（受注残含む） (単位: 億円)\n\n「KDDIとの包括契約（受注残含む）」については、スライド左下の「KDDIとの包括契約」および「受注残を含め11.9億円」という記載から、11.9を抽出してください。",
+      "notes": "本ページはプレゼンテーション資料のサマリー図解（ppt_chart）であり、テキストの配置が非定型的であるため、Gemini Visionを使用して数値を抽出します。"
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/147A/20251112_147A_Ｇ－ソラコム_決算説明資料_2026年３月期第２四半期（中間期）決算説明資料_140120251112597071.pdf",
+  "_source_doc_id": "140120251112597071",
+  "_generated_at": "2026-04-30T22:41:32.527896+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

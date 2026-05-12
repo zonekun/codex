@@ -18,6 +18,13 @@ Claude Code のフック機能を使って、ユーザー ↔ Claude の対話�
 - `gcloud run jobs execute` 検出で active_jobs.md に自動追記
 - `check_jobs.py --update-active` で active_jobs.md の🔄エントリを自動更新
 
+**v3 (2026-04-24)** — セッション分離の根本修正:
+- `$PPID` は MSYS2 上で常に 1（init プロセス）→ 全セッションが同一ディレクトリに混在する致命バグ
+- hook stdin JSON の `session_id`（UUID）でセッション分離するように変更。`--session-id=$PPID` を hook command から削除
+- セッション識別ラベル（`label.txt`）を導入 — 初回プロンプトから40文字で自動生成
+- `list_claude_sessions.py` でラベル付き一覧表示
+- CLAUDE.md クラッシュリカバリ手順を改訂（「1件なら省略」削除、ラベル使用義務追加）
+
 ---
 
 ## ログファイル一覧
@@ -32,9 +39,13 @@ Claude Code のフック機能を使って、ユーザー ↔ Claude の対話�
 
 ### セッション分離の仕組み
 
-- フックコマンドに `--session-id=$PPID` を付与。`$PPID`（親プロセスID）は同一Claude Codeセッション内で一定、異なるコンソール間で異なる
-- 各セッションのログは `C:\tmp\claude_logs\<PPID値>\` に分離保存
-- 12時間以上更新のない古いセッションディレクトリは自動削除
+- Claude Code が hook stdin JSON に含める `session_id`（UUID）でセッションを分離
+- 各セッションのログは `C:\tmp\claude_logs\<UUID>\` に分離保存
+- 各セッションディレクトリに `label.txt`（初回プロンプトから自動生成）を保持
+- 24時間以上更新のない古いセッションディレクトリは自動削除
+- **サブエージェント（Agent ツール）は親と異なる session_id を持つ**。hook stdin に `agent_id` キーが含まれる場合はサブエージェント。リカバリ時にサブエージェントのセッションが表示されても通常は復元不要（User発話0件で判別可能）
+
+> **廃止**: v2 で使用していた `--session-id=$PPID` は MSYS2 上で `$PPID=1` 固定のため v3 で廃止。CLI 引数 `--session-id` は互換性のためフォールバックとして残存
 
 ### conversation.log フォーマット
 
@@ -114,21 +125,23 @@ PYTHONUTF8=1 python scripts/check_jobs.py --update-active
 "hooks": {
   "UserPromptSubmit": [{
     "hooks": [{ "type": "command",
-      "command": "PATH=$HOME/.local/bin:$PATH PYTHONUTF8=1 uv run python scripts/claude_logger.py --event=prompt --session-id=$PPID",
+      "command": "PATH=$HOME/.local/bin:$PATH PYTHONUTF8=1 uv run python scripts/claude_logger.py --event=prompt",
       "timeout": 30 }]
   }],
   "Stop": [{
     "hooks": [{ "type": "command",
-      "command": "PATH=$HOME/.local/bin:$PATH PYTHONUTF8=1 uv run python scripts/claude_logger.py --event=stop --session-id=$PPID",
+      "command": "PATH=$HOME/.local/bin:$PATH PYTHONUTF8=1 uv run python scripts/claude_logger.py --event=stop",
       "timeout": 30 }]
   }],
   "PostToolUse": [{
     "hooks": [{ "type": "command",
-      "command": "PATH=$HOME/.local/bin:$PATH PYTHONUTF8=1 uv run python scripts/claude_logger.py --event=tool --session-id=$PPID",
+      "command": "PATH=$HOME/.local/bin:$PATH PYTHONUTF8=1 uv run python scripts/claude_logger.py --event=tool",
       "timeout": 10 }]
   }]
 }
 ```
+
+> session_id は hook stdin JSON から取得するため、CLI 引数 `--session-id` は不要（v3 で廃止）
 
 ---
 
@@ -173,7 +186,7 @@ PYTHONUTF8=1 python scripts/check_jobs.py --update-active
 
 ```
 C:\...\Python312\python.exe: can't open file
-'G:\\マイドライブ\\claude\\investment-agent\\data\\monthly_adapters\\scripts\\claude_logger.py':
+'G:\\マイドライブ\\claude\\investment-agent\\meta\\monthly\\scripts\\claude_logger.py':
 [Errno 2] No such file or directory
 ```
 

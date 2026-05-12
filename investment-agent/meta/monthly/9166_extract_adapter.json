@@ -1,0 +1,42 @@
+{
+  "ticker": "9166",
+  "company_name": "GENDA",
+  "source": "non-tdnet(pdf)",
+  "format": "pdf",
+  "fields": [
+    {
+      "key": "エンタメ・コンテンツ事業 売上（前年同月比）",
+      "bc_key": "エンタメ・コンテンツ事業 売上（前年同月比）",
+      "bc_ignore": true,
+      "bc_ignore_reason": "E6-1: GCS文書は「店舗展開進捗レポート」（店舗数・ミニロケ拠点数のみ）。売上前年同月比データは含まれない。IR月次ページ(genda.jp/ir/monthly/)も同レポートのみ公開。企業が月次売上データを開示していない",
+      "description": "エンタメ・コンテンツ事業 売上（前年同月比）",
+      "value_type": "percentage"
+    },
+    {
+      "key": "エンタメ・プラットフォーム事業 売上（前年同月比）",
+      "bc_key": "エンタメ・プラットフォーム事業 売上（前年同月比）",
+      "bc_ignore": true,
+      "bc_ignore_reason": "E6-1: 同上。店舗展開進捗レポートに売上データなし",
+      "description": "エンタメ・プラットフォーム事業 売上（前年同月比）",
+      "value_type": "percentage"
+    },
+    {
+      "key": "全社 売上（前年同月比）",
+      "bc_key": "全社 売上（前年同月比）",
+      "bc_ignore": true,
+      "bc_ignore_reason": "E6-1: 同上。店舗展開進捗レポートに売上データなし",
+      "description": "全社 売上（前年同月比）",
+      "value_type": "percentage"
+    },
+    {
+      "key": "全社 売上（百万円）",
+      "bc_key": "全社 売上（百万円）",
+      "bc_ignore": true,
+      "bc_ignore_reason": "E6-1: 同上。店舗展開進捗レポートに売上データなし",
+      "description": "全社 売上（百万円）",
+      "value_type": "number"
+    }
+  ],
+  "manual_override": true,
+  "manual_override_at": "2026-05-08T14:00:00+09:00"
+}

@@ -1,0 +1,98 @@
+{
+  "ticker": "1939",
+  "company_name": "四電工",
+  "current_version": "2025-10",
+  "versions": [
+    {
+      "valid_from": "2025-10",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当中間連結会計期間における受注高の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "当中間連結会計期間における売上高の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "完成工事高",
+          "type": "completed",
+          "description": "売上高のうち、建設工事の完成による売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "その他の事業売上高",
+          "type": "other",
+          "description": "売上高のうち、完成工事以外の事業による売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "繰越工事高",
+          "type": "backlog",
+          "description": "中間連結会計期間末時点における未完成工事の残高",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "工事種類",
+          "items": [
+            "配電工事",
+            "送電・土木工事",
+            "電気・計装工事",
+            "空調・管工事",
+            "情報通信工事",
+            "兼業事業"
+          ]
+        },
+        {
+          "dimension_name": "得意先",
+          "items": [
+            "四国電力グループ",
+            "官公庁",
+            "一般民間"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "決算短信の概況および個別業績の内訳表（P9-10）に、受注高、売上高（完成工事高）、繰越工事高のそれぞれについて、工事種類別および得意先別の詳細なデータが記載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/1939/20251031_1939_四電工_決算短信_2026年３月期 第２四半期（中間期）決算短信〔日本基準〕（連結）_140120251031584022.pdf",
+  "_source_doc_id": "140120251031584022",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:05:19.070172+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      5,
+      8,
+      13
+    ],
+    "table_count": 4,
+    "max_rows": 39,
+    "max_cols": 7,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 4"
+    ]
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "ticker": "4012",
+  "company_name": "アクシス",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "全社の売上高合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "システムサービス事業 売上高",
+          "type": "completed",
+          "description": "システムサービス事業(SS)の売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "ITサービス事業 売上高",
+          "type": "completed",
+          "description": "ITサービス事業(IT)の売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "SS 受注残高",
+          "type": "backlog",
+          "description": "システムサービス事業における期末の受注残高",
+          "unit": "百万円",
+          "is_total": false
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "事業セグメント",
+          "items": [
+            "システムサービス事業",
+            "ITサービス事業"
+          ]
+        },
+        {
+          "dimension_name": "システムサービス事業サービス区分",
+          "items": [
+            "システムインテグレーション",
+            "クラウドインテグレーション"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "ppt_chart",
+      "notes": "システムサービス事業とITサービス事業の売上高、およびシステムサービス事業の受注残高が報告されています。システムサービス事業の売上高については、システムインテグレーションとクラウドインテグレーションの内訳もグラフで示されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/4012/20260205_4012_アクシス_決算説明資料_2025年12月期決算補足説明資料_140120260204547592.pdf",
+  "_source_doc_id": "140120260204547592",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T17:58:09.034511+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      8,
+      9
+    ],
+    "table_count": 8,
+    "max_rows": 3,
+    "max_cols": 6,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 8"
+    ]
+  }
+}

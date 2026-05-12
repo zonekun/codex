@@ -1,0 +1,36 @@
+{
+  "ticker": "4288",
+  "company_name": "アズジェント",
+  "current_version": "2025-02",
+  "versions": [
+    {
+      "valid_from": "2025-02",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "breakdown_dimensions": [],
+      "presentation_format": "text",
+      "complexity": "no_relevant_pages",
+      "notes": "提示されたページには受注高、売上高の内訳、受注残高に関する数値データは含まれていません。記載されている主な数値は減価償却費のみであり、セグメント情報も単一セグメントのため記載が省略されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/4288/20250214_4288_アズジェント_決算短信_2025年３月期第３四半期決算短信[日本基準]（非連結）_140120250213574004.pdf",
+  "_source_doc_id": "140120250213574004",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:03:35.119833+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "no_table",
+    "relevant_pages": [
+      9
+    ],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "pdfplumber found no tables on relevant pages"
+    ]
+  }
+}

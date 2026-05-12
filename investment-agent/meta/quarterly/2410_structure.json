@@ -1,0 +1,78 @@
+{
+  "ticker": "2410",
+  "company_name": "キャリアＤＣ",
+  "current_version": "2026-01",
+  "versions": [
+    {
+      "valid_from": "2026-01",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "メディア事業および新卒メディア事業における受注金額",
+          "unit": "億円",
+          "is_total": true
+        },
+        {
+          "name": "受注件数",
+          "type": "other",
+          "description": "メディア事業における受注の件数",
+          "unit": "件",
+          "is_total": true
+        },
+        {
+          "name": "個別セミナー受注高",
+          "type": "order_intake",
+          "description": "新卒メディア事業における個別セミナーの受注金額",
+          "unit": "億円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "大規模イベント受注高",
+          "type": "order_intake",
+          "description": "新卒メディア事業における大規模イベントの受注金額",
+          "unit": "億円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "受注内訳",
+          "items": [
+            "個別セミナー",
+            "大規模イベント"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "ppt_chart",
+      "notes": "スライド11（メディア事業）およびスライド15（新卒メディア事業）から、受注高、受注件数、売上高のデータを抽出。受注高については四半期ごとの推移グラフに具体的な数値が記載されている。"
+    }
+  ],
+  "_source_pdf": "tdnet/2410/20260130_2410_キャリアＤＣ_決算説明資料_2026年９月期　第１四半期決算補足説明資料_140120260129542208.pdf",
+  "_source_doc_id": "140120260129542208",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T17:22:32.684442+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      12,
+      16
+    ],
+    "table_count": 4,
+    "max_rows": 7,
+    "max_cols": 25,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 4",
+      "wide table: 25 columns"
+    ]
+  }
+}

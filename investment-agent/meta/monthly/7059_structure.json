@@ -1,0 +1,59 @@
+{
+  "ticker": "7059",
+  "company_name": "7059",
+  "metrics": [
+    {
+      "name": "IT技術者 在籍数（人）",
+      "source": "bc"
+    },
+    {
+      "name": "IT技術者 稼働率（%）",
+      "source": "bc"
+    },
+    {
+      "name": "グループ 在籍技術者数 合計（人）",
+      "source": "bc"
+    },
+    {
+      "name": "グループ 技術者稼働率 合計（%）",
+      "source": "bc"
+    },
+    {
+      "name": "建設技術者 在籍数（人）",
+      "source": "bc"
+    },
+    {
+      "name": "建設技術者 稼働率（%）",
+      "source": "bc"
+    },
+    {
+      "name": "機械設計開発技術者 在籍数（人）",
+      "source": "bc"
+    },
+    {
+      "name": "機械設計開発技術者 稼働率（%）",
+      "source": "bc"
+    },
+    {
+      "name": "機電・半導体技術者 在籍数（人）",
+      "source": "bc"
+    },
+    {
+      "name": "機電・半導体技術者 稼働率（%）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00",
+  "monthly_items": [
+    {
+      "name": "グループ合計 在籍技術者数（人）",
+      "collection_excluded": true,
+      "_manual_add": true,
+      "_added_at": "2026-04-18T16:03:23+09:00",
+      "_excluded_reason": "収集対象外（管理不要、BC側未収集、2026-04-18判断）",
+      "source": "bc"
+    }
+  ],
+  "manual_override": true
+}

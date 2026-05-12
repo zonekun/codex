@@ -1,0 +1,76 @@
+{
+  "source": "download",
+  "format": "xlsx",
+  "sheet_name": "売上高（前年同月比）",
+  "label_col_index": 2,
+  "month_row_index": 1,
+  "data_start_row": 3,
+  "fields": [
+    {
+      "key": "丸亀製麺 既存店 売上（前年同月比）",
+      "name": "丸亀製麺 既存店 売上（前年同月比）",
+      "row_label_regex": "売上高",
+      "value_type": "float",
+      "group": 5
+    },
+    {
+      "key": "丸亀製麺 既存店 客単価（前年同月比）",
+      "name": "丸亀製麺 既存店 客単価（前年同月比）",
+      "row_label_regex": "客単価",
+      "value_type": "float",
+      "group": 5
+    },
+    {
+      "key": "丸亀製麺 既存店 客数（前年同月比）",
+      "name": "丸亀製麺 既存店 客数（前年同月比）",
+      "row_label_regex": "客数",
+      "value_type": "float",
+      "group": 5
+    },
+    {
+      "key": "全店 売上（前年同月比）",
+      "name": "全店 売上（前年同月比）",
+      "row_label_regex": "売上高",
+      "value_type": "float",
+      "group": 3
+    },
+    {
+      "key": "既存店 売上（前年同月比）",
+      "name": "既存店 売上（前年同月比）",
+      "row_label_regex": "売上高",
+      "value_type": "float",
+      "group": 4
+    },
+    {
+      "key": "全店 店舗数",
+      "name": "全店 店舗数",
+      "bc_ignore": true,
+      "bc_ignore_reason": "Excel「店舗数」シートcol13に値あり(BC値2103と一致)。ただし現行エンジンは単一sheet_nameのみ対応のため別シートから抽出不可",
+      "bc_key": "全店 店舗数"
+    },
+    {
+      "key": "既存店 客単価（前年同月比）",
+      "name": "既存店 客単価（前年同月比）",
+      "bc_ignore": true,
+      "bc_ignore_reason": "BC上は「丸亀製麺 既存店 客単価（前年同月比）」として管理(同一データ group5)。adapterの既存フィールドで抽出・突合済み。本キー名ではBC側にデータなし",
+      "bc_key": "既存店 客単価（前年同月比）"
+    },
+    {
+      "key": "既存店 客数（前年同月比）",
+      "name": "既存店 客数（前年同月比）",
+      "bc_ignore": true,
+      "bc_ignore_reason": "BC上は「丸亀製麺 既存店 客数（前年同月比）」として管理(同一データ group5)。adapterの既存フィールドで抽出・突合済み。本キー名ではBC側にデータなし",
+      "bc_key": "既存店 客数（前年同月比）"
+    }
+  ],
+  "extraction_notes": "売上高（前年同月比）シートから全店売上(col5=group3)・全業態既存店売上(col6=group4)・丸亀製麺既存店の売上/客数/客単価(col7-9=group5)を抽出。既存店 客数/客単価は丸亀製麺既存店(group5)と同一データ。全店店舗数は別シート(店舗数)のため現行エンジンで抽出不可。",
+  "fields_count": 5,
+  "manual_override": true,
+  "manual_override_at": "2026-05-07T23:30:00+09:00",
+  "manual_override_note": "既存店客数/客単価はBC上「丸亀製麺」キーで管理済み。本キー名ではBC値なしのためbc_ignore。全店店舗数は別シートで抽出不可",
+  "ticker": "3397",
+  "company_name": "3397",
+  "created_at": "2026-04-05T09:48:43.521794+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_file": "000000_3397_ãã¦ã³ã­ã¼ãï¼EXCELï¼_fce14b03.xlsx"
+}

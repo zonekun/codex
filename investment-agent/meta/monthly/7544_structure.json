@@ -1,0 +1,40 @@
+{
+  "ticker": "7544",
+  "company_name": "7544",
+  "metrics": [
+    {
+      "name": "チェーン全店 売上（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "ローソン・スリーエフ 店舗数",
+      "source": "bc"
+    },
+    {
+      "name": "全店 客単価（円）",
+      "source": "bc"
+    },
+    {
+      "name": "全店 客数（人）",
+      "source": "bc"
+    },
+    {
+      "name": "全店 平均日販（百万円）",
+      "source": "bc"
+    },
+    {
+      "name": "既存店 売上（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "既存店 客単価（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "既存店 客数（前年同月比）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

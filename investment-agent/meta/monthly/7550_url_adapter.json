@@ -1,0 +1,13 @@
+{
+  "ticker": "7550",
+  "company_name": "ゼンショーホールディングス",
+  "ir_page_url": "https://www.zensho.co.jp/jp/ir/finance/monthly/",
+  "updated_at": "2026-04-21T10:07:33.745103+09:00",
+  "last_checked": "2026-04-21",
+  "status": "active",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": null,
+  "link_href_pattern": "/jp.*\\.(csv|pdf)",
+  "note": "月次PDFリンク2件検出 best=http://www.zensho.co.jp/jp/company/news/resource/pdf/20260407news.pdf"
+}

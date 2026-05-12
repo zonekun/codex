@@ -1,0 +1,28 @@
+{
+  "ticker": "6838",
+  "company_name": "多摩川ＨＤ",
+  "current_version": "2026-03",
+  "versions": [
+    {
+      "valid_from": "2026-03",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Vision extraction selected because structure is complex or data is unavailable."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/6838/20260316_6838_多摩川ＨＤ_決算短信_2026年10月期 第1四半期決算短信（連結）_140120260316582751.pdf",
+  "_source_doc_id": "140120260316582751",
+  "_generated_at": "2026-04-30T19:29:49.198196+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

@@ -1,0 +1,46 @@
+{
+  "ticker": "1780",
+  "company_name": "ヤマウラ",
+  "current_version": "2025-11",
+  "versions": [
+    {
+      "valid_from": "2025-11",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当期における新規受注の総額。連結合計値が本文に、個別ベースの詳細な内訳（セグメント別、工種別、官民別）が補足情報の表に記載されている。",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "受注高については、個別ベースで「セグメント×工種×官民」という多角的な内訳表が提供されている。一方で、受注残高（繰越工事高）に関する数値データは本資料の範囲内には見当たらない。"
+    }
+  ],
+  "_source_pdf": "tdnet/1780/20251113_1780_ヤマウラ_決算短信_2026年３月期　第２四半期（中間期）決算短信〔日本基準〕（連結）_140120251111595440.pdf",
+  "_source_doc_id": "140120251111595440",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T16:40:42.435881+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      8,
+      14
+    ],
+    "table_count": 3,
+    "max_rows": 32,
+    "max_cols": 6,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

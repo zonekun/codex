@@ -1,6 +1,7 @@
 """株式市場4局面判定プログラム.
 
-PS1メニュー: C:\\Users\\zonekun\\Dropbox\\stock\\script\\claude-investment-agent.ps1
+PSメニュー「株式市場4局面判定」
+詳細: docs/knowledges/tools/023_powershell_menu.md
 
 局面定義:
   金融相場   : 金融緩和 × 景気弱い → 株高

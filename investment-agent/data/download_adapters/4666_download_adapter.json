@@ -1,9 +1,0 @@
-{
-  "ticker": "4666",
-  "company_name": "パーク24",
-  "updated_at": "2026-03-15",
-  "link_text_pattern": "月次|業績状況|monthly",
-  "link_href_pattern": "\\.(pdf|xlsx)",
-  "css_selector": null,
-  "note": "http://www.park24.co.jp/ir/financial/monthly.html から PDF リンクを取得"
-}

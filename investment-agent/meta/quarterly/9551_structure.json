@@ -1,0 +1,70 @@
+{
+  "ticker": "9551",
+  "company_name": "メタウォーター",
+  "current_version": "2026-04",
+  "versions": [
+    {
+      "valid_from": "2026-04",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当連結会計年度における受注の総額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当連結会計年度末における受注残高の総額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "セグメント別受注高",
+          "type": "order_intake",
+          "description": "各報告セグメント別の受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "セグメント別受注残高",
+          "type": "backlog",
+          "description": "各報告セグメント別の受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "連結合計および4つの報告セグメント（環境エンジニアリング、システムソリューション、運営、海外）ごとに、受注高、売上高、受注残高が詳細な表形式で記載されています。また、中期経営計画の修正に関連して2028年3月期の受注高・売上高目標値も記載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/9551/20260424_9551_メタウォーター_決算短信_2026年３月期決算短信〔日本基準〕(連結)_140120260423509277.pdf",
+  "_source_doc_id": "140120260423509277",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T20:22:02.404977+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      5,
+      7
+    ],
+    "table_count": 7,
+    "max_rows": 7,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 7"
+    ]
+  }
+}

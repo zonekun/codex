@@ -1,0 +1,77 @@
+{
+  "ticker": "7709",
+  "company_name": "クボテック",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "セグメント別の受注実績。米国セグメントは見込生産のため実績なし。",
+          "unit": "千円",
+          "is_total": false
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "セグメント別の受注残高。米国セグメントは見込生産のため実績なし。",
+          "unit": "千円",
+          "is_total": false
+        },
+        {
+          "name": "販売高",
+          "type": "completed",
+          "description": "セグメント別の販売実績（売上高）",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "生産高",
+          "type": "other",
+          "description": "セグメント別の生産実績",
+          "unit": "千円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "日本",
+            "米国"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "第3四半期連結累計期間における生産、受注及び販売の状況がセグメント別に表形式で記載されています。受注実績（受注高・受注残高）については日本セグメントのみデータが存在し、米国セグメントは見込生産を行っているため受注実績がない旨が注記されています。販売高と生産高については、日本・米国の内訳および合計値が記載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/7709/20260206_7709_クボテック_決算短信_2026年3月期　第３四半期決算短信〔日本基準〕（連結）_140120260128540730.pdf",
+  "_source_doc_id": "140120260128540730",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:53:40.795375+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      5,
+      10,
+      13,
+      14
+    ],
+    "table_count": 3,
+    "max_rows": 4,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

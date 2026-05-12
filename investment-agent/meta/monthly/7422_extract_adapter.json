@@ -1,0 +1,81 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "doc_title_pattern": "月次|月度|月間|売上|速報|実績|業績|概況|KPI|ＫＰＩ|状況|報告|推移|月末",
+  "year_from_title_regex": "",
+  "month_from_title_regex": "(\\d+)月度",
+  "fields": [
+    {
+      "key": "単体 売上（百万円）",
+      "name": "単体 売上（百万円）",
+      "row_label_regex": "売上高",
+      "value_type": "integer",
+      "notes": "「売上高 248 398 62.3%」行から最初の整数(実績)を取得",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "records 単体売上 1466 vs BC 506 (2.9倍). segment定義不一致"
+    },
+    {
+      "key": "単体 売上（前年同月比）",
+      "name": "単体 売上（前年同月比）",
+      "row_label_regex": "売上高",
+      "value_type": "percentage",
+      "notes": "「売上高 248 398 62.3%」行から最初のpercentage値(前年比)を取得",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "records 単体売上 1466 vs BC 506 (2.9倍). segment定義不一致"
+    },
+    {
+      "key": "総利益（百万円）",
+      "name": "総利益（百万円）",
+      "row_label_regex": "総利益",
+      "value_type": "integer",
+      "notes": "「総利益 73 119 61.1%」行から最初の整数(実績)を取得。百万円単位",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "BC値292000000(=292百万)あり。records 単体売上 1466 vs BC 506 (2.9倍). segment定義不一致。BC上は『総利益（円）』名義だがPDFは百万円単位",
+      "bc_key": "総利益（円）"
+    },
+    {
+      "key": "総利益（前年同月比）",
+      "name": "総利益（前年同月比）",
+      "row_label_regex": "総利益",
+      "value_type": "percentage",
+      "notes": "「総利益 73 119 61.1%」行から最初のpercentage値(前年比)を取得",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "records 単体売上 1466 vs BC 506 (2.9倍). segment定義不一致"
+    },
+    {
+      "key": "シューズ在庫（前年同月比）",
+      "name": "シューズ在庫（前年同月比）",
+      "row_label_regex": "シューズ在庫",
+      "value_type": "percentage",
+      "notes": "「シューズ在庫 実績 前年 前年比」行から最初のpercentage値(前年比)を取得",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "records 単体売上 1466 vs BC 506 (2.9倍). segment定義不一致"
+    }
+  ],
+  "extraction_notes": "テーブルは「実績 前年 前年比」列構成。row_label_regexでキャプチャグループを使わず、value_typeでinteger/percentageを自動区別。unit_scale除去済み（百万円単位のまま比較）。",
+  "ticker": "7422",
+  "company_name": "東邦レマック",
+  "created_at": "2026-03-21T20:33:21.398501+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "東邦レマック株式会社２月度月次業績ご報告",
+  "sample_submission_date": "2026-03-06",
+  "fields_count": 5,
+  "manual_override": true,
+  "manual_override_note": "auto-detection誤り修正: 誤yoy_offset/unit_scale削除",
+  "manual_override_at": "2026-04-09T15:50:12.858650+09:00",
+  "custom_prompt": "あなたは ticker 7422 の月次開示 PDF から KPI を抽出するアシスタントです.\n\n抽出対象月: {year}年{month}月度\n\n重要ルール:\n  - 当月 (指定月) の値のみ採用\n  - 四半期累計・上期累計・通期・前年同期実績 等の集計値は絶対に拾わない\n  - サブブランド行ではなく「全店」「既存店」「合計」等の集約行を採用\n  - 前年同月比 field には 「+X.X%増」「−X.X%減」の narrative が該当する場合は\n    100 を加算した値 (例: +5.2% → 105.2, -4.9% → 95.1) を返す\n  - 見つからない field は null\n\n出力形式: JSON\n{\n  - \"単体 売上（百万円）\": 整数 (「売上高 248 398 62.3%」行から最初の整数(実績)を取得)\n  - \"単体 売上（前年同月比）\": 前年同月比 (例 105.2) (「売上高 248 398 62.3%」行から最初のpercentage値(前年比)を取得)\n  - \"総利益（百万円）\": 整数 (「総利益 73 119 61.1%」行から最初の整数(実績)を取得。百万円単位)\n  - \"総利益（前年同月比）\": 前年同月比 (例 105.2) (「総利益 73 119 61.1%」行から最初のpercentage値(前年比)を取得)\n  - \"シューズ在庫（前年同月比）\": 前年同月比 (例 105.2) (「シューズ在庫 実績 前年 前年比」行から最初のpercentage値(前年比)を取得)\n}\n",
+  "_agent_loosened_from": "月度月次業績ご報告",
+  "_agent_patched_at": "2026-04-20T07:01:03.184707+09:00",
+  "_agent_patch_history": [
+    {
+      "ts": "2026-04-19T20:45:52.840188+09:00",
+      "applied": [
+        "top-level: ['doc_title_pattern', '_agent_loosened_from']"
+      ]
+    }
+  ],
+  "extraction_method": "gemini",
+  "overwrite_past_months": true,
+  "regex_redesign_at": "2026-04-19T22:28:56.928575+09:00",
+  "regex_redesign_note": "Gemini 切替 (regex 限界 or 誤マッチのため)."
+}

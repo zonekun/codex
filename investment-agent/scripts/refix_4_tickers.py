@@ -39,7 +39,7 @@ def update_adapter(ticker: str, fixes: dict):
     d['manual_override'] = True
     d['p2_regression_refix_at'] = now
     data_str = json.dumps(d, ensure_ascii=False, indent=2)
-    Path(f'data/monthly_adapters/{ticker}.json').write_text(data_str, encoding='utf-8')
+    Path(f'meta/monthly/{ticker}_extract_adapter.json').write_text(data_str, encoding='utf-8')
     ap.upload_from_string(data_str, content_type='application/json')
     print(f'\n{ticker}: {len(fixes)} fields updated')
 

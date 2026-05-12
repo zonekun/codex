@@ -1,0 +1,142 @@
+{
+  "ticker": "2413",
+  "company_name": "エムスリー",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "売上収益",
+          "type": "completed",
+          "description": "当第3四半期累計期間における連結売上収益",
+          "unit": "百万円",
+          "is_total": true,
+          "period": "current_period"
+        },
+        {
+          "name": "受注残",
+          "type": "backlog",
+          "description": "エビデンスソリューションセグメントにおける受注残高",
+          "unit": "億円",
+          "is_total": false
+        },
+        {
+          "name": "売上収益（メディカルプラットフォーム）",
+          "type": "completed",
+          "description": "当第3四半期累計期間におけるメディカルプラットフォームの売上収益",
+          "unit": "百万円",
+          "period": "current_period",
+          "is_total": false,
+          "parent_metric": "売上収益",
+          "breakdown_dimension": "セグメント",
+          "breakdown_item": "メディカルプラットフォーム"
+        },
+        {
+          "name": "売上収益（エビデンスソリューション）",
+          "type": "completed",
+          "description": "当第3四半期累計期間におけるエビデンスソリューションの売上収益",
+          "unit": "百万円",
+          "period": "current_period",
+          "is_total": false,
+          "parent_metric": "売上収益",
+          "breakdown_dimension": "セグメント",
+          "breakdown_item": "エビデンスソリューション"
+        },
+        {
+          "name": "売上収益（キャリアソリューション）",
+          "type": "completed",
+          "description": "当第3四半期累計期間におけるキャリアソリューションの売上収益",
+          "unit": "百万円",
+          "period": "current_period",
+          "is_total": false,
+          "parent_metric": "売上収益",
+          "breakdown_dimension": "セグメント",
+          "breakdown_item": "キャリアソリューション"
+        },
+        {
+          "name": "売上収益（サイトソリューション）",
+          "type": "completed",
+          "description": "当第3四半期累計期間におけるサイトソリューションの売上収益",
+          "unit": "百万円",
+          "period": "current_period",
+          "is_total": false,
+          "parent_metric": "売上収益",
+          "breakdown_dimension": "セグメント",
+          "breakdown_item": "サイトソリューション"
+        },
+        {
+          "name": "売上収益（ペイシェントソリューション）",
+          "type": "completed",
+          "description": "当第3四半期累計期間におけるペイシェントソリューションの売上収益",
+          "unit": "百万円",
+          "period": "current_period",
+          "is_total": false,
+          "parent_metric": "売上収益",
+          "breakdown_dimension": "セグメント",
+          "breakdown_item": "ペイシェントソリューション"
+        },
+        {
+          "name": "売上収益（エマージング事業群）",
+          "type": "completed",
+          "description": "当第3四半期累計期間におけるエマージング事業群の売上収益",
+          "unit": "百万円",
+          "period": "current_period",
+          "is_total": false,
+          "parent_metric": "売上収益",
+          "breakdown_dimension": "セグメント",
+          "breakdown_item": "エマージング事業群"
+        },
+        {
+          "name": "売上収益（海外）",
+          "type": "completed",
+          "description": "当第3四半期累計期間における海外の売上収益",
+          "unit": "百万円",
+          "period": "current_period",
+          "is_total": false,
+          "parent_metric": "売上収益",
+          "breakdown_dimension": "セグメント",
+          "breakdown_item": "海外"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "メディカルプラットフォーム",
+            "エビデンスソリューション",
+            "キャリアソリューション",
+            "サイトソリューション",
+            "ペイシェントソリューション",
+            "エマージング事業群",
+            "海外"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "エビデンスソリューションの受注残高（356億円）が説明テキスト内に記載されています。売上収益はセグメント別の表形式で提供されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/2413/20260204_2413_エムスリー_決算説明資料_2026年３月期 第３四半期決算説明資料_140120260204547031.pdf",
+  "_source_doc_id": "140120260204547031",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T17:22:46.543740+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      7
+    ],
+    "table_count": 2,
+    "max_rows": 15,
+    "max_cols": 9,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

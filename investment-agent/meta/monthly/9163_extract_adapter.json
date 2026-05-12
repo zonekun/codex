@@ -1,0 +1,43 @@
+{
+  "source": "non-tdnet(pdf)",
+  "format": "pdf",
+  "fields": [
+    {
+      "key": "ITソリューション事業 稼働人数（名）",
+      "name": "ITソリューション事業 稼働人数（名）",
+      "value_type": "number",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "GCSにはスポンサードレポートPDFのみ。月次の稼働人数・稼働率データなし"
+    },
+    {
+      "key": "ITソリューション事業 稼働率（研修中除く）（%）",
+      "name": "ITソリューション事業 稼働率（研修中除く）（%）",
+      "value_type": "number",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "同上"
+    },
+    {
+      "key": "建設ソリューション事業 稼働人数（名）",
+      "name": "建設ソリューション事業 稼働人数（名）",
+      "value_type": "number",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "同上"
+    },
+    {
+      "key": "建設ソリューション事業 稼働率（研修中除く）（%）",
+      "name": "建設ソリューション事業 稼働率（研修中除く）（%）",
+      "value_type": "number",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "同上"
+    }
+  ],
+  "extraction_notes": "9163。GCSにはスポンサードレポートPDFのみ。月次の事業別稼働人数・稼働率データを含む文書が確認できないため全field bc_ignore。",
+  "ticker": "9163",
+  "company_name": "9163",
+  "created_at": "2026-04-05T10:28:06.045723+09:00",
+  "created_by": "gemini-2.5-flash",
+  "extraction_method": "gemini",
+  "manual_override": true,
+  "manual_override_note": "Codex成果物を自ら検証・再作成。月次文書不在のためbc_ignore",
+  "manual_override_at": "2026-05-08T01:00:00+09:00"
+}

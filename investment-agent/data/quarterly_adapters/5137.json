@@ -1,0 +1,34 @@
+{
+  "ticker": "5137",
+  "company_name": "Ｇ－スマートドライブ",
+  "current_version": "2024-11",
+  "versions": [
+    {
+      "valid_from": "2024-11",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "no_relevant_pages",
+      "notes": "Gemini skipped; complexity-only dry run output."
+    }
+  ],
+  "_source_pdf": "tdnet/5137/20241113_5137_Ｇ－スマートドライブ_決算説明資料_2024年9月期第4四半期 決算説明資料_140120241113520867.pdf",
+  "_source_doc_id": "140120241113520867",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T18:23:32.149196+09:00",
+  "_model_used": null,
+  "_complexity_report": {
+    "complexity": "no_relevant_pages",
+    "relevant_pages": [],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": false,
+    "notes": [
+      "keyword scan found no relevant pages"
+    ]
+  }
+}

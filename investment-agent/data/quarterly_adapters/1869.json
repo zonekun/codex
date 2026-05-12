@@ -1,0 +1,194 @@
+{
+  "ticker": "1869",
+  "company_name": "名工建",
+  "current_version": "2025-01",
+  "versions": [
+    {
+      "valid_from": "2025-01",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当第3四半期累計期間における受注高の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注高（土木）",
+          "type": "order_intake",
+          "description": "土木部門における受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "受注高（建築）",
+          "type": "order_intake",
+          "description": "建築部門における受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "受注高（官公庁）",
+          "type": "order_intake",
+          "description": "官公庁向けの受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "受注高（民間）",
+          "type": "order_intake",
+          "description": "民間向けの受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "総売上高",
+          "type": "completed",
+          "description": "完成工事高と兼業事業売上高の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "完成工事高",
+          "type": "completed",
+          "description": "建設事業における完成工事高の合計",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "総売上高"
+        },
+        {
+          "name": "完成工事高（土木）",
+          "type": "completed",
+          "description": "土木部門における完成工事高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "完成工事高"
+        },
+        {
+          "name": "完成工事高（建築）",
+          "type": "completed",
+          "description": "建築部門における完成工事高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "完成工事高"
+        },
+        {
+          "name": "完成工事高（官公庁）",
+          "type": "completed",
+          "description": "官公庁向けの完成工事高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "完成工事高"
+        },
+        {
+          "name": "完成工事高（民間）",
+          "type": "completed",
+          "description": "民間向けの完成工事高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "完成工事高"
+        },
+        {
+          "name": "兼業事業売上高",
+          "type": "completed",
+          "description": "不動産事業等の兼業事業による売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "総売上高"
+        },
+        {
+          "name": "繰越高",
+          "type": "backlog",
+          "description": "当第3四半期末における次期繰越工事高の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "繰越高（土木）",
+          "type": "backlog",
+          "description": "土木部門における繰越高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "繰越高"
+        },
+        {
+          "name": "繰越高（建築）",
+          "type": "backlog",
+          "description": "建築部門における繰越高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "繰越高"
+        },
+        {
+          "name": "繰越高（官公庁）",
+          "type": "backlog",
+          "description": "官公庁向けの繰越高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "繰越高"
+        },
+        {
+          "name": "繰越高（民間）",
+          "type": "backlog",
+          "description": "民間向けの繰越高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "繰越高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "部門",
+          "items": [
+            "土木",
+            "建築"
+          ]
+        },
+        {
+          "dimension_name": "顧客区分",
+          "items": [
+            "官公庁",
+            "民間"
+          ]
+        },
+        {
+          "dimension_name": "事業区分",
+          "items": [
+            "完成工事高",
+            "兼業事業売上高"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "決算短信の補足情報（10ページ）に、部門別および顧客別の受注高、売上高（完成工事高）、繰越高の比較表が詳細な数値とともに掲載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/1869/20250131_1869_名工建_決算短信_令和７年３月期　第３四半期決算短信[日本基準]（連結）_140120250129557299.pdf",
+  "_source_doc_id": "140120250129557299",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T16:56:13.844397+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      3,
+      4,
+      12
+    ],
+    "table_count": 3,
+    "max_rows": 8,
+    "max_cols": 7,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

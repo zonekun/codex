@@ -1,0 +1,13 @@
+{
+  "ticker": "3395",
+  "company_name": "サンマルクホールディングス",
+  "ir_page_url": "https://www.saint-marc-hd.com/hd/ir/topics/",
+  "updated_at": "2026-04-21T09:38:25.756092+09:00",
+  "last_checked": "2026-04-21",
+  "status": "active",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": "月次|売上",
+  "link_href_pattern": "/upload/irnews/358/\\d{6}13\\.pdf",
+  "note": "月次PDFリンク1件検出 best=https://static.saint-marc-hd.com/upload/irnews/358/20260413.pdf"
+}

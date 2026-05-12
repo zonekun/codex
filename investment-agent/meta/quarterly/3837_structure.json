@@ -1,0 +1,51 @@
+{
+  "ticker": "3837",
+  "company_name": "アドソル日進",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高（累計）",
+          "type": "order_intake",
+          "description": "当第３四半期連結累計期間の受注高累計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高（四半期末）",
+          "type": "backlog",
+          "description": "当第３四半期末時点の受注残高",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "決算短信のサマリー表に売上高、受注高（累計）、受注残高（四半期末）の数値が記載されています。本文中に社会インフラ事業や先進インダストリー事業への言及はありますが、具体的な数値の内訳はこのページには記載されていません。"
+    }
+  ],
+  "_source_pdf": "tdnet/3837/20260205_3837_アドソル日進_決算短信_2026年３月期　第３四半期決算短信〔日本基準〕（連結）_140120260204546802.pdf",
+  "_source_doc_id": "140120260204546802",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:52:44.734068+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4
+    ],
+    "table_count": 1,
+    "max_rows": 10,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

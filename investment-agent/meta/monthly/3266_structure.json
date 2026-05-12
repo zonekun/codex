@@ -1,0 +1,16 @@
+{
+  "ticker": "3266",
+  "company_name": "3266",
+  "metrics": [
+    {
+      "name": "ファンド 資産残高（百万円）",
+      "source": "bc"
+    },
+    {
+      "name": "不動産等受託 資産残高（百万円）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

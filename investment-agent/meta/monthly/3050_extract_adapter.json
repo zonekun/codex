@@ -1,0 +1,55 @@
+{
+  "source": "non-tdnet(pdf)",
+  "format": "pdf",
+  "fields": [
+    {
+      "key": "全店 売上（前年同月比）",
+      "name": "全店 売上（前年同月比）",
+      "description": "月次売上伸び率PDF「全店」セクションのチャート。売上高・客数・客単価の3指標を棒グラフで月別表示。「売上高」の対象月の値を取得。PDF値は伸び率（+0.2%等）のため100を加算してインデックス化（100.2）。",
+      "value_type": "percentage"
+    },
+    {
+      "key": "全店 客数（前年同月比）",
+      "name": "全店 客数（前年同月比）",
+      "description": "同PDF「全店」セクション。「客数」の対象月の値。伸び率→インデックス変換。",
+      "value_type": "percentage"
+    },
+    {
+      "key": "全店 客単価（前年同月比）",
+      "name": "全店 客単価（前年同月比）",
+      "description": "同PDF「全店」セクション。「客単価」の対象月の値。伸び率→インデックス変換。",
+      "value_type": "percentage"
+    },
+    {
+      "key": "既存店 売上（前年同月比）",
+      "name": "既存店 売上（前年同月比）",
+      "description": "月次売上伸び率PDF「既存店」セクションのチャート。「売上高」の対象月の値。伸び率→インデックス変換。「全店」セクションと混同しない。",
+      "value_type": "percentage"
+    },
+    {
+      "key": "既存店 客数（前年同月比）",
+      "name": "既存店 客数（前年同月比）",
+      "description": "同PDF「既存店」セクション。「客数」の対象月の値。伸び率→インデックス変換。",
+      "value_type": "percentage"
+    },
+    {
+      "key": "既存店 客単価（前年同月比）",
+      "name": "既存店 客単価（前年同月比）",
+      "description": "同PDF「既存店」セクション。「客単価」の対象月の値。伸び率→インデックス変換。",
+      "value_type": "percentage"
+    }
+  ],
+  "extraction_notes": "DCMホールディングス月次売上伸び率PDF。チャート形式（棒グラフ+数値ラベル）でpdftotext抽出不可。既存店/全店の2セクション×売上高/客数/客単価の3指標。値は増減率（+0.2%等）で表示。確認PDF: 000000_3050_最新版_f5e45241.pdf",
+  "ticker": "3050",
+  "company_name": "DCMホールディングス",
+  "created_at": "2026-04-05T09:44:12.028498+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "DCMホールディングス月次売上伸び率",
+  "sample_submission_date": "",
+  "report_url": "https://www.dcm-hldgs.co.jp/grp/ir/performance/monthly-report.html",
+  "sample_file": "000000_3050_最新版_f5e45241.pdf",
+  "extraction_method": "gemini",
+  "manual_override": true,
+  "manual_override_note": "Codex成果物を自ら検証・再作成",
+  "manual_override_at": "2026-05-08T00:05:00+09:00"
+}

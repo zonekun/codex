@@ -1,0 +1,28 @@
+{
+  "ticker": "6291",
+  "company_name": "エアーテック",
+  "current_version": "2025-02",
+  "versions": [
+    {
+      "valid_from": "2025-02",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Vision extraction selected because structure is complex or data is unavailable."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/6291/20250214_6291_エアーテック_決算短信_2024年12月期 決算短信〔日本基準〕（非連結）_140120250214576429.pdf",
+  "_source_doc_id": "140120250214576429",
+  "_generated_at": "2026-04-30T18:58:20.160034+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

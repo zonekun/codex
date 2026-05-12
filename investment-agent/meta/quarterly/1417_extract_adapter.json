@@ -1,0 +1,28 @@
+{
+  "ticker": "1417",
+  "company_name": "ミライト・ワン",
+  "current_version": "2025-11",
+  "versions": [
+    {
+      "valid_from": "2025-11",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Vision extraction selected because structure is complex or data is unavailable."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/1417/20251113_1417_ミライト・ワン_決算短信_2026年3月期 第2四半期（中間期）決算短信[日本基準]（連結）_140120251112598616.pdf",
+  "_source_doc_id": "140120251112598616",
+  "_generated_at": "2026-04-30T16:26:06.955497+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

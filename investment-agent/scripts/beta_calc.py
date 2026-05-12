@@ -28,7 +28,7 @@ from google.cloud import bigquery, storage
 PROJECT = "gmailpj-357912"
 KEY_FILE = "keys/gcp-service-account.json"
 GCS_BUCKET = "stock_data_1930932"
-GCS_PATH = "earnings_model/beta_20d.csv"
+GCS_PATH = "earnings_model/zaraba_beta_20d/beta_20d.csv"
 JST = timezone(timedelta(hours=+9), "JST")
 
 

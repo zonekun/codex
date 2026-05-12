@@ -1,0 +1,57 @@
+{
+  "source": "non-tdnet(html_table)",
+  "format": "html",
+  "fields": [
+    {
+      "key": "旅客運賃収入 定期外（前年同月比）",
+      "name": "旅客運賃収入 定期外（前年同月比）",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "monthly_table.htmlは「月次営業概況」タイトルだがテーブル内容は['', '×']のみ(JS/iframe読み込み)。データ取得不可"
+    },
+    {
+      "key": "旅客運賃収入 定期（前年同月比）",
+      "name": "旅客運賃収入 定期（前年同月比）",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "同上"
+    },
+    {
+      "key": "旅客運輸収入 合計（前年同月比）",
+      "name": "旅客運輸収入 合計（前年同月比）",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "同上"
+    },
+    {
+      "key": "輸送人員 合計（前年同月比）",
+      "name": "輸送人員 合計（前年同月比）",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "同上"
+    },
+    {
+      "key": "輸送人員 定期外（前年同月比）",
+      "name": "輸送人員 定期外（前年同月比）",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "同上"
+    },
+    {
+      "key": "輸送人員 定期（前年同月比）",
+      "name": "輸送人員 定期（前年同月比）",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "同上"
+    }
+  ],
+  "extraction_notes": "京王電鉄。monthly_table.htmlは「月次営業概況」ページだが4テーブルとも中身が空(JS/iframe動的読み込み)。HTMLスクレイプではデータ取得不可。全field bc_ignore。",
+  "ticker": "9008",
+  "company_name": "京王電鉄",
+  "created_at": "2026-04-04T00:32:56.808532+09:00",
+  "created_by": "gemini-2.5-flash",
+  "extraction_method": "gemini",
+  "manual_override": true,
+  "manual_override_note": "Codex成果物を自ら検証・再作成。HTML確認→JS読み込みのためデータ取得不可、bc_ignore",
+  "manual_override_at": "2026-05-08T01:00:00+09:00"
+}

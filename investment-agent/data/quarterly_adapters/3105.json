@@ -1,0 +1,34 @@
+{
+  "ticker": "3105",
+  "company_name": "日清紡ＨＤ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "no_relevant_pages",
+      "notes": "Gemini skipped; complexity-only dry run output."
+    }
+  ],
+  "_source_pdf": "tdnet/3105/20260210_3105_日清紡ＨＤ_決算説明資料_2025年12月期_決算説明資料_140120260210553010.pdf",
+  "_source_doc_id": "決算説明資料",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T17:32:50.915273+09:00",
+  "_model_used": null,
+  "_complexity_report": {
+    "complexity": "no_relevant_pages",
+    "relevant_pages": [],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": false,
+    "notes": [
+      "keyword scan found no relevant pages"
+    ]
+  }
+}

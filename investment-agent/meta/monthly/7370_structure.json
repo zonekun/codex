@@ -1,0 +1,20 @@
+{
+  "ticker": "7370",
+  "company_name": "7370",
+  "metrics": [
+    {
+      "name": "PRコンサルティング 売上（円）",
+      "source": "bc"
+    },
+    {
+      "name": "グループ売上（百万円）",
+      "source": "bc"
+    },
+    {
+      "name": "メディアプラットフォーム 売上（円）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

@@ -1,0 +1,13 @@
+{
+  "ticker": "7643",
+  "company_name": "ダイイチ",
+  "ir_page_url": "http://www.daiichi-d.co.jp/ir/monthly/",
+  "updated_at": "2026-04-21T10:09:38.312225+09:00",
+  "last_checked": "2026-04-21",
+  "status": "active",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": "PDF",
+  "link_href_pattern": "/sys/wp\\-content/uploads/7643_getuji\\-7\\.pdf",
+  "note": "月次PDFリンク1件検出 best=https://www.daiichi-d.co.jp/sys/wp-content/uploads/7643_getuji-7.pdf"
+}

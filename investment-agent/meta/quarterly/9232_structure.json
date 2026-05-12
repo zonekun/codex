@@ -1,0 +1,52 @@
+{
+  "ticker": "9232",
+  "company_name": "パスコ",
+  "current_version": "2024-11",
+  "versions": [
+    {
+      "valid_from": "2024-11",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当該期間中に新たに受注した金額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "期末時点において未消化となっている受注案件の残高",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "決算短信の「受注高、売上高の状況をセグメントごとに示すと下記のとおりであります。」の表に、国内部門（公共・民間）および海外部門別の受注高、売上高、受注残高（期首・期末）が詳細に記載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/9232/20241107_9232_パスコ_決算短信_2025年3月期 第2四半期（中間期）決算短信〔日本基準〕（連結）_140120241106512265.pdf",
+  "_source_doc_id": "140120241106512265",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T20:15:58.584993+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      5,
+      6
+    ],
+    "table_count": 3,
+    "max_rows": 6,
+    "max_cols": 8,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

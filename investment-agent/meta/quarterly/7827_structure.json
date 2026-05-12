@@ -1,0 +1,85 @@
+{
+  "ticker": "7827",
+  "company_name": "オービス",
+  "current_version": "2026-03",
+  "versions": [
+    {
+      "valid_from": "2026-03",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "ハウス・エコ事業における四半期ごとの受注高。グラフおよびテキストに数値が記載されている。",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "ハウス・エコ事業における四半期末時点の受注残高。グラフおよびテキストに数値が記載されている。",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "見積作成件数",
+          "type": "other",
+          "description": "ハウス・エコ事業における当第1四半期の見積作成件数。",
+          "unit": "件",
+          "is_total": false
+        },
+        {
+          "name": "見積金額",
+          "type": "other",
+          "description": "ハウス・エコ事業における当第1四半期の見積合計金額。",
+          "unit": "百万円",
+          "is_total": false
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "会計年度",
+          "items": [
+            "2024年10月期",
+            "2025年10月期",
+            "2026年10月期"
+          ]
+        },
+        {
+          "dimension_name": "四半期",
+          "items": [
+            "1Q",
+            "2Q",
+            "3Q",
+            "4Q"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "ppt_chart",
+      "notes": "ハウス・エコ事業に特化した受注状況の推移資料。棒グラフで受注残高、折れ線グラフで受注高が示されており、2024年10月期から2026年10月期1Qまでの四半期データが確認できる。また、テキスト部分には見積件数や見積金額といった先行指標も含まれている。"
+    }
+  ],
+  "_source_pdf": "tdnet/7827/20260313_7827_オービス_決算説明資料_2026年10月期 第１四半期決算補足説明資料_140120260310578873.pdf",
+  "_source_doc_id": "140120260310578873",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T19:59:53.927824+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      10
+    ],
+    "table_count": 2,
+    "max_rows": 18,
+    "max_cols": 25,
+    "broken_col0": true,
+    "unit_mixed": true,
+    "notes": [
+      "first-column labels appear merged",
+      "multiple units appear in relevant pages",
+      "wide table: 25 columns"
+    ]
+  }
+}

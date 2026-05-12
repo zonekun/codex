@@ -1,0 +1,92 @@
+{
+  "ticker": "9621",
+  "company_name": "建設技研",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当連結会計年度におけるグループ全体の受注高合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "当連結会計年度におけるグループ全体の売上高合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "国内建設コンサルティング事業 受注高",
+          "type": "order_intake",
+          "description": "国内建設コンサルティング事業セグメントにおける受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "国内建設コンサルティング事業 売上高",
+          "type": "completed",
+          "description": "国内建設コンサルティング事業セグメントにおける売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "海外建設コンサルティング事業 受注高",
+          "type": "order_intake",
+          "description": "海外建設コンサルティング事業セグメントにおける受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "海外建設コンサルティング事業 売上高",
+          "type": "completed",
+          "description": "海外建設コンサルティング事業セグメントにおける売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "国内建設コンサルティング事業",
+            "海外建設コンサルティング事業"
+          ]
+        }
+      ],
+      "presentation_format": "text",
+      "complexity": "no_table",
+      "notes": "受注高および売上高の数値は「1. 経営成績等の概況」の本文中に記載されている。受注残高（繰越工事高）に関する具体的な数値の記載は、当該ページ内には確認できない。"
+    }
+  ],
+  "_source_pdf": "tdnet/9621/20260213_9621_建設技研_決算短信_2025年12月期決算短信〔日本基準〕(連結)_140120260213561377.pdf",
+  "_source_doc_id": "140120260213561377",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T20:23:32.192678+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "no_table",
+    "relevant_pages": [
+      5,
+      7
+    ],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "pdfplumber found no tables on relevant pages"
+    ]
+  }
+}

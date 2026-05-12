@@ -1,0 +1,30 @@
+{
+  "ticker": "9048",
+  "company_name": "名古屋鉄道",
+  "source": "non-tdnet(pdf)",
+  "format": "pdf",
+  "extraction_method": "gemini",
+  "gemini_multi_month": true,
+  "overwrite_past_months": true,
+  "fiscal_year_start_month": 4,
+  "doc_title_pattern": "monthly_report|月次営業概況",
+  "custom_prompt": "この文書は名古屋鉄道の「月次営業概況（鉄道）」です。2つのセクションがあります：1.ご利用人員（輸送人員）と 2.旅客収入。それぞれ定期・定期外・合計の前年比(%)が月別に記載されています。各月の「合計」の「前年比(%)」を抽出してください。累計行（1Q累計、2Q累計等）は除外し、個別月のみ返してください。",
+  "fields": [
+    {
+      "key": "輸送人員（前年同月比）",
+      "bc_key": "輸送人員（前年同月比）",
+      "description": "ご利用人員(輸送人員) 合計の前年比(%)",
+      "value_type": "percentage",
+      "yoy_offset": 100
+    },
+    {
+      "key": "旅客収入（前年同月比）",
+      "bc_key": "旅客収入（前年同月比）",
+      "description": "旅客収入 合計の前年比(%)",
+      "value_type": "percentage",
+      "yoy_offset": 100
+    }
+  ],
+  "manual_override": true,
+  "manual_override_at": "2026-05-08T14:00:00+09:00"
+}

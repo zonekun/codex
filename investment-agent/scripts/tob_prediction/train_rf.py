@@ -208,11 +208,10 @@ def build_feature_matrix(
     financials: pd.DataFrame,
     shareholders: pd.DataFrame,
     prices: pd.DataFrame,
-    industries: pd.DataFrame,
     labels: pd.DataFrame,
 ) -> pd.DataFrame:
     """全年度の特徴量マトリクスを構築."""
-    for df in [financials, shareholders, prices, industries, labels]:
+    for df in [financials, shareholders, prices, labels]:
         df["TICKER"] = df["TICKER"].astype(str)
 
     label_set = set(zip(labels["TICKER"], labels["tob_year"].astype(int)))
@@ -257,10 +256,8 @@ def build_feature_matrix(
             .reset_index()
         )
 
-        # --- Merge (industry は LEFT JOIN: 廃止済み銘柄は STOCK_CODE_LIST に無い) ---
         df = pf.merge(fin_m, on="TICKER", how="inner")
         df = df.merge(sh_m, on="TICKER", how="inner", suffixes=("", "_sh"))
-        df = df.merge(industries, on="TICKER", how="left")
 
         if df.empty:
             continue
@@ -325,20 +322,16 @@ def build_feature_matrix(
         if n_pos > 0 or year in [y for _, y in label_set]:
             logger.info("year_labels", year=year, n_tickers=len(df), n_pos=n_pos)
 
-        keep_cols = ["TICKER", "year", "label"] + CONTINUOUS_FEATURES + BINARY_FEATURES + ["INDUSTRY_17_CODE"]
+        keep_cols = ["TICKER", "year", "label"] + CONTINUOUS_FEATURES + BINARY_FEATURES
         all_years.append(df[keep_cols])
 
     result = pd.concat(all_years, ignore_index=True)
-
-    # One-hot encode industry
-    dummies = pd.get_dummies(result["INDUSTRY_17_CODE"], prefix="ind17")
-    result = pd.concat([result.drop(columns=["INDUSTRY_17_CODE"]), dummies], axis=1)
 
     logger.info(
         "feature_matrix",
         rows=len(result),
         positives=int(result["label"].sum()),
-        features=len(CONTINUOUS_FEATURES) + len(BINARY_FEATURES) + len(dummies.columns),
+        features=len(CONTINUOUS_FEATURES) + len(BINARY_FEATURES),
     )
     return result
 
@@ -448,7 +441,6 @@ def main() -> None:
     financials = _cached("financials", _load_financials, client, refresh=args.refresh)
     shareholders = _cached("shareholders", _load_shareholders, client, refresh=args.refresh)
     prices = _cached("prices", _load_price_features, client, refresh=args.refresh)
-    industries = _cached("industries", _load_industries, client, refresh=args.refresh)
 
     logger.info(
         "data_loaded",
@@ -456,16 +448,13 @@ def main() -> None:
         financials=len(financials),
         shareholders=len(shareholders),
         prices=len(prices),
-        industries=len(industries),
     )
 
-    features = build_feature_matrix(financials, shareholders, prices, industries, labels)
+    features = build_feature_matrix(financials, shareholders, prices, labels)
 
-    feature_cols = CONTINUOUS_FEATURES + BINARY_FEATURES + [
-        c for c in features.columns if c.startswith("ind17_")
-    ]
+    feature_cols = CONTINUOUS_FEATURES + BINARY_FEATURES
     n_cont = len(CONTINUOUS_FEATURES)
-    cat_indices = list(range(n_cont, len(feature_cols)))
+    cat_indices = list(range(n_cont, n_cont + len(BINARY_FEATURES)))
 
     results: list[dict] = []
     for eval_year in eval_years:
@@ -524,9 +513,13 @@ def main() -> None:
 
         # Prediction ranking for test year
         ranking = (
-            df_test[["TICKER"]].copy().assign(prob=y_prob, label=y_test)
+            df_test[["TICKER"]].copy().assign(year=eval_year, prob=y_prob, label=y_test)
             .sort_values("prob", ascending=False)
         )
+        pred_path = CACHE_DIR / f"predictions_{eval_year}.csv"
+        ranking.to_csv(pred_path, index=False, encoding="utf-8")
+        logger.info("predictions_saved", path=str(pred_path), n=len(ranking))
+
         top5pct = int(max(1, len(ranking) * 0.05))
         top_tickers = ranking.head(top5pct)
         hit_rate = top_tickers["label"].mean()

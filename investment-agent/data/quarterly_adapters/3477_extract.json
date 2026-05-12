@@ -1,0 +1,28 @@
+{
+  "ticker": "3477",
+  "company_name": "Ｇ－フォーライフ",
+  "current_version": "2025-11",
+  "versions": [
+    {
+      "valid_from": "2025-11",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "presentation",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Vision extraction selected because structure is complex or data is unavailable."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/3477/20251128_3477_Ｇ－フォーライフ_決算説明資料_2026年3月期第2四半期決算説明資料_140120251128511674.pdf",
+  "_source_doc_id": "140120251128511674",
+  "_generated_at": "2026-04-30T17:43:17.826565+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

@@ -1,0 +1,88 @@
+{
+  "ticker": "5610",
+  "company_name": "大和重",
+  "current_version": "2025-02",
+  "versions": [
+    {
+      "valid_from": "2025-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "産業機械関連 受注高",
+          "type": "order_intake",
+          "description": "産業機械関連セグメントの受注高",
+          "unit": "百万円",
+          "is_total": false
+        },
+        {
+          "name": "工作機械鋳物部品 受注高",
+          "type": "order_intake",
+          "description": "産業機械関連セグメントにおける工作機械鋳物部品の受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "産業機械関連 受注高"
+        },
+        {
+          "name": "舶用エンジン部品 受注高",
+          "type": "order_intake",
+          "description": "産業機械関連セグメントにおける舶用エンジン部品の受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "産業機械関連 受注高"
+        },
+        {
+          "name": "産業機械部品 受注高",
+          "type": "order_intake",
+          "description": "産業機械関連セグメントにおける産業機械部品の受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "産業機械関連 受注高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "産業機械関連",
+            "住宅機器関連"
+          ]
+        },
+        {
+          "dimension_name": "産業機械関連内訳",
+          "items": [
+            "工作機械鋳物部品",
+            "舶用エンジン部品",
+            "産業機械部品"
+          ]
+        }
+      ],
+      "presentation_format": "text",
+      "complexity": "complex_table",
+      "notes": "受注高および売上高のデータは、経営成績等の概況（2ページ）の本文中に記載されています。受注残高に関する具体的な数値の記載は、提供されたページ内にはありません。"
+    }
+  ],
+  "_source_pdf": "tdnet/5610/20250214_5610_大和重_決算短信_2024年12月期 決算短信〔日本基準〕（非連結）_140120250213573092.pdf",
+  "_source_doc_id": "140120250213573092",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:30:08.728719+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      8,
+      12,
+      13
+    ],
+    "table_count": 5,
+    "max_rows": 46,
+    "max_cols": 8,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 5"
+    ]
+  }
+}

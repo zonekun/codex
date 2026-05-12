@@ -1,0 +1,43 @@
+{
+  "ticker": "4394",
+  "company_name": "Ｇ－エクスモーション",
+  "current_version": "2026-04",
+  "versions": [
+    {
+      "valid_from": "2026-04",
+      "valid_until": null,
+      "extraction_method": "regex",
+      "source": "presentation",
+      "page_keywords": [
+        "2026年第1四半期決算概要",
+        "売上高",
+        "受注残高"
+      ],
+      "fields": [
+        {
+          "key": "売上高",
+          "row_label_regex": "売上高",
+          "value_type": "integer",
+          "unit": "百万円",
+          "group": 2,
+          "notes": "2026年第1四半期実績（2番目の数値列）を抽出"
+        },
+        {
+          "key": "受注残高",
+          "row_label_regex": "受注残高",
+          "value_type": "integer",
+          "unit": "百万円",
+          "group": 2,
+          "notes": "2026年第1四半期実績（2番目の数値列）を抽出"
+        }
+      ],
+      "gemini_custom_prompt": "",
+      "notes": "スライド内の決算概要テーブルから、当期実績にあたる2番目の数値を取得する設定です。"
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/4394/20260403_4394_Ｇ－エクスモーション_決算説明資料_2026年11月期 第１四半期決算補足説明資料_140120260402597809.pdf",
+  "_source_doc_id": "140120260402597809",
+  "_generated_at": "2026-04-30T23:03:46.583944+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

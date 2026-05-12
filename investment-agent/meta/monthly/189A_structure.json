@@ -1,0 +1,16 @@
+{
+  "ticker": "189A",
+  "company_name": "189A",
+  "metrics": [
+    {
+      "name": "投資資産残高（百万円）",
+      "source": "bc"
+    },
+    {
+      "name": "診療・介護報酬債権買取社数",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

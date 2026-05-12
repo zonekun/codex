@@ -1,0 +1,70 @@
+{
+  "ticker": "208A",
+  "company_name": "構造計画ＨＤ",
+  "current_version": "2025-11",
+  "versions": [
+    {
+      "valid_from": "2025-11",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当四半期累計期間における受注の総額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当四半期末時点における未消化の受注残高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "セグメント別受注高",
+          "type": "order_intake",
+          "description": "報告セグメント別の受注高実績",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "セグメント別受注残高",
+          "type": "backlog",
+          "description": "報告セグメント別の受注残高実績",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "第1ページに連結合計の要約表（単位：百万円）、第2ページにセグメント別の要約表（単位：百万円）、第12ページに詳細なセグメント別実績表（単位：千円）が掲載されています。売上高は補足情報内では販売高として記載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/208A/20251110_208A_構造計画ＨＤ_決算短信_2026年６月期  第１四半期決算短信〔日本基準〕（連結）_140120251110594546.pdf",
+  "_source_doc_id": "140120251110594546",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:15:09.945085+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      5,
+      14
+    ],
+    "table_count": 5,
+    "max_rows": 9,
+    "max_cols": 10,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 5"
+    ]
+  }
+}

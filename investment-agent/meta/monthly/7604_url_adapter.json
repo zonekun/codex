@@ -1,0 +1,17 @@
+{
+  "ticker": "7604",
+  "company_name": "梅の花グループ",
+  "ir_page_url": "https://www.umenohana.co.jp/ir/monthly/",
+  "updated_at": "2026-04-24T13:56:32.655334+09:00",
+  "last_checked": "2026-04-21",
+  "status": "active",
+  "type": "html_table",
+  "css_selector": null,
+  "link_text_pattern": "\\d{4}",
+  "link_href_pattern": "/images/app/public/group\\-information\\-pdfs/01KN3MWVSBZWJSW9NV23CBHS0A\\.pdf",
+  "note": "JS描画ページ。Playwright必要。ゼロDL修正 (2026-04-24)。",
+  "playwright_required": true,
+  "manual_override": true,
+  "manual_override_at": "2026-04-24T13:56:32.655334+09:00",
+  "manual_override_note": "ゼロDL修正 (2026-04-24)"
+}

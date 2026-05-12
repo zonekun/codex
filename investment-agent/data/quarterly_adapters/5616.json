@@ -1,0 +1,36 @@
+{
+  "ticker": "5616",
+  "company_name": "Ｇ－雨風太陽",
+  "current_version": "2025-11",
+  "versions": [
+    {
+      "valid_from": "2025-11",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "breakdown_dimensions": [],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "提供された画像は貸借対照表（B/S）であり、受注高、売上高、受注残高（バックログ）に関する直接的な金額データは記載されていません。"
+    }
+  ],
+  "_source_pdf": "tdnet/5616/20251114_5616_Ｇ－雨風太陽_決算短信_２０２５年１２月期　第３四半期決算短信〔日本基準〕(非連結)_140120251113501672.pdf",
+  "_source_doc_id": "140120251113501672",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:30:22.536008+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      7
+    ],
+    "table_count": 1,
+    "max_rows": 31,
+    "max_cols": 7,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

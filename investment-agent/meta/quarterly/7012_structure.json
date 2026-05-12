@@ -1,0 +1,48 @@
+{
+  "ticker": "7012",
+  "company_name": "川崎重",
+  "current_version": "2025-02",
+  "versions": [
+    {
+      "valid_from": "2025-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "各セグメントおよび連結合計の受注高。第3四半期累計実績および通期見通しが記載されている。",
+          "unit": "億円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "第2ページにセグメント別の第3四半期累計実績（売上収益、受注高）の表があり、第16ページにセグメント別の通期業績見通し（売上収益、受注高）の補足資料が掲載されている。受注残高の項目は表形式では確認できない。"
+    }
+  ],
+  "_source_pdf": "tdnet/7012/20250207_7012_川崎重_決算短信_2025年３月期第３四半期決算短信〔ＩＦＲＳ〕（連結）_140120250206565579.pdf",
+  "_source_doc_id": "140120250206565579",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:38:59.111467+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      5,
+      6,
+      8,
+      18
+    ],
+    "table_count": 3,
+    "max_rows": 11,
+    "max_cols": 10,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "ticker": "6322",
+  "company_name": "タクミナ",
+  "current_version": "2026-01",
+  "versions": [
+    {
+      "valid_from": "2026-01",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "製品別の売上高合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "製品別の受注高合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "製品別の受注残高合計",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "品目",
+          "items": [
+            "高性能ソリューションポンプ",
+            "汎用型薬液注入ポンプ",
+            "ケミカル移送ポンプ",
+            "計測機器・装置",
+            "流体機器",
+            "ケミカルタンク",
+            "その他"
+          ]
+        },
+        {
+          "dimension_name": "地域",
+          "items": [
+            "うち海外"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "売上高、受注高、受注残高の3つの主要メトリクスについて、製品別の詳細な内訳および海外売上・受注の内訳が表形式で提供されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/6322/20260130_6322_タクミナ_決算短信_2026年３月期 第３四半期決算短信〔日本基準〕（連結）_140120260116535130.pdf",
+  "_source_doc_id": "140120260116535130",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:01:36.064939+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      11
+    ],
+    "table_count": 2,
+    "max_rows": 6,
+    "max_cols": 8,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

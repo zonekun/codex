@@ -1,0 +1,37 @@
+{
+  "ticker": "5075",
+  "company_name": "アップコン",
+  "current_version": "2025-09",
+  "versions": [
+    {
+      "valid_from": "2025-09",
+      "valid_until": null,
+      "data_available": false,
+      "metrics": [],
+      "breakdown_dimensions": [],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "損益計算書（6ページ）に売上高合計および完成工事高の数値が記載されている。1ページの経営成績に関する説明において受注高が堅調に推移した旨の記述があるが、提供されたページ内には具体的な数値データは存在しない。 [2026-05-07] completedメトリクスのみのため収集対象外(false化)。"
+    }
+  ],
+  "_source_pdf": "tdnet/5075/20250912_5075_アップコン_決算短信_2026年１月期 第２四半期(中間期)決算短信〔日本基準〕(非連結)_140120250911556300.pdf",
+  "_source_doc_id": "140120250911556300",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:21:42.567130+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      8
+    ],
+    "table_count": 1,
+    "max_rows": 30,
+    "max_cols": 4,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

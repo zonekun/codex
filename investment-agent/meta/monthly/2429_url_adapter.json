@@ -1,0 +1,11 @@
+{
+  "ticker": "2429",
+  "company_name": "ワールドホールディングス",
+  "ir_page_url": "https://corp.world.co.jp/ir/",
+  "updated_at": "2026-04-21T09:27:13.922783+09:00",
+  "last_checked": "2026-04-21",
+  "status": "active",
+  "type": "eir_api",
+  "eir_company_code": "3612",
+  "note": "eIRシステム検出。コード=3612"
+}

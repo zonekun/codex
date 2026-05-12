@@ -1,0 +1,20 @@
+{
+  "ticker": "9064",
+  "company_name": "9064",
+  "metrics": [
+    {
+      "name": "クロネコゆうメール 冊数（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "宅急便・宅急便コンパクト・EAZY 個数（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "宅配便 個数（前年同月比）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

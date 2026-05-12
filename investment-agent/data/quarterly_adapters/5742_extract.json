@@ -1,0 +1,26 @@
+{
+  "ticker": "5742",
+  "company_name": "ＮＩＣ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注及び販売の状況",
+        "受注実績",
+        "販売実績"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "「3. その他 受注及び販売の状況」のページからデータを抽出してください。「① 受注実績」テーブルより、FA部門、商事部門、合計の『受注高』（千円）と『受注残高』（千円）を抽出。「② 販売実績」テーブルより、FA部門、商事部門、合計の『販売高』（千円）を抽出。メトリクス名は、受注高、受注高（セグメント別）、受注残高、受注残高（セグメント別）、販売高、販売高（セグメント別）を使用してください。",
+      "notes": "受注実績と販売実績の2つのテーブルで『FA部門』『商事部門』『合計』という同一の行ラベルが使用されており、構造的な理解が必要なため、structure.jsonの定義に従いGemini Visionを使用します。"
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/5742/20260210_5742_ＮＩＣ_決算短信_2026年3月期 第3四半期決算短信〔日本基準〕（非連結）_140120260130543009.pdf",
+  "_source_doc_id": "140120260130543009",
+  "_generated_at": "2026-04-30T23:11:43.184063+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

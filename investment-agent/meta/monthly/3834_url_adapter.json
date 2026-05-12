@@ -1,0 +1,11 @@
+{
+  "ticker": "3834",
+  "company_name": "朝日ネット",
+  "ir_page_url": "https://asahi-net.jp/",
+  "updated_at": "2026-04-21T09:53:23.556095+09:00",
+  "last_checked": "2026-04-21",
+  "status": "active",
+  "type": "eir_api",
+  "eir_company_code": "3834",
+  "note": "eIRシステム検出。コード=3834"
+}

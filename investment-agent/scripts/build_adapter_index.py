@@ -3,7 +3,7 @@
 毎回 GCS を個別に舐めるのではなく、このインデックス CSV を参照することで
 全社のアダプター状況を一覧できる。
 
-出力: data/monthly_adapter_index.csv
+出力: meta/_index/monthly_adapter_index.csv
 列: ticker, company_name, skip, category, monthly_page_url, adapter_note, updated_at,
     css_selector, link_text_pattern, link_href_pattern
 
@@ -13,7 +13,7 @@
 
 インデックスを読む例:
     import pandas as pd
-    idx = pd.read_csv("data/monthly_adapter_index.csv")
+    idx = pd.read_csv("meta/_index/monthly_adapter_index.csv")
     # ACTIVE 企業のみ
     active = idx[idx["skip"] == False]
     # SKIP 理由別集計
@@ -50,7 +50,7 @@ GCS_BUCKET = "stock_data_1930932"
 GCS_META = "monthly/meta"
 KEY_FILE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
                         "keys", "gcp-service-account.json")
-OUT_CSV = Path(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) / "data" / "monthly_adapter_index.csv"
+OUT_CSV = Path(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) / "meta" / "_index" / "monthly_adapter_index.csv"
 
 DOWNLOAD_EXT = re.compile(r"\.(pdf|xlsx|xls|csv)(\?.*)?$", re.IGNORECASE)
 

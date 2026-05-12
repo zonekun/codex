@@ -1,0 +1,73 @@
+{
+  "ticker": "6298",
+  "company_name": "ワイエイシイＨＤ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当期中に新たに受注した金額の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残",
+          "type": "backlog",
+          "description": "期末時点における未納入の受注残高の合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注額（セグメント別）",
+          "type": "order_intake",
+          "description": "各事業セグメントにおける受注金額",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "受注残（セグメント別）",
+          "type": "backlog",
+          "description": "各事業セグメントにおける受注残高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注残"
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "mixed",
+      "complexity": "complex_table",
+      "notes": "資料内には、全社の受注高・売上高・受注残高の推移に加え、事業セグメント別の受注額および受注残高の詳細な数値が表形式で記載されています。また、四半期別の受注高推移や売上計画の進捗状況がグラフで示されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/6298/20260212_6298_ワイエイシイＨＤ_決算説明資料_2026年３月期　第３四半期決算補足資料_140120260209551380.pdf",
+  "_source_doc_id": "140120260209551380",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T18:59:32.879007+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      3,
+      6,
+      7,
+      9,
+      11
+    ],
+    "table_count": 13,
+    "max_rows": 14,
+    "max_cols": 17,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 13",
+      "wide table: 17 columns"
+    ]
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "ticker": "3443",
+  "company_name": "川田ＴＥＣＨ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "補足情報",
+        "受注高",
+        "販売高",
+        "次期繰越高",
+        "セグメント"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "11ページの「3. 補足情報」にある「受注、販売及び繰越高の状況」の各テーブルから、合計値を抽出してください。具体的には、(1)受注高の合計金額（当第３四半期連結累計期間）、(2)販売高の合計金額（当第３四半期連結累計期間）、(3)次期繰越高の合計金額（当第３四半期連結会計期間末）を取得してください。数値は「金額」列から取得し、単位は百万円です。",
+      "notes": "structure.jsonにおいてcomplex_tableと定義されており、かつ11ページの各表が多段ヘッダー（期間と金額・構成比の2段構成）となっているため、正規表現による抽出ではなくGemini Visionによる抽出を選択しました。"
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/3443/20260213_3443_川田ＴＥＣＨ_決算短信_2026年３月期　第３四半期決算短信〔日本基準〕（連結）_140120260212556311.pdf",
+  "_source_doc_id": "140120260212556311",
+  "_generated_at": "2026-04-30T22:54:21.574692+09:00",
+  "_model_used": "gemini-3-flash-preview"
+}

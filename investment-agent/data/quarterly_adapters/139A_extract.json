@@ -1,0 +1,28 @@
+{
+  "ticker": "139A",
+  "company_name": "Ｐ－東日本地所",
+  "current_version": "2026-04",
+  "versions": [
+    {
+      "valid_from": "2026-04",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/139A/20260413_139A_Ｐ－東日本地所_決算短信_2026年８月期 中間決算短信〔日本基準〕（連結）_140120260408500216.pdf",
+  "_source_doc_id": "140120260408500216",
+  "_generated_at": "2026-04-30T16:25:29.834113+09:00",
+  "_model_used": null
+}

@@ -1,0 +1,91 @@
+{
+  "ticker": "1850",
+  "company_name": "南海辰村建設",
+  "current_version": "2025-10",
+  "versions": [
+    {
+      "valid_from": "2025-10",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "建設工事の受注高合計。建築および土木の工種別、官庁および民間の発注者別の内訳を含む。",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "完成工事高",
+          "type": "completed",
+          "description": "建設事業における完成工事高の合計。建築・土木および官庁・民間の内訳を含む。",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "不動産事業売上高",
+          "type": "completed",
+          "description": "不動産事業における売上高。",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "完成工事高と不動産事業売上高を合算した連結売上高の合計。",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "次期繰越高",
+          "type": "backlog",
+          "description": "建設工事の手持工事高（受注残高）。建築・土木および官庁・民間の内訳を含む。",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "工種",
+          "items": [
+            "建築",
+            "土木"
+          ]
+        },
+        {
+          "dimension_name": "発注者",
+          "items": [
+            "官庁",
+            "民間"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "決算短信の補足情報（8ページ）に、受注高、売上高（完成工事高）、次期繰越高の3つの詳細な表が掲載されています。各表は工種（建築・土木）と発注者（官庁・民間）による多層的な内訳構造を持っています。"
+    }
+  ],
+  "_source_pdf": "tdnet/1850/20251030_1850_南海辰村建設_決算短信_2026年３月期 第２四半期　決算短信〔日本基準〕（連結）_140120251021576689.pdf",
+  "_source_doc_id": "140120251021576689",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T16:53:12.330525+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      3,
+      4,
+      10
+    ],
+    "table_count": 3,
+    "max_rows": 13,
+    "max_cols": 9,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

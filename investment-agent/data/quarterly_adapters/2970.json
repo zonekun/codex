@@ -1,0 +1,102 @@
+{
+  "ticker": "2970",
+  "company_name": "グッドライフＣ",
+  "current_version": "2025-08",
+  "versions": [
+    {
+      "valid_from": "2025-08",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "外部顧客への売上高合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "完成工事高",
+          "type": "completed",
+          "description": "不動産投資マネジメント事業における完成工事による売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "土地売上高",
+          "type": "completed",
+          "description": "不動産投資マネジメント事業における土地売却による売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "建売売上高",
+          "type": "completed",
+          "description": "不動産投資マネジメント事業における建売住宅の販売による売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "プロパティマネジメント事業収入",
+          "type": "completed",
+          "description": "不動産投資マネジメント事業における管理収入等",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "エネルギー事業収入",
+          "type": "completed",
+          "description": "エネルギー事業における収入",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "その他",
+          "type": "completed",
+          "description": "収益の分解におけるその他の項目",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "報告セグメント",
+          "items": [
+            "不動産投資マネジメント事業",
+            "エネルギー事業",
+            "その他"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "セグメント情報内の収益の分解情報として、完成工事高、土地売上高、建売売上高などの売上区分が記載されています。受注高および受注残高に関する直接的な数値データは本資料内には含まれていません。"
+    }
+  ],
+  "_source_pdf": "tdnet/2970/20250808_2970_グッドライフＣ_決算短信_2025年12月期　第２四半期（中間期）決算短信〔日本基準〕（連結）_140120250808536517.pdf",
+  "_source_doc_id": "140120250808536517",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T17:30:45.284807+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      11,
+      12
+    ],
+    "table_count": 2,
+    "max_rows": 8,
+    "max_cols": 8,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

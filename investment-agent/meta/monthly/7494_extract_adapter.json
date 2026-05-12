@@ -1,0 +1,51 @@
+{
+  "source": "non-tdnet(html_table)",
+  "format": "html",
+  "fields": [
+    {
+      "key": "既存店 売上（前年同月比）",
+      "name": "既存店 売上（前年同月比）",
+      "description": "IR「月次売上速報」HTMLページ。table_getsujiクラス表の「既存店」セクション「売上高」行。値は前年同月比%(例: 96.4)。",
+      "value_type": "percentage"
+    },
+    {
+      "key": "既存店 客数（前年同月比）",
+      "name": "既存店 客数（前年同月比）",
+      "description": "同HTML表。「既存店」セクション「客数」行。値は前年同月比%。",
+      "value_type": "percentage"
+    },
+    {
+      "key": "既存店 客単価（前年同月比）",
+      "name": "既存店 客単価（前年同月比）",
+      "description": "同HTML表。「既存店」セクション「客単価」行。値は前年同月比%。",
+      "value_type": "percentage"
+    },
+    {
+      "key": "全店 売上（前年同月比）",
+      "name": "全店 売上（前年同月比）",
+      "description": "同HTML表。「全店」セクション「売上高」行。値は前年同月比%。",
+      "value_type": "percentage"
+    },
+    {
+      "key": "全店 客数（前年同月比）",
+      "name": "全店 客数（前年同月比）",
+      "description": "同HTML表。「全店」セクション「客数」行。値は前年同月比%。",
+      "value_type": "percentage"
+    },
+    {
+      "key": "全店 客単価（前年同月比）",
+      "name": "全店 客単価（前年同月比）",
+      "description": "同HTML表。「全店」セクション「客単価」行。値は前年同月比%。",
+      "value_type": "percentage"
+    }
+  ],
+  "extraction_notes": "コナカ。IR「月次売上速報」HTMLページ。table_getsujiクラスの表に既存店/全店 × 売上高/客数/客単価の6メトリクスを月別列で開示。9月期決算（10月〜翌9月）。url_adapter html_table(active)で取得。",
+  "ticker": "7494",
+  "company_name": "コナカ",
+  "created_at": "2026-04-05T10:03:21.238901+09:00",
+  "created_by": "gemini-2.5-flash",
+  "extraction_method": "gemini",
+  "manual_override": true,
+  "manual_override_note": "Codex成果物を自ら検証・再作成。月次売上速報HTMLから6メトリクス抽出可能",
+  "manual_override_at": "2026-05-08T01:00:00+09:00"
+}

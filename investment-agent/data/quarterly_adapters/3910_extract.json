@@ -1,0 +1,28 @@
+{
+  "ticker": "3910",
+  "company_name": "エムケイシステム",
+  "current_version": "2024-11",
+  "versions": [
+    {
+      "valid_from": "2024-11",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "presentation",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/3910/20241118_3910_エムケイシステム_決算説明資料_2025年３月期第２四半期（中間期）決算説明資料_140120241108516524.pdf",
+  "_source_doc_id": "140120241108516524",
+  "_generated_at": "2026-04-30T17:55:23.898656+09:00",
+  "_model_used": null
+}

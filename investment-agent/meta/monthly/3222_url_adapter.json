@@ -1,0 +1,18 @@
+{
+  "ticker": "3222",
+  "company_name": "ユナイテッド・スーパーマーケット・ホールディングス",
+  "updated_at": "2026-04-24",
+  "last_checked": "2026-04-24",
+  "ir_page_url": "https://www.usmh.co.jp/ir/monthly_reports",
+  "type": "html_table",
+  "css_selector": null,
+  "link_text_pattern": null,
+  "link_href_pattern": null,
+  "table_selector": null,
+  "status": "active",
+  "skip_reason": null,
+  "playwright_required": false,
+  "follow_links": false,
+  "note": "月次売上情報はHTML表形式（PDF非公開）。https://www.usmh.co.jp/ir/monthly_reports に全社・丸悦・カスミ・いなげや・AeonFoodStyle別の売上・客数・客単価の前年比データあり。旧adapterはトップページURLでpatternなし",
+  "url_source": "manual_fix_20260424"
+}

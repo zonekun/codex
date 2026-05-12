@@ -1,0 +1,78 @@
+{
+  "ticker": "3915",
+  "company_name": "テラスカイ",
+  "current_version": "2025-04",
+  "versions": [
+    {
+      "valid_from": "2025-04",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "連結売上高の合計値",
+          "unit": "億円",
+          "is_total": true
+        },
+        {
+          "name": "ソリューション事業 売上高",
+          "type": "completed",
+          "description": "テラスカイ単体のソリューション事業における期末売上高",
+          "unit": "億円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "ソリューション事業 受注残高",
+          "type": "backlog",
+          "description": "テラスカイ単体のソリューション事業における期初時点の受注残高",
+          "unit": "億円",
+          "is_total": false
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "事業セグメント",
+          "items": [
+            "ソリューション事業",
+            "製品事業"
+          ]
+        },
+        {
+          "dimension_name": "受注内訳",
+          "items": [
+            "既存顧客",
+            "新規顧客"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "ppt_chart",
+      "notes": "売上高は連結合計と、テラスカイ単体のソリューション事業分が記載されています。受注残高はソリューション事業の期初残高がグラフで示されています。受注高については構成比（既存vs新規）のみの記載で、金額データは確認できません。"
+    }
+  ],
+  "_source_pdf": "tdnet/3915/20250414_3915_テラスカイ_決算説明資料_2025年2月期 決算説明資料_140120250414515533.pdf",
+  "_source_doc_id": "140120250414515533",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T17:55:47.189728+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      5,
+      14,
+      20
+    ],
+    "table_count": 8,
+    "max_rows": 22,
+    "max_cols": 26,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 8",
+      "wide table: 26 columns"
+    ]
+  }
+}

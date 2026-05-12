@@ -1,0 +1,64 @@
+{
+  "source": "non-tdnet(pdf)",
+  "format": "pdf",
+  "fields": [
+    {
+      "key": "医療システム 導入ユーザー数",
+      "name": "医療システム 導入ユーザー数",
+      "value_type": "integer",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "url_adapter status=skip。GCSには企業紹介資料・成長戦略のみで月次KPI文書なし"
+    },
+    {
+      "key": "周産期システム 導入件数",
+      "name": "周産期システム 導入件数",
+      "value_type": "integer",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "同上"
+    },
+    {
+      "key": "文書作成システム 導入件数",
+      "name": "文書作成システム 導入件数",
+      "value_type": "integer",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "同上"
+    },
+    {
+      "key": "画像ファイリングシステム 導入件数",
+      "name": "画像ファイリングシステム 導入件数",
+      "value_type": "integer",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "同上"
+    },
+    {
+      "key": "紙・デジタル管理文書システム 導入件数",
+      "name": "紙・デジタル管理文書システム 導入件数",
+      "value_type": "integer",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "同上"
+    },
+    {
+      "key": "診断書等文書作成サービス 導入件数",
+      "name": "診断書等文書作成サービス 導入件数",
+      "value_type": "integer",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "同上"
+    },
+    {
+      "key": "電子カルテ 導入件数",
+      "name": "電子カルテ 導入件数",
+      "value_type": "integer",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "同上"
+    }
+  ],
+  "extraction_notes": "ファインデックス。url_adapter status=skip。GCSには企業紹介資料と成長戦略2026-2030のみ。月次KPIの開示文書が確認できないため全field bc_ignore。",
+  "ticker": "3649",
+  "company_name": "ファインデックス",
+  "created_at": "2026-04-04T00:26:14.751392+09:00",
+  "created_by": "gemini-2.5-flash",
+  "extraction_method": "gemini",
+  "manual_override": true,
+  "manual_override_note": "Codex成果物を自ら検証・再作成。月次文書不在のためbc_ignore",
+  "manual_override_at": "2026-05-08T00:20:00+09:00"
+}

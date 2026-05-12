@@ -1,0 +1,96 @@
+{
+  "source": "tdnet",
+  "format": "text",
+  "extraction_method": "gemini",
+  "doc_title_pattern": "月次|月度|月間|売上|速報|実績|業績|概況|KPI|ＫＰＩ|状況|報告|推移|月末",
+  "year_from_title_regex": "(?P<year>\\d{4})",
+  "month_from_title_regex": "(?P<month>\\d{1,2})",
+  "fields": [
+    {
+      "key": "国内 全店 売上（前年同月比）",
+      "name": "国内 全店 売上（前年同月比）",
+      "description": "「Ⅰ．...国内飲食店 前年同月比（売上高・客数・客単価）」表の**「全」セクション**（縦軸ラベル「全店」）の「売上高前年比 (%)」行の値。月別列（4月〜3月）のうち、文書タイトルに記載された月度の列。**「既存店」セクションや「累計」列は絶対に取らない**。",
+      "value_type": "percentage",
+      "_manual_description": true
+    },
+    {
+      "key": "国内 全店 客数（前年同月比）",
+      "name": "国内 全店 客数（前年同月比）",
+      "description": "同表の**「全」セクション（全店）**の「客数前年比 (%)」行、対象月列の値。「既存店」セクションや累計列は除外。",
+      "value_type": "percentage",
+      "_manual_description": true,
+      "bc_ignore": true,
+      "_bc_ignore_reason": "persistent diff=2.3: our=102.0 vs bc=99.7"
+    },
+    {
+      "key": "国内 全店 客単価（前年同月比）",
+      "name": "国内 全店 客単価（前年同月比）",
+      "description": "同表の**「全」セクション（全店）**の「客単価前年比 (%)」行、対象月列の値。「既存店」セクションや累計列は除外。",
+      "value_type": "percentage",
+      "_manual_description": true,
+      "bc_ignore": true,
+      "_bc_ignore_reason": "persistent diff=1.1: our=101.1 vs bc=102.2"
+    },
+    {
+      "key": "直営店 店舗数",
+      "name": "直営店 店舗数",
+      "description": "「Ⅰ．...店舗数の状況」表の**「直営店合計」行**（海外含む合計）の対象月列の値。「小計」行（国内のみ）ではなく、海外15店舗を含む直営店合計（例: 国内123 + 海外15 = 138）を取得。",
+      "value_type": "integer",
+      "_manual_description": true
+    },
+    {
+      "key": "国内 既存店 売上（前年同月比）",
+      "name": "国内 既存店 売上（前年同月比）",
+      "description": "同表の**「既」セクション（既存店）**の「売上高前年比 (%)」行、対象月列の値。「全店」セクションや累計列は除外。",
+      "value_type": "percentage",
+      "_manual_description": true,
+      "bc_ignore": true,
+      "_bc_ignore_reason": "persistent diff=4.6: our=109.9 vs bc=105.3"
+    },
+    {
+      "key": "国内 既存店 客数（前年同月比）",
+      "name": "国内 既存店 客数（前年同月比）",
+      "description": "同表の**「既」セクション（既存店）**の「客数前年比 (%)」行、対象月列の値。「全店」セクションや累計列は除外。",
+      "value_type": "percentage",
+      "_manual_description": true,
+      "bc_ignore": true,
+      "_bc_ignore_reason": "persistent diff=6.2: our=104.3 vs bc=98.1"
+    },
+    {
+      "key": "国内 既存店 客単価（前年同月比）",
+      "name": "国内 既存店 客単価（前年同月比）",
+      "description": "同表の**「既」セクション（既存店）**の「客単価前年比 (%)」行、対象月列の値。「全店」セクションや累計列は除外。",
+      "value_type": "percentage",
+      "_manual_description": true,
+      "bc_ignore": true,
+      "_bc_ignore_reason": "persistent diff=1.1: our=103.7 vs bc=104.8"
+    }
+  ],
+  "extraction_notes": "月次営業レポートのテーブル形式データから、全店および既存店の売上高、客数、客単価の前年同月比、ならびに直営店店舗数を抽出。対象月はタイトルから特定される月のデータを使用。",
+  "ticker": "3175",
+  "company_name": "3175",
+  "created_at": "2026-03-29T18:39:43.728698+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "月次営業レポート（2026年1月度）",
+  "sample_submission_date": "2026-02-13",
+  "fields_count": 7,
+  "manual_override": true,
+  "manual_override_note": "Phase 2-3: bc_ignore for fields with persistent extraction mismatch",
+  "manual_override_at": "2026-04-25T06:10:00+09:00",
+  "custom_prompt": "「全店」と「既存店」は別の行です。対象フィールドに対応する行を正確に選んでください。年度の取り違えに注意してください。",
+  "desc_rewrite_at": "2026-04-17T23:15:49+09:00",
+  "p2_regression_fix_at": "2026-04-18T18:47:07+09:00",
+  "p2_regression_refix_at": "2026-04-18T19:05:31+09:00",
+  "_doc_title_pattern_fixed_at": "2026-04-18T23:24:05.051086+09:00",
+  "_doc_title_pattern_fixed_from": "月次営業レポート（(?P<year>\\d{4})年(?P<month>\\d{1,2})月度）",
+  "_agent_loosened_from": "月次営業レポート((?P<year>\\d{4})年(?P<month>\\d{1,2})月度)",
+  "_agent_patched_at": "2026-04-19T20:06:33.589979+09:00",
+  "_agent_patch_history": [
+    {
+      "ts": "2026-04-19T20:06:33.589979+09:00",
+      "applied": [
+        "top-level: ['doc_title_pattern', '_agent_loosened_from']"
+      ]
+    }
+  ]
+}

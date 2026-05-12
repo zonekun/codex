@@ -1,0 +1,20 @@
+{
+  "ticker": "1911",
+  "company_name": "1911",
+  "metrics": [
+    {
+      "name": "リフォーム 受注（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "戸建注文住宅 受注（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "賃貸住宅 受注（前年同月比）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

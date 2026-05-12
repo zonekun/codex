@@ -1,0 +1,88 @@
+{
+  "source": "non-tdnet(html_table)",
+  "format": "html",
+  "extraction_method": "gemini",
+  "fields": [
+    {
+      "key": "ヤオコー全店 売上（前年同月比）",
+      "name": "ヤオコー全店 売上（前年同月比）",
+      "row_label_regex": "ヤオコー",
+      "value_type": "percentage",
+      "description": "HTMLテーブルの「ヤオコー（％）」行の当月列の値。全店の売上高前年比。例: 102.1",
+      "bc_key": "ヤオコー全店 売上（前年同月比）",
+      "_manual_description": true
+    },
+    {
+      "key": "ヤオコー全店 客数（前年同月比）",
+      "name": "ヤオコー全店 客数（前年同月比）",
+      "row_label_regex": "客数",
+      "value_type": "percentage",
+      "description": "HTMLテーブルの「客数（％）」行の当月列の値。全店の客数前年比。例: 100.7",
+      "bc_key": "ヤオコー全店 客数（前年同月比）",
+      "_manual_description": true
+    },
+    {
+      "key": "ヤオコー全店 客単価（前年同月比）",
+      "name": "ヤオコー全店 客単価（前年同月比）",
+      "row_label_regex": "客単価",
+      "value_type": "percentage",
+      "description": "HTMLテーブルの「客単価（％）」行の当月列の値。全店の客単価前年比。例: 101.3",
+      "bc_key": "ヤオコー全店 客単価（前年同月比）",
+      "_manual_description": true
+    },
+    {
+      "key": "ヤオコー既存店 売上（前年同月比）",
+      "name": "ヤオコー既存店 売上（前年同月比）",
+      "row_label_regex": "既存店.*売上",
+      "value_type": "percentage",
+      "description": "PDFまたはHTML内の既存店売上高前年比の単月値。例: 102.1。HTMLテーブルのヤオコー行は全店データなので、既存店はPDF参照が必要。",
+      "bc_key": "ヤオコー既存店 売上（前年同月比）",
+      "_manual_description": true
+    },
+    {
+      "key": "ヤオコー既存店 客数（前年同月比）",
+      "name": "ヤオコー既存店 客数（前年同月比）",
+      "row_label_regex": "既存店.*客\\s*数",
+      "value_type": "percentage",
+      "description": "既存店客数前年比の単月値。例: 100.7",
+      "bc_key": "ヤオコー既存店 客数（前年同月比）",
+      "_manual_description": true
+    },
+    {
+      "key": "ヤオコー既存店 客単価（前年同月比）",
+      "name": "ヤオコー既存店 客単価（前年同月比）",
+      "row_label_regex": "既存店.*客単価",
+      "value_type": "percentage",
+      "description": "既存店客単価前年比の単月値。例: 101.3",
+      "bc_key": "ヤオコー既存店 客単価（前年同月比）",
+      "_manual_description": true
+    },
+    {
+      "key": "ヤオコー既存店 買上店数（前年同月比）",
+      "name": "ヤオコー既存店 買上店数（前年同月比）",
+      "row_label_regex": "買上点数.*既存店",
+      "value_type": "percentage",
+      "description": "既存店買上点数（PI値）前年比の単月値。例: 98.5",
+      "bc_key": "ヤオコー既存店 買上店数（前年同月比）",
+      "_manual_description": true
+    },
+    {
+      "key": "ヤオコー既存店 一品単価（前年同月比）",
+      "name": "ヤオコー既存店 一品単価（前年同月比）",
+      "row_label_regex": "一品単価.*既存店",
+      "value_type": "percentage",
+      "description": "既存店一品単価前年比の単月値。例: 102.9",
+      "bc_key": "ヤオコー既存店 一品単価（前年同月比）",
+      "_manual_description": true
+    }
+  ],
+  "custom_prompt": "ブルーゾーンホールディングス（旧ヤオコー）の月次営業数値のHTMLページです。\n\n【HTMLテーブルの構造】\n- 1つ目のテーブル: 「ヤオコー（％）」行に全店売上高の前年比が月ごとに並んでいます\n- 2つ目のテーブル: 「客数（％）」と「客単価（％）」行に全店の客数・客単価の前年比が月ごとに並んでいます\n\n【注意】\n- 上記HTMLテーブルは「全店」のデータのみです\n- 「既存店」のデータ（売上・客数・客単価・買上点数PI値・一品単価）はHTMLテーブルには含まれていません\n- 既存店データはページ下部のPDFリンク「YYYY年3月期の営業数値」のPDFに含まれています\n- HTMLテーブルから全店データを、PDFから既存店データを抽出してください\n- 各フィールドは「単月」の値を取得してください（「累計」ではない）\n- 対象月の列を正確に特定してください（例: 26/3月 = 2026年3月）",
+  "ticker": "417A",
+  "company_name": "ブルーゾーンホールディングス",
+  "created_at": "2026-04-24T21:00:00+09:00",
+  "created_by": "manual",
+  "fields_count": 8,
+  "manual_override": true,
+  "manual_override_at": "2026-04-24T21:00:00+09:00",
+  "manual_override_note": "Phase 1 extract adapter新規作成。HTMLテーブル(全店)+PDF(既存店)"
+}

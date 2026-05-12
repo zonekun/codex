@@ -1,0 +1,24 @@
+{
+  "ticker": "7112",
+  "company_name": "7112",
+  "metrics": [
+    {
+      "name": "直営全店 売上（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "直営既存店 売上 EC（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "直営既存店 売上 実店舗（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "直営既存店 売上（前年同月比）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

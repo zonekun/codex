@@ -1,0 +1,15 @@
+{
+  "ticker": "8255",
+  "company_name": "アクシアル リテイリング",
+  "ir_page_url": "https://www.axial-r.com/ir/monthlysalestrends",
+  "status": "active",
+  "type": "html_table",
+  "css_selector": null,
+  "table_selector": null,
+  "note": "旧 axial-r.com/ir/monthly/ は DNS 解決不可。正しい現行 URL は axial-r.com/ir/monthlysalestrends。5 テーブル抽出可能（売上高/客数/客単価 × 全店/既存店 × 4-6月計）",
+  "updated_at": "2026-04-24T08:54:47.677967+09:00",
+  "last_checked": "2026-04-24",
+  "manual_override": true,
+  "manual_override_at": "2026-04-24T08:54:47.677967+09:00",
+  "manual_override_note": "23NG個別調査 B群修正 (2026-04-24)"
+}

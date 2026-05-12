@@ -1,0 +1,64 @@
+{
+  "source": "non-tdnet(pdf)",
+  "format": "pdf",
+  "doc_title_pattern": "\\d{6}_\\d{4}_.*",
+  "year_from_title_regex": "^(\\d{4})",
+  "month_from_title_regex": "^\\d{4}(\\d{2})",
+  "fields": [
+    {
+      "key": "成婚組数（組）",
+      "name": "成婚組数（組）",
+      "row_label_regex": "成婚組数は、過去最多となる([\\d,]+)組",
+      "value_type": "integer",
+      "group": 1,
+      "use_last_number": false,
+      "notes": "2024年の成婚組数",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "definition mismatch: our=4523 vs bc=2165.0"
+    },
+    {
+      "key": "IBJ 登録会員数（名）",
+      "name": "IBJ 登録会員数（名）",
+      "bc_ignore": true,
+      "bc_ignore_reason": "BC値63756あり。月次KPI PDF(TDnet:その他)にIBJ登録会員数あり(2026年2月=107,122)だがBC値63756と大幅乖離。BC定義が異なる可能性（active会員のみ等）",
+      "bc_key": "IBJ 登録会員数（名）"
+    },
+    {
+      "key": "お見合い件数（件）",
+      "name": "お見合い件数（件）",
+      "bc_ignore": true,
+      "bc_ignore_reason": "BC値35392あり。月次KPI PDFのサマリー表にお見合い関連値あるがBC値と大幅乖離。集計期間(月次vs累計)の定義差の可能性",
+      "bc_key": "お見合い件数（件）"
+    },
+    {
+      "key": "新規入会者数（名）",
+      "name": "新規入会者数（名）",
+      "bc_ignore": true,
+      "bc_ignore_reason": "BC値4022あり。月次KPI PDFに新規入会関連値あるがBC値との照合不能。pdftotext崩れで行ラベルと値の対応が不明確",
+      "bc_key": "新規入会者数（名）"
+    },
+    {
+      "key": "結婚相談所数",
+      "name": "結婚相談所数",
+      "bc_ignore": true,
+      "bc_ignore_reason": "BC値1188あり。月次KPI PDFに結婚相談所数あり(2026年2月=1,819)だがBC値1188と乖離631。BC定義が異なる可能性",
+      "bc_key": "結婚相談所数"
+    }
+  ],
+  "extraction_notes": "提供されたテキストからは「成婚組数（組）」のみが抽出可能でした。他のメトリクスはテキスト内に具体的な数値として見つかりませんでした。",
+  "ticker": "6071",
+  "company_name": "6071",
+  "created_at": "2026-04-04T01:46:44.862899+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "202504_6071_2024IBJseikon_hakusyo_fa4ab843",
+  "sample_submission_date": "",
+  "report_url": "TDNET文書",
+  "sample_file": "202504_6071_2024IBJseikon_hakusyo_fa4ab843",
+  "custom_prompt": "テーブルに「結婚相談所数」「成婚組数」「会員数」等の行があります。\n「成婚組数（組）」→ 月次テーブル（P2T0/P2T1）の「成婚組数」行の当該月値。\nサマリーテーブル（P1T1）の半期累計値（1851等）を返さないでください。\n月次の成婚組数は100～300程度、累計は1000～2000台です。",
+  "manual_override": true,
+  "manual_override_note": "Phase 2-3: bc_ignore for fields with persistent extraction mismatch",
+  "manual_override_at": "2026-04-25T06:10:00+09:00",
+  "overwrite_past_months": true,
+  "_source_renamed_at": "2026-04-18T16:36:34+09:00",
+  "_source_renamed_from": "pdf"
+}

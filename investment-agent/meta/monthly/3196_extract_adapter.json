@@ -1,0 +1,38 @@
+{
+  "source": "non-tdnet(html_table)",
+  "format": "html",
+  "fields": [
+    {
+      "key": "築地銀だこ 全店 売上（前年同月比）",
+      "name": "築地銀だこ 全店 売上（前年同月比）",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "IRページ(hotland.co.jp/policy/monthlyinfo/) 404。GCSに月次開示HTML/PDFなし（中期経営計画・株主総会資料のみ）"
+    },
+    {
+      "key": "築地銀だこ 既存店 売上（前年同月比）",
+      "name": "築地銀だこ 既存店 売上（前年同月比）",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "同上。月次開示文書なし"
+    },
+    {
+      "key": "築地銀だこ 既存店 客数（前年同月比）",
+      "name": "築地銀だこ 既存店 客数（前年同月比）",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "同上。月次開示文書なし"
+    }
+  ],
+  "extraction_notes": "ホットランドHD（築地銀だこ）。url_adapter type=html_table, status=activeだがIRページ(hotland.co.jp/policy/monthlyinfo/)が404。GCSにはIR資料(中期経営計画等)のみで月次売上HTML未取得。全field bc_ignore。",
+  "ticker": "3196",
+  "company_name": "ホットランドホールディングス",
+  "created_at": "2026-04-05T09:46:59.658072+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "",
+  "sample_submission_date": "",
+  "extraction_method": "gemini",
+  "manual_override": true,
+  "manual_override_note": "Codex成果物を自ら検証・再作成。IRページ404・月次文書不在のためbc_ignore",
+  "manual_override_at": "2026-05-08T00:15:00+09:00"
+}

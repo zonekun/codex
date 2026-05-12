@@ -1,0 +1,64 @@
+{
+  "ticker": "7721",
+  "company_name": "東京計器",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "セグメント別の受注実績",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "セグメント別の受注残高",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "船舶港湾機器事業",
+            "油空圧機器事業",
+            "流体機器事業",
+            "防衛・通信機器事業",
+            "その他の事業"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "「3. その他 受注の状況」において、セグメント別の受注高および受注残高のデータが詳細な表形式で提供されています。受注残高については、前年同期末比較と前期末比較の2種類の表が掲載されています。"
+    }
+  ],
+  "_source_pdf": "tdnet/7721/20260206_7721_東京計器_決算短信_2026年3月期　第3四半期決算短信［日本基準］（連結）_140120260206550237.pdf",
+  "_source_doc_id": "140120260206550237",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:54:59.574607+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      7,
+      17
+    ],
+    "table_count": 4,
+    "max_rows": 6,
+    "max_cols": 5,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 4"
+    ]
+  }
+}

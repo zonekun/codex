@@ -1,0 +1,28 @@
+{
+  "ticker": "7446",
+  "company_name": "東北化学",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/7446/20260202_7446_東北化学_決算短信_2026年９月期 第１四半期決算短信〔日本基準〕(連結)_140120260128540625.pdf",
+  "_source_doc_id": "140120260128540625",
+  "_generated_at": "2026-04-30T19:50:18.469216+09:00",
+  "_model_used": null
+}

@@ -1,0 +1,28 @@
+{
+  "ticker": "350A",
+  "company_name": "Ｇ－デジタルグリッド",
+  "current_version": "2025-09",
+  "versions": [
+    {
+      "valid_from": "2025-09",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "presentation",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/350A/20250912_350A_Ｇ－デジタルグリッド_決算説明資料_2025年7月期 通期 決算説明資料（事業計画及び成長可能性に関する事項）の追加_140120250911556904.pdf",
+  "_source_doc_id": "140120250911556904",
+  "_generated_at": "2026-04-30T17:44:17.690835+09:00",
+  "_model_used": null
+}

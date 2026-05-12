@@ -1,0 +1,28 @@
+{
+  "ticker": "3923",
+  "company_name": "ラクス",
+  "current_version": "2024-11",
+  "versions": [
+    {
+      "valid_from": "2024-11",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/3923/20241113_3923_ラクス_決算短信_2025年３月期 第２四半期（中間期）決算短信〔日本基準〕（連結）_140120241112520539.pdf",
+  "_source_doc_id": "140120241112520539",
+  "_generated_at": "2026-04-30T17:55:55.257766+09:00",
+  "_model_used": null
+}

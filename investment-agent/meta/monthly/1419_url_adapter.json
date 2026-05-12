@@ -1,0 +1,13 @@
+{
+  "ticker": "1419",
+  "company_name": "タマホーム",
+  "ir_page_url": "http://www.tamahome.jp/ir/monthly/",
+  "updated_at": "2026-04-21T09:25:27.961857+09:00",
+  "last_checked": "2026-04-21",
+  "status": "active",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": "\\d{4}",
+  "link_href_pattern": "/qkeioebqx4/wp\\-content/uploads/2026/03.*\\.(pdf)",
+  "note": "月次PDFリンク2件検出 best=http://www.tamahome.jp/qkeioebqx4/wp-content/uploads/2026/03/20260327.pdf"
+}

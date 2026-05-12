@@ -1,0 +1,66 @@
+{
+  "ticker": "3670",
+  "company_name": "協立情報通信",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "ソリューション事業における四半期ごとの受注高および累計額",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "ソリューション事業における各四半期末時点の受注残高",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "四半期",
+          "items": [
+            "1Q",
+            "2Q",
+            "3Q",
+            "4Q"
+          ]
+        },
+        {
+          "dimension_name": "年度",
+          "items": [
+            "2025年3月期",
+            "2026年3月期"
+          ]
+        }
+      ],
+      "presentation_format": "chart",
+      "complexity": "ppt_chart",
+      "notes": "ソリューション事業の受注高と受注残高の推移が棒グラフで示されている。受注高については四半期ごとの内訳と累計値が記載されている。"
+    }
+  ],
+  "_source_pdf": "tdnet/3670/20260213_3670_協立情報通信_決算説明資料_2026年３月期　第３四半期決算説明資料_140120260213561964.pdf",
+  "_source_doc_id": "140120260213561964",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T17:47:32.228556+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "simple_table",
+    "relevant_pages": [
+      14
+    ],
+    "table_count": 1,
+    "max_rows": 5,
+    "max_cols": 2,
+    "broken_col0": false,
+    "unit_mixed": false,
+    "notes": []
+  }
+}

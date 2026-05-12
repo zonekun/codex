@@ -1,0 +1,28 @@
+{
+  "ticker": "155A",
+  "company_name": "Ｇ－情報戦略",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "presentation",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/155A/20260213_155A_Ｇ－情報戦略_決算説明資料_2025年12月期　通期決算説明資料_140120260212557910.pdf",
+  "_source_doc_id": "140120260212557910",
+  "_generated_at": "2026-04-30T16:31:36.449614+09:00",
+  "_model_used": null
+}

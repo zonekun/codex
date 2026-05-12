@@ -1,0 +1,11 @@
+{
+  "ticker": "7514",
+  "company_name": "ヒマラヤ",
+  "ir_page_url": "https://www.hmry.jp/ir/library/monthly/?y=2026",
+  "type": "html_table",
+  "status": "active",
+  "playwright_required": true,
+  "manual_override": true,
+  "manual_override_at": "2026-05-08T14:00:00+09:00",
+  "note": "月次売上データはHTML表形式で年度別ページに掲載。?y=YYYYで年指定。既存adapter(scrape_links)では公告/ハラスメント方針PDFのみ取得。html_table+playwrightに変更。ページは9月始まりの会計年度"
+}

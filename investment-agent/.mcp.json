@@ -1,5 +1,14 @@
 {
   "mcpServers": {
+    "chrome-devtools": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "chrome-devtools-mcp@latest",
+        "--browserUrl",
+        "http://127.0.0.1:9222"
+      ]
+    },
     "jquants-doc": {
       "command": "j-quants-doc-mcp"
     },
@@ -11,12 +20,23 @@
       ]
     },
     "gcp": {
-      "command": "C:\\Users\\zonekun\\Documents\\codex\\investment-agent\\.venv-codex\\Scripts\\python.exe",
+      "command": "C:\\venvs\\investment-agent\\Scripts\\python.exe",
       "args": [
-        "C:\\Users\\zonekun\\Documents\\codex\\investment-agent\\scripts\\gcp_mcp_server.py"
+        "C:\\gdrive\\claude\\investment-agent\\scripts\\gcp_mcp_server.py"
       ],
       "env": {
         "PYTHONUTF8": "1"
+      }
+    },
+    "aws": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "awslabs.aws-api-mcp-server@latest",
+        "awslabs.aws-api-mcp-server.exe"
+      ],
+      "env": {
+        "AWS_REGION": "us-east-1"
       }
     }
   }

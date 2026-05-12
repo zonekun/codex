@@ -23,7 +23,7 @@ type: tools
 
 ## 蓄積先
 
-- **GCS パス**: `gs://stock_data_1930932/earnings_model/exclusions/exclusions.json`
+- **GCS パス**: `gs://stock_data_1930932/earnings_model/earnings_reaction_exclusions/exclusions.json`
 - **フォーマット**: JSON array
 
 ```json

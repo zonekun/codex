@@ -1,0 +1,48 @@
+{
+  "ticker": "6376",
+  "company_name": "日機装",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "顧客から受けた注文の総額",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "決算短信の概況およびセグメント別の状況において、受注高と売上収益の数値が詳細に開示されています。受注残高については、定性的な説明（受注残の遂行に注力等）はあるものの、具体的な金額データは本資料内には記載されていません。"
+    }
+  ],
+  "_source_pdf": "tdnet/6376/20260213_6376_日機装_決算短信_2025年12月期  決算短信〔ＩＦＲＳ〕（連結）_140120260212557675.pdf",
+  "_source_doc_id": "140120260212557675",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T19:09:12.295870+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      4,
+      5,
+      6,
+      8
+    ],
+    "table_count": 5,
+    "max_rows": 20,
+    "max_cols": 7,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 5"
+    ]
+  }
+}

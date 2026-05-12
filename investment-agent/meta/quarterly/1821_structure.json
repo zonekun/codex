@@ -1,0 +1,55 @@
+{
+  "ticker": "1821",
+  "company_name": "三住建設",
+  "current_version": "2025-11",
+  "versions": [
+    {
+      "valid_from": "2025-11",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "個別受注工事高",
+          "type": "order_intake",
+          "description": "個別ベースの受注工事高。土木・建築および国内・海外別の内訳あり。",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "個別繰越工事高",
+          "type": "backlog",
+          "description": "個別ベースの期末時点における未消化の工事残高。",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "19ページに個別受注工事高、個別完成工事高、個別繰越工事高の詳細な内訳表（土木・建築別、国内官公庁・国内民間・海外別）が掲載されています。20ページには連結および個別の業績概要が億円単位でまとめられています。"
+    }
+  ],
+  "_source_pdf": "tdnet/1821/20251114_1821_三住建設_決算短信_2026年３月期　第２四半期（中間期）決算短信〔日本基準〕（連結）_140120251113501123.pdf",
+  "_source_doc_id": "140120251113501123",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T16:48:40.333786+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      3,
+      20,
+      21,
+      22
+    ],
+    "table_count": 7,
+    "max_rows": 22,
+    "max_cols": 8,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 7"
+    ]
+  }
+}

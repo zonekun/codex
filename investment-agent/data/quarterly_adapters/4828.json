@@ -1,0 +1,116 @@
+{
+  "ticker": "4828",
+  "company_name": "ビーエンジ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当第３四半期連結累計期間におけるグループ全体の受注高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "売上高",
+          "type": "completed",
+          "description": "当第３四半期連結累計期間におけるグループ全体の売上高",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "ソリューション事業 受注高",
+          "type": "order_intake",
+          "description": "ソリューション事業セグメントの受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "ソリューション事業 売上高",
+          "type": "completed",
+          "description": "ソリューション事業セグメントの売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "プロダクト事業 受注高",
+          "type": "order_intake",
+          "description": "プロダクト事業セグメントの受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "プロダクト事業 売上高",
+          "type": "completed",
+          "description": "プロダクト事業セグメントの売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        },
+        {
+          "name": "mcframeライセンス売上高",
+          "type": "completed",
+          "description": "プロダクト事業におけるmcframeシリーズのライセンス売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "プロダクト事業 売上高"
+        },
+        {
+          "name": "システムサポート事業 受注高",
+          "type": "order_intake",
+          "description": "システムサポート事業セグメントの受注高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "システムサポート事業 売上高",
+          "type": "completed",
+          "description": "システムサポート事業セグメントの売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上高"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "セグメント",
+          "items": [
+            "ソリューション事業",
+            "プロダクト事業",
+            "システムサポート事業"
+          ]
+        }
+      ],
+      "presentation_format": "text",
+      "complexity": "no_table",
+      "notes": "決算短信の定性的情報（本文）の中に、受注高および売上高の連結合計値とセグメント別の数値が記載されています。受注残高についての具体的な数値記載はありません。"
+    }
+  ],
+  "_source_pdf": "tdnet/4828/20260206_4828_ビーエンジ_決算短信_2026年３月期 第３四半期決算短信〔日本基準〕(連結)_140120260205549243.pdf",
+  "_source_doc_id": "140120260205549243",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:16:27.019804+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "no_table",
+    "relevant_pages": [
+      4
+    ],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "pdfplumber found no tables on relevant pages"
+    ]
+  }
+}

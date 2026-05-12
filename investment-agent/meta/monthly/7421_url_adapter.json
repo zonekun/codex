@@ -1,0 +1,16 @@
+{
+  "ticker": "7421",
+  "company_name": "カッパ・クリエイト",
+  "ir_page_url": "http://www.kappa-create.co.jp/ir/monthly/",
+  "type": "html_table",
+  "status": "active",
+  "link_text_pattern": null,
+  "link_href_pattern": null,
+  "manual_override": true,
+  "note": "2026-04-24修正: URLは正しかったがpatternがgovernance.pdfを誤取得。月次データはHTMLテーブル形式。html_tableに変更",
+  "updated_at": "2026-04-24T17:15:36.150884+09:00",
+  "css_selector": null,
+  "table_selector": null,
+  "playwright_required": false,
+  "follow_links": false
+}

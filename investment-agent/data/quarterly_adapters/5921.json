@@ -1,0 +1,92 @@
+{
+  "ticker": "5921",
+  "company_name": "川岸工",
+  "current_version": "2026-01",
+  "versions": [
+    {
+      "valid_from": "2026-01",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "当四半期累計期間における受注高の合計額",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "受注高（製品別）",
+          "type": "order_intake",
+          "description": "製品別の受注高の内訳",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注高"
+        },
+        {
+          "name": "受注残高",
+          "type": "backlog",
+          "description": "当四半期末における受注残高の合計額",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "受注残高（製品別）",
+          "type": "backlog",
+          "description": "製品別の受注残高の内訳",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "受注残高"
+        },
+        {
+          "name": "売上実績",
+          "type": "completed",
+          "description": "当四半期累計期間における売上実績（完成工事高）の合計額",
+          "unit": "千円",
+          "is_total": true
+        },
+        {
+          "name": "売上実績（製品別）",
+          "type": "completed",
+          "description": "製品別の売上実績の内訳",
+          "unit": "千円",
+          "is_total": false,
+          "parent_metric": "売上実績"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "製品別",
+          "items": [
+            "鉄骨",
+            "プレキャストコンクリート"
+          ]
+        }
+      ],
+      "presentation_format": "table",
+      "complexity": "complex_table",
+      "notes": "決算短信の補足情報「受注及び売上の状況」に、受注高、受注残高、売上実績の3つの区分について、合計および製品別（鉄骨、プレキャストコンクリート）の金額データが詳細な表形式で記載されています。数量データも併記されていますが、本定義では金額（千円）を主軸としています。"
+    }
+  ],
+  "_source_pdf": "tdnet/5921/20260130_5921_川岸工_決算短信_2026年9月期第１四半期決算短信〔日本基準〕(非連結)_140120260130542440.pdf",
+  "_source_doc_id": "140120260130542440",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T18:34:30.468113+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      7,
+      9
+    ],
+    "table_count": 4,
+    "max_rows": 23,
+    "max_cols": 10,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 4"
+    ]
+  }
+}

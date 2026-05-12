@@ -1,0 +1,63 @@
+{
+  "source": "non-tdnet(html_table)",
+  "format": "html",
+  "extraction_method": "gemini",
+  "fields": [
+    {
+      "key": "旅行 総取扱高（前年同月比）",
+      "name": "旅行 総取扱高（前年同月比）",
+      "row_label_regex": "総取扱高|合計|トータル",
+      "value_type": "percentage"
+    },
+    {
+      "key": "国内旅行 取扱高（前年同月比）",
+      "name": "国内旅行 取扱高（前年同月比）",
+      "row_label_regex": "国内旅行|国内",
+      "value_type": "percentage"
+    },
+    {
+      "key": "海外旅行 取扱高（前年同月比）",
+      "name": "海外旅行 取扱高（前年同月比）",
+      "row_label_regex": "海外旅行|海外",
+      "value_type": "percentage"
+    },
+    {
+      "key": "訪日旅行 取扱高（前年同月比）",
+      "name": "訪日旅行 取扱高（前年同月比）",
+      "row_label_regex": "訪日旅行|訪日|インバウンド",
+      "value_type": "percentage"
+    },
+    {
+      "key": "国内旅行 取扱高（円）",
+      "name": "国内旅行 取扱高（円）",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "BC値4440000000.0あり。当adapterは前年同月比（%）のみ抽出。HTML表に絶対額も表示されるが、前年同月比と絶対額で抽出単位が異なるため別フィールドとして管理不可"
+    },
+    {
+      "key": "旅行 総取扱高（百万円）",
+      "name": "旅行 総取扱高（百万円）",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "BC値35012.0あり。当adapterは前年同月比（%）のみ抽出。絶対額（百万円）は抽出対象外"
+    },
+    {
+      "key": "海外旅行 取扱高（円）",
+      "name": "海外旅行 取扱高（円）",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "BC値28547000000.0あり。当adapterは前年同月比（%）のみ抽出。絶対額は抽出対象外"
+    },
+    {
+      "key": "訪日旅行 取扱高（円）",
+      "name": "訪日旅行 取扱高（円）",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "BC値2024000000.0あり。当adapterは前年同月比（%）のみ抽出。絶対額は抽出対象外"
+    }
+  ],
+  "notes": "Playwrightレンダリング必須。7テーブル (国内合計/海外/国内/訪日/海外合計/インバウンド/アウトバウンド)。Gemini抽出で当月値取得",
+  "ticker": "9603",
+  "company_name": "エイチ・アイ・エス",
+  "updated_at": "2026-04-20T15:37:00+09:00",
+  "created_by": "manual-investigation",
+  "fields_count": 4,
+  "manual_override": true,
+  "year_month_from_submission_minus_1": true
+}

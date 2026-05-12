@@ -12,6 +12,8 @@ loads:
     env:
       DATE_FROM: "20260119"
       DATE_TO: "20260227"
+      ALLOW_FULL_BACKFILL: "1"
+    args: ["--job-mode=load"]
 
 workflows:
   - name: ai_processing_flow

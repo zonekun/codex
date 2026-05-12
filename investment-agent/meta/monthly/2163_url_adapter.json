@@ -1,0 +1,13 @@
+{
+  "ticker": "2163",
+  "company_name": "アルトナー",
+  "ir_page_url": "https://www.artner.co.jp/ir/financial/monthly/",
+  "updated_at": "2026-04-21T09:26:42.689803+09:00",
+  "last_checked": "2026-04-21",
+  "status": "active",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": "\\d{4}",
+  "link_href_pattern": "/asset\\-ir/download_file/JP_2163\\.xlsx",
+  "note": "月次PDFリンク1件検出 best=https://www.artner.co.jp/asset-ir/download_file/JP_2163.xlsx"
+}

@@ -1,0 +1,32 @@
+{
+  "ticker": "8628",
+  "company_name": "8628",
+  "metrics": [
+    {
+      "name": "FX 収益（円）",
+      "source": "bc"
+    },
+    {
+      "name": "取引口座数",
+      "source": "bc"
+    },
+    {
+      "name": "委託手数料 収益（円）",
+      "source": "bc"
+    },
+    {
+      "name": "株式 売買代金（円）",
+      "source": "bc"
+    },
+    {
+      "name": "株式 注文件数（件）",
+      "source": "bc"
+    },
+    {
+      "name": "株式 約定件数（件）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

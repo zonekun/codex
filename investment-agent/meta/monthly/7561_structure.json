@@ -1,0 +1,36 @@
+{
+  "ticker": "7561",
+  "company_name": "7561",
+  "metrics": [
+    {
+      "name": "TRNグループ 売上（円）",
+      "source": "bc"
+    },
+    {
+      "name": "TRNグループ 売上（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "TRNグループ 稼働店舗数",
+      "source": "bc"
+    },
+    {
+      "name": "ほっかほっか亭 全店 売上（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "ほっかほっか亭 全店 売上（百万円）",
+      "source": "bc"
+    },
+    {
+      "name": "ほっかほっか亭 店舗数",
+      "source": "bc"
+    },
+    {
+      "name": "ほっかほっか亭 既存店 売上（前年同月比）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

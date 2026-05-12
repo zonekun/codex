@@ -1,0 +1,13 @@
+{
+  "ticker": "9031",
+  "company_name": "西日本鉄道",
+  "ir_page_url": "http://www.nishitetsu.co.jp/ir/monthly/",
+  "updated_at": "2026-04-21T10:18:14.187552+09:00",
+  "last_checked": "2026-04-21",
+  "status": "active",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": null,
+  "link_href_pattern": ".*\\.(pdf)",
+  "note": "月次PDFリンク45件検出 best=http://www.nishitetsu.co.jp/ja/ir/i_news/i_news20260331/main/0/link/260331.pdf"
+}

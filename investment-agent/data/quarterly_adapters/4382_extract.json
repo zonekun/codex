@@ -1,0 +1,28 @@
+{
+  "ticker": "4382",
+  "company_name": "ＨＥＲＯＺ",
+  "current_version": "2025-03",
+  "versions": [
+    {
+      "valid_from": "2025-03",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/4382/20250313_4382_ＨＥＲＯＺ_決算短信_2025年４月期第３四半期決算短信〔日本基準〕（連結）_140120250313593098.pdf",
+  "_source_doc_id": "140120250313593098",
+  "_generated_at": "2026-04-30T18:06:20.085819+09:00",
+  "_model_used": null
+}

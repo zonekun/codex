@@ -1,0 +1,110 @@
+{
+  "ticker": "3679",
+  "company_name": "じげん",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "人材紹介事業 受注残高合計",
+          "type": "backlog",
+          "description": "人材紹介事業における、各月における入社決定済かつ入社日未到来の成約案件から生じる将来計上予定の売上収益。",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "売上収益",
+          "type": "completed",
+          "description": "FY2026/3 Q3実績の売上収益合計",
+          "unit": "百万円",
+          "is_total": true
+        },
+        {
+          "name": "Vertical HR 売上収益",
+          "type": "completed",
+          "description": "FY2026/3 Q3実績のVertical HR領域の売上収益",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上収益"
+        },
+        {
+          "name": "LivingTech 売上収益",
+          "type": "completed",
+          "description": "FY2026/3 Q3実績のLivingTech領域の売上収益",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上収益"
+        },
+        {
+          "name": "LifeService 売上収益",
+          "type": "completed",
+          "description": "FY2026/3 Q3実績のLifeService領域の売上収益",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上収益"
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "月次",
+          "items": [
+            "2024/04",
+            "2024/05",
+            "2024/06",
+            "2024/07",
+            "2024/08",
+            "2024/09",
+            "2024/10",
+            "2024/11",
+            "2024/12",
+            "2025/01",
+            "2025/02",
+            "2025/03",
+            "2025/04",
+            "2025/05",
+            "2025/06",
+            "2025/07",
+            "2025/08",
+            "2025/09",
+            "2025/10",
+            "2025/11",
+            "2025/12"
+          ]
+        },
+        {
+          "dimension_name": "領域",
+          "items": [
+            "Vertical HR",
+            "LivingTech",
+            "LifeService"
+          ]
+        }
+      ],
+      "presentation_format": "chart",
+      "complexity": "ppt_chart",
+      "notes": "人材紹介事業の主要3社（タイズ、アップベース、エニーキャリア）の受注残高合計が月次グラフで示されている。グラフ上に具体的な数値のラベルはないが、Y軸により金額規模が示されている。 page 6にFY2026/3 Q3実績の売上収益合計と領域別売上収益が記載されているため、completed metricとして追加。"
+    }
+  ],
+  "_source_pdf": "tdnet/3679/20260209_3679_じげん_決算説明資料_2026年3月期第３四半期決算説明会資料_140120260209551971.pdf",
+  "_source_doc_id": "140120260209551971",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T17:48:18.665711+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "no_table",
+    "relevant_pages": [
+      16
+    ],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "pdfplumber found no tables on relevant pages"
+    ]
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "ticker": "9613",
+  "company_name": "ＮＴＴデータグループ",
+  "current_version": "2025-02",
+  "versions": [
+    {
+      "valid_from": "2025-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "連結累計期間における受注高の合計",
+          "unit": "百万円",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "text",
+      "complexity": "no_table",
+      "notes": "本文中に受注高および売上高（合計および日本・海外セグメント別）の数値が記載されています。受注残高に関する具体的な数値の記載はありません。"
+    }
+  ],
+  "_source_pdf": "tdnet/9613/20250206_9613_ＮＴＴデータグループ_決算短信_2025年3月期第3四半期決算短信〔ＩＦＲＳ〕(連結)_140120250205564347.pdf",
+  "_source_doc_id": "140120250205564347",
+  "_source_type": "tanshin",
+  "_generated_at": "2026-04-30T20:23:06.271455+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "no_table",
+    "relevant_pages": [
+      6
+    ],
+    "table_count": 0,
+    "max_rows": 0,
+    "max_cols": 0,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "pdfplumber found no tables on relevant pages"
+    ]
+  }
+}

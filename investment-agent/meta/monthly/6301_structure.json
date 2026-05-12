@@ -1,0 +1,28 @@
+{
+  "ticker": "6301",
+  "company_name": "6301",
+  "metrics": [
+    {
+      "name": "インドネシア Komtrax建設機械 平均稼働時間/台（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "中国 Komtrax建設機械 平均稼働時間/台（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "北米 Komtrax建設機械 平均稼働時間/台（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "日本 Komtrax建設機械 平均稼働時間/台（前年同月比）",
+      "source": "bc"
+    },
+    {
+      "name": "欧州 Komtrax建設機械 平均稼働時間/台（前年同月比）",
+      "source": "bc"
+    }
+  ],
+  "source": "buffett_code",
+  "updated_at": "2026-04-03T11:56:07.752560+09:00"
+}

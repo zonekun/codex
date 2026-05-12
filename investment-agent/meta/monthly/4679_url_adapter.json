@@ -1,0 +1,17 @@
+{
+  "ticker": "4679",
+  "company_name": "田谷",
+  "ir_page_url": "https://www.taya.co.jp/ir/library/monthly.html",
+  "updated_at": "2026-04-24T13:56:32.655334+09:00",
+  "last_checked": "2026-04-21",
+  "status": "active",
+  "type": "html_table",
+  "css_selector": null,
+  "link_text_pattern": "月次",
+  "link_href_pattern": "/xcontents/AS03932/d5e28261/6407/4c7e/85b8/b81fc2362cc7/\\d{6}08161554819s\\.pdf",
+  "note": "JS描画ページ。Playwright必要。ゼロDL修正 (2026-04-24)。",
+  "playwright_required": true,
+  "manual_override": true,
+  "manual_override_at": "2026-04-24T13:56:32.655334+09:00",
+  "manual_override_note": "ゼロDL修正 (2026-04-24)"
+}

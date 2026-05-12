@@ -1,0 +1,44 @@
+{
+  "ticker": "2311",
+  "company_name": "エプコ",
+  "current_version": "2024-11",
+  "versions": [
+    {
+      "valid_from": "2024-11",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "受注残",
+          "type": "backlog",
+          "description": "LESSO社工場・倉庫等向け太陽光パネル設置設計業務の受注残高（2024年9月末時点）",
+          "unit": "万元",
+          "is_total": true
+        }
+      ],
+      "breakdown_dimensions": [],
+      "presentation_format": "text",
+      "complexity": "no_data",
+      "notes": "LESSO合弁事業における太陽光パネル設置設計業務の受注残高がテキスト形式で記載されています。単位は中国元の「万元」です。\nユーザー指示により、金額以外または外貨単位のメトリクも必要なため復元。"
+    }
+  ],
+  "_source_pdf": "tdnet/2311/20241111_2311_エプコ_決算説明資料_2024年12月期 第3四半期決算説明資料_140120241111517359.pdf",
+  "_source_doc_id": "140120241111517359",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T17:18:45.149214+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      22
+    ],
+    "table_count": 1,
+    "max_rows": 1,
+    "max_cols": 2,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages"
+    ]
+  }
+}

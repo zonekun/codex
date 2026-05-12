@@ -88,6 +88,22 @@ now = datetime.now(JST_pytz)
 
 ---
 
+## TICKER（銘柄コード）は常に文字列型
+
+### ルール
+
+日本株の銘柄コードは**数字4桁が大半だが、アルファベット付きも存在する**（例: `174A`, `218A`）。
+
+- BQ テーブル上: `STRING` 型で統一済み
+- Python コード上: **`str` 型**で扱う。`int` への変換禁止
+- CSV 読み込み時: `pd.read_csv(..., dtype={"TICKER": str})` または読み込み後に `df["TICKER"] = df["TICKER"].astype(str)` で明示的に文字列化する
+
+### なぜ必要か
+
+pandas の `read_csv` は列の全値が数値のみの場合 `int64` に推論する。キャッシュ CSV に `174A` 等が含まれない部分データセットでは TICKER が int 化し、他テーブルとの JOIN や `set` lookup で型不一致が起きる（サイレントに空結果になる）。
+
+---
+
 ## Cloud Run Job / バックグラウンド実行では PYTHONUNBUFFERED=1 必須
 
 ### 問題
@@ -298,6 +314,32 @@ else:
 - [ ] D-3: 部分失敗時の orphan cancel
 - [ ] D-4: BQ DML は public API (`num_dml_affected_rows`)
 - [ ] E-1/E-2: 設定は環境変数経由、mutable global 禁止
+- [ ] CLAUDE.md§コーディング規約: `print()` 不使用、`structlog` でロギング
+- [ ] CLAUDE.md§コーディング規約: GCP認証は `settings.google_application_credentials` 経由
+- [ ] CLAUDE.md§コーディング規約: docstring は Google style（Args/Returns/Raises 記載）
+- [ ] CLAUDE.md§コーディング規約: 全関数に型ヒント
+- [ ] 一時ファイル・バックアップファイルの知見MD記載（下記ルール参照）
+
+---
+
+## 一時ファイル・バックアップファイルのMD記載義務
+
+作業中に以下のファイルを作成した場合、対応する知見MDに所在・用途・削除可否を記載する。記載なしの放置ファイルはゴミになる。
+
+**対象**:
+- `C:\tmp\` に置いた一時スクリプト・一時データ
+- 旧版バックアップ（`_v1.md`、`_backup.md` 等）
+- 中間生成物（JSONL、CSV等の途中成果物）
+
+**記載先**: 対応する知見MD（`docs/knowledges/`）のヘッダ付近またはファイル一覧セクション
+
+**記載内容**（テーブル推奨）:
+
+| 項目 | 必須 |
+|------|------|
+| ファイルパス（フルパス） | Yes |
+| 用途（何のために作ったか） | Yes |
+| 削除可否・条件（いつ消してよいか） | Yes |
 
 ---
 
@@ -307,7 +349,7 @@ else:
 
 ### 反面教師事例（2026-04-20）
 
-`sync_latest_adapters_bg.py` がローカル `data/monthly_adapters/{ticker}.json`（extract adapter = `fields`/`row_label_regex`）を GCS `monthly/meta/{ticker}/adapter.json`（URL adapter = `ir_page_url`/`type`）と同一視し、`updated_at` 比較だけで **245 件の URL adapter を破壊**。両者ともファイル名が `adapter.json` / `{ticker}.json` で紛らわしかったのに意味種別を検証しなかったのが原因。
+`sync_latest_adapters_bg.py` がローカル `meta/monthly/{ticker}_extract_adapter.json`（extract adapter = `fields`/`row_label_regex`）を GCS `monthly/meta/{ticker}/adapter.json`（URL adapter = `ir_page_url`/`type`）と同一視し、`updated_at` 比較だけで **245 件の URL adapter を破壊**。両者ともファイル名が `adapter.json` / `{ticker}.json` で紛らわしかったのに意味種別を検証しなかったのが原因。
 
 ### 恒久ルール
 
@@ -325,6 +367,279 @@ else:
 
 ---
 
+## 破壊的操作
+
+### 定義
+
+「間違えた時にアンドゥコストが高い or 他者影響がある」= 破壊的:
+- **上書き・削除**: 既存 blob/ファイルへの書き込み、`blob.delete()`, `rm -rf`, `Path.unlink()` 等
+- **DB 破壊系 DML**: `DROP`, `TRUNCATE`, 広範囲 `DELETE`, `ALTER ... DROP COLUMN`
+- **Git 破壊系**: `push --force`, `reset --hard`, `branch -D`, `clean -fd`
+- **他者に見える変更**: PR/Issue/Slack/email/LINE 送信、Cloud Run/Workflows 実行
+- **bucket/quota 系**: `gsutil rsync -d`, jobs delete, secrets 削除
+- **副作用のあるスクリプトを `| head` 等のパイプで部分確認しない**: パイプ閉鎖前に副作用は実行される
+
+### 事故事例
+
+### sync_latest_adapters_bg.py 245本破壊（2026-04-20）
+
+`sync_latest_adapters_bg.py` がローカル extract adapter を GCS URL adapter に誤マッピングで上書き → **245 本破壊**。原因: dry-run 未実装・内容種別検証無し・全銘柄一発実行。`monthly_adapter_index.csv` から再構築で復旧。
+
+### monitor_backfill.py パイプ経由二重起動（2026-04-29）
+
+`monitor_backfill.py ... | head -5` で設定パース確認のつもりが、`head` がパイプを閉じる前に Cloud Run Job がサブミットされ、孤立ジョブが稼働。その後の本番実行で2つ目の同一ジョブが並走。原因: `--dry-run` が既に実装済みなのに使わず `| head -5` で代用。→ review 028。
+
+### GCPリソース変更時のMD更新漏れ（2026-05-02）
+
+`tdnet-ai-weekly` Scheduler 作成 + `ai_processing_flow` Workflow 改修を完了したが、知見ファイル（013_tdnet_load.md）の「⚠️ Scheduler 未設定」表記を更新せず。ユーザー指摘まで陳腐化放置。→ review 060。
+
+**ルール**: GCPリソース（Scheduler/Cloud Run Job/Workflows/Functions）を変更・作成・削除したら、変更完了直後に関連知見ファイルの「現況サマリ」「ステータス」「残課題」を自発更新する。判定:「次セッションがこのMDを読んだとき現在のGCP状態と矛盾しないか？」
+
+---
+
 ## 改修プラン / バグ修正指示書 MD フォーマット
 
 定義は `skills/planning.md` §改修プラン / バグ修正指示書 MD フォーマット に一元化した。テンプレは `docs/plans/_template_refactor.md` をコピーして使う。本ファイルの汎用アンチパターン集（A-x〜F-x）はプラン内の「対応アンチパターン」表で参照される。
+
+---
+
+## 一時スクリプトの命名（tmp_*.py）
+
+### ルール
+
+一過性の処理（調査・デバッグ・バッチ修正・PoC・1回限りの移行等）は **`tmp_`** プレフィックスで命名する。
+
+```
+scripts/tmp_investigate_7345.py      # 個別銘柄調査
+scripts/tmp_debug_extract_2305.py    # デバッグ
+scripts/tmp_apply_fixes_round3.py    # バッチ修正
+scripts/tmp_poc_ocr_compare.py       # PoC実験
+scripts/tmp_backfill_2023_efg.py     # 一過性バックフィル
+```
+
+### .gitignore で除外
+
+```gitignore
+scripts/tmp_*.py
+```
+
+一時スクリプトはコミットしない。成果（知見・データ・adapter修正等）は正規の場所に反映し、スクリプト自体は用が済んだら削除する。
+
+### 判定基準
+
+「3ヶ月後に別セッションがこのスクリプトを実行する場面があるか？」
+
+- **No** → `tmp_` をつける
+- **Yes** → 通常命名（`investigate_monthly_ng.py` 等）
+
+### 旧命名との対応（参考）
+
+| 旧パターン（もう使わない） | 今後の命名 |
+|---------------------------|-----------|
+| `*_bg.py`（セッション内BG処理） | `tmp_*_bg.py` または `tmp_*` |
+| `investigate_<ticker>.py` | `tmp_investigate_<ticker>.py` |
+| `poc_<実験名>.py` | `tmp_poc_<実験名>.py` |
+| `debug_*.py` | `tmp_debug_*.py` |
+| `apply_batch_fixes_round*.py` | `tmp_apply_fixes_*.py` |
+| `*_copy.py` / `*コピー*.py` | `tmp_*` |
+
+---
+
+## テストスクリプト（test_*.py）
+
+### 配置・命名
+
+テストスクリプトは **`scripts/` 配下に `test_` プレフィックス**で配置する。`C:\tmp\` やプロジェクト外への配置は禁止（git 管理外になりバージョン管理・コードレビュー・他端末での再利用が不可能になるため）。
+
+```
+scripts/test_conse_quick.py       # コンセンサス取得テスト
+scripts/test_yutai_nav.py         # 株主優待ナビゲーションテスト
+```
+
+### 命名規則
+
+`test_<機能の短い説明>.py`
+
+- `test_` で始めることで通常のスクリプト（本番バッチ等）と区別する
+- テスト対象がわかる名前をつける
+
+### 一時スクリプトとの違い
+
+| 種別 | プレフィックス | git管理 | 用途 |
+|------|--------------|---------|------|
+| テストスクリプト | `test_` | する | 繰り返し実行する検証・動作確認 |
+| 一時スクリプト | `tmp_` | しない（.gitignore除外） | 1回限りの調査・デバッグ・PoC |
+
+判定基準: 「3ヶ月後に別セッションがこのスクリプトを実行する場面があるか？」Yes → `test_`、No → `tmp_`
+
+### 事故事例
+
+review 118: テストスクリプトを `C:\tmp\test_yutai_nav.py` に配置 → ユーザー指摘で `scripts/test_yutai_nav.py` に再作成。原因: 004 を参照せずに Write し、「テスト」→「一時的」→「テンポラリディレクトリ」と意味的に連想した。
+
+---
+
+## scripts/ 共通ライブラリ（lib_*.py）
+
+### 配置・命名
+
+複数スクリプトから共通で使う関数は `scripts/` 直下に `lib_` プレフィックス付きで置く。専用ディレクトリ（`scripts/lib/` 等）は作らない。
+
+```
+scripts/
+  lib_conse_csv_from_view.py   # コンセンサスCSV出力（VIEW→ローカルCSV）
+  update_conse_ifis.py         # ← import して使う
+  update_conse_rakuten.py      # ← import して使う
+```
+
+### 命名規則
+
+`lib_<機能の短い説明>.py`
+
+- `lib_` で始めることで通常のスクリプト（直接実行するもの）と区別する
+- 機能がわかる名前をつける（`lib_utils.py` のような汎用名は避ける）
+
+### 既存一覧
+
+| ファイル | 用途 | 利用元 |
+|---------|------|--------|
+| `lib_conse_csv_from_view.py` | `V_CONSENSUS_MERGED` VIEW → ローカルCSV出力 | `update_conse_ifis.py`, `update_conse_rakuten.py` |
+
+---
+
+## 事故パターンDB
+
+繰り返し発生する事故パターンを「ルール追加」ではなく「データ追加」で管理する。新パターン発見時はセクション追加、既知パターンの新事例はテーブルに1行追加するのみ。
+
+### P-001: AI判断によるドキュメント/指示の上書き
+
+**パターン定義**: AIが「自分の判断で十分」と評価し、明示的に指定された手順・参照先・手段を省略/改変する
+
+**判定フローチャート**:
+1. いま実行しようとしている手段/手順は、ドキュメント/指示/プランに明示されたものと同一か?
+2. 異なる場合（省略を含む）: 「自分の判断の方が良い」または「なくても大丈夫」と感じているか?
+3. Yes → **本パターン該当**。実行前にユーザーに確認する
+
+**事故事例テーブル**:
+
+| # | MR | 表層 | 省略/改変された要素 | AIの判断内容 | 追加されたルール |
+|---|-----|------|-------------------|-------------|----------------|
+| 1 | 071 | そのまま移植→改良 | ライブラリ | Playwrightの方がモダン | §既存コード移植ルール |
+| 2 | 131 | 手動で→Python化 | 処理手段 | コードの方が効率的 | §AI直接処理の指示ルール |
+| 3 | 134 | プラン手順省略 | 調査手順 | AI知見で十分 | §ステップ完了検証義務 |
+| 4 | 136 | 知見MD未参照でCLI構成 | 参照先 | 記憶で構成できる | §ユーザー異常報告時の自己検証 |
+| 5 | 139 | 提案通りで→全件実施 | 承認スコープ | SO推奨順序が全件実施を正当化 | §4.2 ユーザー指示優先（既存） |
+
+**共通構造**: 全事例で「自信度が高い → 参照/確認を省略する」が発動している
+
+**防止策（メタルール）**: CLAUDE.md §4.2 ユーザー指示優先を参照。「手段Xを手段Yに置き換えようとしている」または「手段Xを省略しようとしている」と認識した時点で発火。5件目以降はCLAUDE.mdにルール追加せず、本テーブルに事例を追記する
+
+---
+
+## 日付時刻ルール（JST統一）
+
+> CLAUDE.md から詳細を移動。
+
+- **あらゆる日付時刻はJST（UTC+9）を使用**。ログ・API・BQ・gcloud・MCP・GCS・Colab等、出所を問わず変換する。UTC出力はNG
+- **コード上**: `datetime.now()` は禁止。`datetime.now(tz=ZoneInfo('Asia/Tokyo'))` を使う。ファイル名・created_at・ログ等すべてJSTで統一
+- **MD記述時**: プランMD・知見MD・レビューMD等に日付時刻を記載する際は、JST現在日付時刻を確認してから記述する。記憶・推定による日付時刻記載は禁止
+- **JST取得方法**: Git Bash の `date` / `TZ=Asia/Tokyo date` はWindows環境でUTC値をJSTラベル付きで返す事故がある。`python -c "from datetime import datetime; from zoneinfo import ZoneInfo; print(datetime.now(tz=ZoneInfo('Asia/Tokyo')))"` を使うこと
+
+---
+
+## ディスク管理義務
+
+> CLAUDE.md から詳細を移動。
+
+多件DLバッチ（EDINET XBRL/TDnet PDF/GCS fetch 等）は以下必須:
+
+1. **逐次削除**: 1件処理（DL→parse→BQ insert）毎に `shutil.rmtree()`。全件分溜めない
+2. **ディスク監視**: N件毎に `shutil.disk_usage("C:\\tmp").free` チェック → 5GB未満で警告、1GB未満で abort
+3. **レジューム**: 起動時に `(key1, key2) IN BQ既存` で処理済スキップ
+4. **ピーク = 並列数 × 1ファイル**: 10 worker なら瞬間 ~10 ZIP 分のみ
+5. **起動前**: `df C:\\tmp` で 10GB 以上空き確認
+
+**禁止パターン**: 一括DL→最後に削除 / `except: pass` でゴミ残し / `--dry-run` キャッシュ放置
+
+---
+
+## 逐次永続化義務
+
+> CLAUDE.md から詳細を移動。
+
+AIがN件（N>=3）の対象を手動で反復処理する場合（adapter修正・NG調査・手動データ修正・BC突合等）:
+
+1. **1件1永続化**: 1件の調査・判断が完了したら、即座にEdit/Writeでファイルに書き戻す。判断結果をコンテキストメモリに溜めて後でまとめて書くことを禁止（クラッシュで全消失するため）
+2. **中間コミット**: 10件処理ごと、または15分経過ごと（いずれか早い方）にgit commitで中間成果を永続化
+3. **処理サイクルの事前定義**: 反復処理を開始する前に、1件の処理サイクル（入力→判断→永続化→後始末→次の件）を明示的に定義してから着手する
+
+**禁止パターン**: 全件調査→最後にまとめてEdit / 判断結果をコンテキストメモリにのみ保持 / 処理サイクル未定義のまま作業開始
+
+---
+
+## 既存コード移植ルール
+
+> CLAUDE.md から詳細を移動。§4.2 ユーザー指示優先の具体化。
+
+ユーザーが「そのまま使え」「そのまま移植せよ」「コピペせよ」「一字一句」「独自に考えるべき箇所ゼロ」「元ネタ通り」と指示した場合:
+
+1. 元ネタのコードを Read し、関数単位でそのままコピーする
+2. ブラウザ種別・ライブラリ・API・オプション・タイムアウト値を一切変更しない
+3. 元ネタにない処理（wait、デバッグ出力、エラーハンドリング等）を追加しない
+4. 技術的に「より良い」代替手段があっても採用しない
+5. 変更が必要と判断した場合は、実装前にユーザーに確認する
+
+---
+
+## AI直接処理の指示ルール
+
+> CLAUDE.md から詳細を移動。§4.2 ユーザー指示優先の具体化。
+
+ユーザーが以下の語彙・文脈でAI自身による直接処理を指示した場合、Pythonスクリプトを書いてすり替えてはならない:
+
+- **トリガー語彙**: 「1件ずつ」「1件1件」「丁寧に」「手動で」「君/自分が判断して」「君/自分が○○せよ」「君/自分で読んで」「コードを書くな」
+- **対象タスク**: 文章成形、構造読み取り、分類判断、レビュー、要約、比較分析など、AIの言語理解力で直接処理可能なタスク
+- **禁止行動**: タスクの一部または全部を、たとえ処理パターンが見えても、Pythonスクリプト・シェルスクリプトで代替すること
+- **判断基準**: 迷ったら「ユーザーはAIの言語能力を使いたいのか、コードを書かせたいのか」をユーザーに質問する
+
+---
+
+## 認証系コードの特別扱い
+
+> CLAUDE.md から詳細を移動。
+
+証券口座・銀行口座・決済サービス等の認証系コードは、ログイン失敗が口座ロックに直結するため特別扱い:
+
+- 実績のある既存コードがある場合、技術変更（ライブラリ変更・API変更）は禁止
+- bot検知対策（User-Agent、AutomationControlled無効化、プロファイル利用等）は元ネタに存在する場合は必ず移植
+- テスト実行前にユーザーに確認（1回の失敗でロックの可能性）
+
+---
+
+## GCS非git同期
+
+> CLAUDE.md から移動。
+
+端末間同期対象は以下の3種類のみ。`sync_push.sh` / `sync_pull.sh` で管理。
+
+| 同期対象 | 理由 |
+|---------|------|
+| `.env` | APIキー類。git管理禁止 |
+| `keys/gcp-service-account.json` | GCP認証キー。git管理禁止 |
+| `claude-memory/`（GCS上） | Claude Codeメモリ。端末間で共有 |
+
+会話ログ・ツールトレースは `C:\tmp\claude_logs\<session_id>\` にローカル保管。GCS同期対象外。
+
+**同期禁止**: `scripts/`, `src/`, `.venv/`, `.claude/`, `.mcp.json`, `data/cache/`
+
+---
+
+## その他（CLAUDE.mdから委譲）
+
+- **gcloud**: Git Bash を第一選択。クォートを含む複雑なコマンドは PowerShell で事故りやすい
+- **グラフ**: JupyterLab ノートブック（.ipynb）で実装・実行する。`matplotlib.use("Agg")`+PNG保存は使わない
+- **ローカルDL保存先**: `C:\tmp\`（Google Drive・Dropbox禁止）。検証後は削除する
+- **requests.Session**: スレッドセーフでない。`ThreadPoolExecutor` 並列化時は `threading.local()` でスレッド毎にインスタンス分離
+- **Gemini応答安定化**: 応答がlist/dict混在等で不安定な場合、コード側のtry/exceptで吸収せず**プロンプトとresponse_schemaを修正**して安定させる
+- **外部API**: 必ずtry/exceptで囲む。リトライはtenacityを使用
+- **設定値**: ハードコーディング禁止。config/以下のYAMLまたは環境変数で管理
+- **新規スクリプト作成時**: Write実行前に本ファイル §新規バッチジョブ作成時チェックリスト および §スクリプト配置・命名 を Read し、全項目を確認してからコーディングに入ること。**配置先は必ず `scripts/` 配下**

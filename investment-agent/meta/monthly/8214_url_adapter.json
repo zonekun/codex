@@ -1,0 +1,16 @@
+{
+  "ticker": "8214",
+  "company_name": "ＡＯＫＩホールディングス",
+  "ir_page_url": "https://ir.aoki-hd.co.jp/ja/ir/finance/monthlyreport/fashion.html",
+  "status": "active",
+  "type": "scrape_links",
+  "css_selector": null,
+  "link_text_pattern": "\\d{4}|月次|uriage|Fashion",
+  "link_href_pattern": "teaserItems1/0/linkList/\\d+/link/\\d+(?:_Fashion)?_?uriage[^\\\"']*\\.pdf",
+  "note": "monthlyreport.html は月次PDF直リンクなし（fashion/entertainmentサブページ配下）。fashion のみ ir_page_url 指定。entertainment が別途必要なら別 adapter 化（未対応）",
+  "updated_at": "2026-04-24T08:44:33.373709+09:00",
+  "last_checked": "2026-04-24",
+  "manual_override": true,
+  "manual_override_at": "2026-04-24T08:44:33.373709+09:00",
+  "manual_override_note": "23NG個別調査で修正 v2 (2026-04-24)"
+}

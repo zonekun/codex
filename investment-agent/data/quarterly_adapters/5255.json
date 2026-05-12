@@ -1,0 +1,91 @@
+{
+  "ticker": "5255",
+  "company_name": "Ｇ－モンスターラボ",
+  "current_version": "2026-02",
+  "versions": [
+    {
+      "valid_from": "2026-02",
+      "valid_until": null,
+      "data_available": true,
+      "metrics": [
+        {
+          "name": "売上収益",
+          "type": "completed",
+          "description": "地域別の四半期売上収益",
+          "unit": "百万円",
+          "is_total": false
+        },
+        {
+          "name": "受注高",
+          "type": "order_intake",
+          "description": "地域別の四半期受注高",
+          "unit": "百万円",
+          "is_total": false
+        },
+        {
+          "name": "新規受注案件数",
+          "type": "other",
+          "description": "地域別の四半期新規受注案件数",
+          "unit": "件",
+          "is_total": false
+        },
+        {
+          "name": "大口顧客売上高",
+          "type": "completed",
+          "description": "直近12ヶ月売上1億円以上の大口顧客による売上高",
+          "unit": "百万円",
+          "is_total": false,
+          "parent_metric": "売上収益"
+        },
+        {
+          "name": "大口顧客数",
+          "type": "other",
+          "description": "直近12ヶ月売上1億円以上の大口顧客数",
+          "unit": "数",
+          "is_total": false
+        }
+      ],
+      "breakdown_dimensions": [
+        {
+          "dimension_name": "地域",
+          "items": [
+            "APAC",
+            "AMER"
+          ]
+        },
+        {
+          "dimension_name": "顧客区分",
+          "items": [
+            "大口顧客"
+          ]
+        }
+      ],
+      "presentation_format": "mixed",
+      "complexity": "ppt_chart",
+      "notes": "APACおよびAMER地域の売上収益、受注高、新規受注案件数、および大口顧客（直近12ヶ月売上1億円以上）に関するKPIがグラフ形式で提供されている。"
+    }
+  ],
+  "_source_pdf": "tdnet/5255/20260227_5255_Ｇ－モンスターラボ_決算説明資料_2025年12月期 決算説明資料_140120260227571320.pdf",
+  "_source_doc_id": "140120260227571320",
+  "_source_type": "presentation",
+  "_generated_at": "2026-04-30T18:25:14.827882+09:00",
+  "_model_used": "gemini-3-flash-preview",
+  "_complexity_report": {
+    "complexity": "complex_table",
+    "relevant_pages": [
+      8,
+      9,
+      11
+    ],
+    "table_count": 5,
+    "max_rows": 10,
+    "max_cols": 25,
+    "broken_col0": false,
+    "unit_mixed": true,
+    "notes": [
+      "multiple units appear in relevant pages",
+      "many tables: 5",
+      "wide table: 25 columns"
+    ]
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "ticker": "3461",
+  "company_name": "Ｇ－パルマ",
+  "current_version": "2025-02",
+  "versions": [
+    {
+      "valid_from": "2025-02",
+      "valid_until": null,
+      "extraction_method": "gemini_vision",
+      "source": "tanshin",
+      "page_keywords": [
+        "受注残",
+        "受注高",
+        "繰越",
+        "手持",
+        "完成工事高"
+      ],
+      "fields": [],
+      "gemini_custom_prompt": "",
+      "notes": "Gemini skipped."
+    }
+  ],
+  "manual_override": false,
+  "_source_pdf": "tdnet/3461/20250207_3461_Ｇ－パルマ_決算短信_2025年9月期 第1四半期決算短信〔日本基準〕（非連結）_140120250130558437.pdf",
+  "_source_doc_id": "140120250130558437",
+  "_generated_at": "2026-04-30T17:42:15.938732+09:00",
+  "_model_used": null
+}

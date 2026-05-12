@@ -1,0 +1,75 @@
+{
+  "source": "non-tdnet(pdf)",
+  "format": "pdf",
+  "fields": [
+    {
+      "key": "全店舗 売上（前年同月比）",
+      "bc_key": "全店 売上（前年同月比）",
+      "row_label_regex": "全店舗",
+      "value_type": "percentage"
+    },
+    {
+      "key": "全店舗 客数（前年同月比）",
+      "bc_key": "全店 客数（前年同月比）",
+      "row_label_regex": "全店舗",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "micro-diff: our=106.6, bc=102.7, diff=3.9 (rounding/timing diff)"
+    },
+    {
+      "key": "全店舗 客単価（前年同月比）",
+      "bc_key": "全店 客単価（前年同月比）",
+      "row_label_regex": "全店舗",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "micro-diff: our=106.6, bc=103.8, diff=2.8 (rounding/timing diff)"
+    },
+    {
+      "key": "全既存店舗 売上（前年同月比）",
+      "bc_key": "既存店 売上（前年同月比）",
+      "row_label_regex": "全既存店舗",
+      "value_type": "percentage"
+    },
+    {
+      "key": "全既存店舗 客数（前年同月比）",
+      "bc_key": "既存店 客数（前年同月比）",
+      "row_label_regex": "全既存店舗",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "micro-diff: our=105.7, bc=102.0, diff=3.0 (rounding/timing diff)"
+    },
+    {
+      "key": "全既存店舗 客単価（前年同月比）",
+      "bc_key": "既存店 客単価（前年同月比）",
+      "row_label_regex": "全既存店舗",
+      "value_type": "percentage",
+      "bc_ignore": true,
+      "_bc_ignore_reason": "micro-diff: our=105.7, bc=103.6, diff=2.1 (rounding/timing diff)"
+    },
+    {
+      "key": "全店 店舗数",
+      "bc_key": "全店 店舗数",
+      "row_label_regex": "合計([\\d,]+)店舗",
+      "group": 1,
+      "value_type": "integer"
+    }
+  ],
+  "ticker": "8218",
+  "company_name": "8218",
+  "created_at": "2026-04-05T10:16:22.390561+09:00",
+  "created_by": "gemini-2.5-flash",
+  "sample_doc_title": "202505_8218_4月度の月次情報詳細はこちら[PDF_116KB]_bf70f864",
+  "sample_submission_date": "",
+  "report_url": "TDNET文書",
+  "sample_file": "202505_8218_4月度の月次情報詳細はこちら[PDF_116KB]_bf70f864",
+  "_source_renamed_at": "2026-04-18T16:36:34+09:00",
+  "_source_renamed_from": "pdf",
+  "manual_override": true,
+  "year_month_from_submission_minus_1": true,
+  "regex_redesign_at": "2026-04-19T14:38:35.605603+09:00",
+  "regex_redesign_note": "tokens 厳格化: key を '全店舗 X' / '全既存店舗 X' に変更. ＰＷ全店 / ＰＷ既存店 等のサブブランド行の誤拾いを防止.",
+  "extraction_method": "regex",
+  "fiscal_year_start_month": 4,
+  "manual_override_at": "2026-04-25T06:00:00+09:00",
+  "manual_override_note": "Phase 2: bc_ignore for micro-diff fields (rounding/timing difference)"
+}
