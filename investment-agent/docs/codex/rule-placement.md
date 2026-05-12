@@ -46,6 +46,7 @@ Rules:
 - Store durable Codex operational docs under `docs/codex/**`.
 - Keep `docs/codex/**` present on `codex/integration` so Codex can read it during normal work.
 - Also keep `docs/codex/**` and `AGENTS.md` on `codex/meta` as a restore source.
+- Whenever Codex-protected docs or helper scripts are changed on `codex/integration`, update `codex/meta` in the same work session and push `codex/meta` to origin. Do not leave `codex/meta` stale.
 - Claude Code-side bulk reflection targets `codex/integration`, not `codex/meta`.
 - If Codex docs are overwritten or deleted on `codex/integration`, restore them from `codex/meta`:
 
