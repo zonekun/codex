@@ -56,6 +56,17 @@ git checkout codex/meta -- AGENTS.md docs/codex
 
 `docs/codex/**` must also be protected in `scripts/sync_claude_md.py` as `CODEX_PROTECTED`.
 
+## Secondary Worktree Safety
+
+When updating `codex/meta` or any secondary worktree:
+
+1. Create or identify the secondary worktree path.
+2. Run `git -C <absolute-worktree-path> status --short --branch` before changes.
+3. Use `git -C <absolute-worktree-path> ...` for every checkout, restore, add, commit, branch, and push command intended for that worktree.
+4. Do not chain commands that mix the main worktree and secondary worktree unless every Git invocation has an explicit `-C`.
+5. Before push, verify `git -C <absolute-worktree-path> log --oneline --decorate -1` and `git -C <absolute-worktree-path> status --short --branch`.
+6. After push, verify the remote ref with `git ls-remote --heads origin <branch>`.
+
 ## Adding Rules
 
 When adding a durable rule:
