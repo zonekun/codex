@@ -2,17 +2,58 @@
 
 作成日: 2026-04-22
 
+## 既定手順以外は禁止
+
+この文書で許可する同期は次の 2 種類だけ。
+
+1. MD 同期: `scripts/sync_claude_md.py` を使う。
+2. ソースコード同期: Git 上で `codex/integration` のソースコード対象ツリーを Claude Code 側の最新へ単純上書きする。
+
+上記以外の方法を使ってはならない。独自スクリプト、手作業コピー、ディレクトリ単位ミラー、履歴統合、merge、rebase、部分的な思いつき差分適用は禁止する。
+
 ## 厳禁: ROBOCOPY
 
 このリポジトリ作業では `ROBOCOPY` を使ってはならない。`robocopy /MIR` に限らず、dry-run、差分確認、単純コピー、同期、削除確認、検証目的でも禁止する。
 
-Claude Code から Codex への同期は必ず本書に記載された Codex 側の専用ツール、具体的には `scripts/sync_claude_md.py` と `scripts/sync_codex_secrets.py` を使う。ディレクトリ単位ミラーや汎用コピーコマンドは `docs/codex/**`、`docs/claude-md-sync.md`、`docs/codex-to-claude-handoff.md`、`AGENTS.md`、Codex 専用スクリプトなどの保護対象を削除・上書きする危険がある。
+Claude Code から Codex への同期は必ず本書の既定手順だけを使う。ディレクトリ単位ミラーや汎用コピーコマンドは `docs/codex/**`、`docs/claude-md-sync.md`、`docs/codex-to-claude-handoff.md`、`AGENTS.md`、Codex 専用スクリプトなどの保護対象を削除・上書きする危険がある。
 
-## ソースコード同期の原則
+## 1. MD 同期
 
-Claude Code 側のソースコード最新版を Codex へ取り込む場合は、`codex/integration` ブランチ上の対象ツリーを Git 上で Claude Code 側の最新内容へ単純に置き換える。履歴の統合、merge、rebase、コピーコマンドによるミラー、凝った差分適用は不要。
+Markdown と secrets / API keys は専用ツールで同期する。既定の確認・取り込み方法は次の通り。
 
-目的は Codex ブランチの内容を Claude Code 側最新へ合わせることであり、Claude Code 側の履歴構造を Codex 側へ持ち込むことではない。Codex 保護対象は本書の保護ルールに従って残す。
+```powershell
+$env:PYTHONUTF8='1'
+python .\scripts\sync_claude_md.py
+python .\scripts\sync_claude_md.py --apply
+```
+
+secrets / API keys は GCS 正本から取り込む。
+
+```powershell
+$env:PYTHONUTF8='1'
+python .\scripts\sync_codex_secrets.py
+python .\scripts\sync_codex_secrets.py --apply
+```
+
+MD 同期で Git の checkout / restore / merge / rebase / コピーコマンドを使ってはならない。`CONFLICT` は自動解決せず、内容確認してから個別対応する。
+
+## 2. ソースコード同期
+
+Claude Code 側のソースコード最新版を Codex へ取り込む場合は、`codex/integration` ブランチ上のソースコード対象ツリーを Git 上で Claude Code 側の最新内容へ単純に置き換える。MD はこの手順の対象外であり、MD 同期は必ず「1. MD 同期」で行う。履歴の統合、merge、rebase、コピーコマンドによるミラー、凝った差分適用は不要。
+
+既定手順:
+
+```powershell
+git fetch https://github.com/zonekun/claude.git master:refs/remotes/claude/master
+git restore --source=refs/remotes/claude/master -- investment-agent ':(exclude)investment-agent/**/*.md' ':(exclude)investment-agent/AGENTS.md' ':(exclude)investment-agent/scripts/setup_codex_uv.ps1' ':(exclude)investment-agent/scripts/sync_claude_md.py' ':(exclude)investment-agent/scripts/sync_codex_secrets.py'
+git restore --source=HEAD -- investment-agent/AGENTS.md investment-agent/docs/claude-md-sync.md investment-agent/docs/codex-to-claude-handoff.md investment-agent/docs/codex investment-agent/scripts/setup_codex_uv.ps1 investment-agent/scripts/sync_claude_md.py investment-agent/scripts/sync_codex_secrets.py
+git diff --stat -- investment-agent
+git add -A -- investment-agent
+git commit -m "chore: mirror claude investment-agent source"
+git push origin codex/integration
+```
+
+目的は Codex ブランチのソースコード内容を Claude Code 側最新へ合わせることであり、Claude Code 側の履歴構造を Codex 側へ持ち込むことではない。Codex 保護対象は上記 `git restore --source=HEAD -- ...` で必ず戻す。
 
 ## 目的
 
@@ -89,44 +130,17 @@ Claude Code 側の削除も反映する場合だけ、内容確認後に `--dele
 python .\scripts\sync_claude_md.py --apply --delete
 ```
 
-## Mirror mode の注意事項
+## 禁止: Mirror mode
 
-mirror mode は Claude Code 側を正本としてファイルレベルの一致を強制する最終手段として扱う。
+`scripts/sync_claude_md.py --mode mirror` は既定手順ではないため使用禁止。dry-run 目的でも使わない。
 
-```powershell
-$env:PYTHONUTF8='1'
-python .\scripts\sync_claude_md.py --mode mirror
-python .\scripts\sync_claude_md.py --mode mirror --apply
-```
-
-特性:
-
-- Codex 側にしか存在しないファイルは `DELETE` 対象になる。
-- Codex 独自成果物は `CODEX_PROTECTED` として表示し、mirror mode でも削除しない。
-- untracked ファイルの削除は `git restore` で復旧できないため、既定では削除しない。
-- untracked または git 状態不明の destination-only ファイルを削除する場合だけ、`--force-delete-untracked` を明示する。
-
-保護対象:
-
-- `docs/codex/**` 配下の Codex 専用運用MD。
-- ファイル名に `codex` を含む Codex 独自レビュー・検証結果。
-- `scripts/sync_claude_md.py` の `CODEX_PROTECTED_PATHS` に登録された既存成果物。
-
-`docs/codex/**` は Git 管理するが、Claude Code 側からの mirror / 一括反映では削除・上書きしない。Codex 専用MDの退避正本は `codex/meta` ブランチにも保持する。
-
-mirror 実行前チェックリスト:
-
-1. `--mode mirror` を dry-run で実行し、`DELETE` と `CODEX_PROTECTED` を確認する。
-2. `DELETE` 対象に Codex 独自成果物が含まれていないか確認する。
-3. `DELETE` 対象に untracked ファイルが含まれていないか確認する。
-4. Codex 独自成果物が `DELETE` 対象に含まれる場合は、実行せず保護パターンまたは個別保護パスを追加する。
-5. ユーザーから「Claude Code が正」「全上書き」と指示があっても、Codex 独自成果物と untracked ファイルの削除は別確認にする。
+MD 同期は `scripts/sync_claude_md.py` の通常確認と `--apply` のみを使う。ソースコード同期は上記「2. ソースコード同期」の Git 手順だけを使う。
 
 ## 原則
 
 - Claude Code 側または GCS は正系だが、Codex 側から勝手に書き込まない
 - Codex 側の MD 変更を上書きしない
-- 取り込み前は必ず dry-run
+- MD 取り込み前は必ず `scripts/sync_claude_md.py` の通常確認を実行する
 - `CONFLICT` は人間が diff を見て判断する
 - 取り込み後は Codex 側で必要に応じて commit する
 
