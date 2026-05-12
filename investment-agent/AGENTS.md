@@ -14,6 +14,8 @@ At the start of work in this repository, read the local instruction entry points
 
 Do not skip `CLAUDE.md` or the relevant local runbook because a direct search might find matching code.
 
+If Codex-protected docs or helper scripts are changed on `codex/integration`, update and push `codex/meta` in the same work session. Do not leave `codex/meta` stale.
+
 ## Codex Rule Placement
 
 Keep `AGENTS.md` as a small pointer file. Do not add detailed workflow steps, command recipes, dependency lists, review procedures, cleanup procedures, notification procedures, or sync procedures here.
