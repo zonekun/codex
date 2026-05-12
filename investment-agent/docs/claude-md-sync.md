@@ -2,11 +2,11 @@
 
 作成日: 2026-04-22
 
-## 厳禁: ROBOCOPY を使わない
+## 厳禁: ROBOCOPY
 
-Claude Code から Codex への同期で `ROBOCOPY`、`robocopy /MIR`、その他のディレクトリ単位ミラーコピーを使ってはならない。
+このリポジトリ作業では `ROBOCOPY` を使ってはならない。`robocopy /MIR` に限らず、dry-run、差分確認、単純コピー、同期、削除確認、検証目的でも禁止する。
 
-同期は必ず本書に記載された Codex 側の専用ツール、具体的には `scripts/sync_claude_md.py` と `scripts/sync_codex_secrets.py` を使う。ディレクトリ単位ミラーは `docs/codex/**`、`docs/claude-md-sync.md`、`docs/codex-to-claude-handoff.md`、`AGENTS.md`、Codex 専用スクリプトなどの保護対象を削除・上書きする危険がある。
+Claude Code から Codex への同期は必ず本書に記載された Codex 側の専用ツール、具体的には `scripts/sync_claude_md.py` と `scripts/sync_codex_secrets.py` を使う。ディレクトリ単位ミラーや汎用コピーコマンドは `docs/codex/**`、`docs/claude-md-sync.md`、`docs/codex-to-claude-handoff.md`、`AGENTS.md`、Codex 専用スクリプトなどの保護対象を削除・上書きする危険がある。
 
 ## 目的
 
