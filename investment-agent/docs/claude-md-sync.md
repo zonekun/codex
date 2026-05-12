@@ -39,13 +39,13 @@ MD 同期で Git の checkout / restore / merge / rebase / コピーコマンド
 
 ## 2. ソースコード同期
 
-Claude Code 側のソースコード最新版を Codex へ取り込む場合は、`codex/integration` ブランチ上のソースコード対象ツリーを Git 上で Claude Code 側の最新内容へ単純に置き換える。MD はこの手順の対象外であり、MD 同期は必ず「1. MD 同期」で行う。履歴の統合、merge、rebase、コピーコマンドによるミラー、凝った差分適用は不要。
+Claude Code 側のソースコード最新版を Codex へ取り込む場合は、`codex/integration` ブランチ上の対象ツリーを Git 上で Claude Code 側の最新内容へ単純に置き換える。履歴の統合、merge、rebase、コピーコマンドによるミラー、凝った差分適用は不要。
 
 既定手順:
 
 ```powershell
 git fetch https://github.com/zonekun/claude.git master:refs/remotes/claude/master
-git restore --source=refs/remotes/claude/master -- investment-agent ':(exclude)investment-agent/**/*.md' ':(exclude)investment-agent/AGENTS.md' ':(exclude)investment-agent/scripts/setup_codex_uv.ps1' ':(exclude)investment-agent/scripts/sync_claude_md.py' ':(exclude)investment-agent/scripts/sync_codex_secrets.py'
+git restore --source=refs/remotes/claude/master -- investment-agent
 git restore --source=HEAD -- investment-agent/AGENTS.md investment-agent/docs/claude-md-sync.md investment-agent/docs/codex-to-claude-handoff.md investment-agent/docs/codex investment-agent/scripts/setup_codex_uv.ps1 investment-agent/scripts/sync_claude_md.py investment-agent/scripts/sync_codex_secrets.py
 git diff --stat -- investment-agent
 git add -A -- investment-agent
@@ -53,7 +53,7 @@ git commit -m "chore: mirror claude investment-agent source"
 git push origin codex/integration
 ```
 
-目的は Codex ブランチのソースコード内容を Claude Code 側最新へ合わせることであり、Claude Code 側の履歴構造を Codex 側へ持ち込むことではない。Codex 保護対象は上記 `git restore --source=HEAD -- ...` で必ず戻す。
+目的は Codex ブランチの内容を Claude Code 側最新へ合わせることであり、Claude Code 側の履歴構造を Codex 側へ持ち込むことではない。Codex オリジナル MD と Codex 専用スクリプトだけは、上記 `git restore --source=HEAD -- ...` で必ず戻す。
 
 ## 目的
 
