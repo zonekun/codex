@@ -26,6 +26,7 @@ The operational source of truth remains the Claude Code side unless a task is ex
 - Use UTF-8 assumptions for Python and file IO: set `PYTHONUTF8=1` for script execution and use `encoding="utf-8"` in code.
 - Show and judge times in JST.
 - If a local text file appears mojibake in PowerShell, re-read with explicit encoding such as `-Encoding UTF8` or `-Encoding Default`.
+- If Codex-protected docs or helper scripts are changed on `codex/integration`, update and push `codex/meta` in the same work session. Do not leave `codex/meta` stale.
 
 ## Required Topic Pointers
 
@@ -34,7 +35,7 @@ The operational source of truth remains the Claude Code side unless a task is ex
 - Codex uv environment, dependency extras, and Claude-side module intake: `docs/codex/uv-setup.md`
 - Long-running jobs, active context, monitoring, and execution-change rules: `docs/codex/long-running.md`
 - LINE / ntfy / notification reply waits: `docs/codex/notification-wait.md`
-- Claude Code <-> Codex message board usage: `docs/codex/handoff.md`
+- Claude Code <-> Codex message board and board rules: `docs/codex-to-claude-handoff.md`
 - Claude Markdown sync and Codex artifact protection: `docs/claude-md-sync.md`
 - Parallel work policy: `docs/codex/parallel-operation-policy.md`
 - Codex code review runbook: `skills/codex-code-reviewer.md`
