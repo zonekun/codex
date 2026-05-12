@@ -8,6 +8,12 @@
 
 Claude Code から Codex への同期は必ず本書に記載された Codex 側の専用ツール、具体的には `scripts/sync_claude_md.py` と `scripts/sync_codex_secrets.py` を使う。ディレクトリ単位ミラーや汎用コピーコマンドは `docs/codex/**`、`docs/claude-md-sync.md`、`docs/codex-to-claude-handoff.md`、`AGENTS.md`、Codex 専用スクリプトなどの保護対象を削除・上書きする危険がある。
 
+## ソースコード同期の原則
+
+Claude Code 側のソースコード最新版を Codex へ取り込む場合は、`codex/integration` ブランチ上の対象ツリーを Git 上で Claude Code 側の最新内容へ単純に置き換える。履歴の統合、merge、rebase、コピーコマンドによるミラー、凝った差分適用は不要。
+
+目的は Codex ブランチの内容を Claude Code 側最新へ合わせることであり、Claude Code 側の履歴構造を Codex 側へ持ち込むことではない。Codex 保護対象は本書の保護ルールに従って残す。
+
 ## 目的
 
 Claude Code 側で継続編集・管理されるファイルを、Codex 側へ安全に取り込むための手順。
