@@ -27,6 +27,7 @@ The operational source of truth remains the Claude Code side unless a task is ex
 - Show and judge times in JST.
 - If a local text file appears mojibake in PowerShell, re-read with explicit encoding such as `-Encoding UTF8` or `-Encoding Default`.
 - If Codex-protected docs or helper scripts are changed on `codex/integration`, update and push `codex/meta` in the same work session. Do not leave `codex/meta` stale.
+- When operating on multiple Git worktrees or branches, every Git command that should affect a secondary worktree must use `git -C <absolute-worktree-path> ...`. Do not rely on the shell's current directory or mix main-worktree and secondary-worktree Git commands in one chained command.
 
 ## Required Topic Pointers
 
