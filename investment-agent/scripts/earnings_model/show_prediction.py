@@ -127,6 +127,8 @@ FIELD_ORDER = [
     ("has_guidance_revision", "事前業績修正", _fmt),
     ("guidance_op_change", "ガイダンス変化", _fmt_pct),
     ("next_year_op_change", "来期OP変化", _fmt_pct),
+    ("next_year_eps_change", "来期EPS変化", _fmt_pct),
+    ("is_low_profit", "低利益率", _fmt),
     ("has_special_dividend", "特別配当", _fmt),
     ("div_change", "配当変化", _fmt_pct),
     ("has_buyback", "自社株買い", _fmt),

@@ -3573,6 +3573,12 @@ def phase_extract(
                         )
                 else:
                     # --- extraction_method=regex: PDF列指定抽出を優先 ---
+                    if not matched_blob:
+                        logger.warning(
+                            "[%s] regex adapter だが PDF blob なし（url_adapter.json 未作成?）。スキップ | doc=%s",
+                            ticker, doc_title[:60],
+                        )
+                        continue
                     if matched_blob:
                         try:
                             _cached_pdf = matched_blob.download_as_bytes()

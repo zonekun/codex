@@ -23,6 +23,7 @@ MD Reviewer   → 指摘生成 ↗
 ## 起動方式
 
 **Agent ツールでサブエージェント起動必須**（code-reviewer / md-reviewer と同一原則）。閲読制限・禁止事項も同一（`skills/code-reviewer.md` §最優先指針 参照）。
+**Grep/Glob は対象ファイルを特定してから呼ぶ**。ディレクトリ指定での検索は禁止（2026-05-12 事故: ディレクトリ全体Grepで48分ハング→セッション壊滅）。
 
 メインエージェント側の提出手順 → `docs/knowledges/tools/097_review_submission_guide.md` §1。
 

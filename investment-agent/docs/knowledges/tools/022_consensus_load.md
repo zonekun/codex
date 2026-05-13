@@ -18,7 +18,7 @@
 
 下流クエリは `STOCK.V_CONSENSUS_MERGED` VIEW を参照すること（QUICK優先・IFIS ORD_PROFIT 補完のマージ済み）。
 
-> **as-of参照**: `batch_rerun_predict.py` 等で過去時点コンセンサスが必要な場合は TVF `fn_consensus_merged_asof(target_date)` を使用。
+> **as-of参照**: `batch_rerun_predict.py` 等で過去時点コンセンサスが必要な場合は TVF `F_CONSENSUS_MERGED_ASOF(as_of_date)` を使用。スキーマ詳細は `docs/data_catalog/bq_consensus.md` 参照。
 
 ## BQスキーマ
 

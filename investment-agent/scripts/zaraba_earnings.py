@@ -758,6 +758,10 @@ def _build_prior_data(
                     yoy_list.append(float((cur_op - prev_op) / abs(prev_op)))
             if yoy_list:
                 info["baseline_yoy_op"] = float(pd.Series(yoy_list).median())
+            # 5年中央値OP（低ベース判定用）
+            ops_5y = [x for x in fy_ops[:5] if x is not None and not pd.isna(x)]
+            if len(ops_5y) >= 3:
+                info["median_5y_op"] = float(pd.Series(ops_5y).median())
 
         # 株価 + 出来高
         pr = df_price[df_price["TICKER"] == ticker].head(20)
@@ -1058,11 +1062,36 @@ def _short_verdict(verdict: str) -> str:
     return _VERDICT_SHORT.get(verdict, verdict)
 
 
+def _is_buyback_title(title: str) -> bool:
+    """自社株買い関連タイトルか判定（watch時の命綱）.
+
+    BQ TDNET_DOCUMENTS_ENHANCED (MAIN_CATEGORY='自己株式取得') 43,941件で検証:
+    matched=10,354 (23.5%) / excluded=33,366 (75.8%) / unmatched=372 (0.8%)
+    """
+    if "自己株式" not in title and "自己の株式" not in title:
+        return False
+    _EXCLUDE = ("取得状況", "取得終了", "取得結果", "消却", "処分", "公開買付",
+                "中止", "（訂正）", "開示事項の経過", "変更", "期間延長", "期間の延長",
+                "端数", "新株予約権", "報酬", "信託", "無償")
+    if any(ex in title for ex in _EXCLUDE):
+        return False
+    _INCLUDE = ("決定", "市場買付", "立会外買付", "取得枠",
+                "自己株式の取得に関する", "自己株式取得に関する",
+                "自己株式の取得及び", "自己株式の取得および",
+                "自己の株式の取得")
+    return any(inc in title for inc in _INCLUDE)
+
+
+def _is_tostnet_title(title: str) -> bool:
+    """ToSTNeT-3 / N-NET3（立会外取引）のタイトルか判定."""
+    return "立会外買付" in title
+
+
 def _split_factors(factors: str | list[str]) -> tuple[str, str]:
     """因子リストを Pos / Neg に分離.
 
     プラス因子: 上方修正・増配・進捗↑・着地経↑・YoY+・翌期経↑・コンセ乖離+・翌コ純+・QoQ+・成長加速・
-                自社株買い・記念配当・PEG割安・売り長・株式分割
+                自社株買い・自社株N.N%・自社株<1%・自社株(TN3)・記念配当・PEG割安・売り長・株式分割
     マイナス因子: 下方修正・減配・大幅減配・進捗↓・着地経↓・YoY-・通期予想非開示・翌期経↓・翌期予想非開示・コンセ乖離-・翌コ純-・QoQ-・
                 成長減速・PEG割高・折込⚠・出来高x..⚠・出尽くし
     """
@@ -1096,7 +1125,7 @@ def _split_factors(factors: str | list[str]) -> tuple[str, str]:
 def cmd_catchup(target_date: str, until_time: str) -> None:
     """指定時刻までの決算短信を TDnet から取得し、XBRL 抽出 & スコアリングして results に追加."""
     from concurrent.futures import ThreadPoolExecutor, as_completed
-    from zaraba_tdnet_poller import create_poller, XbrlExtractor
+    from zaraba_tdnet_poller import create_poller, XbrlExtractor, Disclosure, fetch_and_parse_buyback
 
     log.info("catchup_start", date=target_date, until=until_time)
 
@@ -1143,11 +1172,11 @@ def cmd_catchup(target_date: str, until_time: str) -> None:
 
     # ── until_time 以前 + 決算短信 + XBRL ありでフィルタ ──
     cutoff = until_time.replace(":", "")
-    related_titles_by_code: dict[str, list[str]] = {}
+    related_discs_by_code: dict[str, list[Disclosure]] = {}
     for d in disclosures:
         disc_time = d.pubdate.split(" ")[-1][:5].replace(":", "") if " " in d.pubdate else ""
         if disc_time <= cutoff and d.company_code:
-            related_titles_by_code.setdefault(d.company_code, []).append(d.title)
+            related_discs_by_code.setdefault(d.company_code, []).append(d)
 
     earnings = [
         d for d in disclosures
@@ -1181,10 +1210,12 @@ def cmd_catchup(target_date: str, until_time: str) -> None:
     for disc in new_earnings:
         seen_ids.add(disc.id)
 
-    # XBRL ダウンロード & パースを並列実行
+    # XBRL ダウンロード & パース & スコアリング（PDF fetch含む）を並列実行
     def _process_one(disc):
         extracted = extractor.process_disclosure(disc)
-        return disc, extracted
+        discs = related_discs_by_code.get(disc.company_code, [])
+        rec = _xbrl_to_jquants_rec(disc, extracted, related_discs=discs)
+        return _score_record(rec, prior, master_lookup, topix_ret=topix_ret, http_session=poller._session)
 
     scored_count = 0
     workers = min(len(new_earnings), 8)
@@ -1192,10 +1223,7 @@ def cmd_catchup(target_date: str, until_time: str) -> None:
         futures = {pool.submit(_process_one, d): d for d in new_earnings}
         for fut in as_completed(futures):
             try:
-                disc, extracted = fut.result()
-                titles = related_titles_by_code.get(disc.company_code, [])
-                rec = _xbrl_to_jquants_rec(disc, extracted, related_titles=titles)
-                result = _score_record(rec, prior, master_lookup, topix_ret=topix_ret)
+                result = fut.result()
                 if result:
                     scored_results.append(result)
                     scored_count += 1
@@ -1348,11 +1376,22 @@ def cmd_watch(target_date: str) -> None:
     from rich.live import Live
     from rich.table import Table
     from rich.text import Text
-    from zaraba_tdnet_poller import create_poller, XbrlExtractor
+    from zaraba_tdnet_poller import create_poller, XbrlExtractor, fetch_and_parse_buyback  # noqa: F811
 
     # 指定時間（HHMM 4桁）を対話入力。前後でポーリング間隔を高速化する
     hhmm_raw = input("指定時間 HHMM (例: 1100): ").strip()
     target_dt = _parse_hhmm_to_dt(target_date, hhmm_raw)
+
+    # 時価総額フィルタ（億円）。未入力なら全社表示
+    cap_filter_raw = input("時価総額フィルタ（億円以下を表示, 無入力=全社）: ").strip()
+    cap_filter_oku: float | None = None
+    if cap_filter_raw:
+        try:
+            cap_filter_oku = float(cap_filter_raw)
+            log.info("cap_filter_set", cap_oku=cap_filter_oku)
+        except ValueError:
+            log.warning("cap_filter_invalid", raw=cap_filter_raw, msg="無視して全社表示")
+
     log.info("watch_start", date=target_date, target_time=target_dt.strftime("%H:%M"))
 
     # ── 事前キャッシュ全件メモリロード ──────────────────
@@ -1413,15 +1452,16 @@ def cmd_watch(target_date: str) -> None:
 
     poll_interval = _compute_poll_interval(target_dt)
     poll_count = 0
-    # 銘柄コード別の関連開示タイトル（自社株買い・記念配当等の検知用）
-    related_titles_by_code: dict[str, list[str]] = {}
+    # 銘柄コード別の関連開示（自社株買い・記念配当等の検知用、Disclosure全体を保持）
+    related_discs_by_code: dict[str, list] = {}  # list[Disclosure]
 
     def _build_table() -> Table:
         """rich Table を構築."""
         now = datetime.now(JST).strftime("%H:%M:%S")
         src = f"TDnet/{poller_source}"
+        cap_label = f" | Cap≤{cap_filter_oku:.0f}億" if cap_filter_oku is not None else ""
         table = Table(
-            title=f"ザラバ決算モニター {target_date}  [{src} | {now} | T={target_dt.strftime('%H:%M')} | {poll_interval:.2f}s間隔]",
+            title=f"ザラバ決算モニター {target_date}  [{src} | {now} | T={target_dt.strftime('%H:%M')} | {poll_interval:.2f}s間隔{cap_label}]",
             show_lines=False,
         )
         table.add_column("Score", justify="right", width=WATCH_TABLE_WIDTH_SCORE)
@@ -1435,6 +1475,11 @@ def cmd_watch(target_date: str) -> None:
         table.add_column("Time", width=WATCH_TABLE_WIDTH_TIME)
 
         new_results = scored_results[_baseline_count:]
+        if cap_filter_oku is not None:
+            new_results = [
+                r for r in new_results
+                if r.get("market_cap_oku") is not None and r["market_cap_oku"] <= cap_filter_oku
+            ]
         if not new_results:
             table.add_row("", "", "  待機中...", "", "", "", "", "", "")
         else:
@@ -1465,9 +1510,10 @@ def cmd_watch(target_date: str) -> None:
                     _s(r.get("disc_time"))[:5],
                 )
 
-        new_count = len(scored_results) - _baseline_count
+        new_all_count = len(scored_results) - _baseline_count
         total = len(prior) if prior else "?"
-        table.caption = f"新規: {new_count}  |  既知: {_baseline_count}  |  対象: {total}"
+        cap_info = f"  |  表示: {len(new_results)}" if cap_filter_oku is not None else ""
+        table.caption = f"新規: {new_all_count}  |  既知: {_baseline_count}  |  対象: {total}{cap_info}"
         return table
 
     print("ザラバ決算モニター起動（TDnet XBRL モード）。Ctrl+C で終了。")
@@ -1485,10 +1531,10 @@ def cmd_watch(target_date: str) -> None:
                     time.sleep(poll_interval)
                     continue
 
-                # 全開示のタイトルを銘柄別に蓄積（自社株買い・記念配当等の非決算開示検知用）
+                # 全開示を銘柄別に蓄積（自社株買い・記念配当等の非決算開示検知用）
                 for d in disclosures:
                     if d.company_code and d.id not in seen_ids:
-                        related_titles_by_code.setdefault(d.company_code, []).append(d.title)
+                        related_discs_by_code.setdefault(d.company_code, []).append(d)
 
                 # 決算短信 + XBRL 付き + 未処理 のみ
                 new_disclosures = [
@@ -1503,19 +1549,18 @@ def cmd_watch(target_date: str) -> None:
                     for disc in new_disclosures:
                         seen_ids.add(disc.id)
 
-                    # XBRL ダウンロード & パースを並列実行
+                    # XBRL ダウンロード & パース & スコアリング（PDF fetch含む）を並列実行
                     def _process_one(disc):
                         extracted = extractor.process_disclosure(disc)
-                        return disc, extracted
+                        discs = related_discs_by_code.get(disc.company_code, [])
+                        rec = _xbrl_to_jquants_rec(disc, extracted, related_discs=discs)
+                        return _score_record(rec, prior, master_lookup, topix_ret=topix_ret, http_session=poller._session)
 
                     workers = min(len(new_disclosures), 8)
                     with ThreadPoolExecutor(max_workers=workers) as pool:
                         futures = {pool.submit(_process_one, d): d for d in new_disclosures}
                         for fut in as_completed(futures):
-                            disc, extracted = fut.result()
-                            titles = related_titles_by_code.get(disc.company_code, [])
-                            rec = _xbrl_to_jquants_rec(disc, extracted, related_titles=titles)
-                            result = _score_record(rec, prior, master_lookup, topix_ret=topix_ret)
+                            result = fut.result()
                             if result:
                                 scored_results.append(result)
                                 log.info(
@@ -1541,18 +1586,22 @@ def cmd_watch(target_date: str) -> None:
             print(f"結果保存: {_results_path(target_date)}")
 
 
-def _xbrl_to_jquants_rec(disc, extracted, related_titles: list[str] | None = None) -> dict:
+def _xbrl_to_jquants_rec(disc, extracted, related_discs: list | None = None,
+                         related_titles: list[str] | None = None) -> dict:
     """TDnet Disclosure + XBRL 抽出結果を _score_record が受け取る rec 形式に変換.
 
     extract_pipeline で予想値抽出が実装されたら FORECAST_OP 等もここでマッピングする。
     """
+    discs = related_discs or []
+    titles = related_titles or [d.title for d in discs]
     rec: dict = {
         "Code": disc.company_code + "0",  # 5桁化
         "DiscNo": disc.id,
         "DiscTime": disc.pubdate.split(" ")[-1][:5] if " " in disc.pubdate else "",
         "_title": disc.title,
         "_company_name": disc.company_name,
-        "_related_titles": related_titles or [],
+        "_related_titles": titles,
+        "_buyback_discs": [d for d in discs if _is_buyback_title(d.title)],
     }
 
     # タイトルから四半期種別を推定
@@ -1611,6 +1660,7 @@ def _score_record(
     prior: dict,
     master_lookup: dict[str, str] | None = None,
     topix_ret: float = 0.0,
+    http_session: object | None = None,
 ) -> dict | None:
     """1件の決算レコードをスコアリング.
 
@@ -1739,24 +1789,42 @@ def _score_record(
 
     # ── F4: 翌期見通し（FYのみ、翌期予想 vs 今期実績） ─────────────
     # 経常利益ベース。IFRS等でODP不在時はOPにフォールバック。
+    # 低ベース補正: 今期OP < 5年中央値の50% → 分母を中央値OPに差替え
     cur_per = rec.get("CurPerType", "")
+    is_low_base = False
     if cur_per == "FY":
         nx_odp = _to_num(rec.get("NxFODP"))
         cumulative_odp = _to_num(rec.get("OrdinaryProfit"))
-        if nx_odp is not None and cumulative_odp and cumulative_odp != 0:
+        nx_fop = _to_num(rec.get("NxFOP"))
+
+        median_5y = p.get("median_5y_op")
+        if (
+            median_5y is not None
+            and median_5y > 0
+            and cumulative_op is not None
+            and float(cumulative_op) < median_5y * 0.5
+        ):
+            is_low_base = True
+            nx_forecast = nx_fop if nx_fop is not None else nx_odp
+            if nx_forecast is not None:
+                nx_chg = (nx_forecast - median_5y) / abs(median_5y)
+            else:
+                nx_chg = None
+        elif nx_odp is not None and cumulative_odp and cumulative_odp != 0:
             nx_chg = (nx_odp - cumulative_odp) / abs(cumulative_odp)
-        elif _to_num(rec.get("NxFOP")) is not None and cumulative_op and cumulative_op != 0:
-            nx_chg = (_to_num(rec.get("NxFOP")) - cumulative_op) / abs(cumulative_op)
+        elif nx_fop is not None and cumulative_op and cumulative_op != 0:
+            nx_chg = (nx_fop - cumulative_op) / abs(cumulative_op)
         else:
             nx_chg = None
 
         if nx_chg is not None:
+            lb_tag = "≒低ベース補正" if is_low_base else ""
             if nx_chg > 0.10:
                 score += 2
-                factors.append(f"翌期経↑{nx_chg:+.0%}")
+                factors.append(f"翌期経↑{nx_chg:+.0%}{lb_tag}")
             elif nx_chg < -0.10:
                 score -= 2
-                factors.append(f"翌期経↓{nx_chg:+.0%}")
+                factors.append(f"翌期経↓{nx_chg:+.0%}{lb_tag}")
         else:
             cap = p.get("market_cap_oku")
             if cap is not None and cap >= 3000:
@@ -1828,13 +1896,47 @@ def _score_record(
         score += 0.5
         factors.append("売り長")
 
-    # ── F10: 自社株買い ─────────────────────────
-    related_titles = rec.get("_related_titles", [])
-    if any("自己株式の取得" in t for t in related_titles):
-        score += 2
-        factors.append("自社株買い")
+    # ── F10: 自社株買い（スケール化）─────────────────
+    buyback_discs = rec.get("_buyback_discs", [])
+    if buyback_discs:
+        is_tn3_by_title = any(_is_tostnet_title(d.title) for d in buyback_discs)
+        has_market_buyback = any(
+            ("決定" in d.title or "市場買付" in d.title or "取得枠" in d.title)
+            and not _is_tostnet_title(d.title)
+            for d in buyback_discs
+        )
+
+        if is_tn3_by_title and not has_market_buyback:
+            factors.append("自社株(TN3)")
+        else:
+            target_disc = next(
+                (d for d in buyback_discs
+                 if ("決定" in d.title or "市場買付" in d.title or "取得枠" in d.title)
+                 and not _is_tostnet_title(d.title)),
+                buyback_discs[0],
+            )
+            info = None
+            if http_session is not None:
+                from zaraba_tdnet_poller import fetch_and_parse_buyback
+                info = fetch_and_parse_buyback(http_session, target_disc.document_url)
+
+            if info and info.is_tostnet3 and not has_market_buyback:
+                factors.append("自社株(TN3)")
+            elif info and info.pct_of_outstanding is not None:
+                pct = info.pct_of_outstanding
+                if pct >= 5.0:
+                    score += 4
+                elif pct >= 3.0:
+                    score += 3
+                else:
+                    score += 1
+                factors.append(f"自社株{pct:.1f}%")
+            else:
+                score += 2
+                factors.append("自社株買い")
 
     # ── F8b: 記念配当/特別配当 ─────────────────────
+    related_titles = rec.get("_related_titles", [])
     all_titles = [rec.get("_title", "")] + related_titles
     if any("記念配当" in t or "特別配当" in t for t in all_titles):
         score += 1
@@ -1909,6 +2011,19 @@ def _score_record(
                 score -= 1
                 factors.append(f"翌コ純{cn:+.1%}")
 
+    # ── F4np: 翌期純利YoY（FYのみ、経常と乖離する一時益剥落を検出）────
+    if cur_per == "FY":
+        cur_np = _to_num(rec.get("Profit"))
+        nx_np_f = _to_num(rec.get("NxFNP"))
+        if cur_np and cur_np > 0 and nx_np_f is not None:
+            np_yoy = (nx_np_f - cur_np) / abs(cur_np)
+            if np_yoy < -0.20:
+                score -= 2
+                factors.append(f"翌期純↓{np_yoy:+.0%}")
+            elif np_yoy < -0.10:
+                score -= 1
+                factors.append(f"翌期純↓{np_yoy:+.0%}")
+
     # ── F13: QoQ OP急変（前Q比）──────────────────
     # FYは4Q standalone が year-end 調整含みでノイジー → F15で代替。小分母も除外
     latest_q_op = p.get("latest_q_op")
@@ -1928,25 +2043,28 @@ def _score_record(
             score -= 2
             factors.append(f"QoQ{qoq:.0%}")
 
-    # ── F7g: 成長加速/減速（FYのみ、経常利益ベース、ODP不在時はOPフォールバック）─
+    # ── F7g: 成長加速/減速（FYのみ）─ 低ベース時はF4と同じ補正済みnx_chgを再利用
     if cur_per == "FY":
-        nx_odp_7g = _to_num(rec.get("NxFODP"))
-        cum_odp_7g = _to_num(rec.get("OrdinaryProfit"))
         baseline = p.get("baseline_yoy_op")
-        if nx_odp_7g is not None and cum_odp_7g and cum_odp_7g != 0:
-            nyc = (nx_odp_7g - cum_odp_7g) / abs(cum_odp_7g)
-        elif _to_num(rec.get("NxFOP")) is not None and cumulative_op and cumulative_op != 0:
-            nyc = (_to_num(rec.get("NxFOP")) - cumulative_op) / abs(cumulative_op)
+        if is_low_base and nx_chg is not None:
+            nyc_7g = nx_chg
         else:
-            nyc = None
-        if nyc is not None and baseline is not None:
-            gap = nyc - baseline
+            nx_odp_7g = _to_num(rec.get("NxFODP"))
+            cum_odp_7g = _to_num(rec.get("OrdinaryProfit"))
+            if nx_odp_7g is not None and cum_odp_7g and cum_odp_7g != 0:
+                nyc_7g = (nx_odp_7g - cum_odp_7g) / abs(cum_odp_7g)
+            elif _to_num(rec.get("NxFOP")) is not None and cumulative_op and cumulative_op != 0:
+                nyc_7g = (_to_num(rec.get("NxFOP")) - cumulative_op) / abs(cumulative_op)
+            else:
+                nyc_7g = None
+        if nyc_7g is not None and baseline is not None:
+            gap = nyc_7g - baseline
             if gap > 0.20:
                 score += 1
-                factors.append(f"成長加速(翌期{nyc:+.0%}vs基準{baseline:+.0%})")
+                factors.append(f"成長加速(翌期{nyc_7g:+.0%}vs基準{baseline:+.0%})")
             elif gap < -0.20:
                 score -= 1
-                factors.append(f"成長減速(翌期{nyc:+.0%}vs基準{baseline:+.0%})")
+                factors.append(f"成長減速(翌期{nyc_7g:+.0%}vs基準{baseline:+.0%})")
 
     # ── F14: 株式分割 ─────────────────────────
     if has_stock_split:

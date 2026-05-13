@@ -13,6 +13,8 @@
 
 **メインエージェント（提出元）は本ファイルを Edit しない。** 不備を発見した場合は reviewer サブエージェントを `Agent` ツールで起動し、サブエージェントに追記させること。
 
+**追記手段**: `Read offset=113 limit=20` で蓄積エントリ先頭を部分読み → `Edit` で最新日付見出し直下に 1 行挿入。**全件 Read は禁止**（トークン効率化）。苦情受付（既存行削除）時のみ従来通り Read + Edit 許可。
+
 ## 目的
 
 code-reviewer / md-reviewer がレビューで検出した「プラン不備」「コード不備」「MD可読性不備」を**時系列で蓄積**し、**傾向が見えた段階で** `004_coding_conventions.md` のルール追加 or `skills/code-reviewer.md` / `skills/md-reviewer.md` のチェック項目追加に繋げる。
@@ -59,6 +61,7 @@ code-reviewer / md-reviewer がレビューで検出した「プラン不備」�
 - `content:regression-risk-missed` — 修正による regression リスクの記述漏れ
 - `content:numeric-inconsistency` — プラン内の数値（件数・比率・見積）が計算と合わない
 - `content:architecture-platform-mismatch` — 設計モデルが実行プラットフォームの機能制約と不適合（ランタイム契約を履行不能）
+- `content:missing-precondition` — 技法・ツール・コマンドの実行前提条件（入力ファイル・環境・状態）の記載漏れ
 
 ### bug 系（コード側の実バグ、プラン未指摘）
 - `bug:sql-injection` — f-string SQL 組立・パラメタライズ未実施
@@ -92,6 +95,7 @@ code-reviewer / md-reviewer がレビューで検出した「プラン不備」�
 - `behavior:instruction-escalation-ignored` — ユーザーが指示を強化（繰り返し・表現変更）しても行動が変わらない
 - `behavior:unauthorized-tech-change` — ユーザー承認なしに技術スタック（ライブラリ・フレームワーク）を変更
 - `behavior:unverified-claim` — 確認可能な事実を確認せずに推測・断定で発言（CLAUDE.md §推測禁止ルール違反）
+- `behavior:index-first-violation` — CLAUDE.md §10 高頻度参照テーブル・INDEX.md を確認せずに直接 Grep/Glob で探索した（索引ファースト原則違反）
 - `behavior:narrow-scope-prevention` — 再発防止策が目の前の個別事象に限定され、同種パターンの他対象への適用を検討していない
 
 ### reviewer 系（レビュアー自身の不備 — 苦情受付窓口由来）
@@ -107,13 +111,58 @@ code-reviewer / md-reviewer がレビューで検出した「プラン不備」�
 - `plan:tech-overengineered` — 技術選定が目的に対して過剰
 - `plan:no-phased-validation` — 段階的検証計画（smoke/dev/prod）が欠落
 - `plan:catalog-mismatch` — data_catalog.md との不整合
+- `plan:missing-field` — テンプレート必須フィールド（7フィールド・アンチパターン表等）の欠落
 
 （該当タグ無ければカタログに追加してから使う。ただし既存タグで意味的にカバーできる場合は新規追加しない — タグ爆発を避ける）
 
 ## 蓄積エントリ（新しい順）
 
+### 2026-05-13
+
+- [2026-05-13] content:missing-downstream | scripts/earnings_model/earnings_model_core.py (グループキャップ設計) | [CR-169] キャップ発火時にreasonsとscoreが乖離。キャップ適用のreason行追加が設計に含まれていない
+- [2026-05-13] content:regression-risk-missed | scripts/earnings_model/earnings_model_core.py:130-135 | [CR-169] F5翌期予想非開示ペナルティ(-1)を_guidance_groupに蓄積する設計。現時点は安全だが将来グループ拡張時に相殺リスク
+- [2026-05-13] plan:ambiguous-scope | docs/plans/tools-059_hanseikai_split_20260513_200110.md P0-1 L72-103 | [CR-168] Bash echo追記のエンコーディング・原子性リスク未記載。Git Bash限定/ヘッダー一括echo化の指針なし
+- [2026-05-13] plan:missing-field | docs/plans/tools-059_hanseikai_split_20260513_200110.md P0-1 L112-113 | [CR-168] CLAUDE.md索引更新方針が「任意」のまま。不要の根拠（手順は059本体に残るため）が未記載
+- [2026-05-13] content:regression-risk-missed | scripts/earnings_model/earnings_model_core.py:113-128 | [CR-167] F5a/F5b分離でスコア上限が旧+2/-2から最大+4/-4に拡大。プランに影響分析なし
+- [2026-05-13] content:missing-downstream | scripts/earnings_model/show_prediction.py:112-137 | [CR-167] F5b(EPS)導入でnext_year_eps_changeが主因子になったがshow_prediction FIELD_ORDERに未追加
+- [2026-05-13] plan:missing-field | docs/plans/tools-059_earnings_model_eda_20260513_165133.md P1-2 | [CR-167] 7フィールド中4フィールド欠落（該当/根本原因/呼び出し側波及/ロールバック）
+- [2026-05-13] format:antipattern-map-missing | docs/plans/tools-059_earnings_model_eda_20260513_165133.md | [CR-167] アンチパターン対応表セクション欠落
+- [2026-05-13] code:copypaste | scripts/extract_monthly_data.py:3700-3720,3871-3891,4074-4094 | [CR-001] Gemini Cloud Run/ローカル分岐ロジックが3箇所コピペ。ヘルパー関数抽出で保守性改善可
+- [2026-05-13] code:copypaste | scripts/extract_monthly_data.py:3495-3500 vs 3700,3871,4074 | [CR-001] TDnetパスはphase_extract.__dict__キャッシュ、非TDnet3パスは毎ticker新規Client生成。初期化パターン不統一
+- [2026-05-13] content:ambiguous-scope | skills/monthly-error-autofix.md:292 + プランP0-1(a) | [CR-166] ガードレール#6と新#8の適用スコープ（本番ループ vs ローカルループ）が文面上区別不能。AIが#6を先に発動し#8が縮退するリスク
+- [2026-05-13] content:similar-bug-uncovered | skills/monthly-error-autofix.md:145-171 + プランP0-1(a) | [CR-165] BC値逆引き(a)とStep 3C bc_ignore判定フローの逆引き作業が重複。棲み分け指針なし
+- [2026-05-13] content:missing-precondition | プランP0-1(b) reconcile_bc_key_from_compare.py | [CR-165] compare CSV未生成時にreconcileスクリプト実行不能。前提条件の記載漏れ
+- [2026-05-13] plan:missing-field | docs/plans/tools-042_skill_bc_reverse_lookup_20260513_164554.md | [CR-165] テンプレ7フィールド中4フィールド欠落（根本原因/呼び出し側波及/検証/ロールバック）。アンチパターン対応表も欠落
+- [2026-05-13] content:similar-bug-uncovered | scripts/extract_monthly_data.py:3617-3631 | [CR-164] regex PDFフォールバック修正で_has_row_regex=Falseのアダプターは依然BQ full_textに落ちる。設計意図の明示欠如
+- [2026-05-13] md:stale-context | docs/knowledges/tools/042-1_monthly_error_fix_patterns.md:L412 | [CR-164] E5-1参照ソースL3611が修正後の行番号とずれ。知見MD更新漏れ
+- [2026-05-13] md:discoverability | docs/reviews/NNN_mr_*.md（P-001事例テーブルから） | [SO-162] P-001事例テーブルに個別MRレビューへの参照列が欠如。パターンDBから深層分析への到達不能
+- [2026-05-13] md:ambiguous-scope | docs/knowledges/tools/004_coding_conventions.md:L511-513 | [SO-162] 事故パターンDB・MRレビュー・004-1蓄積ログの3者の責務境界が未明文化。情報分散の設計意図が暗黙
+- [2026-05-13] md:missing-stop-condition | docs/knowledges/tools/004_coding_conventions.md:L536 | [SO-162] P-001防止策メタルールに自信度バイアスによる構造的限界の注記なし。フローチャートの実効性限界がAIに不明示
+- [2026-05-13] md:discoverability | docs/knowledges/tools/083_codex_collaboration.md:L31-37 | [MR-161] 083取り込みフローにCLAUDE.md §4.3「プランMD更新」へのポインタ欠如。取り込み完了時にプランMD更新に到達不能
+- [2026-05-13] md:missing-output-contract | docs/knowledges/tools/083_codex_collaboration.md:L25-28 | [MR-161] 伝言板テンプレの必須フィールドに「関連計画MD:」欠如。P-002防止策1が未インプリ
+- [2026-05-13] bug:resource-leak | scripts/zaraba_earnings.py:1880-1883 | [CR-160] F10 PDF fetchがThreadPoolExecutor外のメインスレッドで同期実行。決算集中日に複数自社株買い開示で最大10秒×N件のポーリング遅延
+- [2026-05-13] content:missing-downstream | scripts/zaraba_earnings.py:1223,1543 | [CR-160] poller._session（private属性）を外部から直接参照。ポーラーリファクタリング時にAttributeError
+- [2026-05-13] behavior:index-first-violation | CLAUDE.md:SS3,SS4.1 / memory:feedback_data_catalog_first.md | [MR-160] BQ TVF新規作成時にdata_catalog.md・BQ既存リソースを確認せず重複TVF作成。確認ルール3件が「参照時」トリガーで「作成時」に未発火
+- [2026-05-13] md:stale-context | docs/knowledges/tools/022_consensus_load.md:L21 | [MR-160] 旧TVF fn_consensus_merged_asof がDROP済みだがL21に参照残存。新TVF F_CONSENSUS_MERGED_ASOF への更新漏れ
+- [2026-05-13] content:similar-bug-uncovered | scripts/earnings_model/predict.py:L604-611 | [CR-159] F3 yoy_opがFY期でも4Q単独OP YoY使用。F7 baseline通期化とF3の比較軸不整合が残存。154_cr#3と同根
+- [2026-05-13] content:missing-downstream | docs/plans/earnings-model-fix_20260512_220000.md:残タスク | [CR-159] 059知見MDの因子定義更新（F7 baseline定義変更）が残タスクに未記載
+- [2026-05-13] content:unverified-assumption | docs/plans/tools-004_code_review_findings_log_20260513_105502.md:L63 | [CR-163] echo>>はEOF追記だが004-1末尾は傾向分析セクション(L715-741)。蓄積エントリ外に書き込まれファイル構造破壊
+- [2026-05-13] content:missing-downstream | docs/plans/tools-004_code_review_findings_log_20260513_105502.md:L30-36 | [CR-163] md-reviewer苦情受付(既存行削除+不備記録)のRead/Edit例外がStep2に未記載
+- [2026-05-13] plan:no-phased-validation | docs/plans/md-reviewer-quality-fix_20260513_003000.md:106-112 | [CR-158] Step 2.5「4軸速断」の判定品質に保証なし。Step 2出力から4軸を正確に速断できる根拠がない。Step 3本評価を分岐条件に使う設計への変更を推奨
+- [2026-05-13] content:regression-risk-missed | docs/plans/md-reviewer-quality-fix_20260513_003000.md:63-68 | [CR-158] MD非原因モードP2/4出力が「行動問題です」で打ち切り、md-reviewerが提供すべき価値（MD群の構造・導線分析）が欠落。形を変えた空振りリスク
+- [2026-05-13] format:before-after-missing | docs/plans/md-reviewer-quality-fix_20260513_003000.md:102-112,130-170 | [CR-158] P0-1/P0-2のbefore記述が省略。afterのみ記載で「現行スキルMD参照」と注記
+
 ### 2026-05-12
 
+- [2026-05-12] md:missing-source-verification | docs/reviews/155_ir_agent_hang_response_failure.md:60-64 | [MR-157] 同日のCLAUDE.md再編成(357→193行,commit 11f8985)の影響検討が完全欠落。環境要因の仮説なし → [採用・インプリ済み: CLAUDE.md §4.2 トリガー語彙復旧]
+- [2026-05-12] reviewer:scope-overreach | docs/reviews/157_mr_agent_hang_incident_report_v2.md | [MR-157苦情] 重大指摘#1(統一テーマ分析)・#3(思考回路再構成)・改善提案全3件が文書品質向上に終始し行動変容に繋がらない。155_irは記録として機能すれば十分という観点を欠いた
+- [2026-05-12] reviewer:scope-overreach | docs/reviews/156_mr_agent_hang_incident_report.md | [MR-157苦情] 前回MR-156が100知見MD導線・085追記先・PostToolUse hook等、対象外スコープ（サブエージェントハング）の指摘に偏り、事故核心（ユーザー無視）を外した
+- [2026-05-12] md:missing-stop-condition | docs/reviews/155_ir_agent_hang_response_failure.md:68-73 | [MR-156] 再発防止策3/4件が「既存原則で十分」で閉じ、既存原則が機能しなかった構造的理由の分析なし。behavior:unverified-claim同型5回以上再発の意志依存型対策
+- [2026-05-12] md:ambiguous-action | docs/reviews/155_ir_agent_hang_response_failure.md:73 | [MR-156] 再発防止策#3「085に追記検討」の「検討」が曖昧。追記するか否かの判断基準・具体的追記内容なし
+- [2026-05-12] md:ambiguous-scope | docs/reviews/155_ir_agent_hang_response_failure.md:24-58 | [MR-156] 対応失敗5件がフラット列挙で共通行動パターン（確認前断定/知見MD参照省略/圧縮後喪失）への統合分析なし。因果連鎖も不明示
+- [2026-05-12] md:missing-output-contract | docs/reviews/155_ir_agent_hang_response_failure.md:24-58 | [MR-156] AIの思考回路再構成（なぜその行動を正しいと判断したか）が全件欠落。事象と原因の間の因果ギャップが埋まっていない
+- [2026-05-12] md:reference-vs-rule | docs/reviews/155_ir_agent_hang_response_failure.md:62 | [MR-156] 100知見MDへのポインタが再発防止策#1のみ。根本原因セクションで言及されるが明示的参照リンクなし
+- [2026-05-12] behavior:index-first-violation | CLAUDE.md:178, 023_powershell_menu.md:L7-8 | [MR-153] PSメニューパス探索でCLAUDE.md §10テーブル・023知見MD未参照。hook警告も無視しGrep直行。MR-066/117/123に続く4度目の索引ファースト違反
 - [2026-05-12] bug:type-mismatch | scripts/earnings_model/predict.py:L389,L216-219 | [CR-152] BQ CONSENSUSクエリとcons_mapビルダーがNET_PROFITを取得・格納せずF4b(np_consensus_deviation)が全銘柄で常時None
 - [2026-05-12] content:similar-bug-uncovered | scripts/earnings_model/review_report.py:L217-229 | [CR-152] split_reasons()が「純利コンセ乖離」プレフィックスを未認識。正の純利コンセ乖離もNEG側に分類
 - [2026-05-12] md:stale-context | docs/knowledges/tools/059_earnings_model_eda.md:L132 | [CR-152] 因子改善TODO #3「OPフォールバック」がステータス「実装済」のまま。本改修で廃止されているが未反映

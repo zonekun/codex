@@ -22,6 +22,7 @@ scripts/tmp_*.py
 data/csv/
 data/cache/
 data/logs/
+data/tmp/
 
 # Data (master / reference — git tracked)
 !data/master/
@@ -39,6 +40,9 @@ data/logs/
 # OS
 .DS_Store
 Thumbs.db
+
+# Jupyter
+.ipynb_checkpoints/
 
 # Test
 .pytest_cache/

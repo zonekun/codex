@@ -1,6 +1,7 @@
 """ディスク容量クリーンアップツール.
 
 対象:
+- data/tmp/: 一時ファイル全削除（.jupyter_checkpoints 含む）
 - data/logs/: 古いビルドログ (*.log > N日), コピー系 (*コピー*, * - Copy*), 空ファイル
 - C:\\Users\\<user>\\.claude/: キャッシュ系 (debug/ telemetry/ file-history/ shell-snapshots/
   paste-cache/ cache/) の N 日以上前のファイル、存在しないプロジェクトパスの
@@ -35,6 +36,7 @@ JST = timezone(timedelta(hours=9))
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DATA_LOGS = PROJECT_ROOT / "data" / "logs"
+DATA_TMP = PROJECT_ROOT / "data" / "tmp"
 CLAUDE_HOME = Path.home() / ".claude"
 CLAUDE_MEM_DIR = Path(os.environ.get("CLAUDE_MEM_DATA_DIR", str(Path.home() / ".claude-mem")))
 
@@ -66,6 +68,22 @@ def is_copy_file(name: str) -> bool:
     )
 
 
+def scan_data_tmp() -> list[tuple[Path, str, int]]:
+    """data/tmp/ の一時ファイルを列挙. 全ファイルが削除対象."""
+    candidates: list[tuple[Path, str, int]] = []
+    if not DATA_TMP.exists():
+        return candidates
+    for root, dirs, files in os.walk(DATA_TMP):
+        for f in files:
+            fp = Path(root) / f
+            try:
+                st = fp.stat()
+            except OSError:
+                continue
+            candidates.append((fp, "data/tmp", st.st_size))
+    return candidates
+
+
 def scan_data_logs(days: int) -> list[tuple[Path, str, int]]:
     """data/logs/ のクリーン候補を列挙. (path, reason, size) のリストを返す."""
     candidates: list[tuple[Path, str, int]] = []
@@ -88,9 +106,9 @@ def scan_data_logs(days: int) -> list[tuple[Path, str, int]]:
         if is_copy_file(p.name):
             candidates.append((p, "copy/tmp", size))
             continue
-        # 古いビルドログ
-        if p.suffix == ".log" and p.name.startswith("build_") and st.st_mtime < cutoff:
-            candidates.append((p, f"old build log (>{days}d)", size))
+        # N日以上更新なしのファイル
+        if st.st_mtime < cutoff:
+            candidates.append((p, f"old (>{days}d)", size))
     return candidates
 
 
@@ -307,6 +325,7 @@ def main() -> int:
     print(f"=== cleanup_disk.py [{mode}] {now_jst} ===\n")
 
     sections: list[tuple[str, list[tuple[Path, str, int]]]] = []
+    sections.append(("data/tmp/", scan_data_tmp()))
     if not args.skip_logs:
         sections.append(("data/logs/", scan_data_logs(args.logs_days)))
     if not args.skip_claude:

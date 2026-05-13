@@ -10,6 +10,7 @@ zaraba_earnings.py の watch から呼び出される。
 """
 
 import io
+import re
 import sys
 import time
 import zipfile
@@ -73,6 +74,110 @@ class ExtractedEarnings:
     profit: int | None = None
     earnings_per_share: float | None = None
     raw_extract: dict[str, Any] = field(default_factory=dict)
+
+
+@dataclass
+class BuybackInfo:
+    """自己株式取得 PDF の解析結果."""
+
+    pct_of_outstanding: float | None  # 発行済株式比率（%）
+    is_tostnet3: bool                  # ToSTNeT-3 / N-NET3 経由か
+    total_shares: int | None           # 取得株式数（上限）
+    total_amount_oku: float | None     # 取得金額（億円）
+
+
+# 自社株買い PDF 解析用の正規表現
+# 全角数字→半角変換テーブル
+_ZEN2HAN = str.maketrans("０１２３４５６７８９．，", "0123456789.,")
+
+_RE_PCT = re.compile(
+    r"発行済み?株式総?数.*?(?:に対する(?:割合)?|の)\s*[^0-9０-９]*([0-9０-９]+[.,．，]?[0-9０-９]*)\s*[%％]",
+    re.DOTALL,
+)
+_RE_TN3 = re.compile(
+    r"ToSTNeT[\s\-－]*[3３]|ＴｏＳＴＮｅＴ[\s\-－]*[3３]"
+    r"|N[\-－]NET[3３]|Ｎ[\-－]ＮＥＴ[3３]"
+    r"|立会外買付取引",
+)
+_RE_SHARES = re.compile(r"取得し[得う]る株式の総数[^0-9０-９]*([0-9０-９][\d0-9０-９,，]*)\s*株")
+_RE_AMOUNT = re.compile(
+    r"取得価額の総額[^0-9０-９]*([0-9０-９][\d0-9０-９,，]*)\s*(百万円|億円|千円|円)",
+)
+
+
+def _parse_comma_int(s: str) -> int:
+    """カンマ/全角カンマ/全角数字付き数値を int に変換."""
+    return int(s.translate(_ZEN2HAN).replace(",", "").replace(".", ""))
+
+
+def _amount_to_oku(value: int, unit: str) -> float:
+    """金額を億円に変換."""
+    if unit == "億円":
+        return float(value)
+    if unit == "百万円":
+        return value / 100.0
+    if unit == "千円":
+        return value / 100000.0
+    # 円
+    return value / 1e8
+
+
+def parse_buyback_pdf(pdf_bytes: bytes) -> BuybackInfo | None:
+    """自社株買い PDF のバイト列を解析し BuybackInfo を返す."""
+    try:
+        import pdfplumber
+    except ImportError:
+        logger.warning("pdfplumber_not_installed")
+        return None
+
+    try:
+        with pdfplumber.open(io.BytesIO(pdf_bytes)) as pdf:
+            text = "\n".join(page.extract_text() or "" for page in pdf.pages)
+    except Exception as e:
+        logger.warning("pdf_text_extraction_failed", error=str(e))
+        return None
+
+    if len(text.strip()) == 0:
+        return None
+
+    # 割合
+    pct: float | None = None
+    m = _RE_PCT.search(text)
+    if m:
+        pct = float(m.group(1).translate(_ZEN2HAN).replace(",", "."))
+
+    # ToSTNeT-3 / N-NET3
+    is_tn3 = bool(_RE_TN3.search(text))
+
+    # 株数
+    total_shares: int | None = None
+    m = _RE_SHARES.search(text)
+    if m:
+        total_shares = _parse_comma_int(m.group(1))
+
+    # 金額
+    total_amount_oku: float | None = None
+    m = _RE_AMOUNT.search(text)
+    if m:
+        total_amount_oku = _amount_to_oku(_parse_comma_int(m.group(1)), m.group(2))
+
+    return BuybackInfo(
+        pct_of_outstanding=pct,
+        is_tostnet3=is_tn3,
+        total_shares=total_shares,
+        total_amount_oku=total_amount_oku,
+    )
+
+
+def fetch_and_parse_buyback(session: Any, document_url: str) -> BuybackInfo | None:
+    """TDnet から自社株買い PDF をダウンロードし解析する."""
+    try:
+        resp = session.get(document_url, timeout=10)
+        resp.raise_for_status()
+        return parse_buyback_pdf(resp.content)
+    except Exception as e:
+        logger.warning("buyback_pdf_fetch_failed", url=document_url, error=str(e))
+        return None
 
 
 # ====================================================================

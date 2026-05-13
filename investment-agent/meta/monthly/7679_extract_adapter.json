@@ -2,65 +2,62 @@
   "source": "tdnet",
   "format": "text",
   "doc_title_pattern": "月次速報に関するお知らせ",
-  "year_from_title_regex": "(\\\\d{4})年",
-  "month_from_title_regex": "(\\\\d{1,2})月",
+  "year_from_title_regex": "(\\d{4})年",
+  "month_from_title_regex": "(\\d{1,2})月度",
+  "extraction_method": "gemini",
+  "custom_prompt": "この月次速報テキストには「全店」と「既存店」の2つの表があります。各表に売上高・客数・客単価の行があり、月別の前年同月比(%)が記載されています。タイトルに記載された月度の列の値を読み取ってください。全店と既存店を混同しないでください。店舗数は「総店舗数」の記載から読み取ってください。",
   "fields": [
     {
       "key": "全店 売上（前年同月比）",
       "name": "全店 売上（前年同月比）",
-      "row_label_regex": "全\\s*店.*?売\\s*上\\s*高\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)",
-      "value_type": "percentage",
-      "group": 12
+      "description": "全店セクションの売上高行から、タイトル月度の列の前年同月比(%)",
+      "value_type": "percentage"
     },
     {
       "key": "全店 客数（前年同月比）",
       "name": "全店 客数（前年同月比）",
-      "row_label_regex": "全\\s*店.*?客数\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)",
-      "value_type": "percentage",
-      "group": 12
+      "description": "全店セクションの客数行から、タイトル月度の列の前年同月比(%)",
+      "value_type": "percentage"
     },
     {
       "key": "全店 客単価（前年同月比）",
       "name": "全店 客単価（前年同月比）",
-      "row_label_regex": "全\\s*店.*?客\\s*単\\s*価\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)",
-      "value_type": "percentage",
-      "group": 12
+      "description": "全店セクションの客単価行から、タイトル月度の列の前年同月比(%)",
+      "value_type": "percentage"
     },
     {
       "key": "全店 店舗数",
       "name": "全店 店舗数",
-      "row_label_regex": "総店舗数.*?(\\d+)店舗",
-      "value_type": "integer",
-      "group": 1
+      "description": "総店舗数の記載から当月末の店舗数",
+      "value_type": "integer"
     },
     {
       "key": "既存店 売上（前年同月比）",
       "name": "既存店 売上（前年同月比）",
-      "row_label_regex": "既\\s*存\\s*店.*?売\\s*上\\s*高\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)",
-      "value_type": "percentage",
-      "group": 12
+      "description": "既存店セクションの売上高行から、タイトル月度の列の前年同月比(%)",
+      "value_type": "percentage"
     },
     {
       "key": "既存店 客数（前年同月比）",
       "name": "既存店 客数（前年同月比）",
-      "row_label_regex": "既\\s*存\\s*店.*?客数\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)",
-      "value_type": "percentage",
-      "group": 12
+      "description": "既存店セクションの客数行から、タイトル月度の列の前年同月比(%)",
+      "value_type": "percentage"
     },
     {
       "key": "既存店 客単価（前年同月比）",
       "name": "既存店 客単価（前年同月比）",
-      "row_label_regex": "既\\s*存\\s*店.*?客\\s*単\\s*価\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)\\s+([\\d.]+)",
-      "value_type": "percentage",
-      "group": 12
+      "description": "既存店セクションの客単価行から、タイトル月度の列の前年同月比(%)",
+      "value_type": "percentage"
     }
   ],
-  "extraction_notes": "全店および既存店の売上高、客数、客単価は、月次実績対前年同月比の表から最新月（2月）の値を抽出しています。店舗数は「総店舗数」の記載から抽出しています。",
   "ticker": "7679",
-  "company_name": "7679",
+  "company_name": "薬王堂HD",
   "created_at": "2026-03-28T16:52:10.681532+09:00",
   "created_by": "gemini-2.5-flash",
   "sample_doc_title": "2026年２月度 月次速報に関するお知らせ",
   "sample_submission_date": "2026-03-05",
-  "fields_count": 7
+  "fields_count": 7,
+  "manual_override": true,
+  "manual_override_note": "regex group:12固定→gemini: 月によって対象列が変わる+全店/既存店の区別がregexでは困難",
+  "manual_override_at": "2026-05-13"
 }

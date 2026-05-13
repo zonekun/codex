@@ -76,6 +76,7 @@ from google.oauth2 import service_account
 import jquantsapi
 
 from earnings_model_core import (
+    LOW_PROFIT_THRESHOLD,
     Q_MAP,
     CUM_PREV_Q,
     PRED_COLUMNS,
@@ -187,12 +188,23 @@ def _build_cons_map_from_df(
         if cfy:
             current_fy_map[tk] = cfy
 
-    # as-of フィルタ: predict_date 以前の最新 DATAAT のみ
+    # as-of フィルタ + QUICK優先マージ（V_CONSENSUS_MERGED と同等ロジック）
     dfc = df_cons[df_cons["DATAAT"] <= predict_date_hyphen].copy()
-    dfc = (
-        dfc.sort_values("DATAAT", ascending=False)
+    q_rows = (
+        dfc[dfc["SOURCE"] == "QUICK"]
+        .sort_values("DATAAT", ascending=False)
         .drop_duplicates(["TICKER", "FY", "QUARTER"])
     )
+    i_rows = (
+        dfc[dfc["SOURCE"] == "IFIS"]
+        .sort_values("DATAAT", ascending=False)
+        .drop_duplicates(["TICKER", "FY", "QUARTER"])
+        [["TICKER", "FY", "QUARTER", "ORD_PROFIT"]]
+        .rename(columns={"ORD_PROFIT": "_ifis_ord"})
+    )
+    dfc = q_rows.merge(i_rows, on=["TICKER", "FY", "QUARTER"], how="outer")
+    dfc["ORD_PROFIT"] = dfc["ORD_PROFIT"].fillna(dfc["_ifis_ord"])
+    dfc = dfc.drop(columns=["_ifis_ord", "SOURCE"], errors="ignore")
 
     cons_map: dict[tuple[str, str, str], dict] = {}
     for _, row in dfc.iterrows():
@@ -326,7 +338,8 @@ def _fetch_tdnet_events(
             if tk not in target_tickers:
                 continue
             main_cat = r.get("MAIN_CATEGORY", "")
-            sub_cats = r.get("SUB_CATEGORIES") or []
+            raw_sc = r.get("SUB_CATEGORIES")
+            sub_cats = list(raw_sc) if raw_sc is not None and len(raw_sc) > 0 else []
             if any(kw in title for kw in SPECIAL_DIV_KW):
                 special_div.add(tk)
             if main_cat == BUYBACK_CAT or BUYBACK_CAT in sub_cats:
@@ -349,7 +362,8 @@ def _fetch_tdnet_events(
         for _, r in df_td.iterrows():
             tk, title = r["TICKER"], r["DOC_TITLE"]
             main_cat = r.get("MAIN_CATEGORY", "")
-            sub_cats = r.get("SUB_CATEGORIES") or []
+            raw_sc = r.get("SUB_CATEGORIES")
+            sub_cats = list(raw_sc) if raw_sc is not None and len(raw_sc) > 0 else []
             if any(kw in title for kw in SPECIAL_DIV_KW):
                 special_div.add(tk)
             if main_cat == BUYBACK_CAT or BUYBACK_CAT in sub_cats:
@@ -386,9 +400,9 @@ def fetch_shared_data(date_min: str, date_max: str, date_max_actual: str) -> dic
     df_price["dt"] = df_price["dt"].astype(str)
     shared["df_price"] = df_price
 
-    # CONSENSUS v4: 1-pass 全件取得 → pandas as-of フィルタ
+    # CONSENSUS v4: 1-pass 全件取得 → pandas as-of フィルタ（SOURCE付きでQUICK優先マージ）
     log.info("fetch_shared", step="3/8", table="CONSENSUS_v4")
-    q_cons = f"""SELECT TICKER, FY, QUARTER, DATAAT, ORD_PROFIT, NET_PROFIT, EPS
+    q_cons = f"""SELECT TICKER, FY, QUARTER, DATAAT, SOURCE, ORD_PROFIT, NET_PROFIT, EPS
     FROM `gmailpj-357912.STOCK.CONSENSUS`
     WHERE DATAAT <= '{hy(date_max)}'"""
     df_cons = bq.query(q_cons).to_dataframe()
@@ -516,10 +530,13 @@ def compute_features(predict_date: str, shared: dict) -> pd.DataFrame | None:
     dfpv = shared["df_prev"]
 
     # 前回開示情報（_derive_current_fy 用）
+    # 同一日に3Q実績とFY予想修正がある場合、FYを後回しにして3Qを優先する
     dfpv_before = dfpv[dfpv["DISCLOSED_DATE"] < ph].copy()
+    dfpv_before["_fy_last"] = (dfpv_before["TYPE_OF_CURRENT_PERIOD"] == "FY").astype(int)
     df_prev_disc = (
-        dfpv_before.sort_values("DISCLOSED_DATE", ascending=False)
+        dfpv_before.sort_values(["DISCLOSED_DATE", "_fy_last"], ascending=[False, True])
         .drop_duplicates("tk", keep="first")
+        .drop(columns=["_fy_last"])
     )
     cons_map = _build_cons_map_from_df(dfc, df_prev_disc, ph)
 
@@ -613,27 +630,27 @@ def compute_features(predict_date: str, shared: dict) -> pd.DataFrame | None:
                 _is_turnaround = True
         qoq_map[tk] = {"yoy_op": yoy_op, "qoq_op": qoq_op, "is_turnaround": _is_turnaround}
 
-    # ── baseline YoY OP ──
-    dff = dfq_asof[dfq_asof["QUARTER"] == "4Q"]
+    # ── baseline YoY OP（通期OP集約ベース）+ 5年中央値OP ──
     baseline_yoy_op_map: dict[str, float] = {}
-    for tk in tickers:
-        tk_fy = dff[dff["tk"] == tk].sort_values("CURRENT_FISCAL_YEAR_START_DATE", ascending=False)
-        if len(tk_fy) < 3:
-            continue
-        ops = tk_fy["OPERATING_PROFIT"].tolist()
-        yoy_list: list[float] = []
-        for j in range(len(ops) - 1):
-            c, p = ops[j], ops[j + 1]
-            if pd.notna(c) and pd.notna(p) and p != 0:
-                yoy_list.append(float((c - p) / abs(p)))
-        if yoy_list:
-            baseline_yoy_op_map[tk] = float(pd.Series(yoy_list).median())
-
-    # ── 5年中央値OP ──
     median_5y_op_map: dict[str, float] = {}
     for tk in tickers:
-        tk_fy = dff[dff["tk"] == tk].sort_values("CURRENT_FISCAL_YEAR_START_DATE", ascending=False)
-        ops_5y = tk_fy["OPERATING_PROFIT"].dropna().tolist()[:5]
+        tk_all = dfq_asof[dfq_asof["tk"] == tk]
+        fy_ops: dict[str, float] = {}
+        for fy_start, grp in tk_all.groupby("CURRENT_FISCAL_YEAR_START_DATE"):
+            grp_valid = grp.dropna(subset=["OPERATING_PROFIT"]).drop_duplicates(["QUARTER"], keep="first")
+            if set(grp_valid["QUARTER"].tolist()) >= {"1Q", "2Q", "3Q", "4Q"}:
+                total = grp_valid["OPERATING_PROFIT"].sum()
+                fy_ops[str(fy_start)] = float(total)
+        sorted_fys = sorted(fy_ops.items(), reverse=True)
+        if len(sorted_fys) >= 3:
+            yoy_list: list[float] = []
+            for j in range(len(sorted_fys) - 1):
+                c, p = sorted_fys[j][1], sorted_fys[j + 1][1]
+                if p != 0:
+                    yoy_list.append((c - p) / abs(p))
+            if yoy_list:
+                baseline_yoy_op_map[tk] = float(pd.Series(yoy_list).median())
+        ops_5y = [v for _, v in sorted_fys[:5]]
         if len(ops_5y) >= 3:
             median_5y_op_map[tk] = float(np.median(ops_5y))
 
@@ -747,6 +764,7 @@ def compute_features(predict_date: str, shared: dict) -> pd.DataFrame | None:
 
         _is_low_base = False
         _median_5y_op = median_5y_op_map.get(tk)
+        _is_low_profit = (_median_5y_op is not None and _median_5y_op < LOW_PROFIT_THRESHOLD)
         if cur_per == "FY" and _median_5y_op is not None and _median_5y_op > 0:
             if pd.notna(op) and float(op) < _median_5y_op * 0.5:
                 _is_low_base = True
@@ -811,6 +829,7 @@ def compute_features(predict_date: str, shared: dict) -> pd.DataFrame | None:
             "per": per,
             "beta_20d": beta,
             "is_low_base": _is_low_base,
+            "is_low_profit": _is_low_profit,
             "median_5y_op": _median_5y_op,
             "is_turnaround": qoq_map.get(tk, {}).get("is_turnaround", False),
             "fy_achievement": _fy_achievement,

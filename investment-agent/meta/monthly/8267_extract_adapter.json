@@ -4,34 +4,32 @@
   "doc_title_pattern": "イオン（株）(\\d+)月度連結営業概況",
   "year_from_title_regex": "^(\\d{4})\\d{2}_",
   "month_from_title_regex": "(\\d+)月度",
+  "extraction_method": "gemini",
+  "gemini_multi_month": true,
+  "overwrite_past_months": true,
+  "gemini_custom_prompt": "このPDFはイオンの月次売上高前期比一覧です。表には複数の連結子会社が縦に並んでいます。一番上の行が「イオンリテール㈱ AEON RETAIL CO., LTD.」です。この最初の会社（イオンリテール）の行のみから値を読み取ってください。他の会社（イオン北海道、イオン九州、キャンドゥ、マックスバリュ東海、フジ、ミニストップ、コックス、ジーフット等）の値は絶対に返さないでください。イオンリテールの全店(All stores)と既存店(Same stores)の売上高前年同月比のみを抽出してください。",
   "fields": [
     {
       "key": "イオンリテール 全店 売上（前年同月比）",
       "name": "イオンリテール 全店 売上（前年同月比）",
-      "value_type": "percentage",
-      "bc_key": "イオンリテール 全店 売上（前年同月比）"
+      "description": "イオンリテール㈱の全店(All stores)の売上高前年同月比(%)。表の1行目・最初の会社の全店の値。他社の値を返さないこと",
+      "value_type": "percentage"
     },
     {
       "key": "イオンリテール 既存店 売上（前年同月比）",
       "name": "イオンリテール 既存店 売上（前年同月比）",
-      "value_type": "percentage",
-      "bc_key": "イオンリテール 既存店 売上（前年同月比）"
+      "description": "イオンリテール㈱の既存店(Same stores)の売上高前年同月比(%)。表の1行目・最初の会社の既存店の値。他社の値を返さないこと",
+      "value_type": "percentage"
     }
   ],
-  "extraction_notes": "Requested metrics 'イオンリテール 全店 売上（前年同月比）' and 'イオンリテール 既存店 売上（前年同月比）' were not found in the provided document text. The document is for イオン株式会社 (AEON Co., Ltd.) and does not contain data for イオンリテール, which was established later than the document's publication date.",
   "ticker": "8267",
-  "company_name": "8267",
+  "company_name": "イオン",
   "created_at": "2026-04-04T00:28:58.733844+09:00",
   "created_by": "gemini-2.5-flash",
-  "sample_doc_title": "200604_8267_イオン（株）3月度連結営業概況_6f56b06a",
-  "sample_submission_date": "",
-  "report_url": "TDNET文書",
-  "sample_file": "200604_8267_イオン（株）3月度連結営業概況_6f56b06a",
-  "_source_renamed_at": "2026-04-18T16:36:34+09:00",
-  "_source_renamed_from": "pdf",
+  "sample_doc_title": "イオン（株）3月度連結営業概況",
+  "sample_submission_date": "2026-04-10",
+  "fields_count": 2,
   "manual_override": true,
-  "extraction_method": "gemini",
-  "gemini_custom_prompt": "イオンの月次営業概況PDFから、イオンリテール(GMS)の「全店 売上高 前年同月比」と「既存店 売上高 前年同月比」の%値を抽出してください。他のセグメント(SM/DS/HC等)ではなくイオンリテールの値のみ。",
-  "manual_override_at": "2026-05-05T18:24:12.610448+09:00",
-  "manual_override_note": "Gemini化: fields未定義を修正(2026-05-05)"
+  "manual_override_note": "gemini_multi_month=true + gemini_custom_prompt: 単月パスではcustom_prompt未参照のため多月パスに変更。イオンリテール行を明確に指定（他社行との混同防止）",
+  "manual_override_at": "2026-05-13"
 }

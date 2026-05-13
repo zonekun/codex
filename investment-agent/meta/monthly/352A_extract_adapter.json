@@ -4,33 +4,27 @@
   "doc_title_pattern": "(\\d{4})年3月期\\s*(\\d{1,2})月度店舗数についてのお知らせ",
   "year_from_title_regex": "(\\d{4})年3月期",
   "month_from_title_regex": "(\\d{1,2})月度",
+  "extraction_method": "gemini",
+  "custom_prompt": "この店舗数開示PDFから、対象月度末時点の店舗数を抽出してください。表の「合計」行と「ピラティスK」行から、タイトルに記載された月度の列の値を読み取ってください。「（参考情報）」セクションの前年度データは無視してください。「4月（契約済）」列のデータも無視してください。",
   "fields": [
     {
       "key": "全店 店舗数",
       "name": "全店 店舗数",
-      "row_label_regex": "合計\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)",
-      "value_type": "integer",
-      "group": 6,
-      "use_last_number": true
+      "description": "合計行の対象月度の列の店舗数",
+      "value_type": "integer"
     },
     {
       "key": "ピラティスK 店舗数",
       "name": "ピラティスK 店舗数",
-      "row_label_regex": "ピラティスK\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)\\s+(\\d+)",
-      "value_type": "integer",
-      "group": 6,
-      "use_last_number": false
+      "description": "ピラティスK行の対象月度の列の店舗数",
+      "value_type": "integer"
     }
   ],
-  "extraction_notes": "文書タイトルから抽出される年（例: 2026年3月期）は会計年度の終了年を示します。報告月（例: 9月度）が4月から12月の場合は、会計年度終了年から1を引いた年が実際の暦年となります。1月から3月の場合は会計年度終了年が暦年となります。本ルールでは、9月度のデータとして、4月始まりの表の6番目の数値（9月）を抽出します。",
   "ticker": "352A",
-  "company_name": "352A",
+  "company_name": "LOIVE",
   "created_at": "2026-03-28T16:39:40.734629+09:00",
-  "created_by": "gemini-2.5-flash",
-  "sample_doc_title": "2026年3月期　9月度店舗数についてのお知らせ",
-  "sample_submission_date": "2025-10-03",
   "fields_count": 2,
   "manual_override": true,
-  "manual_override_note": "NG96調査結果に基づくadapter修正（yoy_offset/unit_scale/regex等）",
-  "manual_override_at": "2026-04-08T21:05:22.905167+09:00"
+  "manual_override_note": "regex group:6固定→gemini: 月によって対象列が変わるため",
+  "manual_override_at": "2026-05-13"
 }

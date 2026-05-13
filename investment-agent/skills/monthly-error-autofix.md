@@ -101,6 +101,37 @@ gcloud logging read "resource.type=cloud_run_job AND resource.labels.job_name=<j
 - GCS文書にデータがない/文書自体がない → **Step 3C（bc_ignore判定フロー）** へ。ここで直接bc_ignoreを設定しない
 - 累積型PDF（1ファイルに全月分）は `overwrite_past_months: true`
 
+#### 診断の武器庫（修復サイクルで行き詰まったとき）
+
+修復サイクルでfield対応が不明なとき・2回以上失敗したときに、必要に応じて使う。事前ロードではなく、行き詰まりの打開手段。
+
+**(a) BC値直接照合** — 少数field・手動向け。bc_monthly_kpi.csv から当該tickerのBC値を取得し、ソース文書内でその数値を探す（単位変換 ×100, ÷1000 等を考慮）。見つかった位置からfield対応を特定する。詳細手順: 042マスターMD §bc_ignore判定基準 の手順1-5。この技法はfield特定が目的。データ自体が存在しないと判明した場合はStep 3Cへ。
+
+```bash
+# 当該tickerのBC値一覧（直近10件）
+PYTHONUTF8=1 C:/venvs/investment-agent/Scripts/python.exe -c "
+import csv, sys
+ticker = sys.argv[1]
+with open('data/csv/bc_monthly_kpi.csv', encoding='utf-8') as f:
+    rows = [r for r in csv.DictReader(f) if r['ticker'] == ticker]
+    for r in sorted(rows, key=lambda x: x['year_month'], reverse=True)[:10]:
+        print(f\"{r['year_month']} {r['field']:30s} {r['value']}\")
+" <ticker>
+```
+
+**(b) reconcile自動逆引き** — 多数field・系統的ズレ向け。全BC field × 誤差調整（identity/yoy±100/×N/÷N/符号反転等）で値一致率を計算し、bc_key候補を提案する。**前提: compare CSV（`compare_monthly_buffett.py`の出力）が手元にあること**。なければ(a)の手動照合を使う。
+
+```bash
+PYTHONUTF8=1 C:/venvs/investment-agent/Scripts/python.exe scripts/reconcile_bc_key_from_compare.py \
+  --compare-csv <compare CSV path> --min-ratio 0.5
+```
+
+**(c) inspect_ticker.py** — 事実確認の起点。adapter・records・BC値・PDF構造を一括表示し、何が取れていて何が取れていないかの全景を把握する。
+
+```bash
+PYTHONUTF8=1 C:/venvs/investment-agent/Scripts/python.exe scripts/monthly_bc_repair/inspect_ticker.py --ticker <ticker>
+```
+
 #### 修復サイクル（1社分）
 
 1. **現行adapter取得**: GCSから取得して一時保存
@@ -185,7 +216,8 @@ GCSに月次開示文書がない、または文書内容が月次データと�
       print(f'  [{i}] ヘッダ: {headers[:5]}')
   " C:/tmp/monthly_table.html
   ```
-- **BC structure.json逆引き**: `gcloud storage cat gs://stock_data_1930932/monthly/meta/{ticker}/structure.json | python -c "import json,sys; d=json.load(sys.stdin); [print(m['name']) for m in d.get('monthly_items',[])]"`
+- **BC structure.jsonメトリクス名一覧**: `gcloud storage cat gs://stock_data_1930932/monthly/meta/{ticker}/structure.json | python -c "import json,sys; d=json.load(sys.stdin); [print(m['name']) for m in d.get('monthly_items',[])]"`
+- **BC値取得（数値逆引き用）**: Step 3A「診断の武器庫」(a) のレシピを使用
 
 ### Step 3B: DL系エラー修復（D1-D4）
 
@@ -212,8 +244,14 @@ PYTHONUTF8=1 C:/venvs/investment-agent/Scripts/python.exe scripts/extract_monthl
 ```
 
 - 正しい値が抽出されたか確認（件数、年月範囲、数値の妥当性）
-- NG → Step 3に戻り修正
 - OK → Step 5へ
+- NG → Step 3に戻り修正
+- **3回NG → エスカレーション**（ガードレール#8。同一tickerのローカル検証は最大3回）
+
+Gemini adapter かつ `overwrite_past_months: true`（累積型PDF）の銘柄は `--since` で直近年に絞り、API呼び出しを最小化する:
+```bash
+PYTHONUTF8=1 C:/venvs/investment-agent/Scripts/python.exe scripts/extract_monthly_data.py --tickers <ticker> --no-batch --since <直近年>
+```
 
 DL系修正の場合:
 ```bash
@@ -257,8 +295,9 @@ gcloud run jobs executions describe <exec-name> --region us-west1 --format="valu
 3. **regex→Gemini変換**: regex 2パターン以上試して失敗した場合のみ
 4. **overwrite_past_months**: 累積型PDFのみ。個別月PDF銘柄には絶対に付けない
 5. **adapter backup**: 修正前に旧adapter内容をログに記録（gsutil catで表示）
-6. **2回失敗でエスカレーション**: 同一tickerが2ループ失敗 → 人間に報告して停止
+6. **本番2回失敗でエスカレーション**: 同一tickerが**本番投入後の再診断**（Step 6→Step 2の大ループ）で2回失敗 → 人間に報告して停止
 7. **コード変更禁止**: extract_monthly_data.py / download_monthly.py 本体の修正が必要な場合はエスカレーション（修正案は提示してよい）
+8. **ローカル検証回数上限**: 同一tickerの**ローカル検証（Step 4）**は最大3回。3回NGでエスカレーション。Gemini adapter銘柄は特にAPI呼び出しコストが大きいため厳守
 
 ---
 

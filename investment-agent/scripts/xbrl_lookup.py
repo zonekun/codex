@@ -248,7 +248,7 @@ def _render_table(
         padding=(0, 1),
     )
     table.add_column("決算期", style="bold", width=8)
-    table.add_column("Q", width=3, justify="right")
+    table.add_column("Q", width=4, justify="right")
     table.add_column("売上高", justify="right", width=8)
     table.add_column("営業利益", justify="right", width=8)
     table.add_column("経常利益", justify="right", width=8)
@@ -289,6 +289,34 @@ def _render_table(
     for i, fy in enumerate(all_fys):
         prev_fy_map[fy] = all_fys[i - 1] if i > 0 else None
 
+    def _color_yoy(s: str) -> Text:
+        if s in ("黒転", "-"):
+            return Text(s)
+        if s == "赤転":
+            return Text(s, style="red")
+        try:
+            val = float(s.replace("%", "").replace("+", ""))
+            if val > 0:
+                return Text(s)
+            return Text(s, style="red")
+        except ValueError:
+            return Text(s)
+
+    # 累計行: 最新FYのQ数に合わせて全FYに挿入
+    latest_fy = fy_list[0] if fy_list else None
+    cum_max_q_order = 0
+    if latest_fy:
+        latest_fy_rows = [r for r in rows if r["fy_end"] == latest_fy]
+        cum_max_q_order = max((r["q_order"] for r in latest_fy_rows), default=0)
+
+    show_cum = cum_max_q_order >= 2
+    if cum_max_q_order == 4:
+        cum_label = "[bold bright_green]Y累[/bold bright_green]"
+    elif cum_max_q_order >= 2:
+        cum_label = f"[bold bright_green]{cum_max_q_order}累[/bold bright_green]"
+    else:
+        cum_label = ""
+
     for fy_end in fy_list:
         fy_rows = [r for r in rows if r["fy_end"] == fy_end]
         fy_rows.sort(key=lambda x: x["q_order"], reverse=True)
@@ -296,12 +324,60 @@ def _render_table(
         fy_label = fy_end[:4] + "/" + fy_end[5:7]
         prev_fy = prev_fy_map.get(fy_end)
 
+        # 累計行データ計算
+        cum_row_data = None
+        if show_cum:
+            cum_quarters = [r for r in fy_rows if r["q_order"] <= cum_max_q_order]
+            if len(cum_quarters) == cum_max_q_order:
+                cum: dict[str, float | None] = {}
+                for c in COLS:
+                    vals = [r[c] for r in cum_quarters if r[c] is not None]
+                    cum[c] = sum(vals) if vals else None
+
+                prev_cum: dict[str, float | None] = {}
+                if prev_fy:
+                    prev_cum_qs = [
+                        r for r in rows
+                        if r["fy_end"] == prev_fy and r["q_order"] <= cum_max_q_order
+                    ]
+                    for c in COLS:
+                        vals = [r[c] for r in prev_cum_qs if r[c] is not None]
+                        prev_cum[c] = sum(vals) if vals else None
+                else:
+                    prev_cum = {c: None for c in COLS}
+                cum_row_data = (cum, prev_cum)
+
+        fy_label_shown = False
+        cum_inserted = cum_row_data is None
+
         for j, r in enumerate(fy_rows):
+            # 累計行: 累計対象Q群の直前に挿入
+            if not cum_inserted and r["q_order"] <= cum_max_q_order:
+                cum_d, prev_cum_d = cum_row_data  # type: ignore[misc]
+                table.add_row(
+                    fy_label if not fy_label_shown else "",
+                    cum_label,
+                    _fmt_millions(cum_d.get("net_sales")),
+                    _fmt_millions(cum_d.get("op")),
+                    _fmt_millions(cum_d.get("odp")),
+                    _fmt_millions(cum_d.get("np")),
+                    _fmt_eps(cum_d.get("eps")),
+                    _margin(cum_d.get("op"), cum_d.get("net_sales")),
+                    _margin(cum_d.get("odp"), cum_d.get("net_sales")),
+                    _color_yoy(_yoy(cum_d.get("net_sales"), prev_cum_d.get("net_sales"))),
+                    _color_yoy(_yoy(cum_d.get("op"), prev_cum_d.get("op"))),
+                    _color_yoy(_yoy(cum_d.get("odp"), prev_cum_d.get("odp"))),
+                    _color_yoy(_yoy(cum_d.get("np"), prev_cum_d.get("np"))),
+                    style="bright_green",
+                )
+                if not fy_label_shown:
+                    fy_label_shown = True
+                cum_inserted = True
+
             q_label = r["quarter"]
             if r.get("source") == "xbrl":
                 q_label = f"[bold cyan]{q_label}[/bold cyan]"
 
-            # 前年同Q
             prev_r = by_fy_q.get((prev_fy, r["quarter"])) if prev_fy else None
 
             sales_yoy = _yoy(r["net_sales"], prev_r["net_sales"] if prev_r else None)
@@ -309,21 +385,8 @@ def _render_table(
             odp_yoy = _yoy(r["odp"], prev_r["odp"] if prev_r else None)
             np_yoy = _yoy(r["np"], prev_r["np"] if prev_r else None)
 
-            def _color_yoy(s: str) -> Text:
-                if s in ("黒転", "-"):
-                    return Text(s)
-                if s == "赤転":
-                    return Text(s, style="red")
-                try:
-                    val = float(s.replace("%", "").replace("+", ""))
-                    if val > 0:
-                        return Text(s)
-                    return Text(s, style="red")
-                except ValueError:
-                    return Text(s)
-
             table.add_row(
-                fy_label if j == 0 else "",
+                fy_label if not fy_label_shown else "",
                 q_label,
                 _fmt_millions(r["net_sales"]),
                 _fmt_millions(r["op"]),
@@ -337,6 +400,8 @@ def _render_table(
                 _color_yoy(odp_yoy),
                 _color_yoy(np_yoy),
             )
+            if not fy_label_shown:
+                fy_label_shown = True
 
     console.print(table)
 
@@ -441,6 +506,18 @@ def main() -> None:
     args = parser.parse_args()
 
     lookup(args.ticker)
+
+    while True:
+        try:
+            ans = input("\n別の銘柄コード (Enter=終了): ").strip()
+        except (EOFError, KeyboardInterrupt):
+            break
+        if not ans:
+            break
+        if not ans[:4].isdigit():
+            print("4桁の銘柄コードを入力してください")
+            continue
+        lookup(ans[:4])
 
 
 if __name__ == "__main__":

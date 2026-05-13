@@ -44,15 +44,14 @@ J-Quants API に依存せず、EDINET 公開データのみで財務サマリー
 
 ```
 scripts/xbrl_to_jquants/
-├── taxonomy_2026/              ← 2026年版タクソノミ（展開済み、2058ファイル）
-│   ├── samples/
-│   └── taxonomy/jppfs/2025-11-01/
 ├── EdinetcodeDlInfo.csv        ← EDINETコードリスト（11,254件、cp932、[11]証券コード列）
 ├── ESE140115.xlsx              ← 金融庁勘定科目リストExcel
 ├── xbrl_mapping.py   ← ★勘定科目マッピングの本体 + 全銘柄一括検証
 ├── convert_to_fin_summary.py   ← 本番変換スクリプト（xbrl_mappingからimport）
 └── extract_pipeline.py         ← 20社テスト用パイプライン（同上、レガシー）
 ```
+
+> **タクソノミについて**: 2026年版タクソノミ（taxonomy_2026/、2054ファイル）は TAG_CANDIDATES 作成時の調査資料として使用後、削除済み（2026-05-12）。コードからの参照なし。再度必要になった場合は金融庁の EDINET タクソノミページからDL可能。
 
 Colabノートブック: `G:/マイドライブ/Colab Notebooks/xbrl_mapping.ipynb`
 

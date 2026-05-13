@@ -1,35 +1,36 @@
 {
   "source": "tdnet",
   "format": "text",
-  "extraction_method": "gemini",
+  "extraction_method": "regex",
+  "doc_title_pattern": "月次速報",
+  "fiscal_year_start_month": 8,
+  "column_map": {
+    "8": 0, "9": 1, "10": 2, "11": 3, "12": 4,
+    "1": 5, "2": 6, "3": 7, "4": 8, "5": 9, "6": 10, "7": 11
+  },
   "fields": [
     {
-      "key": "スキー場 来場者数（6-10月休み）",
-      "name": "スキー場 来場者数（6-10月休み）",
-      "description": "≪ウィンターシーズン≫セクション「スキー場別来場者数」表の最後の集計行（「計」）の月次データ。2026年7月期の月計（累計ではない）の値。8月〜10月は休業期間で値なし、11月〜3月（または4月初）に値が入る。単位は千人。",
+      "key": "ウィンターシーズン 月計",
       "value_type": "integer",
-      "_manual_description": true,
-      "bc_key": "スキー場 来場者数（6-10月休み）",
-      "unit_scale": 1000.0
+      "bc_ignore": true
     },
     {
-      "key": "索道利用 来場者数（12-3月休み）",
-      "name": "索道利用 来場者数（12-3月休み）",
-      "description": "≪グリーンシーズン≫セクション「索道を利用した施設における来場者数」表の「グリーンシーズン 計」行の月次データ。2026年7月期の月計（累計ではない）の値。8月〜11月にのみ値が入る（12月〜3月は休業）。単位は千人。",
+      "key": "WN計来場者",
+      "bc_key": "スキー場 来場者数（6-10月休み）",
+      "row_label_regex": ".*?\\d{4}年\\d+月期(?:\\s+[-\\d,.]+){{col_idx}}\\s+([-\\d,.]+)[^\\n]*\\n計\\s+月計",
+      "group": 1,
       "value_type": "integer",
-      "_manual_description": true,
       "unit_scale": 1000.0
     }
   ],
   "ticker": "6040",
-  "company_name": "6040",
-  "created_at": "2026-03-29T18:40:56.995493+09:00",
-  "created_by": "gemini-2.5-flash",
-  "sample_doc_title": "2026年7月期日本スキー場開発(株)月次速報開示",
-  "sample_submission_date": "2026-03-06",
+  "company_name": "日本スキー場開発",
+  "created_at": "2026-05-13T03:00:00+09:00",
+  "created_by": "claude-opus-4-6",
+  "sample_doc_title": "2026年7月期 日本スキー場開発㈱グループ月次速報開示 2026年5月8日",
+  "sample_submission_date": "2026-05-08",
   "fields_count": 2,
   "manual_override": true,
-  "desc_rewrite_at": "2026-04-17T23:00:54+09:00",
-  "p4_field_split_at": "2026-04-18T15:56:00+09:00",
-  "_reverse_mapping_applied_at": "2026-04-19T00:18:08.260954+09:00"
+  "manual_override_note": "gemini→regex: WN計=dummy trigger(_extract_pdf_by_column token match)+DOTALL regex(\\n計\\s+月計 anchor on table_to_lines)。GR索道はblob不一致+BQ空セル省略+offset±2列ずれの3重問題で除外。Geminiが来場者数を誤読(diff 18-26K)する問題を解消",
+  "manual_override_at": "2026-05-13"
 }

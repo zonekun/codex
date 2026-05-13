@@ -323,6 +323,98 @@
 - **参照ソース**: `scripts/download_monthly.py` のファイル名生成ロジック
 - **注意**: DLは成功しているためD系ログでエラーとして検出されないサイレント不具合。extractのno_records/年月不明でのみ表面化する
 
+### E3-5: regex列番号(group)ハードコード → Gemini変換
+
+- **一致キー**: `group.*固定|列番号.*固定|月度.*列.*不一致`
+- **確認条件**: adapter.fields に `"group": N` が固定値で設定されており、Nが特定月度の列位置にハードコードされている。異なる月度のPDF/テキストでは対象列が変わるため抽出ゼロ or 誤値
+- **除外条件**: 単月テーブル（列が1つしかない）→ group固定で正しい
+- **事例**: 2736 フェスタリアHD — `group:6`(2月度固定)。1月度テキストでは1月データが5列目にあるが6列目を取得→誤値。7679 薬王堂HD — `group:12`(2月度固定)。他月度では列位置が異なる
+- **根本原因**: adapter生成時のサンプルが特定月度のPDFで、その月度の列位置をgroup値にハードコードした。月次累積型テーブルでは列位置が月ごとに変わる
+- **修復手順**:
+  1. adapter の fields で `group` ハードコードを確認
+  2. テーブル構造を確認: 月次累積型（4月〜対象月まで列が並ぶ）→ group固定は不可
+  3. `extraction_method: "gemini"` に変更
+  4. `custom_prompt` で「タイトルに記載された月度の列の値を読み取る」旨を指示
+  5. group / use_last_number / row_label_regex を削除し、description で指示
+- **参照ソース**: `meta/monthly/2736_extract_adapter.json`, `meta/monthly/7679_extract_adapter.json`
+- **注意**: TDnet source の場合、ローカルGemini text extractionはタイムアウトしやすい。Cloud Runでの実行を前提とする
+
+### E3-6: 決算期年(year_from_title_regex)と暦年の混同
+
+- **一致キー**: `2027.*混入|年月.*不一致|fiscal.*year|決算期年.*暦年`
+- **確認条件**: monthly_records.json に未来年月（例: 2027-03）が混入。doc_titleが「2027年2月期 3月度」のような決算期表記で、year_from_title_regexが2027を抽出するが、実際の報告月は2026年3月
+- **除外条件**: year_from_title_regex未設定（提出日ヒューリスティックで自動補正される）
+- **事例**: 9876 コックス — `year_from_title_regex: "(\d{4})年\d{1,2}月期"` が2027年2月期から2027を抽出し、3月度=2027-03として記録。正しくは2026-03
+- **根本原因**: 「YYYY年M月期」はfiscal year end（決算期終了年月）であり、報告月がM月より後の場合は暦年=YYYY-1。adapter生成時にこの変換が考慮されていない
+- **修復手順**:
+  1. year_from_title_regexを**削除**し、提出日ヒューリスティック（_parse_year_monthのStep 4）に委ねる
+  2. または `use_fy_history_correction: true` を設定（BQマスタ参照で自動補正）
+  3. monthly_records.json の誤年月エントリはCloud Run再実行で上書きされる
+- **参照ソース**: `meta/monthly/9876_extract_adapter.json`, `scripts/extract_monthly_data.py` L863-971 `_parse_year_month()`
+- **注意**: 提出日ヒューリスティックは day<=15 で前月扱い。大半の月次開示は翌月10日前後提出のため正確に動作する
+
+### E4-2: Gemini表内セグメント/会社行の誤認
+
+- **一致キー**: `Gemini.*誤認|セグメント.*混同|会社.*行.*誤|値.*大幅差`
+- **確認条件**: Gemini抽出値とBC値の差が大きく（diff>5%）、PDFを目視すると別の会社/セグメント行の値を取得している
+- **除外条件**: 値が近い（diff<2%）→ 四捨五入等の軽微差（許容範囲）
+- **事例**: 8267 イオン — PDFに9社の全店/既存店行が縦に並ぶ。Geminiが「イオンリテール」ではなく「ジーフット」や「コックス」の行を取得し、97.3を返す（正解は102.6）
+- **根本原因**: Geminiの表解析で、対象行を特定する指示が曖昧。複数会社が同一テーブル内に並ぶ場合、行の位置や会社名の指定が不十分
+- **修復手順**:
+  1. PDFを目視して表構造を確認（複数会社/セグメントが並んでいるか）
+  2. custom_promptで対象会社/セグメントを明確に指定:
+     - 「一番上の行」「最初の会社」等の位置指定
+     - 正式名称（イオンリテール㈱ AEON RETAIL CO., LTD.）の明記
+     - 「他の会社（XXX, YYY等）の値は無視」の排除指示
+  3. fields[].descriptionにも「表のN行目」等の位置情報を追加
+- **参照ソース**: `meta/monthly/8267_extract_adapter.json`
+- **注意**: 単にセグメント名を書くだけでは不十分。PDFの表レイアウトに応じた位置指定が重要
+
+### E4-3: BCのフィールド定義とソースのセグメント階層不一致
+
+- **一致キー**: `全店.*全業態|セグメント.*階層.*不一致|BC定義.*ソース定義.*異なる`
+- **確認条件**: BC値と抽出値が系統的にずれ、ソースHTMLを読むと「全店（全業態）」と「国内外食（サブウェイ事業除く）全店」等の階層が存在し、adapter descriptionが下位階層を指している
+- **除外条件**: 値が一致している → 階層は正しい / ソースに階層構造がない
+- **事例**: 7522 ワタミ — BCの「国内外食 全店 売上」=110.1はHTML最上段「全店（全業態）」行の値。adapterが「国内外食（サブウェイ事業除く）全店」行の104.9を取得していた。descriptionに「全店（全業態）合計」と明記し、custom_promptで階層構造を説明して修復
+- **根本原因**: BCが定義する「国内外食 全店」がソース上の最上位集計行を指すのに対し、adapter descriptionが文字通りの「国内外食」セクション配下の行を指定
+- **修復手順**:
+  1. BCの値とソース（HTML/PDF）の各セグメント行の値を突合し、どの行がBC定義に合致するか特定
+  2. adapter fieldsのdescriptionを「表の最上段にある全店（全業態）行の値」等、BCが期待する行を正確に指す記述に修正
+  3. custom_promptで階層構造を明示し、「（サブウェイ事業除く）」等の下位セグメントではないことを指示
+  4. BCに存在しないセグメント（例: 既存店）にはbc_ignore=trueを付与
+- **参照ソース**: `meta/monthly/7522_extract_adapter.json`
+- **注意**: フィールド名（key/bc_key）はBC定義に合わせつつ、descriptionで実際のソース上の取得位置を指定する
+
+### E4-4: 単月抽出パスでcustom_prompt未参照（コード制約）
+
+- **一致キー**: `custom_prompt.*無視|単月.*プロンプト.*未参照|全年.*同一値`
+- **確認条件**: adapter.custom_promptを設定したが、抽出結果に反映されていない。monthly_records.jsonの全年で同月の値が同一（例: 全年の2月=95.0）
+- **除外条件**: gemini_multi_month=trueの場合 → multi_monthパスはgemini_custom_promptを参照する
+- **事例**: 8267 イオン — custom_promptでイオンリテール行を指定したが、単月パス（_build_extract_prompt の is_multi_month=False分岐）にcustom_prompt注入コードがなく無視された。全年同月同一値（2月=95.0/93.9）が症状
+- **根本原因**: extract_monthly_data.py の `_build_extract_prompt()` 関数、単月分岐（line 442-472）にcustom_prompt/gemini_custom_prompt の挿入がない（multi_monthパスにはgemini_custom_promptの挿入あり）
+- **修復手順（adapter-onlyワークアラウンド）**:
+  1. gemini_multi_month=true, overwrite_past_months=true に変更（多月パスに切り替え）
+  2. `gemini_custom_prompt` キーにプロンプトを設定（multi_monthパスが参照するキー名）
+  3. custom_promptも残す（HTML抽出パスは両方読む）
+  4. 将来的にコード修正で単月パスにもcustom_prompt注入を追加すべき
+- **参照ソース**: `meta/monthly/8267_extract_adapter.json`, `scripts/extract_monthly_data.py` line 423 vs 442
+- **注意**: コード修正なしのワークアラウンド。multi_monthに切り替えるとバッチ予測のリクエスト数が減るが、1 PDFから全月抽出するため精度が変わる可能性あり
+
+---
+
+### E5-1: regex adapterでPDF未取得 → BQテキストにサイレントフォールバック
+
+- **一致キー**: `field未マッチ.*text_len=\d{4,5}` かつ extraction_method=regex
+- **確認条件**: GCS `tdnet/{ticker}/` に月次キーワードを含むPDF blobが存在するか。存在するなら `_extract_pdf_by_column` がNone返却（ダミーフィールドのトークンマッチ失敗）。存在しないなら url_adapter.json 欠落。
+- **除外条件**: extraction_method=gemini の場合は別問題
+- **事例**: 6040 日本スキー場開発 (2026-05-13)。regex adapter作成→ローカルでtable_to_linesテキストに直接regex適用→全値一致→Cloud Runで全件0マッチ。数時間浪費。原因: `_extract_pdf_by_column` がダミーフィールドでNone返却 → `if not rec:` で BQ full_text にフォールバック → チャンク順不同・テーブル構造崩壊のBQテキストではregex不一致。
+- **根本原因**: extractコードの分岐構造。`_extract_pdf_by_column` が None を返すと、PDFテキストではなくBQ `full_text`（STRING_AGG(CHUNK_TEXT)）に対して `extract_from_tdnet_text` が呼ばれる。regex は table_to_lines テキスト前提で書いてあるため絶対マッチしない。
+- **修復手順**:
+  1. L3611 `if not rec:` の分岐を修正: `_cached_pdf` があり `_has_row_regex` なら、BQ full_text ではなく `_extract_pdf_text(_cached_pdf)` のテキストで `extract_from_tdnet_text` を試す
+  2. ダミーフィールドのトークンマッチが通るようキー名を調整する（根本対策はコード修正）
+- **再発防止（テスト手法）**: regex adapter のローカルテストでは regex を table_to_lines テキストに直接当てるだけでは不十分。`_extract_pdf_by_column` → rec 判定 → フォールバック分岐を含む実コードパスを通すこと。regex 単体マッチ ≠ Cloud Run で動く。
+- **参照ソース**: `scripts/extract_monthly_data.py` L3575-3635（regex抽出フロー）, L3611（BQフォールバック分岐）
+
 ---
 
 ## 蓄積ルール

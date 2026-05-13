@@ -11,16 +11,18 @@
 - ~~**P2: TMP パス Linux 実装の検証要**~~: 解決済み（2026-05-12）。poller を `~/zaraba_cache` に統一。backup コマンドで xbrl キャッシュも保管対象
 - **P2: config YAML 切り出し**: スコアリングパラメータ（閾値・ウェイト）を config YAML に分離。predict notebook から自動反映可能にする
 - **P2: TDnet 並行ポーリング**: 自社株買い・株式分割・優待変更のリアルタイム検知 → Gemini Flash で解析
-- **P2: 自社株買い過去パターン分析**: 常習 vs 初回サプライズ判定。TDnet 過去データ蓄積が前提
+- **P2: 自社株買い過去パターン分析**: 常習 vs 初回サプライズ判定。TDnet 過去データ蓄積が前提（スケール判定は F10 スケール化で実装済み、残りは初回サプライズ判定）
 - **P2: 個人投資家関心度マーキング**: 旧F9テーマブースト（β×TOPIX+）は廃止。βでは個人投資家関心度を代理できなかった。別指標（出来高急増・信用買残変化・SNS言及数等）を検討
 
 **関連ファイル**:
 - `scripts/zaraba_earnings.py`
 - `zara.py`（クロスプラットフォーム対話ランチャー。Linux/Windows共通）
+- `zara.sh`（Linux 一発起動ラッパー。`uv run python zara.py` を呼ぶ。`~/.local/bin/zara.sh` は本ファイルへの symlink）
 - `C:\Users\zonekun\Dropbox\stock\script\claude-investment-agent.ps1`（Windows専用メニュー。CLI引数変更時は同期必須。詳細は下記「PSメニュー依存パッケージチェック」節）
 - `docs/plans/20260405_zaraba_tool.md`（設計ドラフト）
 - **計画**: `docs/plans/tools-066_zaraba_consensus_quarter_match_20260430_153500.md`（F4c コンセ乖離の四半期/FY 不一致バグ修正、2026-04-30 1878 +320.5% 誤検出契機）
 - **計画**: `docs/plans/tools-066_zaraba_gcs_rename_20260508_152000.md`（Q列追加 + GCSアップ/表示 + earnings_modelフォルダリネーム）
+- **計画**: `docs/plans/tools-066_zaraba_tool_20260513_005500.md`（F10 自社株買いスケール化 — PDF解析 + ToSTNeT-3判定 + ウェイト段階化）
 - `docs/knowledges/tools/066-1_zaraba_retrospective.md`（反省会ログ）
 - `docs/knowledges/tools/059_earnings_model_eda.md`（Phase 2 として位置づけ）
 - `docs/knowledges/tools/071_xbrl_to_jquants.md`（**XBRL勘定科目マッピングの本体**。TAG_CANDIDATES定義・検証結果・アダプター設計・営業収入合算ロジック・予想context仕様はこちらで管理。`zaraba_tdnet_poller.py` の `TDNET_TAG_MAP` もこのプロジェクトが保守する）
@@ -146,7 +148,7 @@ standalone_op = J-Quants累計OP - prior.prev_cumulative_op
 | F8 | 信用売り残倍率 | +0.5 | 貸借倍率<1（売り長） | 全Q |
 | F8b | 記念配当/特別配当 | +1 | TDnet TITLE に "記念配当" or "特別配当" を含む | 全Q |
 | F9 | ~~テーマブースト~~ | 廃止 | 旧: 高β×TOPIX+。βでは個人投資家関心度を代理できず廃止 | - |
-| F10 | 自社株買い | +2 | 同一銘柄の TDnet 開示に "自己株式の取得" を含む | 全Q |
+| F10 | 自社株買い（スケール） | 0〜+4 | `_is_buyback_title()` で自社株買い開示を検知 → PDF 解析で発行済比率を取得し段階スコアリング。ToSTNeT-3/N-NET3 のみの場合はウェイト0（タグ表示のみ）。PDF 解析失敗時はフォールバック +2。閾値: <3%→+1, 3-5%→+3, >=5%→+4 | 全Q |
 | F12 | PER割安度 PEG | +2/+1/-1 | FY時、翌期成長率(ODP、不在時OP)>0の場合: PEG=PER÷成長率(%)。PEG<0.5→+2、<1.0→+1、>2.0→-1。株式分割時は無効化 | FYのみ |
 | F13 | QoQ OP急変 | +1/-2 | 前Q単独OP比。>+50%→+1、<-50%→-2。FY除外（4Q implied はノイジー→F15で代替）。小分母ガード: \|prev_q\|<年間参照値×5%時スキップ | 1Q-3Q |
 | F14 | 株式分割 | +1 | 同一銘柄の TDnet 開示に "株式分割" を含む。F6/F12 を無効化する副作用あり | 全Q |
@@ -282,13 +284,13 @@ catchup は watch と同じ TDnet + XBRL パスを使い、指定時刻までの
 2. TDnet HTML ポーラーで当日の全開示を取得
 3. until_time 以前 + 決算短信 + XBRL ありでフィルタ
 4. 既存 seen["tdnet"] にない新規決算のみ抽出
-5. XBRL ダウンロード & パースを並列実行（最大8ワーカー）
-6. スコアリング → results.csv に追記（既存結果を保持）
+5. XBRL ダウンロード & パース & スコアリング（自社株買いPDF fetch含む）を並列実行（最大8ワーカー）
+6. results.csv に追記（既存結果を保持）
 7. seen["tdnet"] を更新して保存
 ```
 
-**watch との共通点**: ポーラー / XbrlExtractor / `_xbrl_to_jquants_rec` / `_score_record` を共有。
-**watch との差異**: watch はリアルタイム逐次処理 + rich Live 表示。catchup はバッチ一括処理 + 結果サマリーのみ表示。
+**watch との共通点**: ポーラー / XbrlExtractor / `_xbrl_to_jquants_rec` / `_score_record` を共有。`_process_one` でXBRL取得+rec構築+スコアリング（PDF fetch含む）を一括並列実行。
+**watch との差異**: watch はリアルタイム + rich Live 表示。catchup はバッチ一括 + 結果サマリーのみ。
 
 ## XBRL 予想 context（ザラ場固有の評価ロジック）
 
@@ -299,10 +301,12 @@ catchup は watch と同じ TDnet + XBRL パスを使い、指定時刻までの
 - `通期予想非開示` ペナルティは **FY 決算発表時のみ** 付与。1Q/2Q/3Q で通期予想タグが無くてもネガティブ扱いしない
 - `翌期予想非開示`: FY 発表で `NxFOP`（= `NextYearDuration`）が取れない場合のみ付与。`NextAccumulatedQ*` を代用しない
 
-## ランチャー（zara.py）
+## ランチャー（zara.py / zara.sh）
 
 `zara.py` はクロスプラットフォーム対応の対話式ランチャー。PS1メニューと異なりLinuxでも動作する。
 プロンプトは日本語で意味が分かるように記述すること（`--force?` のような内部用語を表示しない）。
+
+Linux では `zara.sh`（リポジトリ直下）が `uv run python zara.py` を呼ぶラッパーとして用意されており、`~/.local/bin/zara.sh` を本ファイルへの symlink にしておけばパスを通すだけで `zara.sh` 一発起動できる。
 
 ## PSメニュー依存パッケージチェック
 

@@ -6,7 +6,13 @@ BQ EARNINGS_DISCLOSURE_CALENDAR の予定(S)と TDNet開示一覧を突合し、
 詳細: docs/knowledges/tools/100_earnings_undisclosed.md, docs/knowledges/tools/023_powershell_menu.md
 """
 
+import sys
 from datetime import datetime, timezone, timedelta
+from pathlib import Path
+
+_PROJECT_ROOT = Path(__file__).resolve().parent.parent
+if str(_PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(_PROJECT_ROOT))
 
 import httpx
 from bs4 import BeautifulSoup

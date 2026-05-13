@@ -9,14 +9,16 @@
     {
       "key": "株式会社SRA 売上高（円）",
       "name": "株式会社SRA 売上高（円）",
-      "description": "月次売上高速報における主要子会社一覧表の「株式会社ＳＲＡ」行、「単月」列「当年度」の売上高（百万円）",
-      "value_type": "integer"
+      "description": "月次売上高速報における主要子会社一覧表の「株式会社ＳＲＡ」行、「単月」列「当年度」の売上高。PDFの単位は百万円。百万円の値をそのまま返してください（例: 1,308→1308）",
+      "value_type": "integer",
+      "unit_scale": 1000000
     },
     {
       "key": "株式会社AIT 売上高（円）",
       "name": "株式会社AIT 売上高（円）",
-      "description": "月次売上高速報における主要子会社一覧表の「株式会社ＡＩＴ」行、「単月」列「当年度」の売上高（百万円）",
-      "value_type": "integer"
+      "description": "月次売上高速報における主要子会社一覧表の「株式会社ＡＩＴ」行、「単月」列「当年度」の売上高。PDFの単位は百万円。百万円の値をそのまま返してください（例: 826→826）",
+      "value_type": "integer",
+      "unit_scale": 1000000
     }
   ],
   "extraction_notes": "主要子会社の月次売上高（速報ベース）表から、各社の単月当年度売上高を抽出。",
@@ -28,6 +30,6 @@
   "sample_submission_date": "2026-03-10",
   "fields_count": 2,
   "manual_override": true,
-  "manual_override_note": "NG96調査結果に基づくadapter修正（yoy_offset/unit_scale/regex等）",
-  "manual_override_at": "2026-04-08T21:05:27.288748+09:00"
+  "manual_override_note": "unit_scale=1000000追加: Gemini百万円/円混在修正。description統一",
+  "manual_override_at": "2026-05-13"
 }

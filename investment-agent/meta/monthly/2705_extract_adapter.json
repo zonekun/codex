@@ -4,70 +4,52 @@
   "doc_title_pattern": "(\\d{4})年(\\d{1,2})月度の月次売上高等に係る昨年対比増減率について",
   "year_from_title_regex": "(\\d{4})年",
   "month_from_title_regex": "(\\d{1,2})月",
+  "extraction_method": "gemini",
+  "custom_prompt": "この月次売上高等の昨年対比増減率テキストから以下を抽出してください。テキストには「全店」セクションと「既存店」セクションがあります。\n1. 全店売上高（千円）: 全店セクションの売上高の金額値（千円単位）\n2. 全店昨対増減率: 全店セクションの昨対増減率の%値。+5.2%なら105.2、-3.1%なら96.9を返す\n3. 稼働店舗数: 全店の稼働店舗数\n4. 既存店売上高昨対増減率: 既存店セクションの売上高の昨対増減率。+5.2%なら105.2を返す\n5. 既存店客数昨対増減率: 既存店セクションの客数の昨対増減率。+5.2%なら105.2を返す\n6. 既存店客単価昨対増減率: 既存店セクションの客単価の昨対増減率。+5.2%なら105.2を返す\n増減率は全て100+増減値の形式で返してください。",
   "fields": [
     {
       "key": "全店 売上（百万円）",
       "name": "全店 売上（百万円）",
-      "row_label_regex": "全店売上高",
+      "description": "全店セクションの売上高（千円単位の値をそのまま返す）",
       "value_type": "integer",
-      "use_last_number": true,
-      "notes": "単位は千円。百万円に変換するには1000で割る必要あり。"
+      "unit_scale": 0.001
     },
     {
       "key": "全店 売上（前年同月比）",
       "name": "全店 売上（前年同月比）",
-      "row_label_regex": "昨対増減率",
-      "value_type": "percentage",
-      "use_last_number": true,
-      "bc_key": "全店 売上（百万円）",
-      "unit_scale": 0.001
+      "description": "全店セクションの昨対増減率。+5.2%なら105.2、-3.1%なら96.9を返す",
+      "value_type": "percentage"
     },
     {
       "key": "全店 店舗数",
       "name": "全店 店舗数",
-      "row_label_regex": "稼働店舗数",
-      "value_type": "integer",
-      "use_last_number": true,
-      "bc_key": "全店 売上（百万円）",
-      "unit_scale": 0.001
+      "description": "稼働店舗数",
+      "value_type": "integer"
     },
     {
       "key": "既存店 売上（前年同月比）",
       "name": "既存店 売上（前年同月比）",
-      "row_label_regex": "既存店売上高[\\s\\S]*?昨対増減率",
-      "value_type": "percentage",
-      "use_last_number": true,
-      "bc_key": "全店 売上（百万円）",
-      "unit_scale": 0.001
+      "description": "既存店セクションの売上高の昨対増減率。+5.2%なら105.2を返す",
+      "value_type": "percentage"
     },
     {
       "key": "既存店 客数（前年同月比）",
       "name": "既存店 客数（前年同月比）",
-      "row_label_regex": "既存店客数[\\s\\S]*?昨対増減率",
-      "value_type": "percentage",
-      "use_last_number": true,
-      "yoy_offset": 100
+      "description": "既存店セクションの客数の昨対増減率。+5.2%なら105.2を返す",
+      "value_type": "percentage"
     },
     {
       "key": "既存店 客単価（前年同月比）",
       "name": "既存店 客単価（前年同月比）",
-      "row_label_regex": "既存店客単価[\\s\\S]*?昨対増減率",
-      "value_type": "percentage",
-      "use_last_number": true,
-      "yoy_offset": 100.0
+      "description": "既存店セクションの客単価の昨対増減率。+5.2%なら105.2を返す",
+      "value_type": "percentage"
     }
   ],
-  "extraction_notes": "2026年2月度のデータは、文書内の「第 43期下半期（2025 年10 月～2026年３月）」の表の5番目の列から抽出しています。全店売上高の単位は千円です。",
   "ticker": "2705",
-  "company_name": "2705",
+  "company_name": "大戸屋HD",
   "created_at": "2026-03-28T16:33:13.371867+09:00",
-  "created_by": "gemini-2.5-flash",
-  "sample_doc_title": "2026年2月度の月次売上高等に係る昨年対比増減率について",
-  "sample_submission_date": "2026-03-04",
   "fields_count": 6,
   "manual_override": true,
-  "manual_override_note": "auto-detection誤り修正: 誤yoy_offset/unit_scale削除",
-  "manual_override_at": "2026-04-09T15:50:11.583813+09:00",
-  "custom_prompt": "このPDFのテーブルは上半期（4月-9月）と下半期（10月-3月）に分かれています。\n対象月が含まれるテーブルから取得してください。\n「全店売上高」行と「昨対増減率」行は別です。\n- 「売上（百万円）」→「全店売上高」行（千円単位の数値）\n- 「売上（前年同月比）」→「昨対増減率」行（%の数値）\n- 「店舗数」→「稼働店舗数」行（括弧の外の数値）\n増減率の値（例: 14.6）をそのまま返してください。",
-  "_reverse_mapping_applied_at": "2026-04-18T23:55:03.779406+09:00"
+  "manual_override_note": "regex→gemini: 累計表構造でregexが不安定 + yoy_offset変換をGeminiプロンプトで直接指示(100+増減値)",
+  "manual_override_at": "2026-05-13"
 }

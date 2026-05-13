@@ -51,7 +51,21 @@ QUICK と IFIS の最新データを FULL OUTER JOIN し、QUICK 優先・IFIS�
 
 > **使用箇所**: `zaraba_earnings.py`（_load_or_fetch_consensus）、`lib_conse_csv_from_view.py`、`predict.py`（predict単日モード）
 
-> **VIEW 不使用（as-of クエリ）**: `predict.py backfill` は `DATAAT <= predict_date` の過去時点参照が必要なため VIEW を使わず CONSENSUS テーブル 1-pass 取得 + pandas as-of フィルタを使用。
+> **as-of クエリ用 TVF**: `STOCK.F_CONSENSUS_MERGED_ASOF(as_of_date DATE)` — V_CONSENSUS_MERGED と同等のマージロジックに `DATAAT <= as_of_date` フィルタを追加した Table Function（2026-05-12作成）。アドホック調査・単日クエリ向け。旧 `fn_consensus_merged_asof`（DATAAT無し）は廃止・DROP済み。
+>
+> | カラム名 | 型 | 説明 |
+> |---------|-----|------|
+> | TICKER | STRING | 銘柄コード（4桁）。COALESCE(QUICK, IFIS) |
+> | FY | STRING | 決算期（YYYYMM）。COALESCE(QUICK, IFIS) |
+> | QUARTER | STRING | 四半期区分。COALESCE(QUICK, IFIS) |
+> | DATAAT | DATE | 取得日。COALESCE(QUICK, IFIS) |
+> | REVENUE | INTEGER | 売上高（百万円）。QUICKのみ |
+> | OP_PROFIT | INTEGER | 営業利益（百万円）。QUICKのみ |
+> | ORD_PROFIT | INTEGER | 経常利益（百万円）。QUICK優先・IFIS補完 |
+> | NET_PROFIT | INTEGER | 純利益（百万円）。QUICKのみ |
+> | EPS | FLOAT64 | EPS（円）。QUICKのみ |
+>
+> **backfill パス**: `predict.py backfill` は CONSENSUS テーブル 1-pass 取得（SOURCE列付き） + pandas 側で QUICK優先マージ + as-of フィルタを使用（V_CONSENSUS_MERGED と同等ロジック）。
 
 **`consensus_result.csv` スキーマ（廃止予定 — RAKU廃止に伴い不要）:**
 

@@ -1,13 +1,14 @@
--- fn_consensus_merged_asof: 指定日時点のQUICK優先・IFIS補完マージTVF
--- TARGET列廃止、5項目対応
--- 実行日: 2026-05-05
+-- F_CONSENSUS_MERGED_ASOF: 指定日時点のQUICK優先・IFIS補完マージTVF
+-- V_CONSENSUS_MERGED と同等ロジック + DATAAT <= as_of_date フィルタ
+-- 旧 fn_consensus_merged_asof (DATAAT無し) は廃止・DROP済み
+-- 更新日: 2026-05-12
 
-CREATE OR REPLACE TABLE FUNCTION `gmailpj-357912.STOCK.fn_consensus_merged_asof`(
+CREATE OR REPLACE TABLE FUNCTION `gmailpj-357912.STOCK.F_CONSENSUS_MERGED_ASOF`(
   as_of_date DATE
 ) AS (
   WITH quick_latest AS (
     SELECT
-      TICKER, FY, QUARTER,
+      TICKER, FY, QUARTER, DATAAT,
       REVENUE, OP_PROFIT, ORD_PROFIT, NET_PROFIT, EPS
     FROM `gmailpj-357912.STOCK.CONSENSUS`
     WHERE SOURCE = 'QUICK'
@@ -19,7 +20,7 @@ CREATE OR REPLACE TABLE FUNCTION `gmailpj-357912.STOCK.fn_consensus_merged_asof`
   ),
   ifis_latest AS (
     SELECT
-      TICKER, FY, QUARTER,
+      TICKER, FY, QUARTER, DATAAT,
       ORD_PROFIT
     FROM `gmailpj-357912.STOCK.CONSENSUS`
     WHERE SOURCE = 'IFIS'
@@ -33,12 +34,12 @@ CREATE OR REPLACE TABLE FUNCTION `gmailpj-357912.STOCK.fn_consensus_merged_asof`
     COALESCE(q.TICKER, i.TICKER) AS TICKER,
     COALESCE(q.FY, i.FY) AS FY,
     COALESCE(q.QUARTER, i.QUARTER) AS QUARTER,
+    COALESCE(q.DATAAT, i.DATAAT) AS DATAAT,
     q.REVENUE,
     q.OP_PROFIT,
     COALESCE(q.ORD_PROFIT, i.ORD_PROFIT) AS ORD_PROFIT,
     q.NET_PROFIT,
-    q.EPS,
-    as_of_date AS AS_OF_DATE
+    q.EPS
   FROM quick_latest q
   FULL OUTER JOIN ifis_latest i
     ON q.TICKER = i.TICKER

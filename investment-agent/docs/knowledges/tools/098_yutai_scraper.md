@@ -15,7 +15,7 @@
 |---------|------|---------|
 | `C:\tmp\format_yutai_38.py` | 38件テスト用フォーマットスクリプト（FORMATTED dict埋め込み） | 検証完了後に削除可 |
 | `data/logs/yutai_raw_202605.jsonl` | 38件テスト用の生データJSONL | 本番走査時に上書きされる |
-| `data/logs/yutai_formatted_202605.jsonl` | 38件テスト用の加工済みJSONL | 本番走査時に再生成 |
+| `data/logs/yutai_formatted_202605.jsonl` | 38件加工済みJSONL（Codex生成 2026-05-09） | 本番走査時に再生成 |
 
 ## 概要
 

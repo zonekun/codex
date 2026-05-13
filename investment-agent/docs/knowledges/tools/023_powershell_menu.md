@@ -102,6 +102,10 @@ PS1メニューには、対話型サブメニューが必要なスクリプト�
 
 ## 構成の設計ポイント
 
+### カレントディレクトリ（Push-Location）
+
+全メニュー項目は実行前に `Push-Location $PROJECT_DIR` でプロジェクトルートに移動する。専用ハンドラ（IsXxx）は各ブロック内で、通常項目は else ブロックで実施。`src.core.config` がモジュールロード時に `config/settings.yaml` を相対パスで開くため、プロジェクトルートでないと `FileNotFoundError` になる。
+
 ### bat → ps1 の2層構成
 
 ```bat
