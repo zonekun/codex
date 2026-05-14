@@ -72,6 +72,13 @@ git push origin codex/integration
 
 `$codexProtected` に新しい Codex 専用ファイルを追加する場合は、先にそのファイルを `codex/integration` の `HEAD` に入れる。Claude Code 側に存在しないファイルは、`HEAD` に追跡済みでない限り一括上書き後に復元できない。
 
+Codex 専用の Python / PowerShell / helper script を追加・復元・恒久化する場合は、同じ作業で必ず次を満たす。
+
+1. ファイルを `codex/integration` で git 追跡対象にする。
+2. Claude Code 側の一括上書きで消えるパスなら、`$codexProtected` に具体パスを追加する。
+3. 同期手順の事後検証でそのパスが `Test-Path` と `git ls-files --error-unmatch` を通ることを確認する。
+4. Codex-protected helper の変更として `codex/meta` にも同じ変更を反映し、`codex/integration` と `codex/meta` の両方を push する。
+
 ## 目的
 
 Claude Code 側で継続編集・管理されるファイルを、Codex 側へ安全に取り込むための手順。
