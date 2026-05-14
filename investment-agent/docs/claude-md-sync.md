@@ -46,7 +46,22 @@ Claude Code 側のソースコード最新版を Codex へ取り込む場合は�
 ```powershell
 git fetch https://github.com/zonekun/claude.git master:refs/remotes/claude/master
 git restore --source=refs/remotes/claude/master -- investment-agent
-git restore --source=HEAD -- investment-agent/AGENTS.md investment-agent/docs/claude-md-sync.md investment-agent/docs/codex-to-claude-handoff.md investment-agent/docs/codex investment-agent/scripts/setup_codex_uv.ps1 investment-agent/scripts/sync_claude_md.py investment-agent/scripts/sync_codex_secrets.py
+$codexProtected = @(
+  "investment-agent/AGENTS.md",
+  "investment-agent/docs/claude-md-sync.md",
+  "investment-agent/docs/codex-to-claude-handoff.md",
+  "investment-agent/docs/codex",
+  "investment-agent/scripts/setup_codex_uv.ps1",
+  "investment-agent/scripts/sync_claude_md.py",
+  "investment-agent/scripts/sync_codex_secrets.py",
+  "investment-agent/scripts/codex_line_wait.py"
+)
+git restore --source=HEAD -- $codexProtected
+foreach ($path in $codexProtected) {
+  if (-not (Test-Path -LiteralPath $path)) { throw "Codex protected path missing after source sync: $path" }
+  git ls-files --error-unmatch -- $path *> $null
+  if ($LASTEXITCODE -ne 0) { throw "Codex protected path is not tracked after source sync: $path" }
+}
 git diff --stat -- investment-agent
 git add -A -- investment-agent
 git commit -m "chore: mirror claude investment-agent source"
@@ -54,6 +69,8 @@ git push origin codex/integration
 ```
 
 目的は Codex ブランチの内容を Claude Code 側最新へ合わせることであり、Claude Code 側の履歴構造を Codex 側へ持ち込むことではない。Codex オリジナル MD と Codex 専用スクリプトだけは、上記 `git restore --source=HEAD -- ...` で必ず戻す。
+
+`$codexProtected` に新しい Codex 専用ファイルを追加する場合は、先にそのファイルを `codex/integration` の `HEAD` に入れる。Claude Code 側に存在しないファイルは、`HEAD` に追跡済みでない限り一括上書き後に復元できない。
 
 ## 目的
 

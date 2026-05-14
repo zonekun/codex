@@ -21,7 +21,9 @@ For Codex-side LINE bidirectional mode, do not call `scripts\notify.py ntfy --wa
 
 ```powershell
 $ts = Get-Date -Format 'yyyyMMdd_HHmmss'
-$msg = "C:\tmp\codex_line_wait\line_wait_$ts.message.txt"
+$waitDir = "data\logs\codex_line_wait"
+New-Item -ItemType Directory -Force -Path $waitDir | Out-Null
+$msg = Join-Path $waitDir "line_wait_$ts.message.txt"
 Set-Content -Path $msg -Encoding UTF8 -Value "<message>"
 C:\venvs\investment-agent\Scripts\python.exe -u scripts\codex_line_wait.py send-wait `
   --message-file $msg `
@@ -49,7 +51,7 @@ Codex LINE mode must use a foreground wait. The shell output is the handoff boun
 
 Before launching any new foreground wait or sending any LINE/ntfy message:
 
-1. Run `python scripts\codex_line_wait.py status` or inspect `C:\tmp\codex_line_wait\active_gpt_wait.json`.
+1. Run `python scripts\codex_line_wait.py status` or inspect `data\logs\codex_line_wait\active_gpt_wait.json`.
 2. If status is `replied`, read `reply_text` from `status` output or `reply_text_path`, process it as the newest user instruction, then run `python scripts\codex_line_wait.py mark-processed`.
 3. Do not send a new message until any received reply in the active state has been processed.
 
