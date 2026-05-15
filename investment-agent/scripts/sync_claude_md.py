@@ -28,7 +28,13 @@ from pathlib import Path
 JST = timezone(timedelta(hours=9))
 DEFAULT_SOURCE = Path(r"C:\gdrive\claude\investment-agent")
 DEFAULT_TARGETS = ("CLAUDE.md", "data_catalog.md", "docs", "skills")
-DEFAULT_MANIFEST = Path("data/logs/claude_md_sync_manifest.json")
+DEFAULT_MANIFEST = (
+    Path(__file__).resolve().parents[2]
+    / "data"
+    / "codex_state"
+    / "investment-agent"
+    / "claude_md_sync_manifest.json"
+)
 DEFAULT_EXCLUDES = (
     "docs/claude-code-intake-checklist.md",
     "docs/claude-md-sync.md",

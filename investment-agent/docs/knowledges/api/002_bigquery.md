@@ -104,6 +104,11 @@ client = bigquery.Client(project=settings.gcp_project_id, credentials=creds)
 - サービスアカウント: `bq-loader@gmailpj-357912.iam.gserviceaccount.com`
 - `.env` の `GOOGLE_APPLICATION_CREDENTIALS` に設定済み（`src/core/config.py` の `Settings` が読む）
 
+### MCP ツール (`mcp__gcp__bq_query`)
+
+- プロジェクト指定不要（MCP設定で`gmailpj-357912`設定済み）
+- テーブル参照は `gmailpj-357912.STOCK.TABLE_NAME` フルパス
+
 ---
 
 ## テーブル参照の書き方
@@ -292,6 +297,7 @@ for f in table.schema:
 | `TypeError: can only concatenate str (not "int") to str` | TICKERを整数として扱っている | `str(ticker)` で明示変換、またはBQクエリ側で `CAST(TICKER AS STRING)` |
 | `KeyError: 'YEARDATE'` | カラム名の大文字・小文字ミス | `df.columns` で確認。BQは大文字で返す |
 | `403 Access Denied` | サービスアカウントの権限不足 | `roles/bigquery.dataViewer` + `roles/bigquery.jobUser` を確認 |
+| `403 bigquery.jobs.create` | project=`and-and-and`を指定した | BQジョブは`gmailpj-357912`。`and-and-and`はGCS専用 |
 | `403 request failed: the user does not have 'bigquery.readsessions.create' permission` | `google-cloud-bigquery-storage` がインストールされていると `to_dataframe()` が BQ Storage API を自動使用しようとする | `to_dataframe(create_bqstorage_client=False)` を指定して無効化 |
 | `TypeError: data type 'dbdate' not understood` | BQ DATE 列を含む parquet を `pandas.read_parquet()` で読むと DATE 型が未認識 | `pyarrow.parquet.read_table()` で読む。またはBQクエリ側で `CAST(YEARDATE AS STRING)` して文字列で取得 |
 | `UPDATE or DELETE ... would affect rows in the streaming buffer` | streaming insert 直後（数分〜数時間）は DELETE 不可 | 下記「streaming buffer の DELETE 回避」参照 |

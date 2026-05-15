@@ -118,6 +118,8 @@ CLI構成は068 §② のテンプレートを参照（記憶ベース構成禁�
 - **Cloud Build**: `docs/knowledges/` 内の該当ドキュメントからコマンドをコピー。手打ち禁止
 - **Cloud Scheduler / Cloud Run Job**: `--location=us-west1` 統一
 - **時間指定ローカル実行**: `CronCreate` 第一選択
+- **ファイルコピー**: 単純コピー・移動・リネームでは Read/Write/Edit を使わない。`copy`/`xcopy`/`robocopy`/`move` を使う。内容解析・編集が必要な場合のみ Read/Write を許可
+- **ファイルDL**: WebFetchは要約してしまうためファイル取得に使わない。`Invoke-WebRequest` で直接DL
 - **セキュリティ**: APIキーは.envで管理。絶対にコミットしない
 → その他の規約: `004_coding_conventions.md` §GCS非git同期 / §ディスク管理 / §その他
 
@@ -172,7 +174,7 @@ CLI構成は068 §② のテンプレートを参照（記憶ベース構成禁�
 | データ取り込み・更新タスク | `data_catalog.md` |
 | 銘柄属性・会社名・業種 | `docs/data_catalog/bq_stock_code_list.md` |
 | 決算反応モデル EDA・予測 | `059_earnings_model_eda.md` |
-| 決算答え合わせ・反省会 | `059_earnings_model_eda.md` §反省会の運用手順 |
+| 決算答え合わせ・反省会 | `059_earnings_model_eda.md` §反省会の運用手順、ログ: `059-1_hanseikai_log.md` |
 | ザラ場ツール | `066_zaraba_tool.md` |
 | 最新決算表示・XBRL四半期推移 | `099_xbrl_lookup.md` |
 | PS1 / PSメニュー | `023_powershell_menu.md` |
@@ -186,6 +188,7 @@ CLI構成は068 §② のテンプレートを参照（記憶ベース構成禁�
 | EDINET遅延TOBスクリーニング | `008_edinet_delay_tob_screening.md` |
 | 事故・事故報告 | `/md-reviewer` パターン2/4 で `docs/reviews/` に記録 |
 | サブエージェント中断・ハング | `docs/knowledges/tools/100_agent_stuck_recovery.md` |
+| スクリーナー/裁量ツール一覧 | `docs/knowledges/tools/trading_tools_index.md` |
 
 > **全索引**: `docs/knowledges/INDEX.md`
 > **知見ファイル整合義務**: スクリプト変更時・プラン完了時・GCPリソース変更直後に対応知見MDを更新

@@ -44,8 +44,8 @@
 
 - **収集モジュール**: `scripts/edinet_download.py`（Cloud Run Job: `edinet-download`）
 - **スケジュール**: 月〜金 23:50 JST（`edinet-download-daily`）※日次で当日分を自動取得
-- **GCS取得済み日付範囲**: `2024-01-04` 〜 `2025-12-26`（43,959ファイル、482日分）※2021〜2023年は取得中（2026-03-03時点）、2026年分は未取得
-- **BQ（ir_documents_enhanced）**: 0件（2026-03-03時点 TRUNCATE済み。GCSファイルから再ロード予定）
+- **GCS取得済み日付範囲**: `2016-03-10` 〜 現在。全年 12K-15K files / 3K+ tickers で充実
+- **BQ（ir_documents_enhanced）**: 8,394,782行（2026-05-15確認）。2016-2026年全年カバー。2026-05-14〜15 バックフィル完了（94,967docs / 26,875 BQ loaded / 0err）
 - **Embedding フィルタ**: 四半期・半期報告書はメタデータのみ（CHUNK_TEXT=NULL, EMBEDDING=NULL）。有価証券報告書は15セクション除外（財務諸表・注記・監査報告書等）、コーポレートガバナンス=半分チャンク、事業等のリスク=1/4チャンク
 - **ETL スクリプト**: `scripts/edinet_load_parallel.py`（Batch Prediction アーキテクチャ、ストリーミング結果処理）
 

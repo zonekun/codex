@@ -23,7 +23,7 @@ Codex（OpenAI のコーディングエージェント）を実装担当とし�
 ### エントリルール
 
 - エントリは新しい順（newest first）
-- 必須フィールド: `from`, `to`, `status`, `task`
+- 必須フィールド: `from`, `to`, `status`, `task`, `関連計画MD`（なければ `N/A`）
 - `from` / `to` の有効値: `Claude Code`, `Codex`, `User`
 - Codex が `to: Codex` エントリを受けたら `in_progress` → `done` に更新
 - Claude Code が `to: Claude Code` エントリを受けたら `in_progress` → `done` に更新
@@ -36,6 +36,7 @@ Codex（OpenAI のコーディングエージェント）を実装担当とし�
 3. `codex/integration` から必要な変更を `master` に cherry-pick またはマージ
 4. コードレビュー・プロジェクト規約との整合性確認を実施
 5. 必要に応じて CLAUDE.md 規約に合わせた修正を追加
+6. **関連MD更新**（CLAUDE.md §4.3 の4点セット）: 知見MD + 計画MD（伝言板の `関連計画MD` フィールド参照）+ memory + コミット。伝言板の物理削除はこの後
 
 ### 取り込み方式の優先順位
 

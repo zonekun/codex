@@ -28,9 +28,14 @@ PYTHONUTF8=1 python scripts/tdnet_download.py --from 20260217 --to 20260224  # �
 
 # 保存先を変える
 PYTHONUTF8=1 python scripts/tdnet_download.py --save-dir /path/to/dir
+
+# ticker絞り込み（複数指定可、スペース区切り）
+PYTHONUTF8=1 python scripts/tdnet_download.py --from 20260217 --to 20260224 --ticker 3746 9384 9834
 ```
 
 引数の優先順位: `--from`/`--to` > ファイル冒頭の `DATE_MODE`
+
+`--ticker` を指定した場合、TDNet全件取得後に該当tickerのみフィルタしてDLする。
 
 ## 日付指定（ファイル冒頭を直接書き換える）
 

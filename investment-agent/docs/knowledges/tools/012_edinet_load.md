@@ -103,12 +103,12 @@ Embedding 対象外: 経理の状況（連結/個別財務諸表、注記含む�
 - API: Vertex AI Batch Prediction（`google-genai` SDK）
 - **ストリーミング結果処理**: 結果 JSONL を1行ずつ読み込み、即座に BQ insert（OOM 対策。全結果をメモリに保持しない）
 
-### ⑥ BigQuery ロード（ストリーミングインサート）
+### ⑥ BigQuery ロード（GCS 経由 Load Job）
 
-- `insert_rows_json` を使用
-- **100件（チャンク）ごと**のバッチサイズ（通信断絶 SSL EOF 対策）
-- ファイル単位でインサート成否を判定
-- エラー発生時は残チャンクを中断、ファイル全体をエラー扱い
+- **旧**: `insert_rows_json`（streaming insert）→ **新**: GCS に NDJSON を tempfile 経由 upload → `load_table_from_uri`（Load Job）
+- streaming buffer 90分 DML 制限を回避（004 C-5）
+- **冪等性**: Load Job 前に対象 FILE_NAME の既存行を DELETE してから WRITE_APPEND（再実行時の重複防止）
+- GCS 一時ファイル（`batch_prediction/edinet/load_upload_*.jsonl`）は Load Job 成功後に削除
 
 ### ⑦ ロギングとリラン（冪等性）制御
 
@@ -131,9 +131,10 @@ Embedding 対象外: 経理の状況（連結/個別財務諸表、注記含む�
 
 | モード | フロー | 用途 |
 |--------|--------|------|
-| **full**（デフォルト） | Phase 1→2→3 一気通貫 | 日次ロード |
-| **submit** | Phase 1→2(Embedding投入のみ)→state保存→exit | バックフィル開始 |
-| **resume** | state読込→2(Embedding結果適用)→3(BQ Insert)→state削除 | バックフィル完了 |
+| **full**（デフォルト） | Phase 1→2→3 一気通貫 | 日次ロード（Embedding あり） |
+| **backfill** | Phase 1→チャンク化→3（Embedding スキップ） | 大量バックフィル（コスト削減） |
+| **submit** | Phase 1→2(Embedding投入のみ)→state保存→exit | 旧バックフィル開始（Embedding あり） |
+| **resume** | state読込→2(Embedding結果適用)→3(BQ Insert)→state削除 | 旧バックフィル完了 |
 
 ### ローカル実行
 
@@ -226,9 +227,45 @@ edinet-load (resume) [CPU 8-10分] → Embedding 結果取得 → BQ insert → 
 - **マルチプラットフォーム対応済み**: Colab personal / enterprise / Cloud Run で動作
 - **クライアントはすべて遅延初期化**: モジュール import 時には GCP 接続しない。`run_etl()` 内で初回利用時に作成
 - **Batch Prediction**: Vertex AI Batch Prediction を使用。オンライン予測比で約50%コスト削減 + RPM制限なし
-- **ストリーミングインサートのコスト**: BQ ストリーミングインサートは課金対象。大量処理時はコストに注意
+- **Load Job**: streaming insert から GCS 経由 Load Job に移行済み。streaming buffer 課金なし
 - **冪等性**: BQ直接確認が一次判定のため、ログファイルがなくても再実行で重複インサートを防げる
 - **エンコーディング**: 元ファイルは CP932 で作成されていたが、`scripts/edinet_load.py` は UTF-8 に変換済み
 - **Cloud Run デプロイ済み**: Job名 `edinet-load`、リージョン `us-west1`、メモリ 2Gi、タイムアウト 36000s。ビルド設定: `docker/Dockerfile.edinet-load` / `cloudbuild/cloudbuild.edinet-load.yaml`
 - **メインスクリプト**: `scripts/edinet_load_parallel.py`（Batch Prediction アーキテクチャ。旧 ThreadPoolExecutor 版から移行済み）
-- **OOM 対策**: Embedding 結果を全件メモリ保持せず、GCS 上の結果 JSONL をストリーミングで1行ずつ処理して即 BQ insert
+- **OOM 対策**: Embedding を numpy float32 で保持（メモリ 1/8）。結果 JSONL はストリーミングで1行ずつ処理
+- **Embedding マッピング**: `defaultdict(list)` で同一 chunk_text の 1:N マッピング。`seen_content` で送信側 dedup（重複課金防止）
+- **Load Job 冪等性**: DELETE → WRITE_APPEND パターン。FILE_NAME ベースで既存行を削除してから再挿入
+- **state 保存**: NDJSON stream write（旧: 一括 JSON → gzip）。resume 時は旧形式 .json.gz も後方互換で読み込み可
+- **polling deadline**: `_poll_batch_job` に max_wait_sec=7200 のタイムアウト付き
+- **exit code**: エラー発生時は `sys.exit(1)`（004 A-1 準拠）
+
+---
+
+## バックフィル実績
+
+| 実施日 | 対象期間 | 結果 | 備考 |
+|--------|---------|------|------|
+| 2026-03-08〜03-14 | 2024-2025年 | ✅ バックフィル完了 | TRUNCATE後の再構築 |
+| 2026-03-17〜 | 日次 | ✅ 自動実行中 | `edinet-load` Cloud Run Job |
+| 2026-05-14〜05-15 | 2017-2026全年 | ✅ 全年完了 | `edinet-load-backfill` (512Mi/backfillモード)。94,967docs / 26,875 BQ / 0err / 21h。ストリーミングバッチ(50件/batch)で512MiでもOOM回避 |
+
+### バックフィル専用 Cloud Run Job
+
+| 項目 | 値 |
+|------|-----|
+| Job名 | `edinet-load-backfill` |
+| リージョン | `us-west1` |
+| メモリ | 512Mi |
+| CPU | 1 |
+| タイムアウト | 36000s |
+| RUN_MODE | `backfill`（固定） |
+| Docker イメージ | `edinet-load-parallel:latest`（日次と同一） |
+
+```bash
+# 年単位実行（ロット分割不要、512Miで安定稼働）
+gcloud run jobs execute edinet-load-backfill --region us-west1 \
+    --args="--from=20230101,--to=20231231"
+```
+
+**計画**: `docs/plans/tools-012_edinet_backfill_20260513_221200.md`（2017-2023年 + 2026年欠損のバックフィル）
+**計画**: `docs/plans/tools-012_edinet_load_refactor_20260513_223000.md`（TDnetノウハウ反映リファクタ、バックフィル前提）

@@ -117,8 +117,37 @@ code-reviewer / md-reviewer がレビューで検出した「プラン不備」�
 
 ## 蓄積エントリ（新しい順）
 
+### 2026-05-14
+
+- [2026-05-14] plan:scope-unclear | docs/plans/tools-backtest_skill_rebuild_20260514_201840.md Step3-3 | [CR-177] 045からの「移管」方針が045側更新手順欠落+非スコープ宣言と矛盾。二重管理リスク
+- [2026-05-14] content:missing-downstream | docs/plans/tools-backtest_skill_rebuild_20260514_201840.md 構成案§7 | [CR-177] failed_tests.md Case Study Framework（失敗記録テンプレート）の統合先が未定義。BACKTEST_FAIL記録手順が脱落
+- [2026-05-14] content:missing-precondition | docs/plans/tools-backtest_skill_rebuild_20260514_201840.md Step3-1 | [CR-177] Regime Analysis（VIX→日経VI、Fed→日銀）のローカライズ方針が未記載
+- [2026-05-14] content:numeric-inconsistency | docs/plans/tools-backtest_skill_rebuild_20260514_201840.md Step2§5 | [CR-177] 現行スキル合格基準(Sharpe>=0.5)と045基準(Sharpe>1.0)の統一判断が未記載
+- [2026-05-14] plan:no-phased-validation | docs/plans/tools-backtest_skill_rebuild_20260514_201840.md 全体 | [CR-177] smoke test（/backtest-design起動確認）ステップが欠落
+- [2026-05-14] bug:logic-error | scripts/fy_conservative_guidance_screener.py:69-86 | [CR-176] ACTUAL_METRICとINITIAL_FORECAST_METRICで異なる利益指標（operating_profit vs ordinary_profit等）が混在し得るがclassify_rowで種別一致を検証していない
+- [2026-05-14] content:convention-violation | scripts/fy_conservative_guidance_screener.py:872 | [CR-176] main()が常にreturn 0。BQ失敗時もexit 0でA-1アンチパターン違反
+- [2026-05-14] bug:logic-error | scripts/fy_conservative_guidance_screener.py:87-94 | [CR-176] REVISION_FORECAST_METRICのCOALESCEがFORECAST_*（当期修正）をNEXT_YEAR_FORECAST_*（翌期修正）より優先。翌期リビジョン検索のJOINと不整合
+- [2026-05-14] bug:logic-error | scripts/fy_conservative_guidance_screener.py:34-55 | [CR-176] STOCK_CODE_LISTのTICKER重複排除なし。複数行存在時にinitial_eventsがファンアウト
+- [2026-05-14] md:ambiguous-action | docs/knowledges/tools/083_codex_collaboration.md L47 | [MR-175] 取り込み方式「ファイルコピー」が方式名のみで実行手段（Copy-Item/cp）未記載。Read+Writeコピーを許容し887行分トークン浪費
+- [2026-05-14] md:stale-context | docs/data_catalog/bq_fin_summary.md L285,L388 | [MR-170] 是正措置でL268-269は修正されたがL285「毎日21:00」・L388「更新（毎日21:00）」が残存。同一ファイル内でスケジュール矛盾
+- [2026-05-14] md:missing-stop-condition | docs/knowledges/tools/005_cloudrun_job_deploy.md §⑦ | [MR-170] Scheduler作成手順にドキュメント更新チェックポイント不在。data_catalog同期漏れの構造的原因
+- [2026-05-14] md:missing-stop-condition | docs/knowledges/tools/093_monitoring_obligation.md L1-6 | [MR-174] 「監視の定義」が冒頭に不在。手順列挙のみで「ツール設定=監視」の誤認パターンを助長（MR-068→080→174 同根3回目）
+- [2026-05-14] md:missing-source-verification | docs/knowledges/tools/093_monitoring_obligation.md 全体 | [MR-173] Monitorスクリプト完了判定条件の推奨テンプレート不在。AIが推測で条件式を構築し未検証で投入（3回目の同種事故: 068→080→173）
+- [2026-05-14] bug:logic-error | scripts/edinet_load_parallel.py:556-561 | [CR-172] ticker_from指定時のGCS prefix絞り込みが1銘柄のみスキャン。ticker_from+1以降が全欠落
+- [2026-05-14] bug:logic-error | scripts/edinet_load_parallel.py:582-595 | [CR-172] blob名に日付がない場合に日付フィルタがバイパスされ全期間blobが混入
+- [2026-05-14] perf:memory-leak | scripts/edinet_load_parallel.py:627-637 | [CR-172] Phase1後にdoc.textがメモリに残り続け512Mi OOMの主因になり得る
+- [2026-05-14] perf:unnecessary-init | scripts/edinet_load_parallel.py:1030 | [CR-172] backfillモードで不要なgenai_client初期化（メモリ浪費+権限エラーリスク）
+- [2026-05-14] bug:race-condition | scripts/edinet_load_parallel.py:931-948 | [CR-172] DELETE→Load Jobの非原子性。Load失敗時に既存データ喪失
+- [2026-05-14] content:convention-violation | scripts/edinet_load_parallel.py:172,482,1198 | [CR-172] print()直接使用。CLAUDE.md §7 structlog規約違反
+- [2026-05-14] md:missing-stop-condition | docs/knowledges/tools/005_cloudrun_job_deploy.md 全体 | [MR-171] .gcloudignoreメンテナンス手順・ビルドコンテキスト確認が完全欠落。AIがデプロイ手順に従っても肥大化を検知不能
+- [2026-05-14] md:missing-source-verification | docs/knowledges/tools/005_cloudrun_job_deploy.md §⑩ | [MR-171] よくある罠テーブルにビルドコンテキスト肥大化パターンが未登録
+
 ### 2026-05-13
 
+- [2026-05-13] content:unverified-assumption | docs/plans/tools-012_edinet_load_refactor P0-3 | [CR-170] custom_id方式を提案するがVertex AI Embedding Batchでの透過が未検証。TDnetはdefaultdict(list)方式で解決済み
+- [2026-05-13] plan:no-phased-validation | docs/plans/tools-012_edinet_load_refactor P0-1 | [CR-170] Load Job化後の冪等性設計（重複INSERT防止）が未記載。再実行時に重複行が発生する
+- [2026-05-13] content:missing-downstream | docs/plans/tools-012_edinet_load_refactor P0-2 | [CR-170] numpy導入するがDockerfileへの依存追加が計画に含まれていない
+- [2026-05-13] bug:error-swallowing | scripts/edinet_load_parallel.py:714-724,790-801 | [CR-170] Embedding結果取得のexcept continue がsilentに失敗を握り潰し。errorsカウンターに合流せずexit 0
 - [2026-05-13] content:missing-downstream | scripts/earnings_model/earnings_model_core.py (グループキャップ設計) | [CR-169] キャップ発火時にreasonsとscoreが乖離。キャップ適用のreason行追加が設計に含まれていない
 - [2026-05-13] content:regression-risk-missed | scripts/earnings_model/earnings_model_core.py:130-135 | [CR-169] F5翌期予想非開示ペナルティ(-1)を_guidance_groupに蓄積する設計。現時点は安全だが将来グループ拡張時に相殺リスク
 - [2026-05-13] plan:ambiguous-scope | docs/plans/tools-059_hanseikai_split_20260513_200110.md P0-1 L72-103 | [CR-168] Bash echo追記のエンコーディング・原子性リスク未記載。Git Bash限定/ヘッダー一括echo化の指針なし

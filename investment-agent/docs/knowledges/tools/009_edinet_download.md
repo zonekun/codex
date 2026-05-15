@@ -34,7 +34,7 @@ Colab のセルで実行:
 |------|-----------|------|
 | `PRODUCTION_MODE` | `(RUNTIME == "cloudrun")` | Cloud Run では自動的に `True`（JPX全銘柄）。Colab/ローカルでは `False`（TEST_TICKERSのみ）。環境変数 `EDINET_PRODUCTION=true/false` でオーバーライド可 |
 | `TEST_TICKERS` | `["7203"]` | テストモード時の対象コード |
-| `DATE_SELECT_MODE` | `1` | `1`=今日 / `2`=SPECIFIED_DATE / `3`=RANGE_START_DATE〜今日 |
+| `DATE_SELECT_MODE` | `1` | `1`=今日 / `2`=SPECIFIED_DATE / `3`=RANGE_START_DATE〜今日。**`--from`/`--to` 引数指定時は無視される** |
 | `SPECIFIED_DATE` | `"20260218"` | MODE=2 の日付 (YYYYMMDD) |
 | `RANGE_START_DATE` | `"20240101"` | MODE=3 の開始日 (YYYYMMDD)。終了は常に今日 |
 | `FILTER_BY_DOC_TYPE` | `True` | `True`=指定種別のみ（通常運用） / `False`=全書類（デバッグ） |
@@ -321,3 +321,9 @@ gcs_count = sum(
 ```
 
 差分の「何が未登録か」は分からなくなるが、「件数の差」だけで実用上は十分。
+
+---
+
+## バックフィル計画
+
+**計画**: `docs/plans/tools-012_edinet_backfill_20260513_221200.md`（2017-2023年 + 2026年欠損のGCSダウンロード＋BQロード）

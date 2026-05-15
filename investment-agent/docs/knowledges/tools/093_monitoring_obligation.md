@@ -2,6 +2,14 @@
 
 > 正本: 本ファイル。CLAUDE.md §監視する/見張る からポインタ参照
 
+## 監視の定義
+
+**プロセスを起動すること、ツールを設定すること、コマンドを実行することは監視ではない。** 監視とは、ジョブの現在状態を把握しており、異常に気づき、完了・失敗を適時に検知できる状態を維持し続けることである。
+
+したがって、以下の手順を実行するだけでなく、**ジョブの状態が実際に把握できているか**を各ステップで確認すること。Monitorが動いているか、ScheduleWakeupが発火しているか、想定時間内に完了通知が来たか — これらを能動的に検証し続けることが「見張る」ということ。
+
+> **繰り返し事故パターン（MR-068→080→174）**: 3回とも「ツール/スクリプトの起動・設定を監視行為と混同し、ジョブ状態の能動的把握を怠った」事故。4回目の発生時はcode-reviewer/ai-engineerへエスカレーションし、監視用共通スクリプト等の構造的強制を導入すること。
+
 ## プロセス起動手段
 
 ユーザーから「監視して」「見張っておいて」「watch」「モニター」等の指示を受けた場合、**必ず以下のいずれかのプロセスを立ち上げてから返答する**。テキストで「待機します」「監視開始」等と返すだけで実プロセスを立ち上げないのは**嘘**であり禁止。
@@ -24,9 +32,39 @@
 
 BGスクリプトを起動した場合、**最低1回は意図どおりの動作（状態取得・判定ロジック・ID抽出）が機能していることを確認してから「監視中」と報告する**。未検証のまま「監視中」と報告することは虚偽報告と同等（2026-05-04 068事故: スクリプトのID抽出バグで2.5h検知遅延+2重実行）。
 
+### Cloud Run Job 完了判定の推奨条件式
+
+**推測で条件式を書くな。以下のテンプレートをコピーして使え。**
+
+Monitor スクリプトの完了判定は `succeededCount` / `failedCount` を使う。`status.conditions[0].state` は出力形式が不安定で判定ミスの原因になる（MR-173: 3分完了のジョブをMonitor 2回タイムアウトで検知できず）。
+
+```bash
+# ✅ 推奨: succeededCount/failedCount で判定
+while true; do
+  result=$(gcloud run jobs executions describe <EXEC_NAME> --region us-west1 \
+    --format="csv[no-heading](status.succeededCount,status.failedCount,status.runningCount)" 2>/dev/null || echo ",,")
+  succ=$(echo "$result" | cut -d, -f1)
+  fail=$(echo "$result" | cut -d, -f2)
+  running=$(echo "$result" | cut -d, -f3)
+  if [ "${running:-0}" = "0" ] && { [ "${succ:-0}" != "0" ] || [ "${fail:-0}" != "0" ]; }; then
+    echo "DONE: succeeded=$succ failed=$fail"
+    break
+  fi
+  sleep 30
+done
+
+# ❌ 非推奨: state="True" は出力形式が不安定
+# state=$(gcloud ... --format="value(status.conditions[0].state)")
+# if [ "$state" = "True" ]; then ...  ← これは使うな
+```
+
+**使用時の義務**: テンプレートを使った場合でも、Monitor起動後に1回のポーリングサイクル（30秒）を待ち、ログ出力で判定ロジックが動作していることを確認すること。
+
 ## BGスクリプト監視時の ScheduleWakeup 併用必須
 
-`Bash(run_in_background=true)` でポーリングスクリプトを起動した場合、スクリプトは最終状態（SUCCEEDED/最終FAILED）のみを `task-notification` で返す。中間障害（FAILED→再投入失敗、ID抽出バグ、ネットワーク断等）はエージェントに通知されない。**BGスクリプト単独監視は禁止。ScheduleWakeup（1-2時間おき）を併用必須**とし、エージェント自身が定期的に起きて進捗メトリクスを直接確認すること。`Monitor` でstdoutを購読するケースはこの限りでない。
+`Bash(run_in_background=true)` でポーリングスクリプトを起動した場合、スクリプトは最終状態（SUCCEEDED/最終FAILED）のみを `task-notification` で返す。中間障害（FAILED→再投入失敗、ID抽出バグ、ネットワーク断等）はエージェントに通知されない。**BGスクリプト単独監視は禁止。ScheduleWakeup（1-2時間おき）を併用必須**とし、エージェント自身が定期的に起きて進捗メトリクスを直接確認すること。
+
+**Monitor 使用時も免除しない**: `Monitor` でstdoutを購読する場合でも、ジョブの想定完了時間の1.5倍を超えるScheduleWakeupを併設し、Monitor不調時のフォールバック手動確認を確保すること（MR-174: Monitorが機能せず3分完了のジョブを30分以上検知できなかった）。
 
 ## コンテキスト圧縮後のBGプロセス棚卸し
 

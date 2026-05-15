@@ -31,6 +31,7 @@
 | EDINET遅延報告TOBスクリーニング | `docs/knowledges/analysis/008_edinet_delay_tob_screening.md` |
 | 決算スケジュール減衰（Earnings Schedule Decay） | `docs/knowledges/analysis/009_earnings_schedule_decay.md` |
 | 決算じっくり分析（セグメント構成変化等、中長期視点の深掘り） | `docs/knowledges/analysis/093_earnings_deep_analysis.md` |
+| FY弱気ガイダンス反復スクリーニング | `docs/knowledges/analysis/014_fy_conservative_guidance_screener.md` |
 | スクリプトを新規作成・改修 | `docs/knowledges/tools/004_coding_conventions.md` |
 | コードレビュー不備の蓄積ログ・傾向分析（※メインエージェントは閲覧のみ。追記は Agent ツールで起動した reviewer サブエージェントの責務） | `docs/knowledges/tools/004-1_code_review_findings_log.md` |
 | MDレビュー（AI可読性レビュー） | `/md-reviewer`（正本: `skills/md-reviewer.md`） |
@@ -79,6 +80,7 @@
 | 決算反応モデル EDA・予測・答え合わせ（ノートブック構成・スコアリング・GCS保存） | `docs/knowledges/tools/059_earnings_model_eda.md` |
 | 決算答え合わせ（`earnings_model_predict.ipynb`） | `docs/knowledges/tools/059_earnings_model_eda.md`（「予測 & 答え合わせノートブック」セクション） |
 | 決算答え合わせ反省会（データ一括DL + 銘柄分析） | `scripts/earnings_model/download_review_data.py` → `docs/knowledges/tools/059_earnings_model_eda.md`（「反省会の運用」セクション） |
+| 決算反応モデル反省会ログ（銘柄別ログ・改善方針の時系列記録） | `docs/knowledges/tools/059-1_hanseikai_log.md` |
 | 決算予測・答え合わせの複数日バッチ再実行（BQクエリ7本共通化・04/14等を保全） | `scripts/earnings_model/batch_rerun_predict.py` → `docs/knowledges/tools/059_earnings_model_eda.md`（「バッチ再実行」セクション） |
 | 決算反応モデル学習データ除外管理 | `docs/knowledges/tools/076_earnings_exclusion_mechanism.md` |
 | ディスク容量クリーンアップ（data/logs + ~/.claude/ キャッシュ・stale projects） | `docs/knowledges/tools/077_cleanup_disk.md` |
@@ -97,6 +99,7 @@
 | 011-3: クラスタ間クロスリードラグ（バリエーション3、**FAIL**） | `docs/knowledges/analysis/011-3_cluster_cross_leadlag.md` |
 | 011-4: 米国セクターETF→日本セクターETF（論文再現） | `docs/knowledges/analysis/011-4_us_japan_sector_leadlag.md` |
 | 月次開示→決算予測 ミスプライシングスクリーニング | `docs/knowledges/analysis/012_monthly_disclosure_earnings_screening.md` |
+| サプライチェーン決算連鎖（先行好決算→後攻決算またぎ） | `docs/knowledges/analysis/013_supply_chain_earnings_cascade.md` |
 | データカタログ日付ポリシー | `docs/knowledges/data/001_data_catalog_date_policy.md` |
 | EDINET 2024ダウンロード状況 | `docs/knowledges/data/002_edinet_2024_download_status.md` |
 | 日証金データ ソース切替（MARGIN_BALANCE/SHINA_RATES、2025-09-26境界） | `docs/knowledges/data/003_taisyaku_source_switch.md` |
@@ -147,6 +150,7 @@
 | レビュー提出・返却・苦情申し立て（提出側ワークフロー統合） | `docs/knowledges/tools/097_review_submission_guide.md` |
 | 株主優待情報取得（松井証券リサーチネット経由・Codex連携） | `docs/knowledges/tools/098_yutai_scraper.md` |
 | 株主優待 構造化加工プロンプト（JSONL→Excel変換指示） | `docs/knowledges/tools/098_yutai_format_prompt.md` |
+| **裁量トレーディングツール索引**（スクリーナー/ザラバ/シグナル/深掘り一覧） | `docs/knowledges/tools/trading_tools_index.md` |
 
 ---
 

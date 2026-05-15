@@ -13,6 +13,8 @@
 | (c) | ローカル CSV (`data/csv/`) | BQ/GCS の一部をコピーして分析に使用 |
 | (d) | 外部API + キャッシュ (`data/cache/`) | J-Quants, yfinance等のAPI + レスポンスキャッシュ |
 
+> **プロジェクト使い分け**: BQジョブ実行=`gmailpj-357912` / GCSバケット=`and-and-and`。BQに`and-and-and`を使うと403。
+
 ## (a) BigQuery （プロジェクト: `gmailpj-357912`）
 
 | テーブル名 | 説明 | 更新頻度 | 詳細 |

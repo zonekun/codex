@@ -45,4 +45,11 @@
 | 19 | page1.jpg, page2.jpg | 予測市場トレーディングボット書籍画像 | `053_prediction_market_bot_ideas.md` |
 | | **japan_us_sector_leadlag_pca/** | | |
 | 20 | [README.md](japan_us_sector_leadlag_pca/README.md) | 部分空間正則化PCAで米国セクターETF→日本セクターETF翌日Open-to-Closeを予測。Carhart4 α=22.23%/yr、R/R=2.22、MDD=9.58% | — |
+| 21 | [20260513_customer_momentum_supply_chain.md](web/20260513_customer_momentum_supply_chain.md) | Customer Momentum論文サーベイ。Cohen & Frazzini (2008)原典+再検証6本+実務拡張2本。サプライチェーン決算連鎖戦略の学術的根拠 | `013_supply_chain_earnings_cascade.md` |
+| 21a | [CohenFrazzini2008_economic_links.pdf](web/CohenFrazzini2008_economic_links.pdf) | Cohen & Frazzini (2008) "Economic Links and Predictable Returns". 顧客モメンタムL/S月次150bps。Limited Attention仮説 | #21 原典 |
+| | **backtest-expert/** | | |
+| 22 | [SKILL.md](backtest-expert/SKILL.md) | backtest-expert スキル本体。"壊れにくい戦略を探す"哲学、ワークフロー6ステップ、ストレステスト手法 | `skills/backtest_design.md` |
+| 23 | [methodology.md](backtest-expert/methodology.md) | Seven Sins of Quantitative Investing + 方法論詳細（Regime Analysis, Walk-Forward, Slippage） | `skills/backtest_design.md` |
+| 24 | [failed_tests.md](backtest-expert/failed_tests.md) | 失敗パターン6類型 + Case Study Framework + Red Flags Checklist | `skills/backtest_design.md` |
+| 25 | [evaluate_backtest.py](backtest-expert/evaluate_backtest.py) | 5次元スコアリングCLI（Sample Size/Expectancy/Risk Mgmt/Robustness/Exec Realism、100点満点） | `045_backtest_evaluation_metrics.md` |
 

@@ -196,9 +196,24 @@ gcloud logging read \
 > **過去事故（2026-04-25）**: サロゲート修正を Cloud Build したが `jobs update` を忘れ、3 Job が旧イメージで再失敗。
 
 ```bash
-# 再ビルド & プッシュ & Job 自動更新（§③ テンプレート準拠の cloudbuild.yaml）
-gcloud builds submit --config cloudbuild/cloudbuild.<jobname>.yaml \
-  --gcs-source-staging-dir gs://gmailpj-357912-cloudbuild/source .
+# 再ビルド & プッシュ & Job 自動更新（一時ビルドディレクトリ方式）
+# Google Drive上で gcloud builds submit するとプロジェクト全体がアップロードされ遅い（MR-171: 3216ファイル/20.5MiB）
+# → ローカルSSD上に一時ディレクトリを作り、必要ファイルだけコピーしてビルドする
+
+# 1. 一時ビルドディレクトリ作成 & 必要ファイルのみコピー
+BUILD_DIR=$(mktemp -d /c/tmp/cloudbuild-XXXXXX)
+mkdir -p "$BUILD_DIR/docker" "$BUILD_DIR/scripts"
+cp docker/Dockerfile.<jobname> "$BUILD_DIR/docker/"
+cp scripts/<script>.py "$BUILD_DIR/scripts/"
+# ※ Dockerfile の COPY で参照する全ファイルをコピーすること
+
+# 2. 一時ディレクトリからビルド送信
+gcloud builds submit "$BUILD_DIR" \
+  --config cloudbuild/cloudbuild.<jobname>.yaml \
+  --gcs-source-staging-dir gs://gmailpj-357912-cloudbuild/source
+
+# 3. 後片付け
+rm -rf "$BUILD_DIR"
 
 # フォールバック: cloudbuild.yaml に自動 update ステップが無い場合のみ手動実行
 gcloud run jobs update <jobname> \
@@ -329,6 +344,7 @@ else:
 | `gsutil rsync -r ...` on Windows | `Permission denied: .../gsutil/VERSION` | **`gcloud storage rsync -r` を使う** |
 | **Playwright ベースイメージのバージョン固定** | `mcr.microsoft.com/playwright/python:v1.50.0-jammy` に `pip install playwright>=1.50` を入れると最新版がインストールされバイナリ不一致でクラッシュ | `pip install "playwright==1.50.0"` とベースイメージと**完全一致**でピンする |
 | **スクリプトリネーム時の Dockerfile パス更新漏れ** | `scripts/foo_v2.py` → `scripts/foo.py` リネーム後に Dockerfile の `COPY`/`ENTRYPOINT` が古いパスのままでビルド失敗 | リネーム時は ① Dockerfile の COPY/ENTRYPOINT、② Dockerfile 自体のリネーム、③ cloudbuild.yaml の参照、④ スケジューラ/Artifact Registry を一括更新。ビルドが通ることを確認してから完了とする |
+| **プロジェクトルートから `gcloud builds submit` するとビルドコンテキスト肥大化** | Dockerfile は1ファイルしか COPY しないのに Google Drive 上のプロジェクト全体 3216ファイル/20.5MiB がアップロードされた（MR-171） | §⑥ の一時ビルドディレクトリ方式を使う。ローカルSSD上に必要ファイルだけコピーしてビルド。Google Drive の遅延も回避できる |
 
 ---
 
@@ -337,7 +353,7 @@ else:
 | Job名 | スクリプト | Artifact Registry | タイムアウト | スケジュール |
 |-------|-----------|-----------------|------------|------------|
 | `tdnet-download` | `scripts/tdnet_download.py` | `tdnet/tdnet-download` | 3600s | 毎営業日 19:10 JST（未設定） |
-| `jquants-fin-summary` | `scripts/jquants_get_fin_summary.py` | `jquants/jquants-fin-summary` | 600s | 未設定 |
+| `jquants-fin-summary` | `scripts/jquants_get_fin_summary.py` | `jquants/jquants-fin-summary` | 600s | 火〜土 02:00 / 月〜金 18:30 JST |
 | `edinet-download` | `scripts/edinet_download.py` | `edinet/edinet-download` | **日数に応じて変更**（1年分=36000s） | 未設定 |
 | `edinet-load` | `scripts/edinet_load.py` | `edinet/edinet-load` | **86400s（24時間）** | 未設定 |
 | `tdnet-load` | `scripts/tdnet_load.py` | `tdnet/tdnet-load` | 3600s | 未設定 |

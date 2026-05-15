@@ -402,17 +402,13 @@
 
 ---
 
-### E5-1: regex adapterでPDF未取得 → BQテキストにサイレントフォールバック
+### E5-1: regex adapterローカルテストの落とし穴
 
 - **一致キー**: `field未マッチ.*text_len=\d{4,5}` かつ extraction_method=regex
-- **確認条件**: GCS `tdnet/{ticker}/` に月次キーワードを含むPDF blobが存在するか。存在するなら `_extract_pdf_by_column` がNone返却（ダミーフィールドのトークンマッチ失敗）。存在しないなら url_adapter.json 欠落。
+- **確認条件**: GCS `tdnet/{ticker}/` にPDF blobが存在し、`_extract_pdf_by_column` がNone返却しているか
 - **除外条件**: extraction_method=gemini の場合は別問題
-- **事例**: 6040 日本スキー場開発 (2026-05-13)。regex adapter作成→ローカルでtable_to_linesテキストに直接regex適用→全値一致→Cloud Runで全件0マッチ。数時間浪費。原因: `_extract_pdf_by_column` がダミーフィールドでNone返却 → `if not rec:` で BQ full_text にフォールバック → チャンク順不同・テーブル構造崩壊のBQテキストではregex不一致。
-- **根本原因**: extractコードの分岐構造。`_extract_pdf_by_column` が None を返すと、PDFテキストではなくBQ `full_text`（STRING_AGG(CHUNK_TEXT)）に対して `extract_from_tdnet_text` が呼ばれる。regex は table_to_lines テキスト前提で書いてあるため絶対マッチしない。
-- **修復手順**:
-  1. L3611 `if not rec:` の分岐を修正: `_cached_pdf` があり `_has_row_regex` なら、BQ full_text ではなく `_extract_pdf_text(_cached_pdf)` のテキストで `extract_from_tdnet_text` を試す
-  2. ダミーフィールドのトークンマッチが通るようキー名を調整する（根本対策はコード修正）
-- **再発防止（テスト手法）**: regex adapter のローカルテストでは regex を table_to_lines テキストに直接当てるだけでは不十分。`_extract_pdf_by_column` → rec 判定 → フォールバック分岐を含む実コードパスを通すこと。regex 単体マッチ ≠ Cloud Run で動く。
+- **やってはいけない**: table_to_linesテキストにregexを直接当てて「全値一致」で完了とする。Cloud Run上では `_extract_pdf_by_column` → rec判定 → BQフォールバック分岐を経由するため、regex単体マッチでは実際の動作を検証できない
+- **やるべきこと**: `_extract_pdf_by_column` → rec判定 → フォールバック分岐を含む実コードパスを通してテストする。regex単体マッチ ≠ Cloud Runで動く
 - **参照ソース**: `scripts/extract_monthly_data.py` L3575-3635（regex抽出フロー）, L3611（BQフォールバック分岐）
 
 ---

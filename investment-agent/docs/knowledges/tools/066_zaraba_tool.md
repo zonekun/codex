@@ -38,8 +38,8 @@
 |---------|------------|------|
 | `prepare --date YYYYMMDD [--force]` | BQ | 事前準備。BQ から銘柄情報を一括取得してキャッシュ |
 | `catchup --date YYYYMMDD --until HH:MM` | TDnet HTML + XBRL | 指定時刻までの決算短信を TDnet から取得し、XBRL 抽出 & スコアリング → results.csv 追記 |
-| `watch --date YYYYMMDD` | TDnet HTML + XBRL | ザラバ監視。TDnet ポーリング + XBRL 抽出 + スコアリング + rich Live 表示。起動直後に対話プロンプトで指定時間 HHMM (4桁、例 `1100`) を入力する。指定時間±15秒は 0.05秒間隔、+15〜+60秒は 0.2秒間隔、それ以外は 1.0秒間隔の動的ポーリング |
-| `review --date YYYYMMDD` | ローカル CSV | 過去 watch/catchup 結果（results.csv）を時系列で表形式表示 |
+| `watch --date YYYYMMDD` | TDnet HTML + XBRL | ザラバ監視。TDnet ポーリング + XBRL 抽出 + スコアリング + rich Live 表示。起動直後に対話プロンプトで指定時間 HHMM (4桁、例 `1100`) と時価総額フィルタ（億円）を入力する。時価総額フィルタ: `500`=500億以下、`+500` or `>500`=500億以上、無入力=全社。指定時間±15秒は 0.05秒間隔、+15〜+60秒は 0.2秒間隔、それ以外は 1.0秒間隔の動的ポーリング |
+| `review --date YYYYMMDD` | ローカル CSV | 過去 watch/catchup 結果（results.csv）を時系列で表形式表示。時価総額フィルタ対応（gcs-review と同仕様） |
 | `backup` | ローカル | キャッシュ全体を zip でスナップショット保管（バグ調査用）。`backup_*.zip` は除外 |
 
 > **サブコマンド間整合性**: watch と catchup は同じ TDnet ポーラー + XBRL 抽出 + スコアリングパスを共有する。データソースやスコアリングロジックを変更した場合、**両サブコマンドで整合性を確認すること**（教訓: catchup が J-Quants のまま放置され0件返却した事故あり）。

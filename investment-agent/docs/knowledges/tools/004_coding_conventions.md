@@ -606,6 +606,19 @@ AIがN件（N>=3）の対象を手動で反復処理する場合（adapter修正
 
 ---
 
+## Webページングは無限ループ + 終了条件で打ち切る
+
+外部サイト（TDNet等）のページ送りで `range(1, N)` の固定上限は禁止。`while True` + 空ページ/404 で自動停止にする。
+正パターンは `zaraba_tdnet_poller.py` の `fetch_recent()`。
+
+---
+
+## シェルからのPython実行
+
+PowerShellから直接python.exeを叩く。パスは日本語を含まないジャンクション `C:\gdrive\` を使う。here-stringは `@'...'@`（単一引用符）でPythonコード内にバックスラッシュや日本語を入れない。Bash + `source activate` はWindows venvで動かない。
+
+---
+
 ## その他（CLAUDE.mdから委譲）
 
 - **gcloud**: Git Bash を第一選択。クォートを含む複雑なコマンドは PowerShell で事故りやすい
@@ -616,3 +629,4 @@ AIがN件（N>=3）の対象を手動で反復処理する場合（adapter修正
 - **外部API**: 必ずtry/exceptで囲む。リトライはtenacityを使用
 - **設定値**: ハードコーディング禁止。config/以下のYAMLまたは環境変数で管理
 - **新規スクリプト作成時**: Write実行前に本ファイル §新規バッチジョブ作成時チェックリスト および §スクリプト配置・命名 を Read し、全項目を確認してからコーディングに入ること。**配置先は必ず `scripts/` 配下**
+- **裁量ツール索引更新義務**: スクリーナー/ザラバ補助/シグナル系スクリプトの追加・知見MD新規作成時は `docs/knowledges/tools/trading_tools_index.md` の該当行を追加または `—` を実パスに更新する
