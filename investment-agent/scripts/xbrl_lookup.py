@@ -30,6 +30,8 @@ from rich.text import Text
 from scripts.zaraba_tdnet_poller import TdnetHtmlPoller, XbrlExtractor
 from src.core.config import settings
 
+XBRL_LOOKUP_CACHE = Path(r"C:\Users\zonekun\Dropbox\stock\temp\xbrl_lookup")
+
 structlog.configure(
     processors=[
         structlog.processors.add_log_level,
@@ -415,7 +417,7 @@ def lookup(ticker: str) -> None:
     print(f"TDnet {target_date} の開示一覧を取得中...")
     discs = poller.fetch_recent(target_date)
     print(f"  取得件数: {len(discs)}")
-    extractor = XbrlExtractor(target_date)
+    extractor = XbrlExtractor(target_date, xbrl_dir=XBRL_LOOKUP_CACHE / target_date)
 
     # BQ履歴
     cum_rows = _fetch_bq_cumulative(bq, tk4)

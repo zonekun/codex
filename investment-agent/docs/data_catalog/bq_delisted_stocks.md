@@ -3,7 +3,7 @@
 
 | テーブル名 | 説明 | 更新頻度 | 備考 |
 |-----------|------|---------|------|
-| `gmailpj-357912.STOCK.DELISTED_STOCKS` | 上場廃止銘柄マスタ（廃止理由・TOB/MBO判定・買付価格等） | 随時 | `scripts/scrape_jpx_delisted.py`（廃止情報）+ `scripts/fetch_tob_announcements.py`（TOB詳細をEDINETから抽出）|
+| `gmailpj-357912.STOCK.DELISTED_STOCKS` | 上場廃止銘柄マスタ（廃止理由・TOB/MBO判定・買付価格等） | 随時 | `scripts/scrape_matsui_delisted.py`（TOB廃止予定の先行取得）+ `scripts/scrape_jpx_delisted.py`（廃止確定後の本登録）+ `scripts/fetch_tob_announcements.py`（TOB詳細をEDINETから抽出）|
 
 **`STOCK.DELISTED_STOCKS` スキーマ:**
 
@@ -32,8 +32,9 @@
 - `IS_TOB_MBO = TRUE` の銘柄のみ TOB_* カラムが埋まる。FALSE（株式交換・合併・救済・テクニカル廃止）は NULL
 - TOB予測モデル（`docs/knowledges/analysis/007_tob_ml_prediction.md`）の正解ラベルに利用
 - `TOB_TYPE` 判定は `DELISTING_REASON` の文字列マッチで決定（XBRL本文は信頼性低いため不採用）
-- 更新方法: 2段階
-  1. `scripts/scrape_jpx_delisted.py` で JPX 上場廃止一覧をスクレイピング → INSERT
-  2. `scripts/fetch_tob_announcements.py --missing-only` で未抽出の TOB_* を EDINET からバックフィル → UPDATE
+- 更新方法: 3段階
+  1. `scripts/scrape_matsui_delisted.py` で松井証券 公開買付ページから「上場廃止予定」銘柄を先行 INSERT（DELISTING_DATE=NULL, IS_TOB_MBO=NULL）
+  2. `scripts/scrape_jpx_delisted.py` で JPX 上場廃止一覧をスクレイピング → 新規 INSERT + 松井先行分 UPDATE（DELISTING_DATE等を補完）
+  3. `scripts/fetch_tob_announcements.py --missing-only` で未抽出の TOB_* を EDINET からバックフィル → UPDATE
 - **バックフィル実績 (2026-04-20)**: 577件の IS_TOB_MBO=TRUE レコードに対し **299件 (51.8%) で TOB_DOC_ID 取得成功**、うち **288件が IS_PAPER_TOB_LABEL=TRUE**。失敗278件の内訳は分類のみで「TOB無関係」断定は強制廃止8件のみ。詳細は `docs/knowledges/analysis/007_tob_ml_prediction.md`
 

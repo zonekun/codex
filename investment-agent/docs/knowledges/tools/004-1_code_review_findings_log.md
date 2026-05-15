@@ -117,6 +117,19 @@ code-reviewer / md-reviewer がレビューで検出した「プラン不備」�
 
 ## 蓄積エントリ（新しい順）
 
+### 2026-05-15
+
+- [2026-05-15] code:sql-injection | scripts/scrape_jpx_delisted.py:143-159 | [CR-180] update_pending()でTICKER/DELISTING_REASONをf-stringでSQL直接展開。C-1違反
+- [2026-05-15] code:silent-failure | scripts/scrape_jpx_delisted.py:120-137 | [CR-180] get_existing_keys()/get_pending_tickers()がBQクエリ失敗時に空set返却で続行。B-3違反→重複INSERT誘発
+- [2026-05-15] code:logging-violation | scripts/scrape_jpx_delisted.py:88-91 | [CR-180] print()+自作log()使用。structlog未使用（CLAUDE.md§7違反）
+- [2026-05-15] code:exit-code | scripts/scrape_jpx_delisted.py:283-378 | [CR-180] main()にerrorsカウント/sys.exit(1)なし。A-1/A-7違反
+- [2026-05-15] content:filename-mismatch | scripts/scrape_matsui_delisted.py:21-22 | [CR-180] Usage行がscrape_matsui_tob.pyだが実ファイル名はscrape_matsui_delisted.py
+- [2026-05-15] code:sql-injection | skills/classify_tob.md:48-85 | [CR-180] SQLテンプレートでf-string展開を誘導。パラメタライズ未注記
+- [2026-05-15] md:pointer-label-scope | docs/plans/tools-066_zaraba_tool_20260515_193100.md Step2 | [CR-179] 066→066-2ポインタの「答え合わせ」ラベルが移設先4サブセクション（役割分担・精度改善サイクル・パラメータ管理）のスコープを反映していない
+- [2026-05-15] content:completion-criteria-contradiction | docs/plans/tools-066_zaraba_tool_20260515_193100.md Step3c/完了条件2 | [CR-179] 「066-1単体で反省会完結」が完了条件だが、反省会手順が因子表参照で066本体Readを要求。矛盾
+- [2026-05-15] md:tool-boundary-risk | CLAUDE.md:183 §10テーブル | [MR-178] テーブルがRead/Agent起動の行動種別を区別しない。L183のスキル名ポインタがAgent起動ではなくRead→インライン実行に流れる構造的欠陥（MR-110再発）
+- [2026-05-15] md:missing-stop-condition | CLAUDE.md:141-146 §8 / CLAUDE.md:159-191 §10 | [MR-178] §8のAgent/Skill区分と§10テーブルの間に相互参照なし。テーブル経由のスキル実行フローに§8制約が介在しない
+
 ### 2026-05-14
 
 - [2026-05-14] plan:scope-unclear | docs/plans/tools-backtest_skill_rebuild_20260514_201840.md Step3-3 | [CR-177] 045からの「移管」方針が045側更新手順欠落+非スコープ宣言と矛盾。二重管理リスク

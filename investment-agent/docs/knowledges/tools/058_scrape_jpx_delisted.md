@@ -1,44 +1,67 @@
-# JPX 上場廃止銘柄スクレイピング（scrape_jpx_delisted.py）
+# 上場廃止銘柄スクレイピング（JPX + 松井証券）
 
 **カテゴリ**: tools
 **作成日**: 2026-03-28
 **ステータス**: 有効
-**関連ファイル**: `scripts/scrape_jpx_delisted.py`
+**関連ファイル**: `scripts/scrape_jpx_delisted.py`, `scripts/scrape_matsui_delisted.py`
 
 ---
 
 ## 概要
 
-JPX 上場廃止銘柄一覧をスクレイピングし、BQ `STOCK.DELISTED_STOCKS` に追加する。
-ローカル随時起動。Chrome + Selenium で JPX サイトを取得。
+上場廃止銘柄を2つのソースから取得し、BQ `STOCK.DELISTED_STOCKS` に投入する。
+
+| スクリプト | ソース | 取得対象 | タイミング |
+|-----------|--------|---------|-----------|
+| `scrape_matsui_delisted.py` | 松井証券 公開買付ページ | TOB進行中で廃止予定の銘柄 | 先行（廃止前） |
+| `scrape_jpx_delisted.py` | JPX 上場廃止銘柄一覧 | 廃止確定済み銘柄 | 後追い（廃止後） |
+
+**運用フロー**: 松井が先行INSERT（DELISTING_DATE=NULL, IS_TOB_MBO=NULL, TOB_PRICE有）→ JPX が後追いUPDATE（DELISTING_DATE, DELISTING_REASON, FISCAL_YEAR を補完）→ `/classify-tob` で IS_TOB_MBO 未判定分を分類。
+
+### IS_TOB_MBO の意味
+
+| 値 | 意味 | 用途 |
+|----|------|------|
+| TRUE | プレミアム付き買収による廃止（TOB/MBO/スクイーズアウト） | TOB予測モデル（`007_tob_ml_prediction.md`）の正解ラベル候補。さらに `IS_PAPER_TOB_LABEL` で最終フィルタ |
+| FALSE | 買収以外の廃止（株式交換・合併・救済・テクニカル廃止・TDNET文書なし） | 正解ラベル対象外 |
+| NULL | 未判定（スクレイピング直後の状態） | `/classify-tob` で判定する |
 
 ## 実行コマンド
 
+### 松井証券（廃止予定の先行取得）
+
 ```bash
-# 全年度（新規分のみ INSERT）
+# 「上場廃止予定」銘柄を取得→BQ INSERT
+PYTHONUTF8=1 python scripts/scrape_matsui_delisted.py
+
+# BQ書き込みなし
+PYTHONUTF8=1 python scripts/scrape_matsui_delisted.py --dry-run
+```
+
+Selenium不要（requests + BeautifulSoup）。備考列「上場廃止予定」の行のみ抽出。
+INSERT時: DELISTING_DATE=NULL, IS_TOB_MBO=NULL, TOB_PRICE=買付価格。
+既にBQに存在するTICKERはスキップ。
+
+### JPX（廃止確定後の本登録）
+
+```bash
+# 全年度（新規分のみ INSERT + 松井先行分 UPDATE）
 PYTHONUTF8=1 python scripts/scrape_jpx_delisted.py
 
 # 特定年のみ
 PYTHONUTF8=1 python scripts/scrape_jpx_delisted.py --year 2026
 
-# BQ書き込みなし（スクレイピング結果確認）
+# BQ書き込みなし
 PYTHONUTF8=1 python scripts/scrape_jpx_delisted.py --year 2026 --dry-run
-
-# IS_TOB_MBO 判定精度を既存10件で評価（BQ更新なし）
-PYTHONUTF8=1 python scripts/scrape_jpx_delisted.py --eval --eval-year 2025
 ```
+
+松井で先行INSERT済み（DELISTING_DATE=NULL）のTICKERが JPX にも出現した場合、INSERT ではなく UPDATE（DELISTING_DATE, DELISTING_REASON, FISCAL_YEAR を補完）。
 
 ## IS_TOB_MBO 判定方式
 
-BQ `TDNET_DOCUMENTS_ENHANCED` から廃止日前180日分のテキストを取得し Gemini で判定。
+スクレイピング時は `IS_TOB_MBO = NULL` で挿入。判定は `/classify-tob` スキルで実施（Claude が TDNET テキストを読んで会話内で判定）。
 
-| 判定 | 条件 |
-|------|------|
-| True | TOB・MBO・スクイーズアウト（プレミアム付き買収） |
-| False | 株式交換・合併・テクニカル上場廃止・業績不振救済 |
-| False | TDNET 文書なし（BQ未ロード期間含む） |
-
-**注意**: 2025/04〜12 の TDNET データは BQ 未ロード。この期間に廃止した銘柄は文書なし → False になるため手動確認推奨。
+スキル定義: `skills/classify_tob.md`
 
 ## BQ テーブル
 

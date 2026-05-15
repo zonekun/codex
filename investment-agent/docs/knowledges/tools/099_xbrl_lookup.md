@@ -40,6 +40,8 @@ PS1メニューから「最新決算表示」で実行。銘柄コードを対�
 | 最新Q実績 | TDnet XBRL（iXBRL） | 最新決算の累計値 |
 | 過去Q実績 | BQ `STOCK.fin_summary` | 過去3年の累計値 |
 
+XBRL ZIP 保存先: `C:\Users\zonekun\Dropbox\stock\temp\xbrl_lookup\{YYYYMMDD}\`（ザラ場ツールの `C:\tmp\zaraba_cache` とは独立）
+
 ## 表示項目
 
 累計値からQ standalone を算出して表示。全FYに累計行を挿入（Q≥2の場合）。ラベルは `2累`/`3累`/`Y累`。最新FYでは先頭、過去FYでは累計対象Q群の直前（例: 3累なら4Qと3Qの間）に配置。YoY は前年同期間の累計と比較。

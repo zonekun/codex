@@ -676,8 +676,8 @@ def _extract_tdnet_pl(
 class XbrlExtractor:
     """TDnet XBRL ZIP のダウンロードと PL 抽出."""
 
-    def __init__(self, target_date: str) -> None:
-        self._xbrl_dir = CACHE_BASE / target_date / "xbrl"
+    def __init__(self, target_date: str, xbrl_dir: Path | None = None) -> None:
+        self._xbrl_dir = xbrl_dir or (CACHE_BASE / target_date / "xbrl")
         self._xbrl_dir.mkdir(parents=True, exist_ok=True)
 
         # HTTP セッション

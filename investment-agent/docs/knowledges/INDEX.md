@@ -75,7 +75,7 @@
 | TDnet開示書類をAI検索・月次アダプター設計 | `docs/knowledges/tools/054_jlens_disclosure_search.md` |
 | extract_adapter.json の row_label_regex 設計・修正 | `docs/knowledges/tools/055_extract_adapter_design_patterns.md` |
 | バフェットコード月次突合を実行・改修 | `docs/knowledges/tools/056_compare_monthly_buffett.md` |
-| JPX上場廃止銘柄スクレイピング・IS_TOB_MBO判定 | `docs/knowledges/tools/058_scrape_jpx_delisted.md` |
+| 上場廃止銘柄スクレイピング（JPX + 松井）・IS_TOB_MBO判定 | `docs/knowledges/tools/058_scrape_jpx_delisted.md` |
 | TOB公告詳細抽出（EDINET公開買付届出書 docTypeCode=240 → DELISTED_STOCKS拡張カラム） | `docs/knowledges/api/006_edinet_api.md`（「TOB公告情報抽出」セクション）, `scripts/fetch_tob_announcements.py` |
 | 決算反応モデル EDA・予測・答え合わせ（ノートブック構成・スコアリング・GCS保存） | `docs/knowledges/tools/059_earnings_model_eda.md` |
 | 決算答え合わせ（`earnings_model_predict.ipynb`） | `docs/knowledges/tools/059_earnings_model_eda.md`（「予測 & 答え合わせノートブック」セクション） |
@@ -120,6 +120,7 @@
 | 決算発表予定スクレイピング・BQロード | `docs/knowledges/tools/065_earnings_schedule_load.md` |
 | ザラ場ツール（決算リアルタイム監視・スコアリング） | `docs/knowledges/tools/066_zaraba_tool.md` |
 | ザラ場ツール反省会ログ（066サブファイル） | `docs/knowledges/tools/066-1_zaraba_retrospective.md` |
+| ザラ場ツール詳細リファレンス（066サブファイル） | `docs/knowledges/tools/066-2_zaraba_detail.md` |
 | 最新決算表示・XBRL四半期推移ツール（TDnet XBRL+BQ fin_summary） | `docs/knowledges/tools/099_xbrl_lookup.md` |
 | 決算未発表会社一覧（BQ予定 vs TDNet実績突合） | `docs/knowledges/tools/100_earnings_undisclosed.md` |
 | Cloud Run 2重トリガー検出 | `docs/knowledges/tools/067_check_duplicate_triggers.md` |

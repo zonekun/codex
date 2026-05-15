@@ -1100,7 +1100,7 @@ def _split_factors(factors: str | list[str]) -> tuple[str, str]:
     else:
         items = list(factors)
     NEG_MARKERS = (
-        "下方", "減配", "進捗↓", "着地経↓", "通期予想非開示", "翌期経↓", "翌期予想非開示", "QoQ-", "成長減速", "PEG割高",
+        "下方", "減配", "進捗↓", "着地経↓", "通期予想非開示", "翌期経↓", "翌期純↓", "翌期予想非開示", "QoQ-", "成長減速", "PEG割高",
         "折込", "出来高", "出尽くし",
     )
     pos, neg = [], []
@@ -1724,6 +1724,10 @@ def _score_record(
     score = 0
     factors: list[str] = []
 
+    # 低利益率フラグ（EDAモデル移植）: 5年中央値OP < 5億 → F3/F4/F13を抑制
+    _median_5y_op = p.get("median_5y_op")
+    is_low_profit = (_median_5y_op is not None and _median_5y_op < 500_000_000)
+
     # ── F1: 進捗率サプライズ ─────────────────────────
     # J-Quants OP は累計値。通期予想に対する進捗率で判定。
     cumulative_op = _to_num(rec.get("OP"))  # 今回発表の累計営業利益（Operating Profit）
@@ -1778,18 +1782,23 @@ def _score_record(
         fy_surprise = None
 
     if fy_surprise is not None:
+        _f15_base = forecast_odp_f15 or effective_forecast_op
+        _f15_pre = int(_f15_base / 1e6) if _f15_base else 0
+        _f15_actual = cumulative_odp_f15 if cumulative_odp_f15 is not None else cumulative_op
+        _f15_act = int(_f15_actual / 1e6) if _f15_actual else 0
+        _f15v = f"(予{_f15_pre}→実{_f15_act})"
         if fy_surprise > 0.20:
             score += 2
-            factors.append(f"着地経↑{fy_surprise:+.0%}")
+            factors.append(f"着地経↑{fy_surprise:+.0%}{_f15v}")
         elif fy_surprise > 0.05:
             score += 1
-            factors.append(f"着地経↑{fy_surprise:+.0%}")
+            factors.append(f"着地経↑{fy_surprise:+.0%}{_f15v}")
         elif fy_surprise < -0.20:
             score -= 2
-            factors.append(f"着地経↓{fy_surprise:+.0%}")
+            factors.append(f"着地経↓{fy_surprise:+.0%}{_f15v}")
         elif fy_surprise < -0.05:
             score -= 1
-            factors.append(f"着地経↓{fy_surprise:+.0%}")
+            factors.append(f"着地経↓{fy_surprise:+.0%}{_f15v}")
 
     # ── F2: ガイダンス修正（今日の新FOP vs 直前最新FOP） ─────
     new_forecast_op = _to_num(rec.get("FOP"))
@@ -1814,7 +1823,7 @@ def _score_record(
     # cur_per と一致する場合のみ採用
     if prev_year_q_op is None and cur_per == p.get("latest_q_quarter"):
         prev_year_q_op = p.get("prev_year_q_op")
-    if standalone_op is not None and prev_year_q_op and prev_year_q_op != 0:
+    if standalone_op is not None and prev_year_q_op and prev_year_q_op != 0 and not is_low_profit:
         yoy = (standalone_op - prev_year_q_op) / abs(prev_year_q_op)
         if yoy > 0.30:
             score += 1
@@ -1855,12 +1864,23 @@ def _score_record(
 
         if nx_chg is not None:
             lb_tag = "≒低ベース補正" if is_low_base else ""
+            lp_tag = "≒低利益率" if is_low_profit else ""
+            _f4w = 1 if is_low_profit else 2
+            # 基準値表示（百万円）
+            if is_low_base:
+                _f4_b = int(median_5y / 1e6) if median_5y else 0
+            elif cumulative_odp and nx_odp is not None:
+                _f4_b = int(cumulative_odp / 1e6)
+            else:
+                _f4_b = int(cumulative_op / 1e6) if cumulative_op else 0
+            _f4_n = int((nx_odp or nx_fop or 0) / 1e6)
+            _f4v = f"({_f4_b}→{_f4_n})"
             if nx_chg > 0.10:
-                score += 2
-                factors.append(f"翌期経↑{nx_chg:+.0%}{lb_tag}")
+                score += _f4w
+                factors.append(f"翌期経↑{nx_chg:+.0%}{_f4v}{lb_tag}{lp_tag}")
             elif nx_chg < -0.10:
-                score -= 2
-                factors.append(f"翌期経↓{nx_chg:+.0%}{lb_tag}")
+                score -= _f4w
+                factors.append(f"翌期経↓{nx_chg:+.0%}{_f4v}{lb_tag}{lp_tag}")
         else:
             cap = p.get("market_cap_oku")
             if cap is not None and cap >= 3000:
@@ -1892,17 +1912,18 @@ def _score_record(
     div_detected = False
     if not has_stock_split and actual_div is not None and prev_div and prev_div > 0:
         div_chg = (actual_div - prev_div) / prev_div
+        _dv = f"({prev_div:.0f}→{actual_div:.0f})"
         if div_chg > 0.05:
             score += 1
-            factors.append(f"増配+{div_chg:.0%}")
+            factors.append(f"増配+{div_chg:.0%}{_dv}")
             div_detected = True
         elif div_chg < -0.20:
             score -= 3
-            factors.append(f"大幅減配{div_chg:.0%}")
+            factors.append(f"大幅減配{div_chg:.0%}{_dv}")
             div_detected = True
         elif div_chg < -0.05:
             score -= 2
-            factors.append(f"減配{div_chg:.0%}")
+            factors.append(f"減配{div_chg:.0%}{_dv}")
             div_detected = True
 
     # F6 フォールバック: XBRL FDivAnn が取れなかった場合、related_titles の
@@ -1920,8 +1941,15 @@ def _score_record(
     has_rev = p.get("has_prior_revision", False)
 
     if momentum is not None and momentum > 0.10 and not has_rev:
-        score -= 1
-        factors.append("折込⚠")
+        if momentum > 0.30:
+            score -= 3
+            factors.append(f"折込⚠⚠⚠({momentum:+.0%})")
+        elif momentum > 0.20:
+            score -= 2
+            factors.append(f"折込⚠⚠({momentum:+.0%})")
+        else:
+            score -= 1
+            factors.append(f"折込⚠({momentum:+.0%})")
     if vol_ratio is not None and vol_ratio > 2.0:
         score -= 1
         factors.append(f"出来高x{vol_ratio:.1f}⚠")
@@ -1989,30 +2017,31 @@ def _score_record(
     if actual_val is not None and cons_val and cons_val != 0:
         cons_yen = cons_val * 1_000_000  # 百万円 → 円
         cd = (actual_val - cons_yen) / abs(cons_yen)
+        _cv = f"(コ{int(cons_val)}→実{int(actual_val / 1e6)})"
         if cd > 0.10:
             score += 3
-            factors.append(f"コンセ乖離{cd:+.1%}")
+            factors.append(f"コンセ乖離{cd:+.1%}{_cv}")
         elif cd > 0.05:
             score += 2
-            factors.append(f"コンセ乖離{cd:+.1%}")
+            factors.append(f"コンセ乖離{cd:+.1%}{_cv}")
         elif cd > 0:
             score += 1
-            factors.append(f"コンセ乖離{cd:+.1%}")
+            factors.append(f"コンセ乖離{cd:+.1%}{_cv}")
         elif cd < -0.30:
             score -= 5
-            factors.append(f"コンセ乖離{cd:+.1%}")
+            factors.append(f"コンセ乖離{cd:+.1%}{_cv}")
         elif cd < -0.20:
             score -= 4
-            factors.append(f"コンセ乖離{cd:+.1%}")
+            factors.append(f"コンセ乖離{cd:+.1%}{_cv}")
         elif cd < -0.10:
             score -= 3
-            factors.append(f"コンセ乖離{cd:+.1%}")
+            factors.append(f"コンセ乖離{cd:+.1%}{_cv}")
         elif cd < -0.05:
             score -= 2
-            factors.append(f"コンセ乖離{cd:+.1%}")
+            factors.append(f"コンセ乖離{cd:+.1%}{_cv}")
         elif cd < 0:
             score -= 1
-            factors.append(f"コンセ乖離{cd:+.1%}")
+            factors.append(f"コンセ乖離{cd:+.1%}{_cv}")
 
     # ── F4n: 翌期コンセンサス乖離（FYのみ、純利益ベース）────
     if cur_per == "FY":
@@ -2022,30 +2051,31 @@ def _score_record(
         if nx_np is not None and cons_next_np and cons_next_np != 0:
             cons_np_yen = cons_next_np * 1_000_000
             cn = (nx_np - cons_np_yen) / abs(cons_np_yen)
+            _cnv = f"(コ{int(cons_next_np)}→予{int(nx_np / 1e6)})"
             if cn > 0.10:
                 score += 3
-                factors.append(f"翌コ純{cn:+.1%}")
+                factors.append(f"翌コ純{cn:+.1%}{_cnv}")
             elif cn > 0.05:
                 score += 2
-                factors.append(f"翌コ純{cn:+.1%}")
+                factors.append(f"翌コ純{cn:+.1%}{_cnv}")
             elif cn > 0:
                 score += 1
-                factors.append(f"翌コ純{cn:+.1%}")
+                factors.append(f"翌コ純{cn:+.1%}{_cnv}")
             elif cn < -0.30:
                 score -= 5
-                factors.append(f"翌コ純{cn:+.1%}")
+                factors.append(f"翌コ純{cn:+.1%}{_cnv}")
             elif cn < -0.20:
                 score -= 4
-                factors.append(f"翌コ純{cn:+.1%}")
+                factors.append(f"翌コ純{cn:+.1%}{_cnv}")
             elif cn < -0.10:
                 score -= 3
-                factors.append(f"翌コ純{cn:+.1%}")
+                factors.append(f"翌コ純{cn:+.1%}{_cnv}")
             elif cn < -0.05:
                 score -= 2
-                factors.append(f"翌コ純{cn:+.1%}")
+                factors.append(f"翌コ純{cn:+.1%}{_cnv}")
             elif cn < 0:
                 score -= 1
-                factors.append(f"翌コ純{cn:+.1%}")
+                factors.append(f"翌コ純{cn:+.1%}{_cnv}")
 
     # ── F4np: 翌期純利YoY（FYのみ、経常と乖離する一時益剥落を検出）────
     if cur_per == "FY":
@@ -2053,12 +2083,13 @@ def _score_record(
         nx_np_f = _to_num(rec.get("NxFNP"))
         if cur_np and cur_np > 0 and nx_np_f is not None:
             np_yoy = (nx_np_f - cur_np) / abs(cur_np)
+            _npv = f"({int(cur_np / 1e6)}→{int(nx_np_f / 1e6)})"
             if np_yoy < -0.20:
                 score -= 2
-                factors.append(f"翌期純↓{np_yoy:+.0%}")
+                factors.append(f"翌期純↓{np_yoy:+.0%}{_npv}")
             elif np_yoy < -0.10:
                 score -= 1
-                factors.append(f"翌期純↓{np_yoy:+.0%}")
+                factors.append(f"翌期純↓{np_yoy:+.0%}{_npv}")
 
     # ── F13: QoQ OP急変（前Q比）──────────────────
     # FYは4Q standalone が year-end 調整含みでノイジー → F15で代替。小分母も除外
@@ -2066,6 +2097,7 @@ def _score_record(
     annual_ref = effective_forecast_op or cumulative_op
     if (
         cur_per != "FY"
+        and not is_low_profit
         and standalone_op is not None
         and latest_q_op
         and latest_q_op != 0
@@ -2079,8 +2111,8 @@ def _score_record(
             score -= 2
             factors.append(f"QoQ{qoq:.0%}")
 
-    # ── F7g: 成長加速/減速（FYのみ）─ 低ベース時はF4と同じ補正済みnx_chgを再利用
-    if cur_per == "FY":
+    # ── F7g: 成長加速/減速（FYのみ）─ 低ベース時はF4と同じ補正済みnx_chgを再利用。低利益率は無効化
+    if cur_per == "FY" and not is_low_profit:
         baseline = p.get("baseline_yoy_op")
         if is_low_base and nx_chg is not None:
             nyc_7g = nx_chg

@@ -71,17 +71,15 @@ YYYYMMDD,HH:MM,QUARTER,TICKER
 
 | スケジューラー | cron (JST) | Cloud Run Job args | 対象日 |
 |:--|:--|:--|:--|
-| `earnings-schedule-load-daily` | `0 5 * * 0-5` | `--skip-days=14-17` | 日〜金 05:00（14〜17日はスクリプト側でスキップ） |
+| `earnings-schedule-load-daily` | `0 5 * * 0-5` | なし | 日〜金 05:00（毎日実行） |
 
-- 14〜17日はスキップ（決算集中期の谷間、ghostrader.net のデータ不安定）
 - 土曜除外（ghostrader.net にデータなし）
 - 日曜は翌日以降の最新データ取得のため実行する
+- ~~14〜17日スキップ~~ 撤廃（2026-05-15）。決算集中日の時刻が更新されない不具合の原因だった
 
-### 設計意図（なぜ1本スケジューラ + `--skip-days` か）
+### 設計意図
 
-以前は `earnings-schedule-load-early` (`0 5 1-13 * 0-5`) と `earnings-schedule-load-late` (`0 5 18-31 * 0-5`) の2本で「1-13日 **AND** 平日」「18-31日 **AND** 平日」を表現する意図だった。しかし **unix-cron は day-of-month と day-of-week の両指定を OR 結合する**ため、実際には両方のスケジューラが平日は毎日発火し、05:00 に2重トリガーとなっていた（2026-04-17 検出、067 参照）。
-
-現行は cron を `0 5 * * 0-5` に統一し、月内のスキップ日はコード側の `--skip-days` 引数で制御する。Scheduler は1本、cron は単純な「平日発火」のみに保つ。
+以前は2本スケジューラ+`--skip-days=14-17`で決算集中期を避けていたが、5/15に時刻なしデータが放置される不具合が発生したため `--skip-days` を撤廃（2026-05-15）。現行は `0 5 * * 0-5` の1本スケジューラで毎日実行。`--skip-days` 引数自体はコードに残存するが Cloud Run Job args は空。
 
 ## ビルド・デプロイ
 
@@ -103,5 +101,6 @@ gcloud run jobs execute earnings-schedule-load --region us-west1
 ## 既知の制約
 
 - After ページ（翌々営業日以降）の一部銘柄は決算月カラムが空 → `FISCAL_YEAR_END` が NULL になる
+- After ページの時刻は未定（`--:--`）→ DISCLOSURE_TIME = NULL。当日ページで時刻が確定するため毎日のロードで上書きが必須
 - ghostrader.net は翌々営業日までしか公開しない → 毎日の蓄積が必須
 - 実績データ（`RECORD_TYPE='A'`）のロードは別途 TDNET_DOCUMENTS_ENHANCED からの ETL で対応（未実装）
