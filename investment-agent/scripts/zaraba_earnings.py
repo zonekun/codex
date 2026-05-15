@@ -1269,6 +1269,28 @@ def cmd_review(target_date: str) -> None:
     if "disc_time" in df.columns:
         df = df.sort_values("disc_time", kind="stable")
 
+    # 時価総額フィルタ（億円）
+    cap_filter_raw = input("時価総額フィルタ（億円, +500/>500=以上, 500=以下, 無入力=全社）: ").strip()
+    cap_filter_oku: float | None = None
+    cap_filter_ge: bool = False
+    if cap_filter_raw:
+        try:
+            if cap_filter_raw.startswith(("+", ">")):
+                cap_filter_ge = True
+                cap_filter_oku = float(cap_filter_raw.lstrip("+>"))
+            else:
+                cap_filter_oku = float(cap_filter_raw)
+        except ValueError:
+            pass
+    if cap_filter_oku is not None:
+        if cap_filter_ge:
+            df = df[df["market_cap_oku"].notna() & (df["market_cap_oku"] >= cap_filter_oku)]
+        else:
+            df = df[df["market_cap_oku"].notna() & (df["market_cap_oku"] <= cap_filter_oku)]
+        if df.empty:
+            print("該当する銘柄がありません。")
+            return
+
     # 旧 results.csv 互換: pos_factors/neg_factors が無ければ factors から分割
     if "pos_factors" not in df.columns or "neg_factors" not in df.columns:
         df = df.copy()
@@ -1281,7 +1303,9 @@ def cmd_review(target_date: str) -> None:
         df["neg_factors"] = neg_list
 
     table = Table(
-        title=f"Review {target_date} (時系列 {len(df)}件)",
+        title=f"Review {target_date} (時系列 {len(df)}件"
+              + (f" Cap{'≥' if cap_filter_ge else '≤'}{cap_filter_oku:.0f}億" if cap_filter_oku is not None else "")
+              + ")",
         show_lines=False,
     )
     table.add_column("Time", width=WATCH_TABLE_WIDTH_TIME)
@@ -1383,12 +1407,18 @@ def cmd_watch(target_date: str) -> None:
     target_dt = _parse_hhmm_to_dt(target_date, hhmm_raw)
 
     # 時価総額フィルタ（億円）。未入力なら全社表示
-    cap_filter_raw = input("時価総額フィルタ（億円以下を表示, 無入力=全社）: ").strip()
+    # +500 or >500 → 500億以上、500 → 500億以下
+    cap_filter_raw = input("時価総額フィルタ（億円, +500/>500=以上, 500=以下, 無入力=全社）: ").strip()
     cap_filter_oku: float | None = None
+    cap_filter_ge: bool = False
     if cap_filter_raw:
         try:
-            cap_filter_oku = float(cap_filter_raw)
-            log.info("cap_filter_set", cap_oku=cap_filter_oku)
+            if cap_filter_raw.startswith(("+", ">")):
+                cap_filter_ge = True
+                cap_filter_oku = float(cap_filter_raw.lstrip("+>"))
+            else:
+                cap_filter_oku = float(cap_filter_raw)
+            log.info("cap_filter_set", cap_oku=cap_filter_oku, ge=cap_filter_ge)
         except ValueError:
             log.warning("cap_filter_invalid", raw=cap_filter_raw, msg="無視して全社表示")
 
@@ -1476,10 +1506,16 @@ def cmd_watch(target_date: str) -> None:
 
         new_results = scored_results[_baseline_count:]
         if cap_filter_oku is not None:
-            new_results = [
-                r for r in new_results
-                if r.get("market_cap_oku") is not None and r["market_cap_oku"] <= cap_filter_oku
-            ]
+            if cap_filter_ge:
+                new_results = [
+                    r for r in new_results
+                    if r.get("market_cap_oku") is not None and r["market_cap_oku"] >= cap_filter_oku
+                ]
+            else:
+                new_results = [
+                    r for r in new_results
+                    if r.get("market_cap_oku") is not None and r["market_cap_oku"] <= cap_filter_oku
+                ]
         if not new_results:
             table.add_row("", "", "  待機中...", "", "", "", "", "", "")
         else:
@@ -2237,6 +2273,28 @@ def cmd_gcs_review(target_date: str) -> None:
     if "disc_time" in df.columns:
         df = df.sort_values("disc_time", kind="stable")
 
+    # 時価総額フィルタ（億円）
+    cap_filter_raw = input("時価総額フィルタ（億円, +500/>500=以上, 500=以下, 無入力=全社）: ").strip()
+    cap_filter_oku: float | None = None
+    cap_filter_ge: bool = False
+    if cap_filter_raw:
+        try:
+            if cap_filter_raw.startswith(("+", ">")):
+                cap_filter_ge = True
+                cap_filter_oku = float(cap_filter_raw.lstrip("+>"))
+            else:
+                cap_filter_oku = float(cap_filter_raw)
+        except ValueError:
+            pass
+    if cap_filter_oku is not None:
+        if cap_filter_ge:
+            df = df[df["market_cap_oku"].notna() & (df["market_cap_oku"] >= cap_filter_oku)]
+        else:
+            df = df[df["market_cap_oku"].notna() & (df["market_cap_oku"] <= cap_filter_oku)]
+        if df.empty:
+            print("該当する銘柄がありません。")
+            return
+
     if "pos_factors" not in df.columns or "neg_factors" not in df.columns:
         df = df.copy()
         pos_list, neg_list = [], []
@@ -2248,7 +2306,9 @@ def cmd_gcs_review(target_date: str) -> None:
         df["neg_factors"] = neg_list
 
     table = Table(
-        title=f"GCS Review {target_date} (時系列 {len(df)}件)",
+        title=f"GCS Review {target_date} (時系列 {len(df)}件"
+              + (f" Cap{'≥' if cap_filter_ge else '≤'}{cap_filter_oku:.0f}億" if cap_filter_oku is not None else "")
+              + ")",
         show_lines=False,
     )
     table.add_column("Time", width=WATCH_TABLE_WIDTH_TIME)

@@ -21,15 +21,19 @@ import json
 import logging
 import os
 import re
+import sys
 import time
 import traceback
 import uuid
+from collections import defaultdict
 from dataclasses import dataclass, field
 from datetime import date, datetime, timedelta, timezone
 
+import numpy as np
 from bs4 import BeautifulSoup
 from google import genai
 from google.cloud import bigquery, storage
+from google.cloud.bigquery import LoadJobConfig, SourceFormat, WriteDisposition
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 logging.getLogger("urllib3").setLevel(logging.WARNING)
@@ -74,6 +78,7 @@ GCS_PREFIX         = "edinet"
 GCS_BATCH_PREFIX   = "batch_prediction/edinet"
 TABLE_ID           = f"{PROJECT_ID}.STOCK.IR_DOCUMENTS_ENHANCED"
 BQ_BATCH_SIZE      = 100
+BACKFILL_MEM_BATCH = 50   # backfill モードのメモリバッチサイズ（docs 単位）
 JST                = timezone(timedelta(hours=+9), "JST")
 
 # ============================================================
@@ -135,17 +140,34 @@ def _get_genai_client() -> genai.Client:
     return genai.Client(**kwargs)
 
 
-def _load_processed_file_names(date_from: str, date_to: str) -> set[str]:
+def _load_processed_file_names(
+    date_from: str, date_to: str,
+    ticker_from: str | None = None, ticker_to: str | None = None,
+) -> set[str]:
     """BQ から取込済みファイル名を取得する."""
     d_from_iso = f"{date_from[:4]}-{date_from[4:6]}-{date_from[6:8]}"
     d_to_iso   = f"{date_to[:4]}-{date_to[4:6]}-{date_to[6:8]}"
+
+    where_clauses = ["SUBMISSION_DATE BETWEEN @d_from AND @d_to"]
+    params: list[bigquery.ScalarQueryParameter] = [
+        bigquery.ScalarQueryParameter("d_from", "DATE", d_from_iso),
+        bigquery.ScalarQueryParameter("d_to", "DATE", d_to_iso),
+    ]
+    if ticker_from:
+        where_clauses.append("SECURITY_CODE >= @ticker_from")
+        params.append(bigquery.ScalarQueryParameter("ticker_from", "STRING", ticker_from))
+    if ticker_to:
+        where_clauses.append("SECURITY_CODE <= @ticker_to")
+        params.append(bigquery.ScalarQueryParameter("ticker_to", "STRING", ticker_to))
+
     query = f"""
     SELECT DISTINCT FILE_NAME
     FROM `{TABLE_ID}`
-    WHERE SUBMISSION_DATE BETWEEN '{d_from_iso}' AND '{d_to_iso}'
+    WHERE {' AND '.join(where_clauses)}
     """
     try:
-        rows = _get_bq_client().query(query).result()
+        job_config = bigquery.QueryJobConfig(query_parameters=params)
+        rows = _get_bq_client().query(query, job_config=job_config).result()
         return {row.FILE_NAME for row in rows}
     except Exception as e:
         print(f"警告: BQ 取込済みファイル一覧の取得に失敗: {e} → 重複チェックなしで続行")
@@ -170,7 +192,8 @@ class DocInfo:
     text: str = ""
     # チャンク・埋め込み
     chunks: list[dict] = field(default_factory=list)
-    embeddings: list[list[float]] = field(default_factory=list)
+    embeddings: np.ndarray | None = field(default=None)
+    embedding_set: list[bool] = field(default_factory=list)
 
 
 # ============================================================
@@ -222,18 +245,16 @@ def _save_backfill_state(
     docs: list[DocInfo], embedding_info: dict,
     logger: "BatchLogger",
 ) -> str:
-    """submit モードの状態を GCS に保存する."""
-    import gzip as _gzip
-
+    """submit モードの状態を GCS に NDJSON stream write で保存する."""
     state_id = f"{date_from}_{date_to}"
     state_path = f"{BACKFILL_STATE_PREFIX}_{state_id}.json"
-    docs_path  = f"{BACKFILL_STATE_PREFIX}_{state_id}_docs.json.gz"
+    docs_path  = f"{BACKFILL_STATE_PREFIX}_{state_id}_docs.jsonl"
 
-    # docs を gzip 圧縮して保存
-    docs_json = json.dumps(_serialize_docs(docs), ensure_ascii=False)
-    compressed = _gzip.compress(docs_json.encode("utf-8"))
-    bucket.blob(docs_path).upload_from_string(compressed, content_type="application/gzip")
-    logger.log(f"  docs 保存完了: gs://{BUCKET_NAME}/{docs_path} ({len(compressed)//1024}KB)")
+    # docs を NDJSON stream write（一括JSON+gzip → OOM 回避）
+    with bucket.blob(docs_path).open("w", encoding="utf-8") as f:
+        for d in docs:
+            f.write(json.dumps(_serialize_docs([d])[0], ensure_ascii=False) + "\n")
+    logger.log(f"  docs 保存完了: gs://{BUCKET_NAME}/{docs_path} ({len(docs)} 件)")
 
     # state メタデータ保存
     state = {
@@ -255,8 +276,6 @@ def _load_backfill_state(
     bucket, date_from: str, date_to: str, logger: "BatchLogger",
 ) -> tuple[list[DocInfo], dict]:
     """resume モードの状態を GCS から読み込む."""
-    import gzip as _gzip
-
     state_id = f"{date_from}_{date_to}"
     state_path = f"{BACKFILL_STATE_PREFIX}_{state_id}.json"
 
@@ -266,9 +285,20 @@ def _load_backfill_state(
 
     docs_path = state["docs_path"]
     logger.log(f"  docs 読込: gs://{BUCKET_NAME}/{docs_path}")
-    compressed = bucket.blob(docs_path).download_as_bytes()
-    docs_json = _gzip.decompress(compressed).decode("utf-8")
-    docs = _deserialize_docs(json.loads(docs_json))
+
+    # NDJSON stream read（後方互換: .json.gz なら旧形式で読む）
+    if docs_path.endswith(".json.gz"):
+        import gzip as _gzip
+        compressed = bucket.blob(docs_path).download_as_bytes()
+        docs_json = _gzip.decompress(compressed).decode("utf-8")
+        docs = _deserialize_docs(json.loads(docs_json))
+    else:
+        docs: list[DocInfo] = []
+        with bucket.blob(docs_path).open("r", encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if line:
+                    docs.append(_deserialize_docs([json.loads(line)])[0])
 
     logger.log(f"  復元完了: {len(docs)} 件")
     return docs, state.get("embedding", {})
@@ -481,9 +511,11 @@ def _upload_jsonl_to_gcs(
 
 def _poll_batch_job(
     client: genai.Client, job_name: str, logger: BatchLogger, label: str,
+    max_wait_sec: int = 7200,
 ) -> bool:
     """バッチジョブの完了をポーリングする. 成功なら True."""
-    while True:
+    deadline = time.time() + max_wait_sec
+    while time.time() < deadline:
         job = client.batches.get(name=job_name)
         state = job.state.name if hasattr(job.state, "name") else str(job.state)
         logger.log(f"  [{label}] ジョブ状態: {state}")
@@ -497,12 +529,15 @@ def _poll_batch_job(
 
         time.sleep(BATCH_POLL_INTERVAL)
 
+    logger.log(f"  [{label}] タイムアウト ({max_wait_sec}s)")
+    return False
+
 
 # ============================================================
 # Phase 1: スキャン & テキスト抽出
 # ============================================================
 
-def phase1_scan_and_extract(
+def _phase1_iter(
     bucket,
     date_from: str,
     date_to: str,
@@ -510,28 +545,29 @@ def phase1_scan_and_extract(
     ticker_to: str | None,
     processed_files: set[str],
     logger: BatchLogger,
-) -> list[DocInfo]:
-    """GCS blob を走査し、テキスト抽出を行い DocInfo リストを返す."""
+) -> "Iterator[DocInfo]":
+    """GCS blob を走査し、テキスト抽出済み DocInfo を1件ずつ yield する."""
+    from collections.abc import Iterator  # noqa: F811
     d_from = date(int(date_from[:4]), int(date_from[4:6]), int(date_from[6:8]))
     d_to   = date(int(date_to[:4]),   int(date_to[4:6]),   int(date_to[6:8]))
 
-    docs: list[DocInfo] = []
-    skipped = 0
-
     logger.log("Phase 1: GCS blob スキャン & テキスト抽出 開始")
-    blob_iter = bucket.list_blobs(prefix=f"{GCS_PREFIX}/")
+    scan_prefix = f"{GCS_PREFIX}/"
+    list_kwargs: dict = {"prefix": scan_prefix}
+    if ticker_from:
+        list_kwargs["start_offset"] = f"{GCS_PREFIX}/{ticker_from}/"
+        logger.log(f"  ticker範囲: {ticker_from} ～ {ticker_to or '末尾'}")
+    if ticker_to:
+        list_kwargs["end_offset"] = f"{GCS_PREFIX}/{ticker_to}0/"
+    blob_iter = bucket.list_blobs(**list_kwargs)
 
     for blob in blob_iter:
-        # HTML ファイルのみ対象
         if not blob.name.lower().endswith((".htm", ".html")):
             continue
 
-        # ファイル名の大量保有除外
         if "大量保有" in blob.name:
-            skipped += 1
             continue
 
-        # Ticker フィルタ（edinet/{code}/... の code 部分で判定）
         parts = blob.name.split("/")
         code = parts[1] if len(parts) >= 2 else ""
         if ticker_from and code < ticker_from:
@@ -539,7 +575,6 @@ def phase1_scan_and_extract(
         if ticker_to and code > ticker_to:
             continue
 
-        # 日付フィルタ（ファイル名から日付抽出）
         blob_date_str = _extract_date_from_blob_name(blob.name)
         if blob_date_str:
             try:
@@ -551,26 +586,20 @@ def phase1_scan_and_extract(
                 if not (d_from <= d_blob <= d_to):
                     continue
             except ValueError:
-                logger.log(f"  日付パース失敗 → スキップ: {blob.name}")
-                skipped += 1
                 continue
-
-        # BQ 登録済みスキップ
-        if blob.name in processed_files:
-            skipped += 1
+        else:
             continue
 
-        # HTML ダウンロード & テキスト抽出
+        if blob.name in processed_files:
+            continue
+
         try:
             html_content = blob.download_as_text()
         except Exception as e:
             logger.log(f"  GCS ダウンロード失敗 → スキップ: {blob.name} - {e}")
-            skipped += 1
             continue
 
-        # 本文に大量保有報告書が含まれる場合は除外
         if "大量保有報告書" in html_content[:500]:
-            skipped += 1
             continue
 
         try:
@@ -578,14 +607,12 @@ def phase1_scan_and_extract(
                 _extract_metadata_and_text(html_content, blob.name)
         except Exception as e:
             logger.log(f"  メタデータ抽出失敗 → スキップ: {blob.name} - {e}")
-            skipped += 1
             continue
 
         if not text or len(text) < 50:
-            skipped += 1
             continue
 
-        doc = DocInfo(
+        yield DocInfo(
             blob_name=blob.name,
             sub_date=sub_date,
             sec_code=sec_code,
@@ -595,9 +622,22 @@ def phase1_scan_and_extract(
             doc_id=str(uuid.uuid4()),
             text=text,
         )
-        docs.append(doc)
 
-    logger.log(f"Phase 1 完了: 対象 {len(docs)} 件, スキップ {skipped} 件")
+
+def phase1_scan_and_extract(
+    bucket,
+    date_from: str,
+    date_to: str,
+    ticker_from: str | None,
+    ticker_to: str | None,
+    processed_files: set[str],
+    logger: BatchLogger,
+) -> list[DocInfo]:
+    """GCS blob を走査し、テキスト抽出を行い DocInfo リストを返す（full/submit 用）."""
+    docs = list(_phase1_iter(
+        bucket, date_from, date_to, ticker_from, ticker_to, processed_files, logger,
+    ))
+    logger.log(f"Phase 1 完了: 対象 {len(docs)} 件")
     return docs
 
 
@@ -619,6 +659,7 @@ def _phase2_chunk(docs: list[DocInfo], logger: BatchLogger) -> int:
         else:
             doc.chunks = []
             meta_only_count += 1
+        doc.text = ""  # メモリ解放（HTML全文はチャンク化後は不要）
 
     logger.log(f"  Embedding 対象: {len(valid_docs) - meta_only_count} 件 ({embed_chunk_count} チャンク)")
     logger.log(f"  メタデータのみ: {meta_only_count} 件")
@@ -646,10 +687,14 @@ def phase2_chunk_and_submit(
     input_path  = f"{GCS_BATCH_PREFIX}/embed_{timestamp}_input.jsonl"
     output_path = f"{GCS_BATCH_PREFIX}/embed_{timestamp}_output/"
 
+    seen_content: set[str] = set()
     lines: list[str] = []
     for doc in valid_docs:
         for chunk in doc.chunks:
-            lines.append(json.dumps({"content": chunk["chunk_text"]}, ensure_ascii=False))
+            ct = chunk["chunk_text"]
+            if ct not in seen_content:
+                seen_content.add(ct)
+                lines.append(json.dumps({"content": ct}, ensure_ascii=False))
 
     input_uri = _upload_jsonl_to_gcs(bucket, input_path, lines)
     logger.log(f"  Embedding JSONL アップロード完了: {input_uri} ({len(lines)} 件)")
@@ -690,18 +735,20 @@ def phase2_poll_and_apply(
         logger.log("  Embedding バッチジョブ失敗 → 埋め込みなしで続行")
         return
 
-    # content_to_chunk マッピングを docs の chunks から再構築
-    content_to_chunk: dict[str, tuple[DocInfo, int]] = {}
+    # content_to_chunks マッピングを docs の chunks から再構築（1:N 対応）
+    content_to_chunks: dict[str, list[tuple[DocInfo, int]]] = defaultdict(list)
     embed_chunk_count = 0
     for doc in docs:
         if doc.chunks:
-            doc.embeddings = [None] * len(doc.chunks)  # type: ignore[list-item]
+            doc.embeddings = np.zeros((len(doc.chunks), 768), dtype=np.float32)
+            doc.embedding_set = [False] * len(doc.chunks)
             for ci, chunk in enumerate(doc.chunks):
-                content_to_chunk[chunk["chunk_text"]] = (doc, ci)
+                content_to_chunks[chunk["chunk_text"]].append((doc, ci))
                 embed_chunk_count += 1
 
     # 結果取得（ストリーミング）
     embed_ok = 0
+    embed_errors = 0
     output_blobs = list(bucket.list_blobs(prefix=output_path))
     for blob in output_blobs:
         if not blob.name.endswith(".jsonl"):
@@ -715,15 +762,17 @@ def phase2_poll_and_apply(
                     obj = json.loads(line)
                     chunk_text = obj["instance"]["content"]
                     embedding = obj["predictions"][0]["embeddings"]["values"]
-                    mapping = content_to_chunk.get(chunk_text)
-                    if mapping:
-                        doc, ci = mapping
-                        doc.embeddings[ci] = embedding
+                    mappings = content_to_chunks.get(chunk_text, [])
+                    emb_arr = np.asarray(embedding, dtype=np.float32)
+                    for doc, ci in mappings:
+                        doc.embeddings[ci, :] = emb_arr
+                        doc.embedding_set[ci] = True
                         embed_ok += 1
-                except (KeyError, IndexError, json.JSONDecodeError):
-                    continue
+                except (KeyError, IndexError, json.JSONDecodeError) as e:
+                    logger.log(f"  Embedding parse失敗: {e}")
+                    embed_errors += 1
 
-    logger.log(f"  Embedding 適用完了: {embed_ok}/{embed_chunk_count} 件")
+    logger.log(f"  Embedding 適用完了: {embed_ok}/{embed_chunk_count} 件 (parse失敗: {embed_errors})")
     logger.log("Phase 2 (resume) 完了")
 
 
@@ -748,14 +797,17 @@ def phase2_chunk_and_embed(
     input_path  = f"{GCS_BATCH_PREFIX}/embed_{timestamp}_input.jsonl"
     output_path = f"{GCS_BATCH_PREFIX}/embed_{timestamp}_output/"
 
-    content_to_chunk: dict[str, tuple[DocInfo, int]] = {}
+    content_to_chunks: dict[str, list[tuple[DocInfo, int]]] = defaultdict(list)
+    seen_content: set[str] = set()
     lines: list[str] = []
 
     for doc in valid_docs:
         for ci, chunk in enumerate(doc.chunks):
             chunk_text = chunk["chunk_text"]
-            content_to_chunk[chunk_text] = (doc, ci)
-            lines.append(json.dumps({"content": chunk_text}, ensure_ascii=False))
+            content_to_chunks[chunk_text].append((doc, ci))
+            if chunk_text not in seen_content:
+                seen_content.add(chunk_text)
+                lines.append(json.dumps({"content": chunk_text}, ensure_ascii=False))
 
     input_uri = _upload_jsonl_to_gcs(bucket, input_path, lines)
     logger.log(f"  Embedding JSONL アップロード完了: {input_uri} ({len(lines)} 件)")
@@ -774,12 +826,14 @@ def phase2_chunk_and_embed(
         logger.log("  Embedding バッチジョブ失敗 → 埋め込みなしで続行")
         return
 
-    # 結果取得（ストリーミング）
+    # 結果取得（ストリーミング）: numpy float32 で保持してメモリ節約
     for doc in valid_docs:
         if doc.chunks:
-            doc.embeddings = [None] * len(doc.chunks)  # type: ignore[list-item]
+            doc.embeddings = np.zeros((len(doc.chunks), 768), dtype=np.float32)
+            doc.embedding_set = [False] * len(doc.chunks)
 
     embed_ok = 0
+    embed_errors = 0
     output_blobs = list(bucket.list_blobs(prefix=output_path))
     for blob in output_blobs:
         if not blob.name.endswith(".jsonl"):
@@ -793,15 +847,17 @@ def phase2_chunk_and_embed(
                     obj = json.loads(line)
                     chunk_text = obj["instance"]["content"]
                     embedding = obj["predictions"][0]["embeddings"]["values"]
-                    mapping = content_to_chunk.get(chunk_text)
-                    if mapping:
-                        doc, ci = mapping
-                        doc.embeddings[ci] = embedding
+                    mappings = content_to_chunks.get(chunk_text, [])
+                    emb_arr = np.asarray(embedding, dtype=np.float32)
+                    for doc, ci in mappings:
+                        doc.embeddings[ci, :] = emb_arr
+                        doc.embedding_set[ci] = True
                         embed_ok += 1
-                except (KeyError, IndexError, json.JSONDecodeError):
-                    continue
+                except (KeyError, IndexError, json.JSONDecodeError) as e:
+                    logger.log(f"  Embedding parse失敗: {e}")
+                    embed_errors += 1
 
-    logger.log(f"  Embedding 適用完了: {embed_ok}/{embed_chunk_count} 件")
+    logger.log(f"  Embedding 適用完了: {embed_ok}/{embed_chunk_count} 件 (parse失敗: {embed_errors})")
     logger.log("Phase 2 完了")
 
 
@@ -810,81 +866,127 @@ def phase2_chunk_and_embed(
 # ============================================================
 
 def phase3_bq_insert(
-    docs: list[DocInfo], logger: BatchLogger,
+    docs: list[DocInfo], bucket, logger: BatchLogger,
 ) -> tuple[int, int, int]:
-    """全ドキュメントを BQ にインサートする. (processed, skipped, errors) を返す."""
-    valid_docs = [d for d in docs if d.text]
+    """全ドキュメントを GCS 経由 BQ Load Job でインサートする.
+
+    streaming insert → Load Job 移行（004 C-5）。
+    冪等性: Load Job 前に対象 FILE_NAME の既存行を DELETE してから APPEND。
+    Returns: (processed, skipped, errors)
+    """
+    import tempfile
+    from pathlib import Path
+
+    valid_docs = [d for d in docs if d.text or d.chunks]
     if not valid_docs:
         logger.log("Phase 3: BQ Insert 対象なし（スキップ）")
         return 0, len(docs), 0
 
-    logger.log(f"Phase 3: BQ Insert 開始 ({len(valid_docs)} ドキュメント)")
+    logger.log(f"Phase 3: BQ Load Job 開始 ({len(valid_docs)} ドキュメント)")
 
     bq = _get_bq_client()
-    processed = 0
-    errors = 0
+    row_count = 0
 
-    rows_buffer: list[dict] = []
+    # NDJSON を tempfile に stream write → GCS upload → load_table_from_uri
+    tmp = tempfile.NamedTemporaryFile(
+        mode="w", encoding="utf-8", suffix=".jsonl", delete=False,
+    )
+    tmp_path = tmp.name
+    try:
+        with tmp:
+            for doc in valid_docs:
+                if doc.chunks:
+                    for ci, chunk_data in enumerate(doc.chunks):
+                        embedding = None
+                        if doc.embeddings is not None and ci < doc.embeddings.shape[0]:
+                            if doc.embedding_set and doc.embedding_set[ci]:
+                                embedding = doc.embeddings[ci].tolist()
+                        row: dict = {
+                            "DOC_ID":            doc.doc_id,
+                            "SECURITY_CODE":     doc.sec_code,
+                            "FILER_NAME":        doc.filer_name,
+                            "FILER_ID":          doc.filer_id,
+                            "SUBMISSION_DATE":   doc.sub_date,
+                            "DOC_TYPE":          doc.doc_type,
+                            "SECTION_CATEGORY":  chunk_data["section_category"],
+                            "CHUNK_TEXT":        chunk_data["chunk_text"],
+                            "FILE_NAME":         doc.blob_name,
+                        }
+                        if embedding is not None:
+                            row["EMBEDDING"] = embedding
+                        tmp.write(json.dumps(row, ensure_ascii=False) + "\n")
+                        row_count += 1
+                else:
+                    tmp.write(json.dumps({
+                        "DOC_ID":            doc.doc_id,
+                        "SECURITY_CODE":     doc.sec_code,
+                        "FILER_NAME":        doc.filer_name,
+                        "FILER_ID":          doc.filer_id,
+                        "SUBMISSION_DATE":   doc.sub_date,
+                        "DOC_TYPE":          doc.doc_type,
+                        "SECTION_CATEGORY":  None,
+                        "CHUNK_TEXT":        None,
+                        "FILE_NAME":         doc.blob_name,
+                    }, ensure_ascii=False) + "\n")
+                    row_count += 1
 
-    for doc in valid_docs:
-        has_error = False
+        # 冪等性: 対象 FILE_NAME の既存行を DELETE（再実行時の重複防止）
+        file_names = list({d.blob_name for d in valid_docs})
+        _delete_existing_rows(bq, file_names, logger)
 
-        if doc.chunks:
-            # チャンク + Embedding あり
-            embeddings = doc.embeddings if doc.embeddings else [None] * len(doc.chunks)
-            for ci, chunk_data in enumerate(doc.chunks):
-                embedding = embeddings[ci] if ci < len(embeddings) else None
-                row: dict = {
-                    "DOC_ID":            doc.doc_id,
-                    "SECURITY_CODE":     doc.sec_code,
-                    "FILER_NAME":        doc.filer_name,
-                    "FILER_ID":          doc.filer_id,
-                    "SUBMISSION_DATE":   doc.sub_date,
-                    "DOC_TYPE":          doc.doc_type,
-                    "SECTION_CATEGORY":  chunk_data["section_category"],
-                    "CHUNK_TEXT":        chunk_data["chunk_text"],
-                    "FILE_NAME":         doc.blob_name,
-                }
-                if embedding is not None:
-                    row["EMBEDDING"] = embedding
-                rows_buffer.append(row)
-        else:
-            # メタデータ1行のみ
-            rows_buffer.append({
-                "DOC_ID":            doc.doc_id,
-                "SECURITY_CODE":     doc.sec_code,
-                "FILER_NAME":        doc.filer_name,
-                "FILER_ID":          doc.filer_id,
-                "SUBMISSION_DATE":   doc.sub_date,
-                "DOC_TYPE":          doc.doc_type,
-                "SECTION_CATEGORY":  None,
-                "CHUNK_TEXT":        None,
-                "FILE_NAME":         doc.blob_name,
-            })
+        # GCS upload → Load Job（本テーブルに直接 APPEND）
+        now_ts = datetime.now(JST).strftime("%Y%m%d_%H%M%S")
+        gcs_upload_path = f"{GCS_BATCH_PREFIX}/load_upload_{now_ts}.jsonl"
+        _blob = bucket.blob(gcs_upload_path)
+        _blob.upload_from_filename(tmp_path)
+        gcs_uri = f"gs://{BUCKET_NAME}/{gcs_upload_path}"
+        logger.log(f"  NDJSON を GCS へ upload: {gcs_uri} ({row_count} 行)")
 
-        # バッチ送信
-        if len(rows_buffer) >= BQ_BATCH_SIZE:
-            errs = bq.insert_rows_json(TABLE_ID, rows_buffer)
-            if errs:
-                logger.log(f"  BQ Insert エラー: {errs}")
-                has_error = True
-            rows_buffer = []
+        job_config = LoadJobConfig(
+            source_format=SourceFormat.NEWLINE_DELIMITED_JSON,
+            write_disposition=WriteDisposition.WRITE_APPEND,
+        )
+        load_job = bq.load_table_from_uri(gcs_uri, TABLE_ID, job_config=job_config)
+        load_job.result()
 
-        if has_error:
-            errors += 1
-        else:
-            processed += 1
+        # GCS 一時ファイル削除
+        try:
+            _blob.delete()
+        except Exception:
+            pass
 
-    # 残りをフラッシュ
-    if rows_buffer:
-        errs = bq.insert_rows_json(TABLE_ID, rows_buffer)
-        if errs:
-            logger.log(f"  BQ Insert エラー (最終バッチ): {errs}")
-            errors += 1
+        processed = len(valid_docs)
+        errors = 0
+        if load_job.errors:
+            logger.log(f"  Load Job エラー: {load_job.errors}")
+            errors = len(load_job.errors)
+
+    except Exception as e:
+        logger.log(f"  BQ Load Job 失敗: {e}")
+        logger.log(traceback.format_exc())
+        processed = 0
+        errors = len(valid_docs)
+    finally:
+        Path(tmp_path).unlink(missing_ok=True)
 
     skipped = len(docs) - len(valid_docs)
     logger.log(f"Phase 3 完了: 成功 {processed}, スキップ {skipped}, エラー {errors}")
     return processed, skipped, errors
+
+
+def _delete_existing_rows(
+    bq: bigquery.Client, file_names: list[str], logger: BatchLogger,
+) -> None:
+    """Load Job 冪等性のため、対象 FILE_NAME の既存行を DELETE する."""
+    if not file_names:
+        return
+    params = [bigquery.ArrayQueryParameter("fnames", "STRING", file_names)]
+    sql = f"DELETE FROM `{TABLE_ID}` WHERE FILE_NAME IN UNNEST(@fnames)"
+    job_config = bigquery.QueryJobConfig(query_parameters=params)
+    result = bq.query(sql, job_config=job_config).result()
+    deleted = result.num_dml_affected_rows or 0
+    if deleted > 0:
+        logger.log(f"  冪等性DELETE: 既存 {deleted} 行を削除（再挿入予定）")
 
 
 # ============================================================
@@ -914,17 +1016,20 @@ def run_edinet_batch_etl(
     date_from: str, date_to: str,
     ticker_from: str | None = None, ticker_to: str | None = None,
     run_mode: str = "full",
-) -> None:
+) -> int:
     """EDINET Batch ETL メイン処理.
 
     run_mode:
-      full   — Phase 1→2→3 一気通貫（日次ロード用）
-      submit — Phase 1→2(Embedding投入のみ) → state保存 → exit（バックフィル用）
-      resume — state読込 → Phase 2(Embedding結果適用)→3(BQ Insert)（バックフィル用）
+      full      — Phase 1→2→3 一気通貫（日次ロード用、Embedding あり）
+      backfill  — Phase 1→チャンク化→3（Embedding スキップ、後日追加可）
+      submit    — Phase 1→2(Embedding投入のみ) → state保存 → exit（旧バックフィル用）
+      resume    — state読込 → Phase 2(Embedding結果適用)→3(BQ Insert)（旧バックフィル用）
+
+    Returns: エラー件数（0 = 正常終了）
     """
     storage_client = _get_storage_client()
     bucket = storage_client.bucket(BUCKET_NAME)
-    genai_client = _get_genai_client()
+    genai_client = None  # 遅延初期化（backfill モードでは不要）
 
     start_time_str = datetime.now(JST).strftime("%Y%m%d_%H%M%S")
     log_blob_name  = f"log/edinet_load_to_bq_{start_time_str}_{run_mode}_log.txt"
@@ -936,11 +1041,12 @@ def run_edinet_batch_etl(
     logger.log(f"実行環境: {RUNTIME}")
 
     docs: list[DocInfo] = []
-    processed = skipped = errors = 0
+    processed = skipped = errors = total_docs = 0
 
     try:
         if run_mode == "resume":
             # ── resume モード: GCS から state を読み込み Embedding 結果適用から再開 ──
+            genai_client = _get_genai_client()
             logger.log("resume モード: state を GCS から読み込み中...")
             docs, embedding_info = _load_backfill_state(bucket, date_from, date_to, logger)
             logger.flush_to_gcs()
@@ -948,13 +1054,13 @@ def run_edinet_batch_etl(
             phase2_poll_and_apply(docs, bucket, genai_client, logger, embedding_info)
             logger.flush_to_gcs()
 
-            processed, skipped, errors = phase3_bq_insert(docs, logger)
+            processed, skipped, errors = phase3_bq_insert(docs, bucket, logger)
             if processed > 0:
                 _create_vector_index(logger)
 
             # state / docs / ロックをクリーンアップ
             state_id = f"{date_from}_{date_to}"
-            for suffix in [".json", "_docs.json.gz", ".json.resume_triggered"]:
+            for suffix in [".json", "_docs.json.gz", "_docs.jsonl", ".json.resume_triggered"]:
                 path = f"{BACKFILL_STATE_PREFIX}_{state_id}{suffix}"
                 try:
                     bucket.blob(path).delete()
@@ -963,34 +1069,76 @@ def run_edinet_batch_etl(
             logger.log("state クリーンアップ完了")
 
         else:
-            # ── full / submit モード: Phase 1 から開始 ──
+            # ── full / submit / backfill: Phase 1 から開始 ──
             logger.log("BQ 取込済みファイル一覧を取得中...")
-            processed_files = _load_processed_file_names(date_from, date_to)
+            processed_files = _load_processed_file_names(
+                date_from, date_to, ticker_from, ticker_to,
+            )
             logger.log(f"取込済みファイル数: {len(processed_files)} 件")
 
-            docs = phase1_scan_and_extract(
-                bucket, date_from, date_to, ticker_from, ticker_to, processed_files, logger,
-            )
-            logger.flush_to_gcs()
+            if run_mode == "backfill":
+                # ── backfill モード: ストリーミングバッチ処理（メモリ一定） ──
+                logger.log(f"backfill モード: Embedding スキップ, バッチサイズ={BACKFILL_MEM_BATCH}")
+                batch: list[DocInfo] = []
+                batch_num = 0
+                total_docs = 0
+                for doc in _phase1_iter(
+                    bucket, date_from, date_to, ticker_from, ticker_to,
+                    processed_files, logger,
+                ):
+                    batch.append(doc)
+                    if len(batch) >= BACKFILL_MEM_BATCH:
+                        batch_num += 1
+                        total_docs += len(batch)
+                        logger.log(f"  バッチ {batch_num}: {len(batch)} 件処理中 (累計 {total_docs})")
+                        _phase2_chunk(batch, logger)
+                        p, s, e = phase3_bq_insert(batch, bucket, logger)
+                        processed += p; errors += e
+                        batch.clear()
+                        logger.flush_to_gcs()
+                if batch:
+                    batch_num += 1
+                    total_docs += len(batch)
+                    logger.log(f"  バッチ {batch_num} (最終): {len(batch)} 件処理中 (累計 {total_docs})")
+                    _phase2_chunk(batch, logger)
+                    p, s, e = phase3_bq_insert(batch, bucket, logger)
+                    processed += p; errors += e
+                if total_docs == 0:
+                    logger.log("処理対象ドキュメントなし → 終了")
+                    return 0
+                docs = []
 
-            if not docs:
-                logger.log("処理対象ドキュメントなし → 終了")
-                return
-
-            if run_mode == "submit":
-                # ── submit モード: Embedding バッチ投入 → state 保存 → exit ──
-                embedding_info = phase2_chunk_and_submit(docs, bucket, genai_client, logger)
-                if embedding_info:
-                    _save_backfill_state(bucket, date_from, date_to, docs, embedding_info, logger)
-                logger.log("submit モード完了: バッチ投入済み。Cloud Functions で resume を待機。")
+            else:
+                docs = phase1_scan_and_extract(
+                    bucket, date_from, date_to, ticker_from, ticker_to,
+                    processed_files, logger,
+                )
                 logger.flush_to_gcs()
-                return
 
-            # ── full モード: 一気通貫 ──
-            phase2_chunk_and_embed(docs, bucket, genai_client, logger)
-            logger.flush_to_gcs()
+                if not docs:
+                    logger.log("処理対象ドキュメントなし → 終了")
+                    return 0
 
-            processed, skipped, errors = phase3_bq_insert(docs, logger)
+                if run_mode == "submit":
+                    genai_client = _get_genai_client()
+                    embedding_info = phase2_chunk_and_submit(
+                        docs, bucket, genai_client, logger,
+                    )
+                    if embedding_info:
+                        _save_backfill_state(
+                            bucket, date_from, date_to, docs, embedding_info, logger,
+                        )
+                    logger.log("submit モード完了: バッチ投入済み。Cloud Functions で resume を待機。")
+                    logger.flush_to_gcs()
+                    return 0
+
+                else:
+                    # ── full モード: 一気通貫 ──
+                    genai_client = _get_genai_client()
+                    phase2_chunk_and_embed(docs, bucket, genai_client, logger)
+                    logger.flush_to_gcs()
+                    processed, skipped, errors = phase3_bq_insert(docs, bucket, logger)
+
             if processed > 0:
                 _create_vector_index(logger)
 
@@ -1003,33 +1151,36 @@ def run_edinet_batch_etl(
         logger.log("=== EDINET Batch ETL 処理結果サマリー ===")
         logger.log(f"対象期間              : {date_from} ～ {date_to}")
         logger.log(f"run_mode              : {run_mode}")
-        logger.log(f"総ドキュメント数       : {len(docs)} 件")
+        doc_count = total_docs if run_mode == "backfill" else len(docs)
+        logger.log(f"総ドキュメント数       : {doc_count} 件")
         logger.log(f"正常処理              : {processed} 件")
         logger.log(f"スキップ              : {skipped} 件")
         logger.log(f"エラー                : {errors} 件")
         logger.flush_to_gcs()
         print(f"ログファイル出力完了: gs://{BUCKET_NAME}/{log_blob_name}")
 
+    return errors
+
 
 # ============================================================
 # 日付解決 / 引数パース
 # ============================================================
 
-def _resolve_dates() -> tuple[str, str]:
-    """DATE_MODE に基づいて日付範囲を返す."""
+def _resolve_dates(mode: str = DATE_MODE) -> tuple[str, str]:
+    """日付モードに基づいて日付範囲を返す."""
     today_jst = datetime.now(JST).date()
-    if DATE_MODE == "t":
+    if mode == "t":
         d = today_jst.strftime("%Y%m%d")
         return d, d
-    elif DATE_MODE == "y":
+    elif mode == "y":
         yesterday = (today_jst - timedelta(days=1)).strftime("%Y%m%d")
         return yesterday, yesterday
-    elif DATE_MODE == "1":
+    elif mode == "1":
         return DATE_SINGLE, DATE_SINGLE
-    elif DATE_MODE == "r":
+    elif mode == "r":
         return DATE_FROM, DATE_TO
     else:
-        raise ValueError(f"DATE_MODE が不正: {DATE_MODE!r}")
+        raise ValueError(f"DATE_MODE が不正: {mode!r}")
 
 
 def parse_args() -> argparse.Namespace:
@@ -1053,7 +1204,6 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     """エントリーポイント."""
-    global DATE_MODE, DATE_FROM, DATE_TO
     args = parse_args()
 
     # 環境変数フォールバック（gcloud --update-env-vars 対応）
@@ -1068,11 +1218,9 @@ def main() -> None:
     elif args.date_from:
         date_from = args.date_from
         date_to   = args.date_to or args.date_from
-    elif args.mode or env_mode:
-        DATE_MODE = args.mode or env_mode
-        date_from, date_to = _resolve_dates()
     else:
-        date_from, date_to = _resolve_dates()
+        mode = args.mode or env_mode or DATE_MODE
+        date_from, date_to = _resolve_dates(mode)
 
     # run_mode: full(default) / submit / resume
     run_mode = os.environ.get("RUN_MODE", "full")
@@ -1090,11 +1238,13 @@ def main() -> None:
     print(f"保存先      : {TABLE_ID}")
     print()
 
-    run_edinet_batch_etl(
+    errors = run_edinet_batch_etl(
         date_from, date_to,
         ticker_from=ticker_from, ticker_to=ticker_to,
         run_mode=run_mode,
     )
+    if errors:
+        sys.exit(1)
 
 
 if __name__ == "__main__":

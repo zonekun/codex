@@ -12,7 +12,7 @@ NO12　サプライチェーンマスタ、連鎖マスタのクリーニング 
 | # | ツール名 | 用途 | スクリプト | 知見MD |
 |---|----------|------|-----------|--------|
 | 11 | EDINET遅延TOB | 大量保有報告書の遅延提出からTOB/MBO候補をスコアリング | `scripts/screen_edinet_delay_tob.py` | `analysis/008_edinet_delay_tob_screening.md` |
-| 12 | サプライチェーン連鎖(★使える) | サプライチェーン先行好決算→後攻決算またぎ候補抽出 | `scripts/screen_earnings_cascade.py` | `analysis/013_supply_chain_earnings_cascade.md` |
+| 12 | サプライチェーン連鎖 | サプライチェーン先行好決算→後攻決算またぎ候補抽出 | `scripts/screen_earnings_cascade.py` | `analysis/013_supply_chain_earnings_cascade.md` |
 | 13 | 清原式 | ネットキャッシュ控除後の実質PER全銘柄スキャン | `scripts/kiyohara_screening.py` | — |
 | 14 | FY弱気ガイダンス | 弱気初期ガイダンス→売られ→実績上振れの繰返しパターン検出 | `scripts/fy_conservative_guidance_screener.py` | `analysis/014_fy_conservative_guidance_screener.md` |
 | 15 | アクティビストスキャン | EDINET大量保有報告書からアクティビストファンド保有を検出 | `scripts/activist_edinet_scan.py` | — |
@@ -36,8 +36,8 @@ NO12　サプライチェーンマスタ、連鎖マスタのクリーニング 
 
 | # | ツール名 | 用途 | スクリプト | 知見MD |
 |---|----------|------|-----------|--------|
-| 41 | キーワードベクトル類似検索(★使える) | TDNET CHUNK_TEXTキーワード共起+ベクトル類似検索 | `scripts/093_deep_analysis_screener.py` | `analysis/093_earnings_deep_analysis.md` |
-| 42 | セグメント転換検知(★使える) | テーマ出現頻度の時系列変化でセグメント転換を早期発見 | `scripts/093_deep_analysis_transform_scanner.py` | `analysis/093_earnings_deep_analysis.md` |
+| 41 | キーワードベクトル類似検索 | TDNET CHUNK_TEXTキーワード共起+ベクトル類似検索 | `scripts/093_deep_analysis_screener.py` | `analysis/093_earnings_deep_analysis.md` |
+| 42 | セグメント転換検知 | テーマ出現頻度の時系列変化でセグメント転換を早期発見 | `scripts/093_deep_analysis_transform_scanner.py` | `analysis/093_earnings_deep_analysis.md` |
 
 ## データ収集（50番台）
 

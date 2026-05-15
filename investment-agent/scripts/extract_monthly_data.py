@@ -3532,9 +3532,15 @@ def phase_extract(
                 _cached_pdf: Optional[bytes] = None
                 matched_blob = None
 
-                # PDF blob を特定
+                # PDF blob を特定（submission_date 一致を優先）
                 if _pdf_blob_map:
                     matched_blob = _pdf_blob_map.get(doc_title)
+                    if not matched_blob:
+                        _sub_prefix = sub_date.replace("-", "")
+                        for stem, b in _pdf_blob_map.items():
+                            if stem.startswith(_sub_prefix) and (doc_title in stem or stem in doc_title):
+                                matched_blob = b
+                                break
                     if not matched_blob:
                         for stem, b in _pdf_blob_map.items():
                             if doc_title in stem or stem in doc_title:
@@ -3615,8 +3621,19 @@ def phase_extract(
                         f.get("row_label_regex") for f in adapter.get("fields", [])
                     )
                     if not rec:
+                        _fallback_text = full_text
+                        if _has_row_regex and _cached_pdf:
+                            try:
+                                _fb_pdf_text = _extract_pdf_text(_cached_pdf)
+                                if _fb_pdf_text.strip():
+                                    _fallback_text = _fb_pdf_text
+                            except Exception as e:
+                                logger.warning(
+                                    "[%s] _extract_pdf_text 失敗 (rec=None fallback): %s",
+                                    ticker, e,
+                                )
                         rec = extract_from_tdnet_text(
-                            full_text, adapter, doc_title, sub_date,
+                            _fallback_text, adapter, doc_title, sub_date,
                         )
                     elif _has_row_regex:
                         _pdf_text_for_regex = ""
@@ -3683,19 +3700,24 @@ def phase_extract(
             _gemini_xlsx_client = None
             _gemini_xlsx_model = None
             if _is_excel_gemini and not batch_mode:
-                try:
-                    from google import genai  # noqa: F811
-                    from dotenv import load_dotenv
-                    load_dotenv(PROJECT_ROOT / ".env")
-                    _gemini_api_key = os.environ.get("GEMINI_API_KEY", "")
-                    if _gemini_api_key:
-                        _gemini_xlsx_client = genai.Client(api_key=_gemini_api_key)
-                        _gemini_xlsx_model = "gemini-3-flash-preview"
-                        logger.info(f"  Gemini 個人APIキー初期化 (model={_gemini_xlsx_model})")
-                    else:
-                        logger.warning("  GEMINI_API_KEY 未設定 → excel_gemini スキップ")
-                except ImportError:
-                    logger.warning("  google-genai 未インストール → excel_gemini スキップ")
+                if IS_CLOUD_RUN:
+                    _gemini_xlsx_client = get_gemini()
+                    _gemini_xlsx_model = GEMINI_MODEL
+                    logger.info(f"  Gemini Vertex AI 初期化 (model={_gemini_xlsx_model})")
+                else:
+                    try:
+                        from google import genai  # noqa: F811
+                        from dotenv import load_dotenv
+                        load_dotenv(PROJECT_ROOT / ".env")
+                        _gemini_api_key = os.environ.get("GEMINI_API_KEY", "")
+                        if _gemini_api_key:
+                            _gemini_xlsx_client = genai.Client(api_key=_gemini_api_key)
+                            _gemini_xlsx_model = GEMINI_MODEL
+                            logger.info(f"  Gemini 個人APIキー初期化 (model={_gemini_xlsx_model})")
+                        else:
+                            logger.warning("  GEMINI_API_KEY 未設定 → excel_gemini スキップ")
+                    except ImportError:
+                        logger.warning("  google-genai 未インストール → excel_gemini スキップ")
 
             def _process_download_pdf(pdf_bytes: bytes, fname_stem: str) -> None:
                 """monthlyir PDF を TDNET と同じロジックで抽出する。"""
@@ -3849,19 +3871,24 @@ def phase_extract(
             _gemini_html_client = None
             _gemini_html_model = None
             if extraction_method == "gemini" and not batch_mode:
-                try:
-                    from google import genai
-                    from dotenv import load_dotenv
-                    load_dotenv(PROJECT_ROOT / ".env")
-                    _gemini_api_key = os.environ.get("GEMINI_API_KEY", "")
-                    if _gemini_api_key:
-                        _gemini_html_client = genai.Client(api_key=_gemini_api_key)
-                        _gemini_html_model = "gemini-3-flash-preview"
-                        logger.info(f"  Gemini 個人APIキー初期化 (model={_gemini_html_model})")
-                    else:
-                        logger.warning("  GEMINI_API_KEY 未設定 → Gemini 抽出スキップ、regex にフォールバック")
-                except ImportError:
-                    logger.warning("  google-genai 未インストール → Gemini 抽出スキップ、regex にフォールバック")
+                if IS_CLOUD_RUN:
+                    _gemini_html_client = get_gemini()
+                    _gemini_html_model = GEMINI_MODEL
+                    logger.info(f"  Gemini Vertex AI 初期化 (model={_gemini_html_model})")
+                else:
+                    try:
+                        from google import genai
+                        from dotenv import load_dotenv
+                        load_dotenv(PROJECT_ROOT / ".env")
+                        _gemini_api_key = os.environ.get("GEMINI_API_KEY", "")
+                        if _gemini_api_key:
+                            _gemini_html_client = genai.Client(api_key=_gemini_api_key)
+                            _gemini_html_model = GEMINI_MODEL
+                            logger.info(f"  Gemini 個人APIキー初期化 (model={_gemini_html_model})")
+                        else:
+                            logger.warning("  GEMINI_API_KEY 未設定 → Gemini 抽出スキップ、regex にフォールバック")
+                    except ImportError:
+                        logger.warning("  google-genai 未インストール → Gemini 抽出スキップ、regex にフォールバック")
 
             patterns = list(MONTHLYIR_DIR.glob(f"{ticker}_*/"))
             if patterns:
@@ -4045,20 +4072,26 @@ def phase_extract(
 
             # Gemini 初期化（extraction_method=gemini かつ同期モードの場合のみ）
             _gemini_model_pdf = None
+            _gemini_client = None
             if extraction_method == "gemini" and not batch_mode:
-                try:
-                    from google import genai
-                    from dotenv import load_dotenv
-                    load_dotenv(PROJECT_ROOT / ".env")
-                    _gemini_api_key = os.environ.get("GEMINI_API_KEY", "")
-                    if _gemini_api_key:
-                        _gemini_client = genai.Client(api_key=_gemini_api_key)
-                        _gemini_model_pdf = "gemini-3-flash-preview"
-                        logger.info(f"  Gemini 個人APIキー初期化 (model={_gemini_model_pdf})")
-                    else:
-                        logger.warning("  GEMINI_API_KEY 未設定 → Gemini 抽出スキップ")
-                except ImportError:
-                    logger.warning("  google-genai 未インストール → Gemini 抽出スキップ")
+                if IS_CLOUD_RUN:
+                    _gemini_client = get_gemini()
+                    _gemini_model_pdf = GEMINI_MODEL
+                    logger.info(f"  Gemini Vertex AI 初期化 (model={_gemini_model_pdf})")
+                else:
+                    try:
+                        from google import genai
+                        from dotenv import load_dotenv
+                        load_dotenv(PROJECT_ROOT / ".env")
+                        _gemini_api_key = os.environ.get("GEMINI_API_KEY", "")
+                        if _gemini_api_key:
+                            _gemini_client = genai.Client(api_key=_gemini_api_key)
+                            _gemini_model_pdf = GEMINI_MODEL
+                            logger.info(f"  Gemini 個人APIキー初期化 (model={_gemini_model_pdf})")
+                        else:
+                            logger.warning("  GEMINI_API_KEY 未設定 → Gemini 抽出スキップ")
+                    except ImportError:
+                        logger.warning("  google-genai 未インストール → Gemini 抽出スキップ")
 
             try:
                 bucket = gcs.bucket(GCS_BUCKET)

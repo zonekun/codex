@@ -45,21 +45,24 @@ WITH universe_base AS (
 universe_ranked AS (
   SELECT
     *,
+    ROW_NUMBER() OVER (PARTITION BY TICKER ORDER BY EXCHANGE) AS TICKER_RN,
     ROW_NUMBER() OVER (ORDER BY TICKER) AS UNIVERSE_RN
   FROM universe_base
 ),
 universe AS (
-  SELECT * EXCEPT(UNIVERSE_RN)
+  SELECT * EXCEPT(TICKER_RN, UNIVERSE_RN)
   FROM universe_ranked
-  WHERE @limit_tickers IS NULL OR UNIVERSE_RN <= @limit_tickers
+  WHERE TICKER_RN = 1
+    AND (@limit_tickers IS NULL OR UNIVERSE_RN <= @limit_tickers)
 ),
-fy_source AS (
+fin_all AS (
   SELECT
     LOCAL_CODE AS TICKER,
     DISCLOSED_DATE,
     DISCLOSED_TIME,
     DISCLOSURE_NUMBER,
     TYPE_OF_DOCUMENT,
+    TYPE_OF_CURRENT_PERIOD,
     CURRENT_FISCAL_YEAR_END_DATE,
     NEXT_FISCAL_YEAR_END_DATE,
     OPERATING_PROFIT,
@@ -83,18 +86,35 @@ fy_source AS (
       WHEN NEXT_YEAR_FORECAST_PROFIT IS NOT NULL THEN 'profit'
       ELSE NULL
     END AS INITIAL_FORECAST_METRIC_NAME,
+    COALESCE(
+      FORECAST_OPERATING_PROFIT,
+      FORECAST_ORDINARY_PROFIT,
+      FORECAST_PROFIT,
+      NEXT_YEAR_FORECAST_OPERATING_PROFIT,
+      NEXT_YEAR_FORECAST_ORDINARY_PROFIT,
+      NEXT_YEAR_FORECAST_PROFIT
+    ) AS REVISION_FORECAST_METRIC
+  FROM `gmailpj-357912.STOCK.FIN_SUMMARY`
+  WHERE LOCAL_CODE IN (SELECT TICKER FROM universe)
+    AND TYPE_OF_CURRENT_PERIOD = 'FY'
+    AND CURRENT_FISCAL_YEAR_END_DATE IS NOT NULL
+    AND (
+      TYPE_OF_DOCUMENT LIKE 'FYFinancialStatements_%'
+      OR TYPE_OF_DOCUMENT = 'EarnForecastRevision'
+    )
+),
+fy_source AS (
+  SELECT
+    *,
     ROW_NUMBER() OVER (
-      PARTITION BY LOCAL_CODE, CURRENT_FISCAL_YEAR_END_DATE
+      PARTITION BY TICKER, CURRENT_FISCAL_YEAR_END_DATE
       ORDER BY
         DISCLOSED_DATE ASC,
         CASE WHEN TYPE_OF_DOCUMENT LIKE '%Consolidated%' THEN 0 ELSE 1 END,
         DISCLOSURE_NUMBER ASC
     ) AS rn
-  FROM `gmailpj-357912.STOCK.FIN_SUMMARY`
-  WHERE LOCAL_CODE IN (SELECT TICKER FROM universe)
-    AND TYPE_OF_CURRENT_PERIOD = 'FY'
-    AND TYPE_OF_DOCUMENT LIKE 'FYFinancialStatements_%'
-    AND CURRENT_FISCAL_YEAR_END_DATE IS NOT NULL
+  FROM fin_all
+  WHERE TYPE_OF_DOCUMENT LIKE 'FYFinancialStatements_%'
 ),
 fy_rows AS (
   SELECT * EXCEPT(rn)
@@ -140,24 +160,14 @@ final_actuals AS (
 ),
 revision_source AS (
   SELECT
-    LOCAL_CODE AS TICKER,
+    TICKER,
     CURRENT_FISCAL_YEAR_END_DATE AS TARGET_FISCAL_YEAR_END_DATE,
     DISCLOSED_DATE,
     DISCLOSED_TIME,
     DISCLOSURE_NUMBER,
-    COALESCE(
-      FORECAST_OPERATING_PROFIT,
-      FORECAST_ORDINARY_PROFIT,
-      FORECAST_PROFIT,
-      NEXT_YEAR_FORECAST_OPERATING_PROFIT,
-      NEXT_YEAR_FORECAST_ORDINARY_PROFIT,
-      NEXT_YEAR_FORECAST_PROFIT
-    ) AS REVISION_FORECAST_METRIC
-  FROM `gmailpj-357912.STOCK.FIN_SUMMARY`
-  WHERE LOCAL_CODE IN (SELECT TICKER FROM universe)
-    AND TYPE_OF_DOCUMENT = 'EarnForecastRevision'
-    AND TYPE_OF_CURRENT_PERIOD = 'FY'
-    AND CURRENT_FISCAL_YEAR_END_DATE IS NOT NULL
+    REVISION_FORECAST_METRIC
+  FROM fin_all
+  WHERE TYPE_OF_DOCUMENT = 'EarnForecastRevision'
 ),
 revision_summary AS (
   SELECT
@@ -256,57 +266,40 @@ base AS (
     ON tf.TICKER = ie.TICKER
    AND tf.SUBMISSION_DATE = ie.INITIAL_DISCLOSED_DATE
 ),
-price_prev AS (
-  SELECT * EXCEPT(rn)
-  FROM (
-    SELECT
-      b.TICKER,
-      b.TARGET_FISCAL_YEAR_END_DATE,
-      p.YEARDATE AS PREV_PRICE_DATE,
-      p.CLOSE AS PREV_CLOSE,
-      ROW_NUMBER() OVER (
-        PARTITION BY b.TICKER, b.TARGET_FISCAL_YEAR_END_DATE
-        ORDER BY p.YEARDATE DESC
-      ) AS rn
-    FROM base b
-    JOIN `gmailpj-357912.STOCK.STOCK_PRICE` p
-      ON p.TICKER = b.TICKER
-     AND p.YEARDATE < b.INITIAL_DISCLOSED_DATE
-  )
-  WHERE rn = 1
-),
-price_after AS (
+price_window AS (
   SELECT
     b.TICKER,
     b.TARGET_FISCAL_YEAR_END_DATE,
     p.YEARDATE,
     p.CLOSE,
+    CASE WHEN p.YEARDATE < b.INITIAL_DISCLOSED_DATE THEN 'PREV' ELSE 'AFTER' END AS SIDE,
     ROW_NUMBER() OVER (
-      PARTITION BY b.TICKER, b.TARGET_FISCAL_YEAR_END_DATE
-      ORDER BY p.YEARDATE ASC
+      PARTITION BY b.TICKER, b.TARGET_FISCAL_YEAR_END_DATE,
+        CASE WHEN p.YEARDATE < b.INITIAL_DISCLOSED_DATE THEN 'PREV' ELSE 'AFTER' END
+      ORDER BY CASE WHEN p.YEARDATE < b.INITIAL_DISCLOSED_DATE
+        THEN -1 * UNIX_DATE(p.YEARDATE) ELSE UNIX_DATE(p.YEARDATE) END
     ) AS rn
   FROM base b
   JOIN `gmailpj-357912.STOCK.STOCK_PRICE` p
     ON p.TICKER = b.TICKER
-   AND p.YEARDATE > b.INITIAL_DISCLOSED_DATE
+   AND p.YEARDATE BETWEEN DATE_SUB(b.INITIAL_DISCLOSED_DATE, INTERVAL 10 DAY)
+                       AND DATE_ADD(b.INITIAL_DISCLOSED_DATE, INTERVAL 10 DAY)
+   AND p.YEARDATE != b.INITIAL_DISCLOSED_DATE
+),
+price_prev AS (
+  SELECT TICKER, TARGET_FISCAL_YEAR_END_DATE,
+         YEARDATE AS PREV_PRICE_DATE, CLOSE AS PREV_CLOSE
+  FROM price_window WHERE SIDE = 'PREV' AND rn = 1
 ),
 price_next AS (
-  SELECT
-    TICKER,
-    TARGET_FISCAL_YEAR_END_DATE,
-    YEARDATE AS NEXT_PRICE_DATE,
-    CLOSE AS NEXT_CLOSE
-  FROM price_after
-  WHERE rn = 1
+  SELECT TICKER, TARGET_FISCAL_YEAR_END_DATE,
+         YEARDATE AS NEXT_PRICE_DATE, CLOSE AS NEXT_CLOSE
+  FROM price_window WHERE SIDE = 'AFTER' AND rn = 1
 ),
 price_3d AS (
-  SELECT
-    TICKER,
-    TARGET_FISCAL_YEAR_END_DATE,
-    YEARDATE AS PRICE_3D_DATE,
-    CLOSE AS CLOSE_3D
-  FROM price_after
-  WHERE rn = 3
+  SELECT TICKER, TARGET_FISCAL_YEAR_END_DATE,
+         YEARDATE AS PRICE_3D_DATE, CLOSE AS CLOSE_3D
+  FROM price_window WHERE SIDE = 'AFTER' AND rn = 3
 ),
 tdnet_revision_groups AS (
   SELECT
@@ -455,12 +448,17 @@ def classify_row(row: dict[str, Any], thresholds: Thresholds) -> dict[str, Any]:
     previous_actual = row.get("PREVIOUS_ACTUAL_METRIC")
     initial_forecast = row.get("INITIAL_FORECAST_METRIC")
     final_actual = row.get("FINAL_ACTUAL_METRIC")
+    actual_metric_name = row.get("PREVIOUS_ACTUAL_METRIC_NAME")
+    forecast_metric_name = row.get("INITIAL_FORECAST_METRIC_NAME")
     invalid_baseline = (
         previous_actual is None
         or initial_forecast is None
         or final_actual is None
         or float(previous_actual) <= 0
         or float(initial_forecast) <= 0
+        or (actual_metric_name is not None
+            and forecast_metric_name is not None
+            and actual_metric_name != forecast_metric_name)
     )
 
     weak_guidance = (
@@ -554,6 +552,11 @@ def summarize_companies(
     for row in rows:
         grouped[str(row["TICKER"])].append(row)
 
+    def avg(key: str, source: list[dict[str, Any]]) -> float | None:
+        """Average of non-None values for key."""
+        values = [float(row[key]) for row in source if row.get(key) is not None]
+        return sum(values) / len(values) if values else None
+
     summaries: list[dict[str, Any]] = []
     for ticker, ticker_rows in grouped.items():
         evaluable = [
@@ -568,12 +571,6 @@ def summarize_companies(
         hit_rate = hit_count / len(evaluable) if evaluable else 0.0
         if hit_count < thresholds.min_hit_count and hit_rate < thresholds.min_hit_rate:
             continue
-
-        def avg(key: str, source: list[dict[str, Any]]) -> float | None:
-            values = [float(row[key]) for row in source if row.get(key) is not None]
-            if not values:
-                return None
-            return sum(values) / len(values)
 
         first = sorted(ticker_rows, key=lambda r: str(r["TARGET_FISCAL_YEAR_END_DATE"]))[-1]
         summaries.append(
@@ -851,24 +848,28 @@ def main(argv: list[str] | None = None) -> int:
     )
     date_from = parse_date(args.date_from)
     date_to = parse_date(args.date_to)
-    client = get_bq_client()
 
-    rows = fetch_candidate_years(
-        client=client,
-        date_from=date_from,
-        date_to=date_to,
-        limit_tickers=args.limit_tickers,
-    )
-    classified = [classify_row(row, thresholds) for row in rows]
-    company_scores = summarize_companies(classified, thresholds)
+    try:
+        client = get_bq_client()
+        rows = fetch_candidate_years(
+            client=client,
+            date_from=date_from,
+            date_to=date_to,
+            limit_tickers=args.limit_tickers,
+        )
+        classified = [classify_row(row, thresholds) for row in rows]
+        company_scores = summarize_companies(classified, thresholds)
 
-    args.output_dir.mkdir(parents=True, exist_ok=True)
-    candidate_path = args.output_dir / "candidate_years.csv"
-    company_path = args.output_dir / "company_scores.csv"
-    report_path = args.output_dir / "report.html"
-    write_candidate_years(classified, candidate_path)
-    write_company_scores(company_scores, company_path)
-    write_html_report(classified, company_scores, report_path, date_from, date_to)
+        args.output_dir.mkdir(parents=True, exist_ok=True)
+        candidate_path = args.output_dir / "candidate_years.csv"
+        company_path = args.output_dir / "company_scores.csv"
+        report_path = args.output_dir / "report.html"
+        write_candidate_years(classified, candidate_path)
+        write_company_scores(company_scores, company_path)
+        write_html_report(classified, company_scores, report_path, date_from, date_to)
+    except Exception:
+        log.exception("screener_failed")
+        return 1
 
     log.info(
         "screener_done",

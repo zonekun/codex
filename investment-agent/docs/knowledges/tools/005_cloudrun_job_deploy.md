@@ -353,7 +353,7 @@ else:
 | Job名 | スクリプト | Artifact Registry | タイムアウト | スケジュール |
 |-------|-----------|-----------------|------------|------------|
 | `tdnet-download` | `scripts/tdnet_download.py` | `tdnet/tdnet-download` | 3600s | 毎営業日 19:10 JST（未設定） |
-| `jquants-fin-summary` | `scripts/jquants_get_fin_summary.py` | `jquants/jquants-fin-summary` | 600s | 火〜土 02:00 / 月〜金 18:30 JST |
+| `jquants-fin-summary` | `scripts/jquants_get_fin_summary.py` | `jquants/jquants-fin-summary` | 600s | 未設定 |
 | `edinet-download` | `scripts/edinet_download.py` | `edinet/edinet-download` | **日数に応じて変更**（1年分=36000s） | 未設定 |
 | `edinet-load` | `scripts/edinet_load.py` | `edinet/edinet-load` | **86400s（24時間）** | 未設定 |
 | `tdnet-load` | `scripts/tdnet_load.py` | `tdnet/tdnet-load` | 3600s | 未設定 |

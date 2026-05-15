@@ -30,7 +30,7 @@ HEADERS = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/
 def _fetch_tdnet_tickers(date_str: str) -> set[str]:
     """TDNet開示一覧から当日の決算短信開示済みtickerを取得."""
     tickers: set[str] = set()
-    for page in range(1, 20):
+    for page in range(1, 100):
         url = TDNET_LIST_URL.format(page=page, date=date_str)
         resp = httpx.get(url, timeout=30, headers=HEADERS, follow_redirects=True)
         if resp.status_code == 404:
@@ -63,8 +63,10 @@ def _fetch_tdnet_tickers(date_str: str) -> set[str]:
     return tickers
 
 
-def _fetch_scheduled(client: bigquery.Client, date_str: str, cutoff_time: str) -> list[dict]:
-    """BQから当日の決算発表予定を取得."""
+def _fetch_scheduled(
+    client: bigquery.Client, date_str: str, cutoff_time: str
+) -> list[dict]:
+    """BQから当日の決算発表予定を取得（時刻確定&cutoff以前のみ）."""
     sql = """
         SELECT
             s.TICKER,
@@ -87,7 +89,8 @@ def _fetch_scheduled(client: bigquery.Client, date_str: str, cutoff_time: str) -
         ]
     )
     rows = client.query(sql, job_config=job_config).result()
-    return [dict(row) for row in rows]
+    all_rows = [dict(row) for row in rows]
+    return [r for r in all_rows if r["sched_time"] is not None]
 
 
 def run() -> None:
@@ -124,7 +127,7 @@ def run() -> None:
     print(f"{'TICKER':>6}  {'予定':>5}  {'四半期':<6}  会社名")
     print("-" * 60)
     for r in undisclosed:
-        t = r["sched_time"] or "??:??"
+        t = r["sched_time"]
         name = (r["STOCK_NAME"] or "")[:20]
         print(f"{r['TICKER']:>6}  {t:>5}  {r['QUARTER']:<6}  {name}")
 

@@ -8,7 +8,8 @@ RUN pip install --no-cache-dir \
     google-genai>=1.0 \
     langchain-text-splitters>=0.2 \
     beautifulsoup4>=4.12 \
-    lxml>=4.9
+    lxml>=4.9 \
+    numpy>=1.24
 
 COPY scripts/edinet_load_parallel.py scripts/edinet_load_parallel.py
 

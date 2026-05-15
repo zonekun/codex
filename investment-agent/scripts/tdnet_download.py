@@ -5,6 +5,7 @@ Usage:
     PYTHONUTF8=1 python scripts/tdnet_download.py
     PYTHONUTF8=1 python scripts/tdnet_download.py --from 20260217 --to 20260224
     PYTHONUTF8=1 python scripts/tdnet_download.py --from 20260217 --to 20260224 --save-dir /c/Users/zonekun/Dropbox/stock/script/tdnet
+    PYTHONUTF8=1 python scripts/tdnet_download.py --from 20260217 --to 20260224 --ticker 3746 9384 9834
 
 Data source:
     TDnet 公式サイト（東京証券取引所）
@@ -722,6 +723,8 @@ def parse_args() -> argparse.Namespace:
                         help="yanoshin APIを使用（公式サイトにない過去データ用）")
     parser.add_argument("--force", action="store_true", default=False,
                         help="既存GCSファイルを上書きする")
+    parser.add_argument("--ticker", nargs="+", default=None,
+                        help="対象ticker（複数指定可: --ticker 3746 9384 9834）")
     return parser.parse_args()
 
 
@@ -747,6 +750,10 @@ def main() -> None:
         print("=== TDnet 適時開示ダウンロード ===")
         print(f"実行環境 : {RUNTIME}")
         print(f"期間     : {date_from} ～ {date_to}")
+        ticker_filter: set[str] | None = None
+        if getattr(args, "ticker", None):
+            ticker_filter = {t[:4] for t in args.ticker}
+            print(f"ticker   : {' '.join(sorted(ticker_filter))}")
         if RUNTIME == "local":
             print(f"保存先   : {save_dir}")
         else:
@@ -764,6 +771,18 @@ def main() -> None:
             print("対象データがありませんでした。")
             log_cap.stop()
             return
+
+        if ticker_filter:
+            before = len(disclosures)
+            disclosures = [
+                d for d in disclosures
+                if (d.get("company_code") or "")[:4] in ticker_filter
+            ]
+            print(f"[ticker絞り込み] {before} → {len(disclosures)} 件")
+            if not disclosures:
+                print("指定tickerの開示はありませんでした。")
+                log_cap.stop()
+                return
 
         # 2. ダウンロード実行（日付別にグループ化して処理・再開をサポート）
         success     = 0

@@ -264,9 +264,7 @@ REITDividendForecastRevision / REITEarnForecastRevision
 ```
 J-Quants API V2 /fins/summary（日付ループ + ページネーション）
   → scripts/jquants_get_fin_summary.py
-  → Cloud Run Job: jquants-fin-summary（us-west1）
-    Scheduler 1: jquants-fin-summary-daily  — 火〜土 02:00 JST（0 2 * * 2-6）
-    Scheduler 2: jquants-fin-summary-17     — 月〜金 18:30 JST（30 18 * * 1-5）
+  → Cloud Run Job: jquants-fin-summary（us-west1、毎日21:00 JST）
   → BigQuery STOCK.fin_summary（WRITE_APPEND）
 ```
 
@@ -282,7 +280,7 @@ J-Quants API V2 /fins/summary（日付ループ + ページネーション）
 
 **データ範囲:**
 - 期間（FROM）: 2016-02-26（既存データの最古日付）
-- 期間（TO）: 日次自動更新（スケジュールは上記「データ収集フロー」参照）
+- 期間（TO）: 毎日21:00 JST 自動更新
   ```sql
   SELECT MAX(DISCLOSED_DATE) FROM `gmailpj-357912.STOCK.fin_summary`
   ```
@@ -385,7 +383,7 @@ PYTHONUTF8=1 python scripts/create_fin_summary_view.py --dry-run
 - **設計詳細**: `docs/knowledges/tools/008_jquants_fin_summary.md` の「ビュー設計」セクション参照
 
 **注意事項:**
-- ビューなので実体データはなし。`fin_summary` の日次更新で自動的に最新になる（スケジュールは上記「データ収集フロー」参照）
+- ビューなので実体データはなし。`fin_summary` の更新（毎日21:00）で自動的に最新になる
 - `ORDINARY_PROFIT` は IFRS/US-GAAP の銘柄では NULL（`fin_summary` と同様）
 - 連結・非連結の両方が同一行に入っている。連結のみ使う場合は `TYPE_OF_DOCUMENT LIKE '%Consolidated%'` でフィルタ
 - **金額単位は円**（百万円単位ではない）。極洋(1301)で2,000億円超の値を確認済み
