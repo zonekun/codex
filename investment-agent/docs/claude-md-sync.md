@@ -89,7 +89,7 @@ Claude Code 側には同期用の仕組みを追加しない。Codex 側だけ�
 
 | カテゴリ | 正系 | Codex側ツール | 状態管理 |
 |---|---|---|---|
-| Markdown | Claude Code workspace | `scripts/sync_claude_md.py` | `data/logs/claude_md_sync_manifest.json` |
+| Markdown | Claude Code workspace | `scripts/sync_claude_md.py` | `C:\Users\zonekun\Documents\codex\data\codex_state\investment-agent\claude_md_sync_manifest.json` |
 | secrets / API keys | GCS `gs://stock_data_1930932/config/investment-agent/` | `scripts/sync_codex_secrets.py` | `data/logs/codex_secrets_sync_manifest.json` |
 
 ## Markdown 対象
@@ -109,7 +109,8 @@ Claude Code 側には同期用の仕組みを追加しない。Codex 側だけ�
 - `docs/git-bootstrap-notes.md`
 - `docs/plans/*codex*.md`
 
-同期状態は Codex 側の `data/logs/claude_md_sync_manifest.json` に保存する。このファイルは `.gitignore` の `data/logs/` 配下なのでローカル状態として扱う。
+同期状態は Codex ワークスペース側の `C:\Users\zonekun\Documents\codex\data\codex_state\investment-agent\claude_md_sync_manifest.json` に保存する。
+このファイルは `investment-agent` リポジトリの外に置き、Claude Code 側からのソース同期、MD同期、ミラー事故、`data/logs/` cleanup の影響を受けないローカル状態として扱う。
 
 ## 初回
 
