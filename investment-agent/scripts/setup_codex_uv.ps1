@@ -10,6 +10,7 @@ $ProjectRoot = "C:\Users\zonekun\Documents\codex\investment-agent"
 $CodexVenvPath = Join-Path $ProjectRoot ".venv-codex"
 $CodexUvCache = Join-Path $ProjectRoot ".uv-cache"
 $CodexUvPython = Join-Path $ProjectRoot ".uv-python"
+$CodexMinRequirements = Join-Path $ProjectRoot "requirements-codex-min.txt"
 $PythonRequest = "3.12"
 $PythonCandidates = @(
     "C:\Program Files\Python312\python.exe",
@@ -79,9 +80,18 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 Write-Host "[3/4] Syncing dependencies into dedicated Codex venv..." -ForegroundColor Yellow
-& uv sync
-if ($LASTEXITCODE -ne 0) {
-    throw "uv sync failed with exit code $LASTEXITCODE"
+if (Test-Path -LiteralPath $CodexMinRequirements) {
+    Write-Host "Using Codex minimal requirements: $CodexMinRequirements" -ForegroundColor DarkGray
+    & uv pip install --python (Join-Path $CodexVenvPath "Scripts\python.exe") -r $CodexMinRequirements
+    if ($LASTEXITCODE -ne 0) {
+        throw "uv pip install failed with exit code $LASTEXITCODE"
+    }
+} else {
+    Write-Host "Codex minimal requirements not found. Falling back to uv sync." -ForegroundColor DarkYellow
+    & uv sync
+    if ($LASTEXITCODE -ne 0) {
+        throw "uv sync failed with exit code $LASTEXITCODE"
+    }
 }
 
 Write-Host "[4/4] Verifying dedicated Codex venv..." -ForegroundColor Yellow
