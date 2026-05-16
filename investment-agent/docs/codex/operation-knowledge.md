@@ -33,7 +33,7 @@ The operational source of truth remains the Claude Code side unless a task is ex
 
 - Rule placement and how to keep `AGENTS.md` thin: `docs/codex/rule-placement.md`
 - Codex display rules: `docs/codex/display-rules.md`
-- Codex uv environment, dependency extras, and Claude-side module intake: `docs/codex/uv-setup.md`
+- Codex Python / uv environment sharing rule: `docs/codex/uv-setup.md`
 - Long-running jobs, active context, monitoring, and execution-change rules: `docs/codex/long-running.md`
 - LINE / ntfy / notification reply waits: `docs/codex/notification-wait.md`
 - Claude Code <-> Codex message board and board rules: `docs/codex-to-claude-handoff.md`

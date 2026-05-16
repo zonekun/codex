@@ -1,157 +1,106 @@
-# Codex 専用 uv 環境
+# Codex uv / Python Environment
 
 作成日: 2026-04-22
+更新日: 2026-05-16
 対象プロジェクト: `investment-agent`
 
 ## 目的
 
-Claude Code 側で使っている `C:\venvs\investment-agent` を壊さず、Codex 専用の uv 実行環境を分離する。
+Codex 側で Python / uv 環境を重複保持しない。ディスク使用量を増やさないため、Codex は Claude Code 側で管理されている uv / venv を共有して使う。
 
 ## 方針
 
-- Claude Code 用 venv は触らない
-- Codex 用 venv はワークスペース直下に置く
-- uv cache / managed Python 置き場も Codex 用に分離する
+- Codex 専用 venv、uv cache、uv managed Python は作成しない。
+- Codex 側に `.venv-codex/`、`.uv-cache/`、`.uv-python/` を新設しない。
+- 既存の Codex 専用環境が残っていても、新規セットアップや復旧手順では使わない。
+- Python 実行は Claude Code 側の既存環境を使う。
+- 依存関係の追加・更新は Claude Code 側の `pyproject.toml` / `uv.lock` / venv 管理に従う。Codex 側だけの依存定義を増やさない。
 
-## 配置
+## 既定 Python
 
-- venv: `C:\Users\zonekun\Documents\codex\investment-agent\.venv-codex`
-- uv cache: `C:\Users\zonekun\Documents\codex\investment-agent\.uv-cache`
-- uv managed python: `C:\Users\zonekun\Documents\codex\investment-agent\.uv-python`
+Codex で Python を実行するときは、次の順で既存 interpreter を使う。
 
-## セットアップ
+1. `C:\venvs\investment-agent\Scripts\python.exe`
+2. `C:\gdrive\claude\investment-agent\.venv\Scripts\python.exe`
+3. どちらも存在しない場合だけ、作業を止めてユーザーへ確認する。
 
-### 最小復旧セット
-
-Codex 専用 VENV の最小サブセット定義は `requirements-codex-min.txt` を正本にする。これは Claude Code 側の `pyproject.toml` に混ぜない Codex 専用定義なので、`docs/claude-md-sync.md` の `$codexProtected` で保護する。
-
-Windows 復旧直後や既存 venv を移行しない場合は、まず次を使う。
-
-```powershell
-cd C:\Users\zonekun\Documents\codex\investment-agent
-powershell -ExecutionPolicy Bypass -File .\scripts\setup_codex_uv_min.ps1
-```
-
-既存の `scripts/setup_codex_uv.ps1` も、`requirements-codex-min.txt` が存在する場合は同じ最小 requirements を使う。`pyproject.toml` の full sync へ戻さない。
-
-このスクリプトは次を行う。
-
-- Codex 専用 `.venv-codex` を作成
-- `requirements-codex-min.txt` だけをインストール
-- 重い分析・ブラウザ・PDF・LLM 系依存は入れない
-- `python.exe --version` で疎通確認
-
-### pyproject extras を使う場合
-
-```powershell
-cd C:\Users\zonekun\Documents\codex\investment-agent
-powershell -ExecutionPolicy Bypass -File .\scripts\setup_codex_uv.ps1
-```
-
-このスクリプトは次を行う。
-
-- Python 3.12 実体を候補パスから探索
-- Codex 専用 `.venv-codex` を作成
-- `uv sync --extra codex-light` で日常作業用の軽量依存を同期
-- `python.exe --version` で疎通確認
+`C:\venvs\investment-agent` は Claude Code 側で使う共有 venv の既定パスであり、Codex が独自に作り直したり削除したりしない。
 
 ## セッション時の前提
 
-Codex で `uv` を使うときは、少なくとも次を同一セッションに設定する。
+PowerShell で Python を実行するときは UTF-8 を有効にし、直接 interpreter パスを指定する。
+
+```powershell
+$env:PYTHONUTF8='1'
+& 'C:\venvs\investment-agent\Scripts\python.exe' scripts\some_task.py
+```
+
+`C:\venvs\investment-agent` が存在しない場合だけ、Claude Code 側ワークツリー内の venv を使う。
+
+```powershell
+$env:PYTHONUTF8='1'
+& 'C:\gdrive\claude\investment-agent\.venv\Scripts\python.exe' scripts\some_task.py
+```
+
+Codex セッションで次の変数を Codex 側ローカルパスへ向けて設定しない。
 
 ```powershell
 $env:UV_PROJECT_ENVIRONMENT='C:\Users\zonekun\Documents\codex\investment-agent\.venv-codex'
 $env:UV_CACHE_DIR='C:\Users\zonekun\Documents\codex\investment-agent\.uv-cache'
 $env:UV_PYTHON_INSTALL_DIR='C:\Users\zonekun\Documents\codex\investment-agent\.uv-python'
+```
+
+## uv を使う場合
+
+Codex が `uv` を使う必要がある場合も、Codex 専用環境を作らず Claude Code 側の既存 venv を参照する。
+
+```powershell
 $env:PYTHONUTF8='1'
+$env:UV_PROJECT_ENVIRONMENT='C:\venvs\investment-agent'
+uv run python --version
 ```
 
-## optional dependency groups
-
-Claude Code 側の `pyproject.toml` に Codex 専用 extras を反映する合意がある場合だけ、重い依存を optional extras に分離して使う。
-作業前に必要な group だけを `uv sync` で入れる。
+`C:\venvs\investment-agent` が存在しない場合は、作業前に `C:\gdrive\claude\investment-agent\.venv` が使えるか確認する。
 
 ```powershell
-# 日常作業
-uv sync --extra codex-light
-
-# ブラウザ操作
-uv sync --extra codex-light --extra browser
-
-# PDF抽出
-uv sync --extra codex-light --extra pdf
-
-# GCP heavy / Vertex AI / pyarrow
-uv sync --extra codex-light --extra gcp-heavy
-
-# 分析
-uv sync --extra codex-light --extra analysis
-
-# numba / shap を使う重い分析
-uv sync --extra codex-light --extra analysis --extra analysis-accelerated
+$env:PYTHONUTF8='1'
+$env:UV_PROJECT_ENVIRONMENT='C:\gdrive\claude\investment-agent\.venv'
+uv run python --version
 ```
 
-重い作業が終わったら、可能な範囲で軽量状態へ戻す。
+Codex は `uv sync`、`uv lock`、`uv python install` など依存関係や interpreter を変更するコマンドを安易に実行しない。必要な場合は、対象が Claude Code 側の共有環境であること、変更理由、影響範囲を確認してから実行する。
 
-```powershell
-uv sync --extra codex-light
-```
+## 依存変更
 
-`--all-extras` は通常使わない。全機能検証など、全依存が必要な場合だけ明示的に使う。
+Codex 側だけの `requirements-codex-min.txt` や Codex 専用 optional extras を新設しない。新しい Python 依存が必要な場合は、次のどちらかで扱う。
 
-## Claude Code 側から依存変更を取り込む時
-
-Claude Code 側で新規モジュールが追加され、`pyproject.toml` / `uv.lock` を Codex 側へ取り込む時は、
-その依存をそのまま Codex 最小セットへ入れない。まず用途に応じて `requirements-codex-min.txt` へ入れるか、optional dependency group へ分類するかを判断する。
-
-Claude Code 側へ反映しない Codex 専用の軽量依存は `requirements-codex-min.txt` に追加する。このファイルと `scripts/setup_codex_uv_min.ps1` は Codex 保護対象なので、Claude Code 側ソース同期で消えないように `docs/claude-md-sync.md` の `$codexProtected` に維持する。
-
-分類の目安:
-
-- 軽い日常作業・テスト・BQ/GCS確認: `codex-light`
-- ブラウザ操作: `browser`
-- 通常分析: `analysis`
-- `numba` / `shap` など重い高速分析: `analysis-accelerated`
-- PDF/表抽出: `pdf`
-- Vertex AI / pyarrow / db-dtypes / Cloud Run など重いGCP: `gcp-heavy`
-- Anthropic / OpenAI / Gemini / MCP / LangChain系: `llm`
-- yfinance / J-Quants / YouTube / Twitter / arxiv / ddgs / Excel系: `data-sources`
-- FastAPI / Streamlit / Plotly / scheduler: `dashboard-api`
-
-取り込み後の基本手順:
-
-```powershell
-cd C:\Users\zonekun\Documents\codex\investment-agent
-$env:UV_PROJECT_ENVIRONMENT='.venv-codex'
-uv lock
-uv sync --extra codex-light
-```
-
-作業に必要な group がある場合だけ追加する。
-
-```powershell
-uv sync --extra codex-light --extra pdf
-uv sync --extra codex-light --extra browser
-uv sync --extra codex-light --extra analysis --extra analysis-accelerated
-```
+- 一時的な調査なら、既存共有 venv で足りる範囲に作業を調整する。
+- 永続的に必要なら、Claude Code 側の依存管理へ反映するための handoff を作るか、ユーザーの明示指示を受けて共有依存として更新する。
 
 ## smoke 確認
 
-専用 uv が作成できたら、移行 smoke は次で一括実行する。
+Python 実行前の軽い確認は、共有 venv の存在と interpreter の疎通だけでよい。
 
 ```powershell
-cd C:\Users\zonekun\Documents\codex\investment-agent
-powershell -ExecutionPolicy Bypass -File .\scripts\smoke_codex_migration.ps1
+$env:PYTHONUTF8='1'
+& 'C:\venvs\investment-agent\Scripts\python.exe' --version
 ```
 
-このスクリプトは次を確認する。
+必要に応じて fallback も確認する。
 
-- `.venv-codex\Scripts\python.exe --version`
-- 主要 5 スクリプトの `--help`
-- `pytest.exe` が存在する場合は `pytest -x --tb=short tests`
+```powershell
+& 'C:\gdrive\claude\investment-agent\.venv\Scripts\python.exe' --version
+```
 
-## 補足
+## 廃止
 
-- `.venv-codex/`, `.uv-cache/`, `.uv-python/` は `.gitignore` で除外する
-- Claude Code 用の `setup_machine.ps1` は Codex では使わない
-- `.venv-codex/` は cleanup 対象外。通常の容量削減では削除しない
+次の Codex 専用環境運用は廃止する。
+
+- `.venv-codex/`
+- `.uv-cache/`
+- `.uv-python/`
+- `requirements-codex-min.txt` を正本にする運用
+- `scripts/setup_codex_uv.ps1`
+- `scripts/setup_codex_uv_min.ps1`
+
+これらは新規作成・復旧・保護対象にしない。既存ディレクトリの削除は、実体パスを確認し、ユーザーの意図が削除である場合だけ行う。

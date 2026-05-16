@@ -51,9 +51,6 @@ $codexProtected = @(
   "investment-agent/docs/claude-md-sync.md",
   "investment-agent/docs/codex-to-claude-handoff.md",
   "investment-agent/docs/codex",
-  "investment-agent/requirements-codex-min.txt",
-  "investment-agent/scripts/setup_codex_uv.ps1",
-  "investment-agent/scripts/setup_codex_uv_min.ps1",
   "investment-agent/scripts/sync_claude_md.py",
   "investment-agent/scripts/sync_codex_secrets.py",
   "investment-agent/scripts/codex_line_wait.py"
@@ -74,14 +71,14 @@ git push origin codex/integration
 
 `$codexProtected` に新しい Codex 専用ファイルを追加する場合は、先にそのファイルを `codex/integration` の `HEAD` に入れる。Claude Code 側に存在しないファイルは、`HEAD` に追跡済みでない限り一括上書き後に復元できない。
 
-Codex 専用の Python / PowerShell / helper script / 復旧用 requirements を追加・復元・恒久化する場合は、同じ作業で必ず次を満たす。
+Codex 専用の Python / PowerShell / helper script を追加・復元・恒久化する場合は、同じ作業で必ず次を満たす。
 
 1. ファイルを `codex/integration` で git 追跡対象にする。
 2. Claude Code 側の一括上書きで消えるパスなら、`$codexProtected` に具体パスを追加する。
 3. 同期手順の事後検証でそのパスが `Test-Path` と `git ls-files --error-unmatch` を通ることを確認する。
 4. Codex-protected helper の変更として `codex/meta` にも同じ変更を反映し、`codex/integration` と `codex/meta` の両方を push する。
 
-Codex 専用 VENV の最小サブセット定義は `investment-agent/requirements-codex-min.txt` を正本にする。Claude Code 側の `pyproject.toml` へ Codex 専用 extras を混ぜない限り、`requirements-codex-min.txt` と `scripts/setup_codex_uv_min.ps1` は Codex 保護対象として扱い、Claude Code 側ソース同期後に必ず復元・追跡確認する。
+Codex は専用 VENV / uv cache / managed Python を保持しない。Python 実行環境は Claude Code 側の共有 venv を使うため、`requirements-codex-min.txt`、`scripts/setup_codex_uv.ps1`、`scripts/setup_codex_uv_min.ps1` は新規保護対象にしない。詳細は `docs/codex/uv-setup.md` に従う。
 
 ## 目的
 
