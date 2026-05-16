@@ -1,0 +1,33 @@
+# Minimal Codex recovery environment.
+# Keep this small; install heavy workflow-specific packages only when needed.
+pydantic>=2.0
+pydantic-settings>=2.0
+pyyaml>=6.0
+structlog>=24.0
+tenacity>=8.0
+apscheduler>=3.10
+aiohttp>=3.9
+curl-cffi>=0.6
+python-dotenv>=1.0
+
+# Core data work and BQ/GCS checks.
+pandas>=2.2
+numpy>=1.26
+google-auth>=2.0
+google-cloud-bigquery>=3.20
+google-cloud-storage>=2.16
+google-cloud-logging>=3.0
+db-dtypes>=1.2
+pyarrow>=15.0
+diskcache>=5.6
+
+# Lightweight parsing and local artifacts.
+beautifulsoup4>=4.12
+lxml>=4.9
+openpyxl>=3.1.5
+jpholiday>=1.0.3
+rapidfuzz>=3.14.3
+jaconv>=0.5.0
+
+# Verification.
+pytest>=8.0

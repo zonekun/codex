@@ -21,6 +21,28 @@ Claude Code 側で使っている `C:\venvs\investment-agent` を壊さず、Cod
 
 ## セットアップ
 
+### 最小復旧セット
+
+Codex 専用 VENV の最小サブセット定義は `requirements-codex-min.txt` を正本にする。これは Claude Code 側の `pyproject.toml` に混ぜない Codex 専用定義なので、`docs/claude-md-sync.md` の `$codexProtected` で保護する。
+
+Windows 復旧直後や既存 venv を移行しない場合は、まず次を使う。
+
+```powershell
+cd C:\Users\zonekun\Documents\codex\investment-agent
+powershell -ExecutionPolicy Bypass -File .\scripts\setup_codex_uv_min.ps1
+```
+
+既存の `scripts/setup_codex_uv.ps1` も、`requirements-codex-min.txt` が存在する場合は同じ最小 requirements を使う。`pyproject.toml` の full sync へ戻さない。
+
+このスクリプトは次を行う。
+
+- Codex 専用 `.venv-codex` を作成
+- `requirements-codex-min.txt` だけをインストール
+- 重い分析・ブラウザ・PDF・LLM 系依存は入れない
+- `python.exe --version` で疎通確認
+
+### pyproject extras を使う場合
+
 ```powershell
 cd C:\Users\zonekun\Documents\codex\investment-agent
 powershell -ExecutionPolicy Bypass -File .\scripts\setup_codex_uv.ps1
@@ -46,7 +68,7 @@ $env:PYTHONUTF8='1'
 
 ## optional dependency groups
 
-`pyproject.toml` は Codex の容量肥大化を避けるため、重い依存を optional extras に分離している。
+Claude Code 側の `pyproject.toml` に Codex 専用 extras を反映する合意がある場合だけ、重い依存を optional extras に分離して使う。
 作業前に必要な group だけを `uv sync` で入れる。
 
 ```powershell
@@ -80,7 +102,9 @@ uv sync --extra codex-light
 ## Claude Code 側から依存変更を取り込む時
 
 Claude Code 側で新規モジュールが追加され、`pyproject.toml` / `uv.lock` を Codex 側へ取り込む時は、
-その依存をそのまま `codex-light` へ入れない。まず用途に応じて optional dependency group へ分類する。
+その依存をそのまま Codex 最小セットへ入れない。まず用途に応じて `requirements-codex-min.txt` へ入れるか、optional dependency group へ分類するかを判断する。
+
+Claude Code 側へ反映しない Codex 専用の軽量依存は `requirements-codex-min.txt` に追加する。このファイルと `scripts/setup_codex_uv_min.ps1` は Codex 保護対象なので、Claude Code 側ソース同期で消えないように `docs/claude-md-sync.md` の `$codexProtected` に維持する。
 
 分類の目安:
 
