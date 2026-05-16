@@ -41,7 +41,7 @@ If a task needs a new detailed procedure, create or update an appropriate file u
 - Rule placement policy: `docs/codex/rule-placement.md`
 - Long-running task and active context rules: `docs/codex/long-running.md`
 - LINE / notification wait procedure: `docs/codex/notification-wait.md`
-- Codex uv environment and dependency extras: `docs/codex/uv-setup.md`
+- Codex Python / uv environment sharing rule: `docs/codex/uv-setup.md`
 - Codex display/table formatting: `docs/codex/display-rules.md`
 - Claude Code <-> Codex handoff board: `docs/codex-to-claude-handoff.md`
 - Claude Code Markdown sync and Codex artifact protection: `docs/claude-md-sync.md`

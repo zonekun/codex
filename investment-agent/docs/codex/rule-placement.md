@@ -15,7 +15,7 @@ Use `AGENTS.md` only to point to the correct detailed document.
 - General Codex operating principles: `docs/codex/operation-knowledge.md`
 - Rule placement policy: this file
 - Display and table formatting: `docs/codex/display-rules.md`
-- uv environment, dependency extras, and module intake: `docs/codex/uv-setup.md`
+- Python / uv environment sharing rule: `docs/codex/uv-setup.md`
 - Long-running jobs and active context: `docs/codex/long-running.md`
 - LINE / ntfy / notification reply waits: `docs/codex/notification-wait.md`
 - Claude Code <-> Codex message board and board rules: `docs/codex-to-claude-handoff.md`
