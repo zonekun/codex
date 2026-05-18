@@ -21,8 +21,7 @@ Codex 側で Python / uv 環境を重複保持しない。ディスク使用量�
 Codex で Python を実行するときは、次の順で既存 interpreter を使う。
 
 1. `C:\venvs\investment-agent\Scripts\python.exe`
-2. `C:\gdrive\claude\investment-agent\.venv\Scripts\python.exe`
-3. どちらも存在しない場合だけ、作業を止めてユーザーへ確認する。
+2. 存在しない場合だけ、作業を止めてユーザーへ確認する。
 
 `C:\venvs\investment-agent` は Claude Code 側で使う共有 venv の既定パスであり、Codex が独自に作り直したり削除したりしない。
 
@@ -35,12 +34,7 @@ $env:PYTHONUTF8='1'
 & 'C:\venvs\investment-agent\Scripts\python.exe' scripts\some_task.py
 ```
 
-`C:\venvs\investment-agent` が存在しない場合だけ、Claude Code 側ワークツリー内の venv を使う。
-
-```powershell
-$env:PYTHONUTF8='1'
-& 'C:\gdrive\claude\investment-agent\.venv\Scripts\python.exe' scripts\some_task.py
-```
+`C:\venvs\investment-agent` が存在しない場合も、Claude Code 側ワークツリー内の旧 `.venv` へ戻さず、作業を止めてユーザーへ確認する。
 
 Codex セッションで次の変数を Codex 側ローカルパスへ向けて設定しない。
 
@@ -60,13 +54,7 @@ $env:UV_PROJECT_ENVIRONMENT='C:\venvs\investment-agent'
 uv run python --version
 ```
 
-`C:\venvs\investment-agent` が存在しない場合は、作業前に `C:\gdrive\claude\investment-agent\.venv` が使えるか確認する。
-
-```powershell
-$env:PYTHONUTF8='1'
-$env:UV_PROJECT_ENVIRONMENT='C:\gdrive\claude\investment-agent\.venv'
-uv run python --version
-```
+`C:\venvs\investment-agent` が存在しない場合は、旧 `C:\gdrive\claude\investment-agent\.venv` へ fallback せず、作業を止めてユーザーへ確認する。
 
 Codex は `uv sync`、`uv lock`、`uv python install` など依存関係や interpreter を変更するコマンドを安易に実行しない。必要な場合は、対象が Claude Code 側の共有環境であること、変更理由、影響範囲を確認してから実行する。
 
@@ -86,11 +74,7 @@ $env:PYTHONUTF8='1'
 & 'C:\venvs\investment-agent\Scripts\python.exe' --version
 ```
 
-必要に応じて fallback も確認する。
-
-```powershell
-& 'C:\gdrive\claude\investment-agent\.venv\Scripts\python.exe' --version
-```
+旧 `C:\gdrive\claude\investment-agent\.venv\Scripts\python.exe` は smoke 確認の fallback に使わない。
 
 ## 廃止
 
