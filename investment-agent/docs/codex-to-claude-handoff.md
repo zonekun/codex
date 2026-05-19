@@ -112,3 +112,172 @@ irbank.net や kabutan.jp 等の公開IR情報サイトからスクレイピン�
 
 `C:/tmp/tob_prediction/owner_judge_results.csv` に offset 0〜4 の5件が入っている（参照のみ、上書き禁止）。
 
+
+## TASK: tob-announcement-date-artifact 2026-05-19 20:54
+- from: Codex
+- to: Claude Code
+- 関連計画MD: N/A
+
+### 目的
+
+TOB検証用に、	icker と 	ob_announcement_date を中心としたCSV成果物を作成済み。Claude Code側でBQ投入・検証に利用してください。
+
+### 成果物
+
+Claude Code投入用CSV:
+
+C:\Users\zonekun\Documents\codex\investment-agent\data\reports\tob_ir_release_dates\tob_announcement_dates_for_claude_20260519_200803.csv
+
+根拠確認用の詳細CSV:
+
+C:\Users\zonekun\Documents\codex\investment-agent\data\reports\tob_ir_release_dates\tob_ir_release_dates_20260519_200803.csv
+
+根拠確認用の詳細JSONL:
+
+C:\Users\zonekun\Documents\codex\investment-agent\data\reports\tob_ir_release_dates\tob_ir_release_dates_20260519_200803.jsonl
+
+サマリー:
+
+C:\Users\zonekun\Documents\codex\investment-agent\data\reports\tob_ir_release_dates\tob_ir_release_dates_20260519_200803_summary.json
+
+生成スクリプト:
+
+C:\Users\zonekun\Documents\codex\investment-agent\scripts\collect_tob_ir_release_dates.py
+
+### Claude Code投入用CSVの項目説明
+
+| 列名 | 説明 |
+|---|---|
+| 	icker | 証券コード。BQ DELISTED_STOCKS.TICKER 由来。 |
+| 	ob_announcement_date | TOB公表日。Codexが収集した公式IR初出日（元の詳細成果物では ir_release_date）。松井のTOB開始日や既存 TOB_ANNOUNCEMENT_DATE ではない。 |
+| 	ob_price | TOB価格。BQ DELISTED_STOCKS.TOB_PRICE 由来。欠損あり。 |
+| market | 市場区分。BQ DELISTED_STOCKS.MARKET_SEGMENT 由来。当時表記を保持（例: 第一部, 第二部, JQスタンダード, 東証スタンダード）。 |
+
+### 作成方法
+
+1. BQ gmailpj-357912.STOCK.DELISTED_STOCKS から IS_TOB_MBO = TRUE の616件を対象に取得。
+2. 各銘柄について、まず irbank.net のTDnet一覧ページを公式TDnet開示ミラーとして参照し、TOB/MBO関連タイトルを抽出。
+3. irbank側で見つからない場合は、BQ gmailpj-357912.STOCK.TDNET_DOCUMENTS_ENHANCED の候補文書を補助ソースとして使用。
+4. 「公開買付けの開始予定」「公開買付けの実施予定」など予告IRが正式開始前にある場合は、予告IRの日付を 	ob_announcement_date とした。
+5. TOB合戦などで同一tickerに複数のTOB関連リリースがある場合は、最古の公式IR初出1件だけをClaude Code投入用CSVに残した。2回目以降のリリースは投入用CSVから除外。
+6. 「公開買付けへの応募及び特別利益」など、対象会社自身へのTOB開始リリースではない混入候補は除外。
+7. BQへのINSERT/UPDATEは未実施。Codexは調査取得とCSV/JSONL/Python作成のみ。
+
+### 検証済み件数
+
+- 対象: 616件
+- Claude Code投入用CSV: 475行
+- 	icker ユニーク: 475件
+- 	ob_announcement_date 欠損: 0件
+- market 欠損: 0件
+- 	ob_price 欠損: 151件
+
+### 注意
+
+未解決141件は公式TDnet系候補が取れなかったため、Claude Code投入用CSVには含めていません。詳細CSV/JSONLでは confidence = unresolved として残しています。
+
+## RESULT: tob-announcement-date-artifact 2026-05-19 20:55
+
+上の `TASK: tob-announcement-date-artifact` ブロックは、PowerShell のダブルクォート展開でバッククォート付き列名の一部がタブ化しているため、このRESULTブロックを正として参照してください。過去ブロックはappend-onlyルールのため編集していません。
+
+### 成果物
+
+Claude Code投入用CSV:
+
+`C:\Users\zonekun\Documents\codex\investment-agent\data\reports\tob_ir_release_dates\tob_announcement_dates_for_claude_20260519_200803.csv`
+
+根拠確認用の詳細CSV:
+
+`C:\Users\zonekun\Documents\codex\investment-agent\data\reports\tob_ir_release_dates\tob_ir_release_dates_20260519_200803.csv`
+
+根拠確認用の詳細JSONL:
+
+`C:\Users\zonekun\Documents\codex\investment-agent\data\reports\tob_ir_release_dates\tob_ir_release_dates_20260519_200803.jsonl`
+
+サマリー:
+
+`C:\Users\zonekun\Documents\codex\investment-agent\data\reports\tob_ir_release_dates\tob_ir_release_dates_20260519_200803_summary.json`
+
+生成スクリプト:
+
+`C:\Users\zonekun\Documents\codex\investment-agent\scripts\collect_tob_ir_release_dates.py`
+
+### Claude Code投入用CSVの項目説明
+
+| 列名 | 説明 |
+|---|---|
+| `ticker` | 証券コード。BQ `DELISTED_STOCKS.TICKER` 由来。 |
+| `tob_announcement_date` | TOB公表日。Codexが収集した公式IR初出日（元の詳細成果物では `ir_release_date`）。松井のTOB開始日や既存 `TOB_ANNOUNCEMENT_DATE` ではない。 |
+| `tob_price` | TOB価格。BQ `DELISTED_STOCKS.TOB_PRICE` 由来。欠損あり。 |
+| `market` | 市場区分。BQ `DELISTED_STOCKS.MARKET_SEGMENT` 由来。当時表記を保持（例: `第一部`, `第二部`, `JQスタンダード`, `東証スタンダード`）。 |
+
+### 作成方法
+
+1. BQ `gmailpj-357912.STOCK.DELISTED_STOCKS` から `IS_TOB_MBO = TRUE` の616件を対象に取得。
+2. 各銘柄について、まず irbank.net のTDnet一覧ページを公式TDnet開示ミラーとして参照し、TOB/MBO関連タイトルを抽出。
+3. irbank側で見つからない場合は、BQ `gmailpj-357912.STOCK.TDNET_DOCUMENTS_ENHANCED` の候補文書を補助ソースとして使用。
+4. 「公開買付けの開始予定」「公開買付けの実施予定」など予告IRが正式開始前にある場合は、予告IRの日付を `tob_announcement_date` とした。
+5. TOB合戦などで同一tickerに複数のTOB関連リリースがある場合は、最古の公式IR初出1件だけをClaude Code投入用CSVに残した。2回目以降のリリースは投入用CSVから除外。
+6. 「公開買付けへの応募及び特別利益」など、対象会社自身へのTOB開始リリースではない混入候補は除外。
+7. BQへのINSERT/UPDATEは未実施。Codexは調査取得とCSV/JSONL/Python作成のみ。
+
+### 検証済み件数
+
+- 対象: 616件
+- Claude Code投入用CSV: 475行
+- `ticker` ユニーク: 475件
+- `tob_announcement_date` 欠損: 0件
+- `market` 欠損: 0件
+- `tob_price` 欠損: 151件
+
+### 注意
+
+未解決141件は公式TDnet系候補が取れなかったため、Claude Code投入用CSVには含めていません。詳細CSV/JSONLでは `confidence = unresolved` として残しています。
+
+
+## TASK: earnings-review-9887-q4-yoy-memo 2026-05-19 22:10
+- from: Codex
+- to: Claude Code
+- 関連計画MD: N/A
+
+### 目的
+
+2026-05-18 答え合わせ分（PREDICT_DATE=20260515）の反省会メモ引継ぎ。9887 松屋フーズHD の F3 YoY OP 表示・評価に関するユーザーコメントと、ユーザーから求められた範囲での Codex確認結果を共有する。
+
+### ユーザーコメント
+
+- 9887 松屋フーズHD の `YoY OP +433%` はおかしい。
+- 2026/03期と2025/03期の各Qの売上高・利益を見ると、各Qごとの利益がかなりばらついている。
+- 特に4Qは絶対額が小さいので、前年比%が大きく見えている。
+- これは反省会メモとして引き継ぐこと。
+- なお、Codex側の評価はユーザーが求めたときのみ行うこと。コメント保存・分類表示だけを求められた場面で、Codexの追加評価を自動で付け足さない。
+
+### Codex確認結果（ユーザー依頼に基づく確認）
+
+9887の `YoY OP +433%` は表示バグではなく、prediction JSON 上の `yoy_op = 4.330357142857143` に由来する。
+
+モデルが参照した分子・分母は BQ `gmailpj-357912.STOCK.v_fin_summary_actual_for_q_on_q` の4Q単独営業利益。
+
+| 期 | Q | 売上高 | 営業利益 | 経常利益 | 純利益 |
+|---|---|---:|---:|---:|---:|
+| 2026/03 | 1Q | 431.6億 | 9.7億 | 11.5億 | 5.5億 |
+| 2026/03 | 2Q | 447.8億 | 18.6億 | 20.9億 | 7.4億 |
+| 2026/03 | 3Q | 487.4億 | 35.7億 | 37.7億 | 20.2億 |
+| 2026/03 | 4Q | 477.9億 | 11.9億 | 13.3億 | 4.6億 |
+| 2025/03 | 1Q | 342.6億 | 1.3億 | 3.1億 | 0.2億 |
+| 2025/03 | 2Q | 381.2億 | 17.5億 | 19.0億 | 7.6億 |
+| 2025/03 | 3Q | 410.3億 | 23.0億 | 25.3億 | 13.9億 |
+| 2025/03 | 4Q | 408.1億 | 2.2億 | 4.1億 | 0.2億 |
+
+計算式:
+
+`2026/03 4Q OP 11.94億 / 2025/03 4Q OP 2.24億 - 1 = +433%`
+
+通期OPでは 2025/03 44.06億 → 2026/03 75.94億で約 +72.4%。来期会社予想OPは82.0億で、2026/03実績比では約 +8.0%。
+
+### 引継ぎメモ
+
+- F3は設計上「四半期単独OPの前年同期比」であり、今回も設計どおりの値を出している。
+- ただし9887のように4Q単独利益の絶対額が小さく、四半期ごとの利益変動が大きい銘柄では、F3の%表示が実態より強く見える。
+- 今回のユーザー判断として、9887は「4Q単独YoYの%が膨らんで見える」反省会ケースとして扱う。
+- 改善案の評価や実装判断は、ユーザーが求めたときにのみ行う。
