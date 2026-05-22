@@ -53,7 +53,8 @@ $codexProtected = @(
   "investment-agent/docs/codex",
   "investment-agent/scripts/sync_claude_md.py",
   "investment-agent/scripts/sync_codex_secrets.py",
-  "investment-agent/scripts/codex_line_wait.py"
+  "investment-agent/scripts/codex_line_wait.py",
+  "investment-agent/scripts/analyze_oyako_tob_expectation.py"
 )
 git restore --source=HEAD -- $codexProtected
 foreach ($path in $codexProtected) {
