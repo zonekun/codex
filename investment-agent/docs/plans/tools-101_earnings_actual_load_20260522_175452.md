@@ -105,6 +105,75 @@ AND DOC_TITLE NOT LIKE '%に関するお知らせ'
   ```
 - [ ] **3-3.** 候補B: Cloud Monitoring アラート（jquants-fin-summary の失敗検知）
 
+### Phase 4: 根本対策 — fin_summary 起点への転換（2026-05-22 設計確定、未着手）
+
+**経緯**: Sonnet が追加した INDUSTRY_33_CODE フィルタ（git status `M scripts/earnings_actual_load.py`）は ETF/REIT 除外には効くが、訂正書類除外には DOC_TITLE LIKE フィルタに依存したまま。Phase 4 では訂正系除外と銘柄絞り込みの両方を根本対策に置き換える。
+
+**方針**:
+1. **データソース転換**: TDnet 主軸 → **fin_summary 主軸**
+   - fin_summary は訂正版が出ると同一 `(LOCAL_CODE, CURRENT_FISCAL_YEAR_END_DATE, TYPE_OF_CURRENT_PERIOD)` で新 `DISCLOSURE_NUMBER` の別行として持つ
+   - `ROW_NUMBER() OVER (PARTITION BY 3キー ORDER BY DISCLOSURE_NUMBER DESC) = 1` で最新版1件採用 → 1 (TICKER, FY, Q) = 1 カレンダー行に自動集約
+   - **DOC_TITLE LIKE フィルタ完全廃止**（タイトル文字列依存ゼロ）
+
+2. **TDnet JOIN 廃止**:
+   - `DISCLOSURE_NUMBER` / `DOC_TITLE` / `TYPE_OF_DOCUMENT` 列は不要 → BQ DDL で DROP（または NULL 固定）
+   - `SOURCE` 列を `'tdnet'` → `'jquants'` に変更
+   - ロジックは fin_summary 1テーブルから完結（CATEGORY='R': `*FinancialStatements*`、CATEGORY='F': `EarnForecastRevision` / `REITEarnForecastRevision`）
+
+3. **銘柄絞り込み**: INDUSTRY_33_CODE → **MARKET_CATEGORY フィルタ**に切り替え
+   ```sql
+   -- 通常運用: STOCK_CODE_LIST のみ
+   INNER JOIN STOCK_CODE_LIST scl ON f.LOCAL_CODE = scl.TICKER AND scl.EXCHANGE = 'TSE'
+   WHERE scl.MARKET_CATEGORY IN (
+     'プライム（内国株式）','スタンダード（内国株式）','グロース（内国株式）'
+   )
+   ```
+   実値検証済み（2026-05-22 BQ MCP）: 「（内国株式）」サフィックス必須
+
+4. **バックフィル時の特例**: 廃止銘柄も対象に含めるため UNION
+   ```sql
+   WITH valid_tickers AS (
+     SELECT TICKER FROM STOCK_CODE_LIST
+      WHERE EXCHANGE='TSE' AND MARKET_CATEGORY IN ('プライム（内国株式）','スタンダード（内国株式）','グロース（内国株式）')
+     UNION DISTINCT
+     SELECT TICKER FROM DELISTED_STOCKS
+      WHERE MARKET_SEGMENT IN (
+        'プライム','スタンダード','グロース',
+        '東証プライム','東証スタンダード','東証グロース',
+        '第一部','第二部','マザーズ',
+        'JQスタンダード','JQグロース'
+      )
+   )
+   ```
+   - DELISTED_STOCKS データ範囲は 2017年〜（バックフィル期間の上限）
+   - 表記揺れ・旧市場区分全カバー（2026-05-22 BQ MCP 実値確認済み）
+   - 外国株系（`第一部（外国株）` 等 4件）・札証 1件は除外
+
+**作業ステップ**:
+- [ ] **4-1.** EXTRACT_SQL を fin_summary 起点に全面書き換え（`scripts/earnings_actual_load.py`）
+- [ ] **4-2.** 業績予想 (CATEGORY='F') の REVISION_SEQ 再設計
+  - fin_summary の `EarnForecastRevision` 系を `(LOCAL_CODE, FY, Q)` 内で `DISCLOSURE_NUMBER ASC` 連番化
+- [ ] **4-3.** EARNINGS_DISCLOSURE_CALENDAR から不要列 DROP（`DISCLOSURE_NUMBER` / `DOC_TITLE` / `TYPE_OF_DOCUMENT`）
+  - 既存データ移行: 旧データの該当列を NULL 化、または DDL 変更で物理削除
+  - `bq_earnings_calendar.md` スキーマ更新
+  - 参照側の影響調査（grep で利用箇所確認）
+- [ ] **4-4.** Sonnet 追加の INDUSTRY_33_CODE フィルタ・DOC_TITLE LIKE フィルタを削除
+- [ ] **4-5.** smoke test
+  - 2162/05-11: 3Q×1件のみ
+  - 訂正書類が出た既知サンプルで「最新版採用」確認
+  - 旧東証一部廃止銘柄が DELISTED_STOCKS 経由で拾われること（バックフィル用）
+- [ ] **4-6.** デプロイ（一時ビルドディレクトリ方式: 005 §⑥）
+- [ ] **4-7.** バックフィル実行（`--from=20170101 --to=20260522` 想定、別途実行計画）
+- [ ] **4-8.** 知見MD更新
+  - `101_earnings_actual_load.md`: データフロー図 / カラムマッピング / 既知制約
+  - `bq_earnings_calendar.md`: スキーマ・SOURCE 値・列削除
+  - `bq_stock_code_list.md` L17: MARKET_CATEGORY 実値修正（「（内国株式）」サフィックス追記）
+
+**未確定事項**:
+- 同一 (TICKER, DISCLOSED_DATE) で TDnet 書類が複数あるケースの扱いは TDnet JOIN 廃止により自然解消
+- 業績予想 (CATEGORY='F') のフィルタロジック詳細は 4-2 で詰める
+- 既存 EARNINGS_DISCLOSURE_CALENDAR の DISCLOSURE_NUMBER 列利用箇所が無いことを 4-3 着手前に grep 確認
+
 ---
 
 ## 必要データ
@@ -138,10 +207,12 @@ AND DOC_TITLE NOT LIKE '%に関するお知らせ'
 ## 実行順序（重要）
 
 ```
-Phase 0（調査） → Phase 2（スクリプト改修 + デプロイ） → Phase 1（補完再実行） → Phase 3（Guard）
+Phase 0（調査） → Phase 2（スクリプト改修 + デプロイ） → Phase 1（補完再実行） → Phase 3（Guard） → Phase 4（根本対策）
 ```
 
 Phase 1 を先に走らせても構わないが、Phase 2 後に再実行が必要になるため、**可能なら Phase 2 完了後に Phase 1 を一度だけ実行**する方が効率的。
+
+Phase 4 は Phase 1-3 とは独立した根本対策。Sonnet 追加版（git status `M scripts/earnings_actual_load.py`、INDUSTRY_33_CODE フィルタ）は **デプロイせず**、Phase 4 で fin_summary 起点版に置き換える方針。
 
 ---
 

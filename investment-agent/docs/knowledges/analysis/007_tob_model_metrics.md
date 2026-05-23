@@ -7,6 +7,17 @@
 
 ---
 
+## 成果物保管場所
+
+| ファイル名 | パス | 内容 |
+|-----------|------|------|
+| `predictions_{YYYY}.csv` | `data/output/tob_prediction/predictions_{YYYY}.csv` | 年別予測確率ランキング（TICKER / year / prob / label、降順ソート） |
+| `tob_rf_results.csv` | `data/output/tob_prediction/tob_rf_results.csv` | Walk-Forward 評価結果サマリ（年別 ROC-AUC / PR-AUC / Top5%ヒット率） |
+
+BQ キャッシュ（financials / shareholders / prices 等）は `C:/tmp/tob_prediction/` に分離（再取得可能なため tmp で可）。
+
+---
+
 ## 精度推移サマリ（最新が上）
 
 | 日付 | 変数数 | ROC-AUC | PR-AUC | 変更点 |
