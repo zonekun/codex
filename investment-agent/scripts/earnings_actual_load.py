@@ -278,10 +278,6 @@ def transform(df: pd.DataFrame) -> pd.DataFrame:
             "REVISION_SEQ": int(row["REVISION_SEQ"]),
             "DISCLOSURE_DATE": str(row["DISCLOSED_DATE"]),
             "DISCLOSURE_TIME": disclosure_time,
-            # Phase 4移行中は既存BQスキーマ互換のためNULL固定。DDL DROPは別作業。
-            "DISCLOSURE_NUMBER": None,
-            "TYPE_OF_DOCUMENT": None,
-            "DOC_TITLE": None,
             "SOURCE": "jquants",
             "LOADED_AT": now_jst,
         })
@@ -344,9 +340,6 @@ def insert_rows(client: bigquery.Client, df: pd.DataFrame) -> int:
             bigquery.SchemaField("REVISION_SEQ", "INTEGER", mode="REQUIRED"),
             bigquery.SchemaField("DISCLOSURE_DATE", "DATE"),
             bigquery.SchemaField("DISCLOSURE_TIME", "TIME"),
-            bigquery.SchemaField("DISCLOSURE_NUMBER", "STRING"),
-            bigquery.SchemaField("TYPE_OF_DOCUMENT", "STRING"),
-            bigquery.SchemaField("DOC_TITLE", "STRING"),
             bigquery.SchemaField("SOURCE", "STRING", mode="REQUIRED"),
             bigquery.SchemaField("LOADED_AT", "DATETIME", mode="REQUIRED"),
         ],

@@ -53,9 +53,6 @@ fin_summary
 | `DISCLOSURE_TIME` | `DISCLOSED_TIME` (fin_summary) | NULL許容 |
 | `REVISION_SEQ` | 計算値 | F(業績予想): 銘柄×FISCAL_YEAR_END×QUARTERで `DISCLOSURE_NUMBER ASC` 連番 / R(決算): 常に1 |
 | `SOURCE` | 固定 | `"jquants"` |
-| `DISCLOSURE_NUMBER` | 固定 | 既存BQスキーマ互換のため NULL 固定（将来DROP候補） |
-| `TYPE_OF_DOCUMENT` | 固定 | 既存BQスキーマ互換のため NULL 固定（将来DROP候補） |
-| `DOC_TITLE` | 固定 | 既存BQスキーマ互換のため NULL 固定（将来DROP候補） |
 
 ## 引数
 
@@ -111,7 +108,7 @@ gcloud run jobs execute earnings-actual-load \
 - fin_summary 起点のため、fin_summary 未取得のTDnet開示は実績Aに入らない
 - J-REIT/ETF 系銘柄（1672-1697 等）は `STOCK_CODE_LIST.MARKET_CATEGORY` フィルタで通常ロード対象外
 - 同一銘柄×同一開示日×同一FYに複数の決算短信がある場合、`DISCLOSURE_NUMBER DESC` 最新1件のみ使用
-- `DISCLOSURE_NUMBER` / `TYPE_OF_DOCUMENT` / `DOC_TITLE` は現行テーブル互換のため NULL 固定。予定Sロード側も同じスキーマを使うため、物理DROPは参照側改修後に行う
+- `DISCLOSURE_NUMBER` / `TYPE_OF_DOCUMENT` / `DOC_TITLE` は Phase 4 で物理DROP済み。実績A/予定Sロードとも出力しない
 - `--week` は常に今日起点で7日前〜今日。土日・休日も含む（TDnet は土日開示あり）
 
 ## バグ修正履歴
@@ -142,6 +139,6 @@ gcloud run jobs execute earnings-actual-load \
 - 訂正書類除外: `DOC_TITLE LIKE` 依存を廃止し、Rは `DISCLOSURE_NUMBER DESC` 最新1件を採用
 - 銘柄絞り込み: `STOCK_CODE_LIST.MARKET_CATEGORY` の内国株式3市場 + `DELISTED_STOCKS` 旧東証主要市場
 - SOURCE: 実績Aは `jquants`
-- 互換: `DISCLOSURE_NUMBER` / `TYPE_OF_DOCUMENT` / `DOC_TITLE` は NULL 固定
+- 互換: `DISCLOSURE_NUMBER` / `TYPE_OF_DOCUMENT` / `DOC_TITLE` は BQ DDL DROP 済み。実績A/予定Sロードとも出力対象外
 - smoke: 2162/2026-05-11 は `3Q×1件` になることをBQで確認
-- 未実施: デプロイ、BQ DDL DROP、2017年以降バックフィル
+- 未実施: 2017年以降バックフィル

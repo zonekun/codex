@@ -153,29 +153,30 @@ AND DOC_TITLE NOT LIKE '%に関するお知らせ'
 - [x] **4-1.** EXTRACT_SQL を fin_summary 起点に全面書き換え（`scripts/earnings_actual_load.py`）
 - [x] **4-2.** 業績予想 (CATEGORY='F') の REVISION_SEQ 再設計
   - fin_summary の `EarnForecastRevision` 系を `(LOCAL_CODE, FY, Q)` 内で `DISCLOSURE_NUMBER ASC` 連番化
-- [ ] **4-3.** EARNINGS_DISCLOSURE_CALENDAR から不要列 DROP（`DISCLOSURE_NUMBER` / `DOC_TITLE` / `TYPE_OF_DOCUMENT`）
-  - 既存データ移行: 旧データの該当列を NULL 化、または DDL 変更で物理削除
+- [x] **4-3.** EARNINGS_DISCLOSURE_CALENDAR から不要列 DROP（`DISCLOSURE_NUMBER` / `DOC_TITLE` / `TYPE_OF_DOCUMENT`）
+  - BQ DDL で物理削除
   - `bq_earnings_calendar.md` スキーマ更新
-  - 参照側の影響調査（grep で利用箇所確認）
-- Codex実装メモ: 現時点では物理DROPせず、`scripts/earnings_actual_load.py` 側で3列をNULL固定。`scripts/earnings_schedule_load.py` が同一スキーマ列を使うため、DDL DROPは参照側改修後に別途実施。
+  - `scripts/earnings_actual_load.py` / `scripts/earnings_schedule_load.py` の出力スキーマから削除
 - [x] **4-4.** Sonnet 追加の INDUSTRY_33_CODE フィルタ・DOC_TITLE LIKE フィルタを削除
 - [x] **4-5.** smoke test
   - 2162/05-11: 3Q×1件のみ
   - 訂正書類が出た既知サンプルで「最新版採用」確認
   - 旧東証一部廃止銘柄が DELISTED_STOCKS 経由で拾われること（バックフィル用）
   - Codex検証: 2162/2026-05-11 は `3Q×1件`。同日の論理PK重複は0件。Fは 2026-05-01〜2026-05-22 サンプルで `REVISION_SEQ` 付与を確認。廃止銘柄は `5386` などが `DELISTED_STOCKS` 経由で対象になることを確認。
-- [ ] **4-6.** デプロイ（一時ビルドディレクトリ方式: 005 §⑥）
+- [x] **4-6.** デプロイ（一時ビルドディレクトリ方式: 005 §⑥）
+  - Cloud Build `7df5bacd-c8b0-4426-9f39-be8c8eab30fd` SUCCESS
+  - Cloud Run Job `earnings-actual-load` generation 4 に更新
 - [ ] **4-7.** バックフィル実行（`--from=20170101 --to=20260522` 想定、別途実行計画）
 - [x] **4-8.** 知見MD更新
   - `101_earnings_actual_load.md`: データフロー図 / カラムマッピング / 既知制約
   - `bq_earnings_calendar.md`: スキーマ・SOURCE 値・列削除
   - `bq_stock_code_list.md` L17: MARKET_CATEGORY 実値修正（「（内国株式）」サフィックス追記）
-  - Codex実装メモ: `bq_earnings_calendar.md` は物理DROPではなく「旧互換列・NULL固定」として更新。
+  - Codex実装メモ: `bq_earnings_calendar.md` は物理DROP後の現行スキーマとして更新。
 
 **未確定事項**:
 - 同一 (TICKER, DISCLOSED_DATE) で TDnet 書類が複数あるケースの扱いは TDnet JOIN 廃止により自然解消
 - 業績予想 (CATEGORY='F') は `EarnForecastRevision` / `REITEarnForecastRevision` を対象にし、同一 `(LOCAL_CODE, FY, Q)` 内で `DISCLOSURE_NUMBER ASC` 連番とする
-- 既存 EARNINGS_DISCLOSURE_CALENDAR の `DISCLOSURE_NUMBER` / `DOC_TITLE` / `TYPE_OF_DOCUMENT` は `scripts/earnings_schedule_load.py` でもスキーマ互換列として使われるため、今回のCodexローカル実装では物理DROPせずNULL固定にする
+- 既存 EARNINGS_DISCLOSURE_CALENDAR の `DISCLOSURE_NUMBER` / `DOC_TITLE` / `TYPE_OF_DOCUMENT` は Phase 4 で物理DROPし、`scripts/earnings_schedule_load.py` からも出力を削除する
 
 ---
 

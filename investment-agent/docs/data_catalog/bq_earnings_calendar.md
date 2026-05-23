@@ -23,9 +23,6 @@
 | REVISION_SEQ | INT64 | NO | 業績予想修正の連番（R=1固定、F=1,2,3...） |
 | DISCLOSURE_DATE | DATE | YES | 開示日 |
 | DISCLOSURE_TIME | TIME | YES | 開示時刻 |
-| DISCLOSURE_NUMBER | STRING | YES | 旧互換列。Phase 4以降の実績AはNULL固定（将来DROP候補） |
-| TYPE_OF_DOCUMENT | STRING | YES | 旧互換列。Phase 4以降の実績AはNULL固定（将来DROP候補） |
-| DOC_TITLE | STRING | YES | 旧互換列。Phase 4以降の実績AはNULL固定（将来DROP候補） |
 | SOURCE | STRING | NO | `ghostrader` / `jquants` / `tdnet`（旧実績） |
 | LOADED_AT | DATETIME | NO | BQ格納日時（JST） |
 

@@ -232,9 +232,6 @@ def scrape_page(url: str) -> list[dict]:
                 "REVISION_SEQ": 1,
                 "DISCLOSURE_DATE": str(announcement_date),
                 "DISCLOSURE_TIME": disclosure_time,
-                "DISCLOSURE_NUMBER": None,
-                "TYPE_OF_DOCUMENT": None,
-                "DOC_TITLE": None,
                 "SOURCE": "ghostrader",
                 "COMPANY_NAME": name_str,  # BQ非格納。ログ用
             })
@@ -309,9 +306,6 @@ def insert_rows(client: bigquery.Client, rows: list[dict]) -> int:
             "REVISION_SEQ": r["REVISION_SEQ"],
             "DISCLOSURE_DATE": r["DISCLOSURE_DATE"],
             "DISCLOSURE_TIME": r["DISCLOSURE_TIME"],
-            "DISCLOSURE_NUMBER": r["DISCLOSURE_NUMBER"],
-            "TYPE_OF_DOCUMENT": r["TYPE_OF_DOCUMENT"],
-            "DOC_TITLE": r["DOC_TITLE"],
             "SOURCE": r["SOURCE"],
             "LOADED_AT": now_jst,
         })
@@ -348,9 +342,6 @@ def insert_rows(client: bigquery.Client, rows: list[dict]) -> int:
             bigquery.SchemaField("REVISION_SEQ", "INTEGER", mode="REQUIRED"),
             bigquery.SchemaField("DISCLOSURE_DATE", "DATE"),
             bigquery.SchemaField("DISCLOSURE_TIME", "TIME"),
-            bigquery.SchemaField("DISCLOSURE_NUMBER", "STRING"),
-            bigquery.SchemaField("TYPE_OF_DOCUMENT", "STRING"),
-            bigquery.SchemaField("DOC_TITLE", "STRING"),
             bigquery.SchemaField("SOURCE", "STRING", mode="REQUIRED"),
             bigquery.SchemaField("LOADED_AT", "DATETIME", mode="REQUIRED"),
         ],
