@@ -72,7 +72,7 @@
 - 事象: P0-1は「LINE会話モード中のコード例をPowerShell形式に変更」と記述するが、068 MD §① L46-50、§② L80-86 のCLI例がBash形式のまま残る。AIが LINE会話モード中にこれらのセクションを参照してBash実行するリスクがある。
 - トリガー: LINE会話モード中に、§落とし穴セクションを読み飛ばし、§①/§②のCLI例を直接参照した場合
 - 影響: 事象1（C:\パス解決失敗）の再発
-- 根拠: 068 MD L46-50 `PYTHONUTF8=1 C:/venvs/investment-agent/Scripts/python.exe scripts/notify.py ntfy "..."` はBash形式のまま
+- 根拠: 068 MD L46-50 `PYTHONUTF8=1 <python> scripts/notify.py ntfy "..."` はBash形式のまま
 - 推奨対応: P0-1の修正内容に「§①/§②のCLI例の先頭に『※ LINE会話モード中は§落とし穴セクションのPowerShell形式を使うこと』の注記を追加する」を含める。あるいは§①/§②にPowerShell形式の並記を追加する。
 
 ### #2 feedbackメモリ（P1-1）の粒度が既存feedbackと重複
@@ -87,7 +87,7 @@
 ### #3 P0-2 修正内容のコード例に不整合
 
 - 箇所: `docs/plans/20260502_152924_line_mode_recurrence_prevention.md:113-123`
-- 事象: P0-2のコード例（L116）で `PowerShell(command='$env:PYTHONUTF8="1"; & "C:\venvs\investment-agent\Scripts\python.exe" "C:\tmp\ntfy_tmp.py"', timeout=600000)` と書かれている。しかしこれは一時ファイル方式（P0-1 L79 で言及）の実行例であり、直接CLIで `scripts/notify.py ntfy "..." --wait --timeout 10800` を呼ぶ形式のコード例が並記されていない。一時ファイル方式のみが提示されると、単純なメッセージ送信にも一時ファイルが必要と誤解される。
+- 事象: P0-2のコード例（L116）で `PowerShell(command='$env:PYTHONUTF8="1"; & "<python>" "C:\tmp\ntfy_tmp.py"', timeout=600000)` と書かれている。しかしこれは一時ファイル方式（P0-1 L79 で言及）の実行例であり、直接CLIで `scripts/notify.py ntfy "..." --wait --timeout 10800` を呼ぶ形式のコード例が並記されていない。一時ファイル方式のみが提示されると、単純なメッセージ送信にも一時ファイルが必要と誤解される。
 - トリガー: AIが068の落とし穴セクションを読んで実行方法を決定する際
 - 影響: 不必要に複雑な一時ファイル方式を常に採用し、C:\tmp にゴミファイルが残る
 - 根拠: P0-1 L79 は「日本語文字列を含む場合」に一時ファイルを推奨としているが、P0-2のコード例はこの条件分岐を反映していない

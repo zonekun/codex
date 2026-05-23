@@ -27,6 +27,7 @@
 | `STOCK.MARGIN_BALANCE` | 貸借残高（信用取引残高）日次データ | 日次 | → [詳細](docs/data_catalog/bq_margin_balance.md) |
 | `STOCK.STOCK_CODE_LIST` | 上場銘柄マスタ（TICKER/STOCK_NAME/業種/市場区分） | 随時 | → [詳細](docs/data_catalog/bq_stock_code_list.md) |
 | `STOCK.DELISTED_STOCKS` | 上場廃止銘柄マスタ（TOB/MBO判定・買付価格） | 随時 | → [詳細](docs/data_catalog/bq_delisted_stocks.md) |
+| `STOCK.DELISTED_STOCKS_TOB_ENHANCE` | TOB公表の公式IR初出日・根拠情報（irbank/TDnet由来。475件） | 随時 | → [詳細](docs/data_catalog/bq_delisted_stocks_tob_enhance.md) |
 | `STOCK.SHAREHOLDER_COMPOSITION` | 株主構成（年次、2013-2026） | 年次 | → [詳細](docs/data_catalog/bq_shareholder_composition.md) |
 | `STOCK.fin_summary` | J-Quants 財務サマリー（107列） | 日次 | → [詳細](docs/data_catalog/bq_fin_summary.md) |
 | `STOCK.v_fin_summary_actual_for_q_on_q` | 単独四半期P&Lビュー | ビュー | → [詳細](docs/data_catalog/bq_fin_summary.md) |

@@ -11,8 +11,9 @@ import json
 import sys
 
 REMINDER = (
-    "[レビュー検出] /code-reviewer または /md-reviewer を"
-    " Agent ツールで起動せよ。インラインレビュー禁止（§8）"
+    "[レビュー検出] ①docs/reviews/ にレビューMDを作成（097ガイド §1-1〜§1-2）"
+    " → ②Agent ツールで /code-reviewer or /md-reviewer 起動（§1-3）。"
+    " ①②はアトミック（中断禁止）。インラインレビュー禁止（§8）"
 )
 
 

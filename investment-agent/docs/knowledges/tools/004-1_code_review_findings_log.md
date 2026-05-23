@@ -1,4 +1,4 @@
-# コードレビュー不備 蓄積ログ
+﻿# コードレビュー不備 蓄積ログ
 
 **カテゴリ**: tools
 **作成日**: 2026-04-21
@@ -13,7 +13,7 @@
 
 **メインエージェント（提出元）は本ファイルを Edit しない。** 不備を発見した場合は reviewer サブエージェントを `Agent` ツールで起動し、サブエージェントに追記させること。
 
-**追記手段**: `Read offset=113 limit=20` で蓄積エントリ先頭を部分読み → `Edit` で最新日付見出し直下に 1 行挿入。**全件 Read は禁止**（トークン効率化）。苦情受付（既存行削除）時のみ従来通り Read + Edit 許可。
+**追記手段**: Bash `printf >>` で末尾追記。Read/Edit 不要（トークン効率化）。日付見出しごと追記して構わない（重複許容、整形は月次メンテで実施）。苦情受付（既存行削除）時のみ Read + Edit 許可。
 
 ## 目的
 
@@ -35,9 +35,9 @@ code-reviewer / md-reviewer がレビューで検出した「プラン不備」�
 
 ### 追記位置ルール
 
-- 「蓄積エントリ（新しい順）」直下に日付降順で `### YYYY-MM-DD` 見出しを配置
-- 同日のエントリは同一見出し配下に追記（既存見出しがあれば再作成しない）
-- 同日内の順序は追記順（末尾追加）
+- Bash `printf >>` でファイル末尾に追記（昇順蓄積）
+- 日付見出し `### YYYY-MM-DD` ごと追記して構わない（重複許容）
+- 月次メンテで降順整形・重複見出し統合を行う
 
 ## タグカタログ
 
@@ -62,6 +62,8 @@ code-reviewer / md-reviewer がレビューで検出した「プラン不備」�
 - `content:numeric-inconsistency` — プラン内の数値（件数・比率・見積）が計算と合わない
 - `content:architecture-platform-mismatch` — 設計モデルが実行プラットフォームの機能制約と不適合（ランタイム契約を履行不能）
 - `content:missing-precondition` — 技法・ツール・コマンドの実行前提条件（入力ファイル・環境・状態）の記載漏れ
+- `content:premise-unverified` — 削除・変更の根拠として挙げた「既に〜に記載」が実ファイルの表現と不一致・未確認
+- `content:scope-implicit` — 保持/削除スコープが暗黙（保持すべき埋め込みルール文が削除対象に包含されうる）
 
 ### bug 系（コード側の実バグ、プラン未指摘）
 - `bug:sql-injection` — f-string SQL 組立・パラメタライズ未実施
@@ -119,6 +121,7 @@ code-reviewer / md-reviewer がレビューで検出した「プラン不備」�
 
 ### 2026-05-15
 
+- [2026-05-15] reviewer:false-positive | docs/reviews/181_mr_misread_user_intent_status_label.md | CLAUDE.md §4.2 L59に「0ベースで再評価」が既に明記済み。既存ルールの重複推奨
 - [2026-05-15] code:sql-injection | scripts/scrape_jpx_delisted.py:143-159 | [CR-180] update_pending()でTICKER/DELISTING_REASONをf-stringでSQL直接展開。C-1違反
 - [2026-05-15] code:silent-failure | scripts/scrape_jpx_delisted.py:120-137 | [CR-180] get_existing_keys()/get_pending_tickers()がBQクエリ失敗時に空set返却で続行。B-3違反→重複INSERT誘発
 - [2026-05-15] code:logging-violation | scripts/scrape_jpx_delisted.py:88-91 | [CR-180] print()+自作log()使用。structlog未使用（CLAUDE.md§7違反）
@@ -803,3 +806,308 @@ code-reviewer / md-reviewer がレビューで検出した「プラン不備」�
 #### 今後の分析スコープ
 
 **上記対策のカットオフ: 2026-05-02**。次回の傾向分析は 2026-05-03 以降の蓄積エントリを対象とする。2026-05-02 以前のエントリは対策済みとして再分析しない（同一タグが再発した場合は対策の効果不足として新規分析対象）。
+
+### 2026-05-15
+
+- [2026-05-15] bug:type-mismatch | scripts/tdnet_download.py:L688 | date.today()がCloud Run(UTC)でJST日付と最大9hずれる。datetime.now(JST).date()に置換すべき
+- [2026-05-15] md:missing-source-verification | docs/knowledges/tools/003_tdnet_download.md:L45 | コードブロック例のDATE_MODEコメントが旧記述(今日)のまま、テーブルは更新済みで矛盾
+- [2026-05-15] content:similar-bug-uncovered | scripts/tdnet_download.py:L688 | date.today()のTZ問題が他Cloud Runスクリプト(is_holiday,edinet_xbrl_extractor等)にも横展開未確認
+
+### 2026-05-15
+
+- [2026-05-15] md:stale-context | docs/knowledges/tools/004-1_code_review_findings_log.md:16 | [CR-182] 追記手段説明が旧Read+Edit方式のまま。code-reviewer.md/md-reviewer.mdのprintf>>方式と矛盾
+- [2026-05-15] content:numeric-inconsistency | docs/knowledges/tools/004-1_code_review_findings_log.md:36-40 | [CR-182] 追記位置ルール「日付降順」がprintf>>末尾追記（昇順）と矛盾。重複見出し許容ルールも不整合
+
+### 2026-05-15
+
+- [2026-05-15] content:silent-exception | scripts/tdnet_shift_md_updater.py:73-77 | Workflow step lacks try/except; MD update failure masks scheduler revert success
+- [2026-05-15] content:missing-precondition | workflows/tdnet_schedule_revert.yaml:46-48 | connector_params.timeout only, body.overrides.timeout missing (080 MD both-required rule)
+- [2026-05-15] bug:race-condition | scripts/tdnet_shift_md_updater.py:40-66 | GitHub Contents API GET-PUT sha race; 409 Conflict on concurrent edit
+- [2026-05-15] bug:error-swallowing | scripts/tdnet_shift_md_updater.py:73-77 | Top-level except Exception logs all HTTP errors as generic "failed" without status code
+
+### 2026-05-16
+
+- [2026-05-16] md:ambiguous-scope | docs/knowledges/tools/005_cloudrun_job_deploy.md:194 | [CR-185] §⑥「自動化済み（2026-04-26〜）」が42ファイル中4ファイルのみ準拠の実態と乖離。事故再発誘引
+- [2026-05-16] content:similar-bug-uncovered | cloudbuild/cloudbuild.*.yaml | [CR-185] 定期実行Job（stock-price-load等7ファイル）が旧形式のままで、スクリプト修正時にjobs update忘れ事故パターンが潜在
+- [2026-05-16] content:unverified-assumption | docs/reviews/185_cr_cloudbuild_yaml_consistency.md | [CR-185] 提出MDがtdnet-shift-md-updaterを「旧形式」と記載するが実ファイルは新テンプレート準拠
+
+### 2026-05-16
+
+- [2026-05-16] content:missing-precondition | scripts/cleanup_disk.py:23 | docstring "--git-gc（--execute不要）" vs 実装 execute=args.execute 矛盾（dry-run が実行されると誤認）
+- [2026-05-16] bug:race-condition | scripts/cleanup_disk.py:354-360 | git gc --aggressive がロック中リポジトリ（.git/index.lock）で中断した場合のパックファイル不整合リスク未処理
+- [2026-05-16] bug:type-mismatch | scripts/cleanup_disk.py:299-310 | find_git_repos がジャンクション/シンボリックリンクを resolve せず同一リポジトリを二重列挙する可能性
+- [2026-05-16] content:silent-exception | scripts/cleanup_disk.py:369-370 | git未インストール時 FileNotFoundError で return するが exit code 0 のまま（失敗伝搬なし）
+- [2026-05-16] md:ambiguous-scope | docs/knowledges/tools/077_cleanup_disk.md:81 | Git GC 探索範囲「配下の .git/」だけでは1階層限定が伝わらない
+
+### 2026-05-16
+
+- [2026-05-16] md:ambiguous-action | docs/knowledges/tools/083_codex_collaboration.md:L25 | "原則不要"がCodexに禁止と伝わらずRead/Write多用を許容
+- [2026-05-16] md:tool-boundary-risk | docs/knowledges/tools/083_codex_collaboration.md | Write操作への言及ゼロ、Codex向け制約セクション不在でWrite実行余地あり
+
+### 2026-05-16
+
+- [2026-05-16] missing-lifecycle | analysis-007_tob_ml_prediction plan | 年次更新時のTYPE付与パイプライン未定義（fetch後のclassify実行フロー不在）
+- [2026-05-16] data-catalog-stale | analysis-007_tob_ml_prediction plan | BQ 6カラム追加に対するデータカタログ更新ステップ欠落
+- [2026-05-16] schema-migration | analysis-007_tob_ml_prediction plan | TOP10_NAMES_JSON構造変更(type追加)と既存パイプライン(fetch_shareholder_composition.py)の非互換
+
+
+### 2026-05-16 (SO-189 memory構造最適化)
+- [2026-05-16] md:discoverability | memory/reference_claude_json_backup.md | 緊急時手順をmemoryに保管->知見MD移管後にCLAUDE.md §10索引登録なしでは到達不能になる構造問題（相互作用問題）
+- [2026-05-16] md:stale-context | memory/project_next_session_todo.md | 完了後削除指示（本文記載）が49日後も未実行。memoryのGCサイクル未機能
+- [2026-05-16] md:stale-context | memory/ (82ファイル全体) | feedbackがCLAUDE.mdの欠損補完装置化し重複記載が慢性化。feedback->CLAUDE.md反映後のmemory削除サイクルが未定義（相互作用問題）
+- [2026-05-16] md:priority-conflict | memory/feedback_wait_for_go.md | CLAUDE.md §4.5マルチターン待機と内容が重複。同じルールが2箇所に分散し更新時の整合性が維持できない（相互作用問題）
+- [2026-05-16] md:discoverability | memory/reference_claude_high_vm_ssh.md | SSHコマンドをmemoryに保管するパターンはfeedback_memory_usageが禁止している自己矛盾（相互作用問題）
+
+### 2026-05-16
+
+- [2026-05-16] reviewer:false-negative | docs/reviews/189_so_memory_restructure.md:Phase1 | [CR-190] 7件削除推奨でMEMORY.md索引エントリの同時削除・更新が計画に未記載。削除後に孤立リンク発生
+- [2026-05-16] content:numeric-inconsistency | docs/reviews/189_so_memory_restructure.md:QF-1 | [CR-190] project_deferred_gcs_adapter_audit.md の件数がファイル本体66件vsメモリ索引51件で乖離。SOが見落とし
+- [2026-05-16] reviewer:false-negative | docs/reviews/189_so_memory_restructure.md:SR-3 | [CR-190] project_adapter_fix_backlog.mdの「E.列ズレバグ14ticker」残タスクを精査せず「陳腐化」と断定。残タスク消失リスク
+- [2026-05-16] md:missing-stop-condition | docs/reviews/189_so_memory_restructure.md:SR-2 | [CR-190] feedback_cloudrun_local_llm.md移管先074の存在未確認。移管先知見MDが存在しない場合の手順なし
+- [2026-05-16] content:similar-bug-uncovered | memory/feedback_bq_reserved_words.md,feedback_jupyterlab_graphs.md | [CR-190] memory What NOT to save「Code patterns/conventions」違反のfeedbackがSOの適正残留リストに複数存在。未指摘
+- [2026-05-16] content:unverified-assumption | docs/reviews/189_so_memory_restructure.md:QF-2/Phase1#6 | [CR-190] project_earnings_model.mdをMEMORY.mdの取り消し線を根拠に削除候補としたが、059知見MD移行済みかを未確認
+
+### 2026-05-16
+
+- [2026-05-16] bug:sql-injection | scripts/backtest_supply_chain_cascade.py:L123,L156 | f-string SQL組立でticker_listをパラメータ化せず埋め込み
+- [2026-05-16] content:data-loss-path | scripts/backtest_supply_chain_cascade.py:L392-395 | MDD cumsum がトレード生成順依存で時系列equity curveを反映しない
+- [2026-05-16] content:unverified-assumption | scripts/backtest_supply_chain_cascade.py:L271-272 | aggressive T+0 entryが引け後決算発表を考慮せず先読みバイアス
+- [2026-05-16] content:unverified-assumption | scripts/backtest_supply_chain_cascade.py:L207-222 | leader_return close-to-closeが引け後発表のearnigs reactionを捕捉できない
+- [2026-05-16] content:numeric-inconsistency | scripts/backtest_supply_chain_cascade.py:L380-383 | Sharpe年率化がポジション並行・トレード相関を無視し過大評価
+
+### 2026-05-16
+
+- [2026-05-16] content:numeric-inconsistency | docs/plans/ad-hoc_memory_restructure_20260516_220000.md Phase1 | [SO-192] project_bc_kpi_downloadの削除根拠としてP0-A/P0-B確認が引用されているが、両P0は別ファイル（adapter_backlog/gcs_audit）に関するものでbc_kpi_downloadと無関係
+- [2026-05-16] content:missing-precondition | docs/plans/ad-hoc_memory_restructure_20260516_220000.md Phase4 | [SO-192] CLAUDE.md §10索引追加実行時に行数上限200行超過（現在206行）への対処が未記載
+- [2026-05-16] content:missing-downstream | docs/plans/ad-hoc_memory_restructure_20260516_220000.md Phase2-4 | [SO-192] Phase2〜4末尾にMEMORY.md孤立リンク確認チェックボックスが欠落（Phase1のみに存在）
+- [2026-05-16] reviewer:false-negative | docs/reviews/189_so_memory_restructure.md Phase1推奨実行順序 | [SO-192] feedback_cloudrun_local_llm.md移管先不適切・project_tdnet_gemma3_benchmark.md削除脱落・feedback_local_download_dir.md昇格候補脱落をSO-189自身が見落とし
+- [2026-05-16] content:missing-precondition | docs/plans/ad-hoc_memory_restructure_20260516_220000.md P0 | [SO-192] P0-A/P0-B未完了時の中断条件とバッファ保持先が未定義（不可逆削除の前提条件不完全）
+- [2026-05-16] md:review-quality-low | docs/reviews/189_so_memory_restructure.md 付記セクション | [SO-192] 適正残留62件のWhat NOT to save基準（Code patterns/conventions禁止）スキャンが未実施のまま分類確定
+
+### 2026-05-16
+
+- [2026-05-16] content:missing-precondition | docs/plans/ad-hoc_memory_restructure_20260516_220000.md P0 | C:	mp\memory_backup\ サブディレクトリ作成がP0チェックリストに未記載。バックアップ先不存在で不可逆削除後ロールバック不能になるリスク
+- [2026-05-16] md:missing-stop-condition | docs/plans/ad-hoc_memory_restructure_20260516_220000.md Phase 1-4 末尾 | MEMORY.md孤立リンク確認の具体的コマンド（Grep手段）が全Phaseで未定義。確認が形骸化しやすい
+
+### 2026-05-17
+
+- [2026-05-17] format:line-number-drift | docs/plans/tools-004_coding_conventions_20260517_124100.md | S-6削除対象行番号がL319-322と記載されているが実ファイルはL320-323（1行ズレ）
+- [2026-05-17] format:verification-thin | docs/plans/tools-004_coding_conventions_20260517_124100.md | 完了条件「孤立参照がない」に対応する作業ステップが存在しない
+- [2026-05-17] content:premise-unverified | docs/plans/tools-004_coding_conventions_20260517_124100.md | GCP認証チェックリスト行の削除根拠「CLAUDE.md§7に既記載」がCLAUDE.mdの実表現と不一致（settings.google_application_credentials vs service_account.Credentials）
+- [2026-05-17] content:scope-implicit | docs/plans/tools-004_coding_conventions_20260517_124100.md | S-8保持欄に「GCPリソース変更後のMD更新ルール文」が明示されておらず事故事例削除時に一緒に消えるリスクあり
+
+### 2026-05-17
+
+- [2026-05-17] md:missing-source-verification | docs/reviews/196_mr_fin_summary_false_attribution.md | 再発防止策が意志依存型（案2-3）で過去4件同型事故の対策パターン繰り返し
+- [2026-05-17] md:missing-stop-condition | docs/reviews/196_mr_fin_summary_false_attribution.md | AIの思考回路セクション欠落（パターン2/4必須項目）
+
+### 2026-05-17
+
+- [2026-05-17] bug:resource-leak | scripts/jquants_get_fin_summary.py:466 | [CR-197] elapsed変数が定義後に未使用。成功時の実行時間がログに残らない
+- [2026-05-17] content:missing-downstream | docs/plans/tools-008_jquants_shift_day_20260517_150000.md 変更3 | [CR-197] after コードが DATE_MODE="t" ブランチのみ示し "1"/"r" ブランチが省略・無表記。実装時の誤削除リスク
+- [2026-05-17] code:logging-violation | scripts/jquants_get_fin_summary.py 変更4(新規追加行) | [CR-197] プラン変更4がprint()で日付確認ログを追加。CLAUDE.md §7 print禁止/structlog使用に違反
+
+### 2026-05-17
+
+- [2026-05-17] content:unverified-assumption | docs/plans/analysis-007_tob_owner_filter_fix_20260517_175057.md P0-1 | [CR-198] load_activist_names()が完全一致照合のみ。activist_aliases.csvの全角/半角揺れ正規化なし（classify_shareholder_names.py _normalize_fullwidth相当が未適用）
+- [2026-05-17] content:missing-precondition | docs/plans/analysis-007_tob_owner_filter_fix_20260517_175057.md P0-2 | [CR-198] 法人格プレフィックスリストが4種のみ。classify_shareholder_names.py CORP_SUFFIXES_JPの混在ブラケット等と未照合
+- [2026-05-17] content:data-loss-path | docs/plans/analysis-007_tob_owner_filter_fix_20260517_175057.md P1-1 | [CR-198] 除外フィルタ後の候補0件時に無言終了。logger.warning追加が未指定
+
+### 2026-05-17
+
+- [2026-05-17] behavior:unverified-claim | docs/reviews/199_mr_weekday_calc_error.md | 2026-05-16の曜日を暗算で「金曜」と断定。実際は土曜。CLAUDE.md §4.1「日付属性はpython/dateで確認」未発火
+- [2026-05-17] md:missing-source-verification | docs/knowledges/tools/004_coding_conventions.md §日付時刻ルール L258 | 「MD記述時」限定の文言が会話出力への適用を排除。曜日・営業日判定が射程外に読める
+
+### 2026-05-17
+
+- [2026-05-17] content:similar-bug-uncovered | docs/plans/analysis-007_tob_classify_listed_corp_20260517_175057.md Step10 | [CR-200] train_rf.py の REAL_TOP_TYPE カテゴリエンコーディング対応が「任意」扱い。LISTED_CORP 新値で未知ラベルエラーが起きる可能性を見落とし
+- [2026-05-17] content:missing-downstream | docs/plans/analysis-007_tob_classify_listed_corp_20260517_175057.md 完了条件4 | [CR-200] excluded_listed_corps.csv が Plan A 未完了で存在しない状態での完了条件の検証可能性が未考慮
+- [2026-05-17] content:regression-risk-missed | docs/plans/analysis-007_tob_classify_listed_corp_20260517_175057.md P1-1 | [CR-200] bq_shareholder_composition_extend.md の件数欄（LISTED_CORP 行）更新がプラン修正方針に含まれていない
+
+### 2026-05-17
+
+- [2026-05-17] content:missing-precondition | docs/plans/analysis-007_tob_new_factor_business_partner_20260517_175057.md Step C | [CR-200] Plan B 未完了時のサイレント汚染フェールセーフがスクリプトに存在しない（LISTED_CORP=0件でも正常終了し全行FALSE書き込み）
+- [2026-05-17] content:unverified-assumption | scripts/tob_prediction/compute_owner_features.py:L248-249 | [CR-200] sample_tickersが["9983","4530","4917","7203"]でsmoketest対象の4686(ジャストシステム)・1429(日本アクア)が含まれない
+- [2026-05-17] format:line-number-drift | docs/plans/analysis-007_tob_new_factor_business_partner_20260517_175057.md Step C-2/C-3/C-6 | [CR-200] プラン記載行番号が実コードから2-4行ずれ。基準commit hash未記載が原因
+- [2026-05-17] content:missing-downstream | docs/plans/analysis-007_tob_new_factor_business_partner_20260517_175057.md Step D-3 | [CR-200] CONTINUOUS_FEATURES追加時にbuild_feature_matrix内keep_colsも変更必要だがプランに記載なし
+
+### 2026-05-17
+
+- [2026-05-17] content:missing-precondition | scripts/tob_prediction/generate_family_holding_candidates.py _LEGAL_PREFIXES | [CR-201] 法人格プレフィックスがプレフィックス型のみ。サフィックス型（例: UH Partners株式会社）は除去されず取りこぼしリスク残存
+- [2026-05-17] code:design-inconsistency | scripts/tob_prediction/generate_family_holding_candidates.py _strip_legal_prefix | [CR-201] 上場事業法人照合の _strip_legal_prefix は全角変換・スペース除去なし。アクティビスト照合の _normalize_for_activist と正規化水準が不一致
+
+### 2026-05-17
+
+- [2026-05-17] content:unverified-assumption | docs/plans/ad-hoc_tdnet_orders_extract_20260517_214618.md:46-54 | [CR-202] BQ条件 MAIN=受注高/受注残高 AND CHUNK_TEXT IS NOT NULL がdata_catalog L137-138「該当カテゴリはCHUNK_TEXT=NULL」と齟齬。MAIN単独行が全脱落する可能性
+- [2026-05-17] content:missing-precondition | docs/plans/ad-hoc_tdnet_orders_extract_20260517_214618.md:34 | [CR-202] 同一DOC_ID内チャンク順序を保証するORDER BY列が未定義（CHUNK_INDEX列なし）。SECTION_CATEGORYのみで順序復元手段不明
+- [2026-05-17] plan:scope-unclear | docs/plans/ad-hoc_tdnet_orders_extract_20260517_214618.md:71-117 | [CR-202] JSONフォーマット例2/例3で cum=false,axis=セグメント なのに h/r 配置規約が真逆。再パース不能
+- [2026-05-17] plan:missing-field | docs/plans/ad-hoc_tdnet_orders_extract_20260517_214618.md:36 | [CR-202] Phase2再開時の未処理ticker特定・既存ファイルskip/overwrite・アトミック書き込み・失敗銘柄リスト先が未定義
+- [2026-05-17] content:convention-violation | docs/plans/ad-hoc_tdnet_orders_extract_20260517_214618.md:11 | [CR-202] 出力先 C:\gdrive\claude\work\ がCLAUDE.md §6 L124「Google Drive保存禁止」抵触。例外明記なし
+- [2026-05-17] content:convention-violation | docs/plans/ad-hoc_tdnet_orders_extract_20260517_214618.md:52 | [CR-202] BQ CURRENT_DATE()がTZ未指定。CLAUDE.md §7 日時JST必須に抵触。CURRENT_DATE("Asia/Tokyo")を使うべき
+- [2026-05-17] plan:scope-unclear | docs/plans/ad-hoc_tdnet_orders_extract_20260517_214618.md:133 | [CR-202] 撤退基準「>500社等」が例示のみで数値しきい値固定なし
+- [2026-05-17] content:missing-precondition | docs/plans/ad-hoc_tdnet_orders_extract_20260517_214618.md:69-117 | [CR-202] JSONに DOC_ID / 引用断片の trail なし。再検証性ゼロ
+
+### 2026-05-17
+
+- [2026-05-17] content:unverified-assumption | docs/plans/tools-013_tdnet_chunk_index_column_20260517_223000.md:L78 | [CR-203] P0-1 ロールバック手順がLoadJobConfig.ignore_unknown_values吸収を前提にしているが実コード未設定（Grep 0件）。逆順実行で Load Job 停止リスク
+- [2026-05-17] content:similar-bug-uncovered | scripts/tdnet_load_recovery.py:L487 | [CR-203] 旧 recovery が CHUNK_INDEX=chunk_data.get("chunk_index", 0) を書き込むが create_chunks_for_tdnet 戻り dict に該当キー無し→全 chunk が CHUNK_INDEX=0 で汚染。新スキーマ稼働で顕在化
+- [2026-05-17] content:regression-risk-missed | docs/plans/tools-013_tdnet_chunk_index_column_20260517_223000.md P2-1 | [CR-203] ai-finalize INSERT→DELETE 非原子（B-4）の重複completed行が同一 CHUNK_INDEX を 2 セット持つ regression が利用側ガイドで未言及
+- [2026-05-17] plan:no-phased-validation | docs/plans/tools-013_tdnet_chunk_index_column_20260517_223000.md L316-L339 | [CR-203] deploy 順序（ALTER 先/コード先/同時）別の検証手順が分離されていない。シナリオ B（コード先 deploy）で Load Job が Unknown name エラー停止リスク
+
+### 2026-05-18
+
+- [2026-05-18] md:missing-output-contract | skills/tdnet_orders_extract.md:124-160 | [CR-204] JSON フォーマット例に `note` キーがあるがキー定義リスト・三菱重工サンプルに未記載。optional/required・値ドメイン未定義
+- [2026-05-18] md:missing-stop-condition | skills/tdnet_orders_extract.md:80,255 | [CR-204] Step 5 の pages 再試行に打ち切り条件なし。failed_pdf_unreadable と completed_partial の発火境界が曖昧で 6 STATUS が分岐実装で発散
+- [2026-05-18] md:missing-output-contract | .claude/commands/tdnet-orders-extract.md:1-5 | [CR-204] ラッパー本文 2 行のみで ticker 引数の受け渡し規約（$ARGUMENTS or Agent prompt template）が未明記。Phase 2 自動起動の根幹規約欠落
+- [2026-05-18] md:example-vs-exhaustive | skills/tdnet_orders_extract.md:162-205 | [CR-204] cum×axis の 4 通り組合せのうち三菱重工例は 2 通りのみ。残り 2 通りの最小例または「h/r 構造同一」明記なし
+- [2026-05-18] md:missing-precondition | skills/tdnet_orders_extract.md:70-72,212-215 | [CR-204] /c/tmp/tdnet_orders/ と /c/gdrive/claude/work/ の事前作成手順なし。初回起動時 No such file or directory で失敗の余地
+
+### 2026-05-18
+
+- [2026-05-18] bug:race-condition | skills/tdnet_orders_commander.md:144-196 | 並列ソルジャー戻り値の TICKER 照合手順なし、誤マップでインデックス破損リスク
+- [2026-05-18] content:data-loss-path | skills/tdnet_orders_commander.md:100-129 | mode=build が既存 completed/failed を無警告で pending に戻す破壊性、退避/dry-run なし
+- [2026-05-18] content:numeric-inconsistency | skills/tdnet_orders_commander.md:51,190-194 | reason カラム値と status カラム値の語彙が prefix 有/無で非対称、failed_no_data だけ独自命名でマップ不能
+- [2026-05-18] content:missing-precondition | skills/tdnet_orders_commander.md:24-30 | 3 形式引数 (key=value/位置/Agent prompt) の解釈手順がスキル本体に未定義、assistant 解釈依存
+- [2026-05-18] format:verification-thin | skills/tdnet_orders_commander.md:68-79 | ログ TSV ヘッダ書き出しタイミング未定義、resume 時の二重ヘッダリスク
+- [2026-05-18] content:scope-implicit | skills/tdnet_orders_commander.md:162-163 | parallel>=10 警告ログの追記タイミングが Step 1 と曖昧、実際は run_start 直後が妥当
+- [2026-05-18] bug:type-mismatch | skills/tdnet_orders_commander.md:191-196 | JSON_BYTES がパース不可な戻り値の挙動未定義
+- [2026-05-18] content:regression-risk-missed | skills/tdnet_orders_commander.md:167-172 | Windows Git Bash mv は POSIX 原子置換非保証、クラッシュ時に CSV 消失可能性
+
+### 2026-05-18
+
+- [2026-05-18] behavior:index-first-violation | docs/reviews/204_mr_cloudbuild_md_overlooked.md / 005_cloudrun_job_deploy.md SS6 | [MR-204] Cloud Build deployでCLAUDE.md SS10「Cloud Run Jobにデプロイ」エントリ未参照、5回連続WinError 32リトライ。MR-153/160に続く3度目の同種事故
+- [2026-05-18] md:discoverability | docs/knowledges/tools/005_cloudrun_job_deploy.md SS6 L190-L201 | [MR-204] Windowsファイルロック対策(一時ビルドディレクトリ方式)がSS6小見出し「スクリプト変更時の更新」配下に埋没。冒頭症状フレーズ警告なし
+- [2026-05-18] md:missing-source-verification | docs/knowledges/tools/005_cloudrun_job_deploy.md SS10 L347 | [MR-204] よくある罠表のビルドコンテキスト肥大化行に「WinError 32 / file.tgz / PermissionError」症状フレーズ未収録。grepで005にヒットしない構造
+
+### 2026-05-18
+
+- [2026-05-18] content:architecture-platform-mismatch | skills/orders_commander.md:218,373 | [CR-206] 動的並列の「完了通知待ち（task-notification）」がAgentツール完了で配信される前提だが未検証。配信されないとループ停止+30分タイマー発火不能
+- [2026-05-18] content:architecture-platform-mismatch | skills/orders_commander.md:218,373 | [CR-206] 「30分定期チェック（5分毎程度）」を回す機構が未定義（assistantに内蔵タイマーなし）。完了通知が来ないハング時に永遠に放置される改修動機矛盾
+- [2026-05-18] content:unverified-assumption | skills/orders_commander.md:236 | [CR-206] TaskStopツールがAgentツール起動taskに有効か未検証。100知見MDで「Agent/Taskにタイムアウト機構なし」既知
+- [2026-05-18] content:missing-precondition | skills/orders_commander.md:225-228,356 | [CR-206] 「同一ticker二重起動禁止」が宣言のみで、補充手順§B-4にinflight重複チェックステップなし。re-injection改修で破綻するリスク
+- [2026-05-18] md:ambiguous-action | skills/orders_commander.md:258-263 | [CR-206] ticker_mismatch時「pendingのまま放置」がCSV status列の話かpendingキューの話か曖昧。当run再投入の意図不明（§D 30分タイムアウトと§4Dとも非対称）
+- [2026-05-18] md:stale-context | skills/orders_commander.md:99 | [CR-206] 旧ログイベントbatch_start/batch_endが過去ログに残存するが新event定義表に互換性宣言なし
+- [2026-05-18] md:ambiguous-scope | skills/orders_commander.md:373 | [CR-206] 動的並列実装メモが§注意事項末尾2行に詰込まれており実装参照時に見つけにくい。Step3直下に分離推奨
+- [2026-05-18] content:missing-downstream | skills/orders_commander.md:355 | [CR-206] 「30分タイムアウトを延長省略しない」厳格禁止だがharness仕様で実現不能時のfallback規定なし
+- [2026-05-18] md:overwrite-risk | skills/orders_commander.md:295,371 | [CR-206] Windows mv原子性注釈が§Step4Cと§注意事項に重複記載
+- [2026-05-18] content:orphan-resource | skills/orders_commander.md:212,373 | [CR-206] inflight dictがメモリ上のみで、コマンダークラッシュ後resumeで再構築手段なし。zombie検知/タイムアウト判定継続不能
+- [2026-05-18] md:example-vs-exhaustive | skills/orders_commander.md:286 | [CR-206] JSON_PATH:「(none)」リテラル前提が暗黙。空文字/null/欠落の代替表現への耐性不明
+- [2026-05-18] md:missing-output-contract | skills/orders_commander.md:318-332 | [CR-206] 最終レポートにTIMED_OUT_TICKERS行なし。改修動機2「ハング検知の即時化」の効果測定が画面1行で不可能
+- [2026-05-18] md:overwrite-risk | skills/orders_commander.md:34,171,191,247 | [CR-206] parallel>=10警告ログ仕様が4箇所重複記載
+
+### 2026-05-18
+
+- [2026-05-18] content:architecture-platform-mismatch | skills/orders_commander.md:247-263,265-284 | [CR-207] §Step3§B-1(c)ハートビート切断検知が完了検知選択肢として並列配置だが、§B-4 sleep 60周期到達まで§Cが呼ばれない。健全task混在シナリオでハング1件が永遠に検知されない死角
+- [2026-05-18] bug:race-condition | skills/orders_soldier.md:131-159 | [CR-207] §Step5リトライ(1)(2)(3)各回前にhb更新なし。Read tool自体が30分以上ハング（100知見MD 48分例参照）でhb古化→誤TaskStop→無限ループ
+- [2026-05-18] content:orphan-resource | skills/orders_commander.md:281,391-393 | [CR-207] recently_stopped setがメモリのみ保持で永続化なし。コマンダークラッシュ→resume後zombie戻り値が来るとticker_mismatch誤検知ログ大量化
+- [2026-05-18] content:missing-precondition | skills/orders_commander.md:204-220 | [CR-207] mode=resume冒頭で_heartbeat/*.hb / _status/*.statusのクリーンアップ手順なし。前回run残存ファイルで誤検知/誤拾いリスク
+- [2026-05-18] content:data-loss-path | skills/orders_commander.md:251-253,292-330 + skills/orders_soldier.md:383-389 | [CR-207] status file経由完了検知(b)で数値フィールド欠落。STATUS=値の1行のみのためDOCS_FOUND/READ/WITH_DATA/JSON_PATH/JSON_BYTESが取れずCSV更新空欄
+- [2026-05-18] md:missing-stop-condition | skills/orders_soldier.md:449-460 | [CR-207] ソルジャー§禁止事項にhb更新省略禁止/status書き出し省略禁止の項目なし。提出元重点観点§7「強調十分性」未達
+- [2026-05-18] md:missing-output-contract | skills/orders_commander.md:103 | [CR-207] 新規イベントhb_alive_check/status_detected/inflight_persistのdetailキーバリュー仕様未定義
+- [2026-05-18] content:numeric-inconsistency | skills/orders_commander.md:269-272,422 | [CR-207] spec宣言「elapsed >= 30min」とfind -mmin +30（=elapsed > 30min, GNU find仕様）の境界値1分ズレ
+- [2026-05-18] md:ambiguous-action | skills/orders_commander.md:261-263,265-284 | [CR-207] §B-4 sleep 60周期と§C find -mmin +30の呼び出し関係が暗黙。「いつ§Cを呼ぶか」明示なく擬似コード推奨
+- [2026-05-18] md:overwrite-risk | skills/orders_commander.md:36-37,103 | [CR-207] parallel_high event detail（parallel=N）が§出力ファイル§2のevent列定義表に未掲載
+- [2026-05-18] md:ambiguous-scope | skills/orders_commander.md:387-397 | [CR-207] §Step6実装メモが動的並列ループ/完了検知3段階fallback/ハートビート方式/harness依存事項のミックスでサブセクション化されず
+- [2026-05-18] content:premise-unverified | skills/orders_commander.md:284,395 | [CR-207] 30分タイムアウト根拠の数値（中央値6.6分・最長12.4分）出典記載なし、orders_log.tsv参照必要
+- [2026-05-18] md:ambiguous-action | skills/orders_soldier.md:375-401 | [CR-207] §Step7のフロー（PDF削除→status→hb更新→hb削除）が3ブロック分割で順序summary行なし
+
+### 2026-05-18
+
+- [2026-05-18] content:numeric-inconsistency | docs/plans/analysis-007_tob_md_cleanup_20260518_223511.md:251 | [CR-209] 完了条件「4本のプランMDクローズ」がSTEP 5実際のクローズ対象6本と不一致
+- [2026-05-18] content:missing-precondition | docs/plans/analysis-007_tob_md_cleanup_20260518_223511.md:188-192 | [CR-209] STEP 5e の判断分岐（インライン実装済み確認）に具体的調査手順が欠落。誤判断で generate_family_holding_candidates.py タスク消滅リスク
+- [2026-05-18] content:premise-unverified | docs/plans/analysis-007_tob_md_cleanup_20260518_223511.md:165-168 | [CR-209] STEP 5a「取り込む情報なし」根拠のコミット 4e811148 が計画内で git show 検証されていない
+- [2026-05-18] content:missing-precondition | docs/plans/analysis-007_tob_md_cleanup_20260518_223511.md:173 | [CR-209] STEP 5b の screen_tob.py TODO確認に具体的確認手順（Read or git log）が未定義
+
+- [2026-05-18] content:unverified-assumption | docs/plans/refactor_orders_soldier_pymupdf_20260518_225508.md P1-5 | [CR-210] pymupdf既にpyproject.toml登録済+venvインストール済だが「未インストール想定」前提で書かれている。pyproject.toml未確認
+- [2026-05-18] content:similar-bug-uncovered | docs/plans/refactor_orders_soldier_pymupdf_20260518_225508.md P0-2 | [CR-210] BQ MAIN_CATEGORY NOT IN除外がSUB_CATEGORIES経由の正当受注情報(MAIN=業績修正かつSUBに受注高/受注残高)を巻き添えで除外。集合論バグ
+- [2026-05-18] content:regression-risk-missed | docs/plans/refactor_orders_soldier_pymupdf_20260518_225508.md P0-1 | [CR-210] PyMuPDF抽出失敗(画像PDF/暗号化PDF)を偽陽性銘柄と区別できずfailed_no_data誤判定。真陽性データロストリスク
+- [2026-05-18] format:antipattern-map-missing | docs/plans/refactor_orders_soldier_pymupdf_20260518_225508.md L386 | [CR-210] アンチパターン対応表P0-2のT-?未マップ
+- [2026-05-18] content:missing-precondition | docs/plans/refactor_orders_soldier_pymupdf_20260518_225508.md P0-1 | [CR-210] PyMuPDF抽出処理中のhb更新タイミング欠如。大物PDF200ページ抽出中30分タイムアウト誤発火リスク(207重大#2再発)
+- [2026-05-18] content:missing-downstream | docs/plans/refactor_orders_soldier_pymupdf_20260518_225508.md P0-1 | [CR-210] 中間ファイル.pages.jsonのcleanupが現行Step7 PDF削除glob(_*.pdf)から漏れる。長期累積リスク
+- [2026-05-18] content:numeric-inconsistency | docs/plans/refactor_orders_soldier_pymupdf_20260518_225508.md P0-3 | [CR-210] DOCS_FOUND <= 6は構造的に成立(Step3で最新6件採用)。cap強調は正しいがアルゴリズム指示(len(set(doc_id))の明示)が欠落
+- [2026-05-18] content:scope-implicit | docs/plans/refactor_orders_soldier_pymupdf_20260518_225508.md P1-1 | [CR-210] note ドメイン規約強化でコマンダー側パース失敗例をソルジャーspecに埋め込むが、別プラン対応宣言と矛盾(単一責任原則違反)
+- [2026-05-18] content:missing-downstream | docs/plans/refactor_orders_soldier_pymupdf_20260518_225508.md P0-1 | [CR-210] DOCS_READ新定義(PyMuPDF抽出成功数 vs Read成功数)が未明示。現行L444定義との整合性不明
+- [2026-05-18] content:missing-precondition | docs/plans/refactor_orders_soldier_pymupdf_20260518_225508.md 全体 | [CR-210] ソルジャー側Step5改修とコマンダー側BQクエリ改修の時間差が運用に出る期間中の挙動(BQ 0件→failed_no_bq_records大量計上)が未検討
+- [2026-05-18] format:verification-thin | docs/plans/refactor_orders_soldier_pymupdf_20260518_225508.md §検証戦略 | [CR-210] 個人用パイプラインで dev=prod の明示なし。テンプレ「smoke/dev/prod/回収手順4段」適合性の明示的回答欠落
+- [2026-05-18] content:similar-bug-uncovered | docs/plans/refactor_orders_soldier_pymupdf_20260518_225508.md P1-4 | [CR-210] 前処理キーワードリストとStep5抽出対象キーワードの二重管理リスク。同期義務が未spec化
+- [2026-05-18] content:premise-unverified | docs/plans/refactor_orders_soldier_pymupdf_20260518_225508.md P0-2 検証 | [CR-210] 1431/1719の改修後挙動見積もりがMAIN_CATEGORY単独前提。SUB_CATEGORIES実機分布未確認
+
+### 2026-05-18
+
+- [2026-05-18] bug:partition-prune-loss | docs/plans/tools-013_bq_past_data_recovery_20260518_232030.md | B-1 REGEXP_EXTRACT が会社名に _ を含む銘柄でサイレント NULL を返し誤データ or 永続的な空文字残存
+- [2026-05-18] content:data-loss-path | docs/plans/tools-013_bq_past_data_recovery_20260518_232030.md | STEP3 完了確認クエリと完了条件の不整合 — FILE_NAME NULL 行が残存カウントに混入し判定が曖昧
+- [2026-05-18] content:unverified-assumption | docs/plans/tools-013_bq_past_data_recovery_20260518_232030.md | アルファベット ticker 限定の根拠未検証 — 旧 _docs_from_ai_state は ticker 種別問わず filer_name="" を返していた可能性
+- [2026-05-18] format:verification-thin | docs/plans/tools-013_bq_past_data_recovery_20260518_232030.md | 各 STEP に失敗時対応（中断・リトライ判断基準）が欠落
+
+### 2026-05-19
+
+- [2026-05-19] content:premise-unverified | docs/plans/refactor_orders_soldier_table_extraction_20260519_001056.md L28,L50 | [CR-212] 「月次開示で PyMuPDF find_tables() 運用実績あり」前提が事実誤認。実装はpdfplumber.extract_tables()主力、PyMuPDF find_tables()はセクション識別bbox取得のみ（062 §4.1）
+- [2026-05-19] content:missing-precondition | docs/plans/refactor_orders_soldier_table_extraction_20260519_001056.md Step4-B/Step5 | [CR-212] pages_data 上限ガード未定義。大型決算短信(30-50p)+受注関連散在業種で50k+token化のリスク
+- [2026-05-19] content:silent-exception | skills/orders_soldier.md:180-184 | [CR-212] Step 4-B の try/except: pass で find_tables() 失敗が silent skip。tables=[] と例外潰しが区別不能
+- [2026-05-19] format:verification-thin | docs/plans/refactor_orders_soldier_table_extraction_20260519_001056.md L224-225 | [CR-212] 検証戦略がtoken削減量のみ。wall time比較・pages.jsonサイズ計測・抽出精度比較が欠落
+- [2026-05-19] content:scope-implicit | skills/orders_soldier.md:316-324 (Step 6) | [CR-212] tbl.extract()戻り値（結合セルNone・改行入りセル・△表記）の正規化指針が空欄。assistant解釈で抽出精度ブレ
+- [2026-05-19] md:ambiguous-action | skills/orders_soldier.md:322 (Step 6 §3) | [CR-212] 「§抽出対象に該当する表だけを採用」の判定基準が暗黙。assistant推論に丸投げ
+
+### 2026-05-20
+
+- [2026-05-20] plan:catalog-mismatch | docs/plans/analysis-015_tob_insider_screener_20260519_194557.md L66-70,§必要データ | [CR-213] J-Quants API直叩き前提だがBQ STOCK_PRICE_JQUANTS(日次・ADJ列込)が既存。data_catalog不整合
+- [2026-05-20] content:unverified-assumption | docs/plans/analysis-015_tob_insider_screener_20260519_194557.md L33-46 | [CR-213] 発火スコアが二値フラグ乗算で「片足欠落=即0」。8141での机上試算なし。コア式が論理欠陥
+- [2026-05-20] content:missing-precondition | docs/plans/analysis-015_tob_insider_screener_20260519_194557.md §使用指標 L51-58 | [CR-213] pandas-ta新規導入だがpyproject.toml反映/uv addステップ欠落。代替判断記述なし
+- [2026-05-20] content:scope-implicit | docs/plans/analysis-015_tob_insider_screener_20260519_194557.md §成果物 L148 | [CR-213] scripts/screen_tob_insider.py(直下)配置だが既存007系screen_tob.pyはscripts/tob_prediction/配下。配置判断根拠なし
+- [2026-05-20] content:architecture-platform-mismatch | docs/knowledges/analysis/015_tob_insider_screener.md §運用 L68 + plan §作業ステップ | [CR-213] 15:30実行運用記載だがBQ STOCK_PRICE_JQUANTS取込は18:00。当日データ取得不能の不整合
+- [2026-05-20] content:missing-downstream | docs/plans/analysis-015_tob_insider_screener_20260519_194557.md Phase 1-5/Phase 2-7 | [CR-213] Phase 1単発CSVだがPhase 2は過去全営業日×全銘柄スコア時系列必要。前方互換性破綻
+- [2026-05-20] plan:no-phased-validation | docs/plans/analysis-015_tob_insider_screener_20260519_194557.md §完了条件 L156 | [CR-213] 「3月初旬に急上昇」が定性的でgo/no-go判定不能。具体閾値なし
+- [2026-05-20] content:missing-downstream | docs/plans/analysis-015_tob_insider_screener_20260519_194557.md §作業ステップ全体 | [CR-213] 偽陽性除外フィルタ(決算/分割/適時開示/セクター連動)がPhase 1完了条件に含まれない
+- [2026-05-20] plan:missing-field | docs/plans/analysis-015_tob_insider_screener_20260519_194557.md Phase 1全体 | [CR-213] Cloud Run Job/Scheduler化計画とCLAUDE.md/004規約準拠への明示参照が欠落
+- [2026-05-20] content:unverified-assumption | docs/plans/analysis-015_tob_insider_screener_20260519_194557.md §必要データ表 L141 | [CR-213] BQテーブル名「stock_code_list」が小文字記載。実体はSTOCK.STOCK_CODE_LIST。EXCHANGE=TSEフィルタ条件も未記述
+
+### 2026-05-20
+
+- [2026-05-20] content:architecture-platform-mismatch | C:/tmp/orders_launcher_0600.ps1:schtasks登録 | [CR-214] -WindowStyle Normal がデスクトップメッセージキュー経由でウィンドウ生成するためセッションフリーズ時にハングリスク
+- [2026-05-20] content:missing-precondition | C:/tmp/orders_launcher_0600.ps1:11 | [CR-214] indexCsv 存在チェック欠如。ファイル不在時に pending=0 とサイレント誤記録
+- [2026-05-20] bug:error-swallowing | C:/tmp/orders_launcher_0600.ps1:6 | [CR-214] ErrorActionPreference=Continue + Add-Content。data/output/ 未作成時にログ書き込み失敗がサイレント
+- [2026-05-20] content:missing-precondition | C:/tmp/orders_launcher_0600.ps1:33 | [CR-214] processed=pendingBefore-pendingAfter が負になり得る。claude exitCode 未記録
+
+### 2026-05-20
+
+- [2026-05-20] md:missing-stop-condition | docs/knowledges/tools/102_scheduled_execution.md | PS1ファイルのBOM付きUTF-8要件が未記載。Write出力のBOM無しUTF-8をPS1.1がShift-JIS読みしてparse失敗（MR-215）
+- [2026-05-20] md:ambiguous-scope | CLAUDE.md §6 L118 | ファイルopen encoding=ルールがPython open()のみを対象とし、Writeツール出力PS1のエンコーディング要件をカバーしていない
+
+### 2026-05-20
+
+- [2026-05-20] bug:logic-error | scripts/tob_prediction/screen_tob_insider.py:248,304 | [CR-217] vol_level=raw ADJ_VOLUME を cross-section rank しており時価総額バイアス。大型株が常に上位/小型株が常に下位
+- [2026-05-20] bug:logic-error | scripts/tob_prediction/screen_tob_insider.py:312-319 | [CR-217] bb_combined.fillna() が時系列rank=NaN行でcs_rankも捨てる非対称フォールバック。設計意図（永続静止をCSで拾う）と矛盾
+- [2026-05-20] bug:type-mismatch | scripts/tob_prediction/screen_tob_insider.py:300 | [CR-217] daily_count=transform("count") がTICKER非NULL数=全件をカウント。bb_width NaN行も含むため min_universe=50 判定が緩い
+- [2026-05-20] perf:n-plus-1 | scripts/tob_prediction/backtest_tob_insider.py:167-168 | [CR-217] tob_map ループ内で all_scored["TICKER"]==ticker の boolean mask 反復。groupby("TICKER") 1パスで10-30倍速可能
+- [2026-05-20] bug:logic-error | scripts/tob_prediction/backtest_tob_insider.py:173-178 | [CR-217] DETECTION_WINDOWS が pd.Timedelta(days=N) でカレンダー日。新規追加10/15日窓は実営業日6-11日となり論文の「営業日窓」と乖離
+
+### 2026-05-20
+
+- [2026-05-20] content:architecture-platform-mismatch | docs/plans/tools-013_gemma_only_pipeline_20260520_220510.md | Gemma単独受注判定がPoC不採用根拠(013-1: Gemma過剰検知)と矛盾、品質劣化懸念
+- [2026-05-20] content:regression-risk-missed | docs/plans/tools-013_gemma_only_pipeline_20260520_220510.md | PyMuPDF抽出で_normalize_page_text未経由、T-6サロゲートUnicodeEncodeError再発リスク
+- [2026-05-20] content:missing-downstream | docs/plans/tools-013_gemma_only_pipeline_20260520_220510.md | _NEEDS_GEMINI_ANALYSIS削除に伴うloadモード phase1_scan_and_extract への波及未記載
+- [2026-05-20] content:orphan-resource | docs/plans/tools-013_gemma_only_pipeline_20260520_220510.md | Vision OCR廃止後の画像PDF text="" doc が AI_STATUS=pending 永続滞留する経路の未定義
+- [2026-05-20] format:antipattern-map-missing | docs/plans/tools-013_gemma_only_pipeline_20260520_220510.md | 対応アンチパターン表でB-1にF-1/T-1誤参照、C-4にC-5(実在未確認)/T-5の出所不明
+- [2026-05-20] content:numeric-inconsistency | docs/plans/tools-013_gemma_only_pipeline_20260520_220510.md | コスト削減目的だがPass 2追加によるTPU稼働時間増分の試算が無く正味削減未検証
+- [2026-05-20] content:scope-implicit | docs/plans/tools-013_gemma_only_pipeline_20260520_220510.md | _NEEDS_SUB_CATEGORIES(既存)とプランの_PASS2_CATEGORIES(新規)の関係未定義
+- [2026-05-20] format:verification-thin | docs/plans/tools-013_gemma_only_pipeline_20260520_220510.md | PHASE E smoke testがPass 2効いてるか観測不能(merged_cnt/no_pass2_cntログ未指定)
+
+### 2026-05-21
+
+- [2026-05-21] behavior:unverified-claim | docs/reviews/220_mr_taskkill_all_sessions_accident.md | taskkill /F /IM の全プロセスkillスコープを説明せずに「推奨」として提案、他セッション影響確認なし
+- [2026-05-21] md:missing-stop-condition | docs/knowledges/tools/004_coding_conventions.md §破壊的操作 | プロセス操作（taskkill /IM等）が破壊的操作定義リストに未記載、確認義務トリガーが発火しない構造的欠陥
+- [2026-05-21] md:ambiguous-scope | docs/knowledges/tools/004_coding_conventions.md §破壊的操作 | 選択肢提示時の操作スコープ明示義務が未定義（A=全プロセスkillをユーザーが知らずに選択）
+
+### 2026-05-21
+
+- [2026-05-21] behavior:instruction-escalation-ignored | CLAUDE.md §4.5 | GOシグナル「OK」を2回連続で無視。待機状態コンテキストがGOシグナル判定を上書きした
+- [2026-05-21] behavior:unverified-claim | CLAUDE.md §4.1 | 「21:40待ちます」を現在時刻確認せずに発言。Get-Date未実行で時刻推測
+- [2026-05-21] md:ambiguous-scope | CLAUDE.md §4.5 L77 | 「作業開始しない」という文言がGOシグナル判定を待機前のみ適用と誤読される余地あり
+
+### 2026-05-21
+
+- [2026-05-21] bug:type-mismatch | scripts/tob_prediction/screen_vcp_jp.py:782,789 | [CR-001] datetime.now()がタイムゾーン非指定。CLAUDE.md §7違反。JST以外の環境でレポートタイムスタンプ・ファイル名がずれる
+- [2026-05-21] content:missing-precondition | scripts/tob_prediction/screen_vcp_jp.py:52 | [CR-001] _VCP_SKILL_DIR=C:/tmp/... 絶対パスハードコード。他端末・CI環境では即sys.exit(1)。セットアップ手順の知見MD記載なし
+- [2026-05-21] content:regression-risk-missed | scripts/tob_prediction/jquants_bq_client.py:79,243 | [CR-001] --date過去日バックテスト時にfetch_days=400カレンダー日<52週(260取引日)となりyearHigh/yearLow計算が不正確になるリスク未記載
+- [2026-05-21] code:copypaste | scripts/tob_prediction/jquants_bq_client.py:168,196 | [CR-001] get_sp500_constituentsがiterrowsでname_map/sector_mapを再走。_name_sector_maps()キャッシュ済みで冗長
+- [2026-05-21] content:missing-precondition | scripts/tob_prediction/jquants_bq_client.py:103 | [CR-001] fetch_ohlcvへforce_reload引数を渡せない。JQuantsBQClientユーザーがキャッシュ強制リロード不可

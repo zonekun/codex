@@ -43,10 +43,10 @@ Cloud Run Job のメール通知（`send_mail`）とは独立した、**ロー�
 ### CLI から
 
 ```bash
-PYTHONUTF8=1 C:/venvs/investment-agent/Scripts/python.exe scripts/notify.py ntfy "月次データロード完了" --sender ATP --task "月次DL"
+PYTHONUTF8=1 <python> scripts/notify.py ntfy "月次データロード完了" --sender ATP --task "月次DL"
 
 # タイトル明示指定（--title はsender/taskより優先）
-PYTHONUTF8=1 C:/venvs/investment-agent/Scripts/python.exe scripts/notify.py ntfy "緊急: ジョブ失敗" --title "エラー" --priority urgent
+PYTHONUTF8=1 <python> scripts/notify.py ntfy "緊急: ジョブ失敗" --title "エラー" --priority urgent
 ```
 
 > `--wait` を**付けない**こと。付けるとリプライ待ちモード（②）に入り、コマンドが `--timeout` 秒止まる。
@@ -82,7 +82,7 @@ send_ntfy("ジョブ失敗", title="エラー", priority="urgent", tags="x")
 
 ```bash
 # --wait でリプライ待ちモードに入る（デフォルト3600秒待機）
-PYTHONUTF8=1 C:/venvs/investment-agent/Scripts/python.exe scripts/notify.py ntfy \
+PYTHONUTF8=1 <python> scripts/notify.py ntfy \
     "銘柄 7203 を再試行しますか？ (yes/skip/abort)" --wait --timeout 1800 --sender ATP --task "NG調査"
 
 # 標準出力にリプライ本文が出る。タイムアウト時は exit code 2
@@ -217,11 +217,11 @@ send_ntfy("処理完了")  # タイトル → "ATP：LINE通知改造"
 
 ```bash
 # 単方向通知
-PYTHONUTF8=1 C:/venvs/investment-agent/Scripts/python.exe scripts/notify.py ntfy "処理完了" --sender ATP --task "LINE通知改造"
+PYTHONUTF8=1 <python> scripts/notify.py ntfy "処理完了" --sender ATP --task "LINE通知改造"
 # タイトル → "ATP：LINE通知改造"
 
 # 双方向通知
-PYTHONUTF8=1 C:/venvs/investment-agent/Scripts/python.exe scripts/notify.py ntfy "どうしますか？" --wait --timeout 1800 --sender ATP --task "月次パイプライン"
+PYTHONUTF8=1 <python> scripts/notify.py ntfy "どうしますか？" --wait --timeout 1800 --sender ATP --task "月次パイプライン"
 # タイトル → "ATP：月次パイプライン"
 ```
 
@@ -301,13 +301,13 @@ Bash ツールで notify.py を呼ぶ場合、**Windows パス `C:\...` はそ�
 
 ```bash
 # OK: フォワードスラッシュ
-PYTHONUTF8=1 C:/venvs/investment-agent/Scripts/python.exe scripts/notify.py ntfy "メッセージ"
+PYTHONUTF8=1 <python> scripts/notify.py ntfy "メッセージ"
 
 # OK: Unix 形式
-PYTHONUTF8=1 /c/venvs/investment-agent/Scripts/python.exe scripts/notify.py ntfy "メッセージ"
+PYTHONUTF8=1 <python> scripts/notify.py ntfy "メッセージ"
 
 # NG: バックスラッシュ → command not found
-PYTHONUTF8=1 C:\venvs\investment-agent\Scripts\python.exe scripts/notify.py ntfy "メッセージ"
+PYTHONUTF8=1 <python> scripts/notify.py ntfy "メッセージ"
 ```
 
 **日本語 Windows 固有の罠**: `\`（U+005C）が `¥`（円マーク）として表示される。エラーメッセージのパスが `C:¥venvs¥...` と表示され、パス区切り問題に気付きにくい（2026-05-02 事故）。

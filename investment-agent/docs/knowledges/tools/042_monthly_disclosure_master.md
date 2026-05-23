@@ -255,12 +255,12 @@ bc_ignoreを設定する前に、以下の手順で逆引き検証を行うこ�
 
 ```bash
 # Step 6b: 全社月次抽出（本運用）
-PYTHONUTF8=1 C:/venvs/investment-agent/Scripts/python.exe scripts/extract_monthly_data.py --all --since 2020
+PYTHONUTF8=1 <python> scripts/extract_monthly_data.py --all --since 2020
 # Step 6b: テスト実行（30社サンプル）
-PYTHONUTF8=1 C:/venvs/investment-agent/Scripts/python.exe scripts/extract_monthly_data.py --sample 30 --since 2024
+PYTHONUTF8=1 <python> scripts/extract_monthly_data.py --sample 30 --since 2024
 
-PYTHONUTF8=1 C:/venvs/investment-agent/Scripts/python.exe scripts/update_monthly_adapters.py --tickers 9887 --dry-run
-PYTHONUTF8=1 C:/venvs/investment-agent/Scripts/python.exe scripts/update_monthly_adapters.py --force 1417  # 強制再スクレイプ
+PYTHONUTF8=1 <python> scripts/update_monthly_adapters.py --tickers 9887 --dry-run
+PYTHONUTF8=1 <python> scripts/update_monthly_adapters.py --force 1417  # 強制再スクレイプ
 PYTHONUTF8=1 uv run python scripts/build_monthly_extractor.py --phase all --tickers 3097 --no-gcs  # テスト
 ```
 

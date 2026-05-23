@@ -50,6 +50,10 @@ gcloud run jobs execute jquants-fin-summary --region us-west1
 # 日付指定（= 区切りを使用すること。, 区切りは不可）
 gcloud run jobs execute jquants-fin-summary --region us-west1 \
   --args="--from=20170101,--to=20171231"
+
+# 前日取得（02:00 日次バッチ相当の動作確認）
+gcloud run jobs execute jquants-fin-summary --region us-west1 \
+  --args="--shift-day=-1"
 ```
 
 ---
@@ -67,7 +71,13 @@ gcloud run jobs execute jquants-fin-summary --region us-west1 \
 | `DATASET_ID` | `"STOCK"` | BigQuery データセット |
 | `TABLE_ID` | `"fin_summary"` | BigQuery テーブル名 |
 
-**優先順位**: `--from`/`--to` 引数（Cloud Run）> `DATE_MODE` 設定ブロック（Colab）
+**Cloud Run 引数（`--from`/`--to` 未指定時に DATE_MODE="t" へ適用）**:
+
+| 引数 | デフォルト | 説明 |
+|------|-----------|------|
+| `--shift-day` | `0` | DATE_MODE=t 時に today からシフトする日数。`-1` で前日。02:00 日次バッチは `-1` を指定 |
+
+**優先順位**: `--from`/`--to` 引数 > `--shift-day` + `DATE_MODE="t"` > `DATE_MODE` 設定ブロック（Colab）
 
 ---
 
@@ -78,7 +88,7 @@ gcloud run jobs execute jquants-fin-summary --region us-west1 \
 | 環境判別 | `google.colab` import 可 & `GOOGLE_CLOUD_PROJECT` 未設定 | `google.colab` import 可 & `GOOGLE_CLOUD_PROJECT` 設定済み | `CLOUD_RUN_JOB` 環境変数あり |
 | APIキー取得 | Colab Secrets `JQUANTS_API_KEY` | Colab Secrets `JQUANTS_API_KEY` | 環境変数 `JQUANTS_API_KEY` |
 | BQ認証 | Colab Secrets `GCP_SA_KEY` → service_account | ADC | ADC |
-| 日付設定 | 設定ブロック直接編集 | 設定ブロック直接編集 | `--from`/`--to` 引数（省略時は設定ブロック） |
+| 日付設定 | 設定ブロック直接編集 | 設定ブロック直接編集 | `--from`/`--to` 引数 / `--shift-day`（省略時は設定ブロック） |
 | argparse | スキップ | スキップ | 使用 |
 
 ---
@@ -88,7 +98,7 @@ gcloud run jobs execute jquants-fin-summary --region us-west1 \
 ```
 detect_runtime() → RUNTIME 決定
     ↓
-parse_args()（Cloud Run: --from/--to / Colab: 設定ブロック）
+parse_args()（Cloud Run: --from/--to / --shift-day / Colab: 設定ブロック）
     ↓
 get_api_key()（環境別）
     ↓
@@ -152,13 +162,17 @@ COPY scripts/notify.py scripts/notify.py
 `jquants_get_fin_summary.py` は `from jquants_common import ...` で共通モジュールをインポートしている。
 `jquants_common.py` を COPY し忘れると Cloud Run でのみ `ModuleNotFoundError: No module named 'jquants_common'` が発生する（ローカル実行では同ディレクトリにあるため発生しない）。
 
+**pip 依存**: `structlog>=23.0` が必須（`log.info()` によるログ出力で使用。Dockerfile に明示インストール済み）。
+
 ---
 
 ## 注意事項
 
 - **jquants-api-client は使用しない**（V2 未対応のため `requests` で直接呼び出し）
 - **`load_table_from_dataframe()` には `pyarrow` が必要**（Dockerfile で明示インストール）
-- **`display()` は使用しない**（Cloud Run 非対応のため `print()` に統一）
+- **`display()` は使用しない**（Cloud Run 非対応のため structlog の `log.info()` に統一）
+- **`print()` 禁止**: ログ出力はすべて `structlog` を使用（CLAUDE.md §7）。`date_resolved` / `completed` イベントは `log.info()` で出力
+- **02:00 JST 日次バッチ**: `jquants-fin-summary-daily`（火〜土 02:00）は DATE_MODE="t" で当日を取得しようとするが、J-Quants 確報は 00:30 公開のため当日は 0件になる。Cloud Scheduler の message-body で `--shift-day=-1` を注入して前日を取得する（MR-196 対策）
 - **レートリミット**: 429 応答時は 30 秒待機してリトライ
 - **0件の日はログ非表示**: 土日・祝日はスキップ
 - **ページネーション**: `pagination_key` を辿って全件取得

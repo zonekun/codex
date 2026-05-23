@@ -4,11 +4,12 @@
 - data/tmp/: 一時ファイル全削除（.jupyter_checkpoints 含む）
 - data/logs/: 古いビルドログ (*.log > N日), コピー系 (*コピー*, * - Copy*), 空ファイル
 - C:\\Users\\<user>\\.claude/: キャッシュ系 (debug/ telemetry/ file-history/ shell-snapshots/
-  paste-cache/ cache/) の N 日以上前のファイル、存在しないプロジェクトパスの
-  セッションログ
+  paste-cache/ cache/) の N 日以上前のファイル、全プロジェクトの N 日超セッションログ
 - claude-mem (C:\\tmp\\claude-mem): logs/ trash/ backups/ の古いファイル削除、
   SQLite の古い observations/session_summaries/user_prompts 削除+VACUUM、
   vector-db 再構築用削除（オプション）
+- Git GC: 指定ディレクトリ配下の Git リポジトリで git gc --aggressive --prune=now
+- C:\\tmp/ 台帳: 103_tmp_folder_registry.md の期限(YYYY-MM-DD)列が当日以前のエントリを削除
 
 使い方:
     python scripts/cleanup_disk.py                    # dry-run（削除せずに候補表示）
@@ -16,10 +17,14 @@
     python scripts/cleanup_disk.py --logs-days 14     # data/logs保持日数（デフォルト30）
     python scripts/cleanup_disk.py --claude-days 14   # .claude/保持日数（デフォルト30）
     python scripts/cleanup_disk.py --mem-days 90      # claude-mem DB保持日数（デフォルト90）
-    python scripts/cleanup_disk.py --skip-claude      # .claude/はスキップ
-    python scripts/cleanup_disk.py --skip-logs        # data/logs/はスキップ
+    python scripts/cleanup_disk.py --skip-logs        # data/logsはスキップ
+    python scripts/cleanup_disk.py --skip-claude      # .claudeはスキップ
     python scripts/cleanup_disk.py --skip-mem         # claude-memはスキップ
+    python scripts/cleanup_disk.py --skip-tmp         # C:\\tmp台帳チェックをスキップ
     python scripts/cleanup_disk.py --mem-vacuum       # claude-mem DB VACUUM実行
+    python scripts/cleanup_disk.py --git-gc           # Git GC dry-run（--execute で実行）
+    python scripts/cleanup_disk.py --git-targets C:\\path1 C:\\path2  # Git GC対象変更
+    python scripts/cleanup_disk.py --skip-git         # Git GCスキップ（--git-gc時）
 """
 from __future__ import annotations
 
@@ -27,6 +32,7 @@ import argparse
 import os
 import shutil
 import sqlite3
+import subprocess
 import sys
 import time
 from datetime import datetime, timedelta, timezone
@@ -39,6 +45,14 @@ DATA_LOGS = PROJECT_ROOT / "data" / "logs"
 DATA_TMP = PROJECT_ROOT / "data" / "tmp"
 CLAUDE_HOME = Path.home() / ".claude"
 CLAUDE_MEM_DIR = Path(os.environ.get("CLAUDE_MEM_DATA_DIR", str(Path.home() / ".claude-mem")))
+TMP_REGISTRY = PROJECT_ROOT / "docs" / "knowledges" / "tools" / "103_tmp_folder_registry.md"
+
+DEFAULT_GIT_TARGETS = [
+    Path(r"C:\gdrive\claude"),
+    Path.home() / ".claude",
+]
+
+GITIGNORE_RECOMMENDED = ["node_modules/", ".venv/", "__pycache__/"]
 
 # .claude/ 配下でサイズを食いやすいキャッシュ系ディレクトリ
 CLAUDE_CACHE_DIRS = [
@@ -49,6 +63,93 @@ CLAUDE_CACHE_DIRS = [
     "paste-cache",
     "cache",
 ]
+
+
+import re as _re
+from datetime import date as _date
+
+
+def parse_tmp_registry(registry_path: Path) -> list[dict]:
+    """103 台帳のエントリ表をパース.
+
+    Returns:
+        list of {"path": Path, "path_str": str, "expires": date|None, "condition": str, "raw_line": str}
+    """
+    entries: list[dict] = []
+    if not registry_path.exists():
+        return entries
+    in_table = False
+    header_skipped = False
+    for line in registry_path.read_text(encoding="utf-8").splitlines():
+        stripped = line.strip()
+        if not stripped.startswith("|"):
+            if in_table:
+                break
+            continue
+        in_table = True
+        if "|---" in stripped or "|:---" in stripped:
+            header_skipped = True
+            continue
+        if not header_skipped:
+            continue  # header row
+        parts = [p.strip() for p in stripped.split("|")]
+        parts = [p for p in parts if p != ""]
+        if len(parts) < 4:
+            continue
+        path_str = _re.sub(r"`", "", parts[0]).strip()
+        condition = parts[3].strip()
+        m = _re.match(r"(\d{4}-\d{2}-\d{2})", condition)
+        expires = None
+        if m:
+            try:
+                expires = _date.fromisoformat(m.group(1))
+            except ValueError:
+                pass
+        entries.append({
+            "path_str": path_str,
+            "path": Path(path_str) if path_str else None,
+            "expires": expires,
+            "condition": condition,
+            "raw_line": line,
+        })
+    return entries
+
+
+def scan_tmp_registry() -> list[tuple[Path, str, int]]:
+    """103 台帳の期限切れエントリを列挙. (path, reason, size) のリストを返す."""
+    today = datetime.now(tz=JST).date()
+    candidates: list[tuple[Path, str, int]] = []
+    for entry in parse_tmp_registry(TMP_REGISTRY):
+        if entry["expires"] is None:
+            continue
+        if entry["expires"] > today:
+            continue
+        p = entry["path"]
+        if p and p.exists():
+            size = dir_size(p) if p.is_dir() else p.stat().st_size
+        else:
+            size = 0
+        reason = f"tmp expired ({entry['expires']})"
+        candidates.append((p or Path(entry["path_str"]), reason, size))
+    return candidates
+
+
+def remove_tmp_registry_entries(expired_paths: list[Path]) -> int:
+    """103 台帳から期限切れエントリ行を削除. 削除行数を返す."""
+    if not TMP_REGISTRY.exists() or not expired_paths:
+        return 0
+    path_strs = {str(p) for p in expired_paths}
+    lines = TMP_REGISTRY.read_text(encoding="utf-8").splitlines(keepends=True)
+    new_lines = []
+    removed = 0
+    for line in lines:
+        if any(ps.replace("\\", "\\\\") in line or ps in line for ps in path_strs):
+            removed += 1
+        else:
+            new_lines.append(line)
+    if removed:
+        TMP_REGISTRY.write_text("".join(new_lines), encoding="utf-8")
+    return removed
 
 
 def human_size(n: int) -> str:
@@ -150,35 +251,28 @@ def scan_claude_caches(days: int) -> list[tuple[Path, str, int]]:
 
 
 def scan_claude_stale_projects(days: int) -> list[tuple[Path, str, int]]:
-    """.claude/projects/ で、直近 N 日更新がないプロジェクトを列挙.
+    """.claude/projects/ 配下の全プロジェクトで N 日以上前のファイルを列挙.
 
-    ディレクトリ名→実パスの復元は Windows 日本語パス（`マイドライブ`→`---------`）で
-    不可逆になるため、パス復元ではなく mtime で判定する。
-    プロジェクト内の最も新しい .jsonl の mtime が cutoff 未満なら「使われていない」とみなす。
+    アクティブなプロジェクトでもセッションログは肥大化するため、
+    個別ファイル単位で mtime が cutoff を超えたものを削除候補にする。
     """
     candidates: list[tuple[Path, str, int]] = []
     pdir = CLAUDE_HOME / "projects"
     if not pdir.exists():
         return candidates
     cutoff = time.time() - days * 86400
-    for entry in pdir.iterdir():
-        if not entry.is_dir():
-            continue
-        # プロジェクト内の最新mtimeを取得
-        latest = 0.0
-        for root, _, files in os.walk(entry):
-            for f in files:
-                try:
-                    m = (Path(root) / f).stat().st_mtime
-                    if m > latest:
-                        latest = m
-                except OSError:
-                    pass
-        if latest > 0 and latest < cutoff:
-            last_jst = datetime.fromtimestamp(latest, tz=JST).strftime("%Y-%m-%d")
-            candidates.append(
-                (entry, f".claude/projects stale (last:{last_jst})", dir_size(entry))
-            )
+    for root, _, files in os.walk(pdir):
+        for f in files:
+            fp = Path(root) / f
+            try:
+                st = fp.stat()
+            except OSError:
+                continue
+            if st.st_mtime < cutoff:
+                proj = fp.relative_to(pdir).parts[0] if fp.relative_to(pdir).parts else "?"
+                candidates.append(
+                    (fp, f".claude/projects/{proj} (>{days}d)", st.st_size)
+                )
     return candidates
 
 
@@ -292,6 +386,106 @@ def vacuum_claude_mem_db() -> int:
     return max(0, before - after)
 
 
+def find_git_repos(targets: list[Path]) -> list[Path]:
+    """対象ディレクトリ直下（1階層）の Git リポジトリを列挙."""
+    repos: set[Path] = set()
+    for target in targets:
+        if not target.exists():
+            continue
+        resolved = target.resolve()
+        if (resolved / ".git").exists():
+            repos.add(resolved)
+        if not resolved.is_dir():
+            continue
+        for entry in resolved.iterdir():
+            if entry.is_dir() and (entry / ".git").exists():
+                repos.add(entry.resolve())
+    return sorted(repos)
+
+
+def check_gitignore(repo: Path) -> list[str]:
+    """リポジトリの .gitignore に推奨パターンが含まれるか確認. 不足パターンを返す."""
+    gitignore = repo / ".gitignore"
+    if not gitignore.exists():
+        return GITIGNORE_RECOMMENDED[:]
+    try:
+        content = gitignore.read_text(encoding="utf-8")
+    except OSError:
+        return GITIGNORE_RECOMMENDED[:]
+    lines = {line.strip() for line in content.splitlines() if line.strip() and not line.startswith("#")}
+    missing: list[str] = []
+    for pattern in GITIGNORE_RECOMMENDED:
+        bare = pattern.rstrip("/")
+        found = any(bare in line.replace("**/", "").rstrip("/") for line in lines)
+        if not found:
+            missing.append(pattern)
+    return missing
+
+
+def run_git_gc(repos: list[Path], *, execute: bool) -> None:
+    """各リポジトリで git gc を実行. dry-run 時はサイズのみ表示."""
+    if not repos:
+        print("[git gc] no repos found")
+        return
+
+    print(f"[git gc] {len(repos)} repos found")
+    total_before = 0
+    total_after = 0
+
+    for repo in repos:
+        git_dir = repo / ".git"
+        before = dir_size(git_dir)
+        total_before += before
+        print(f"\n  {repo}")
+        print(f"    .git before: {human_size(before)}")
+
+        missing = check_gitignore(repo)
+        if missing:
+            print(f"    [warn] .gitignore missing: {', '.join(missing)}")
+
+        if execute:
+            lock_file = git_dir / "index.lock"
+            gc_pid = git_dir / "gc.pid"
+            if lock_file.exists() or gc_pid.exists():
+                blocker = "index.lock" if lock_file.exists() else "gc.pid"
+                print(f"    [skip] {blocker} exists — another git process is running")
+                total_after += before
+                continue
+            try:
+                result = subprocess.run(
+                    ["git", "gc", "--aggressive", "--prune=now"],
+                    cwd=str(repo),
+                    capture_output=True,
+                    text=True,
+                    timeout=300,
+                )
+                if result.returncode != 0:
+                    print(f"    [error] git gc failed: {result.stderr.strip()}")
+                    total_after += dir_size(git_dir)
+                    continue
+            except subprocess.TimeoutExpired:
+                print("    [error] git gc timed out (5min)")
+                total_after += dir_size(git_dir)
+                continue
+            except FileNotFoundError:
+                print("    [error] git not found in PATH")
+                return
+            after = dir_size(git_dir)
+            total_after += after
+            freed = before - after
+            print(f"    .git after:  {human_size(after)} (freed {human_size(max(0, freed))})")
+        else:
+            total_after += before
+            print("    (dry-run: --execute で実行)")
+
+    print(f"\n  git gc total: {human_size(total_before)}", end="")
+    if execute:
+        freed = total_before - total_after
+        print(f" -> {human_size(total_after)} (freed {human_size(max(0, freed))})")
+    else:
+        print()
+
+
 def delete_path(p: Path) -> int:
     """ファイル/ディレクトリを削除. 削除できたバイト数を返す."""
     try:
@@ -318,6 +512,11 @@ def main() -> int:
     parser.add_argument("--skip-claude", action="store_true", help=".claudeはスキップ")
     parser.add_argument("--skip-mem", action="store_true", help="claude-memはスキップ")
     parser.add_argument("--mem-vacuum", action="store_true", help="claude-mem DB VACUUM実行")
+    parser.add_argument("--git-gc", action="store_true", help="Git GC実行")
+    parser.add_argument("--git-targets", nargs="+", type=Path, default=None,
+                        help="Git GC対象ディレクトリ（デフォルト: C:\\gdrive\\claude, ~/.claude）")
+    parser.add_argument("--skip-git", action="store_true", help="Git GCスキップ")
+    parser.add_argument("--skip-tmp", action="store_true", help="C:\\tmp台帳チェックをスキップ")
     args = parser.parse_args()
 
     now_jst = datetime.now(tz=JST).strftime("%Y-%m-%d %H:%M:%S JST")
@@ -333,6 +532,8 @@ def main() -> int:
         sections.append((".claude/projects stale", scan_claude_stale_projects(args.claude_days)))
     if not args.skip_mem:
         sections.append(("claude-mem files", scan_claude_mem_files(args.mem_days)))
+    if not args.skip_tmp:
+        sections.append(("C:\\tmp registry expired", scan_tmp_registry()))
 
     mem_db_rows: list[tuple[str, int]] = []
     if not args.skip_mem:
@@ -367,9 +568,16 @@ def main() -> int:
     if args.execute and (total_count > 0 or mem_db_rows):
         print("\n[executing deletion...]")
         freed = 0
-        for _title, items in sections:
+        tmp_expired_paths: list[Path] = []
+        for title, items in sections:
+            is_tmp = title == "C:\\tmp registry expired"
             for p, _reason, _size in items:
                 freed += delete_path(p)
+                if is_tmp:
+                    tmp_expired_paths.append(p)
+        if tmp_expired_paths:
+            removed = remove_tmp_registry_entries(tmp_expired_paths)
+            print(f"103 台帳エントリ削除: {removed} 行")
         if mem_db_rows:
             deleted_rows = delete_claude_mem_old_rows(args.mem_days)
             print(f"claude-mem DB: {deleted_rows} rows deleted")
@@ -382,6 +590,13 @@ def main() -> int:
 
     if args.mem_vacuum and not args.execute:
         print("(--mem-vacuum は --execute と併用してください)")
+
+    if args.git_gc and not args.skip_git:
+        print()
+        git_targets = args.git_targets or DEFAULT_GIT_TARGETS
+        repos = find_git_repos(git_targets)
+        run_git_gc(repos, execute=args.execute)
+
     return 0
 
 

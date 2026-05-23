@@ -16,13 +16,28 @@ Usage:
     PYTHONUTF8=1 python scripts/tdnet_load_recovery.py --from 20250101 --to 20251231
 """
 
+import sys
+
+# 起動遮断ガード（CR-203 / tools-013_tdnet_chunk_index_column プラン P1-2）
+# 既存バグ: L487 `chunk_data.get("chunk_index", 0)` だが create_chunks_for_tdnet の
+# 戻り dict に chunk_index キーが無いため、全 chunk が CHUNK_INDEX=0 でデータ汚染。
+# 本スクリプトは新アーキ稼働3ヶ月後に廃止予定の旧 recovery 経路のため、
+# 修正ではなく起動を遮断する。再有効化するなら L487 を enumerate ベースに直してから本ガードを外す。
+# 重い import 前に置くことで、依存欠落環境でも確実に exit code 2 を返す。
+print(
+    "[FATAL] tdnet_load_recovery.py は廃止予定経路。"
+    " 既存 CHUNK_INDEX 書込みバグ（L487）により全 chunk=0 でデータ汚染するため、"
+    " 起動を遮断します。新アーキの tdnet_load_parallel.py を使用してください。",
+    file=sys.stderr,
+)
+sys.exit(2)
+
 import argparse
 import io
 import json
 import logging
 import os
 import re
-import sys
 import threading
 import time
 import traceback
@@ -196,6 +211,11 @@ VALID_CATEGORIES: list[str] = [
 ]
 VALID_CATEGORIES_STR = ", ".join(VALID_CATEGORIES)
 
+# ファイル名 _sanitize() で "/" が除去されたカテゴリ → 正規形マッピング（自動生成）
+_FILENAME_ALIASES: dict[str, str] = {
+    cat.replace("/", ""): cat for cat in VALID_CATEGORIES if "/" in cat
+}
+
 # ============================================================
 # ユーティリティ関数（tdnet_load_parallel.py と同一）
 # ============================================================
@@ -207,6 +227,7 @@ _MONTHLY_DOC_PATTERN = re.compile(
 
 
 def _correct_category_by_title(main_category: str, doc_title: str) -> str:
+    main_category = _FILENAME_ALIASES.get(main_category, main_category)
     if main_category != "月次開示" and _MONTHLY_DOC_PATTERN.search(doc_title):
         return "月次開示"
     return main_category

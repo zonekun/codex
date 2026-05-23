@@ -20,14 +20,29 @@ Codex（OpenAI のコーディングエージェント）を実装担当とし�
 - Claude Code ↔ Codex の双方向メッセージボード
 - `docs/terminal-relay.md`（端末間引き継ぎボード）に Codex 宛エントリを書くのは禁止。terminal-relay.md は Claude Code 端末間（Windows / Linux VM）専用
 
-### エントリルール
+### 追記方式（append-only）
 
-- エントリは新しい順（newest first）
-- 必須フィールド: `from`, `to`, `status`, `task`, `関連計画MD`（なければ `N/A`）
-- `from` / `to` の有効値: `Claude Code`, `Codex`, `User`
-- Codex が `to: Codex` エントリを受けたら `in_progress` → `done` に更新
-- Claude Code が `to: Claude Code` エントリを受けたら `in_progress` → `done` に更新
-- 不要になったエントリは物理削除する
+全操作を `printf >>` / `echo >>` 末尾追記で完結させる。
+
+| 操作 | やること |
+|------|---------|
+| 新規タスク | `## TASK: <short-id> <timestamp>` ブロックを末尾追記 |
+| 完了報告 | `DONE: <short-id> <timestamp> [概要]` を1行追記 |
+| 結果報告 | `## RESULT: <short-id> <timestamp>` ブロックを末尾追記 |
+
+- short-id: kebab-case（例: `supply-chain-dedup`, `tob-paired-ttest`）
+- 過去エントリの編集・削除禁止。追記のみ
+- アクティブ判定: `## TASK:` 行があり対応する `DONE:` 行がないもの
+
+### ファイル操作の制約（Claude Code・Codex 共通）
+
+| 操作 | 可否 | 条件 |
+|------|------|------|
+| Write / Edit（全体書き換え） | **禁止** | いかなる場合も不可。append-only で完結させる |
+| Read | 解釈必要時のみ許可 | タスク内容の把握・アクティブタスク詳細の参照時 |
+| 追記（`printf >>` / `echo >>`） | 許可 | 唯一の書き込み手段 |
+
+> **根拠**: Write による全体書き換えは過去エントリ不変性を保証できない。「不要」ではなく「禁止」。
 
 ## 取り込みフロー
 
@@ -71,8 +86,9 @@ git apply --3way <patch-file>
 
 ## 伝言板の運用ルール
 
-- **伝言ボード更新後は都度コミット＋プッシュ必須**。エントリ追加・ステータス変更のたびに即 commit & push する。Codex が次回起動時に最新状態を読めるようにするため
-- Codex リポジトリ側（`C:\Users\zonekun\Documents\codex`）で伝言ボードを更新した場合も同様に即 push
+- **追記後は都度コミット＋プッシュ必須**。`printf >>` で追記したら即 commit & push。Codex が次回起動時に最新状態を読めるようにするため
+- Codex リポジトリ側（`C:\Users\zonekun\Documents\codex`）で追記した場合も同様に即 push
+- **ファイル操作制約は §追記方式 の制約テーブルに従う**（Write/Edit禁止、Readは解釈必要時のみ）
 
 ## 注意事項
 

@@ -41,7 +41,7 @@ Agent(
 
 | 項目 | 値 |
 |------|---|
-| Python | `C:/venvs/investment-agent/Scripts/python.exe`（探し回らない。これが唯一のパス） |
+| Python | `<python>`（探し回らない。これが唯一のパス） |
 | 実行時環境変数 | `PYTHONUTF8=1` を必ず付ける |
 | gcloud / gsutil | Bash ツール（Git Bash）で実行。PowerShell 不可 |
 | Bash パス表記 | フォワードスラッシュ（`C:/gdrive/...`）。バックスラッシュ禁止 |
@@ -109,7 +109,7 @@ gcloud logging read "resource.type=cloud_run_job AND resource.labels.job_name=<j
 
 ```bash
 # 当該tickerのBC値一覧（直近10件）
-PYTHONUTF8=1 C:/venvs/investment-agent/Scripts/python.exe -c "
+PYTHONUTF8=1 <python> -c "
 import csv, sys
 ticker = sys.argv[1]
 with open('data/csv/bc_monthly_kpi.csv', encoding='utf-8') as f:
@@ -122,14 +122,14 @@ with open('data/csv/bc_monthly_kpi.csv', encoding='utf-8') as f:
 **(b) reconcile自動逆引き** — 多数field・系統的ズレ向け。全BC field × 誤差調整（identity/yoy±100/×N/÷N/符号反転等）で値一致率を計算し、bc_key候補を提案する。**前提: compare CSV（`compare_monthly_buffett.py`の出力）が手元にあること**。なければ(a)の手動照合を使う。
 
 ```bash
-PYTHONUTF8=1 C:/venvs/investment-agent/Scripts/python.exe scripts/reconcile_bc_key_from_compare.py \
+PYTHONUTF8=1 <python> scripts/reconcile_bc_key_from_compare.py \
   --compare-csv <compare CSV path> --min-ratio 0.5
 ```
 
 **(c) inspect_ticker.py** — 事実確認の起点。adapter・records・BC値・PDF構造を一括表示し、何が取れていて何が取れていないかの全景を把握する。
 
 ```bash
-PYTHONUTF8=1 C:/venvs/investment-agent/Scripts/python.exe scripts/monthly_bc_repair/inspect_ticker.py --ticker <ticker>
+PYTHONUTF8=1 <python> scripts/monthly_bc_repair/inspect_ticker.py --ticker <ticker>
 ```
 
 #### 修復サイクル（1社分）
@@ -146,7 +146,7 @@ PYTHONUTF8=1 C:/venvs/investment-agent/Scripts/python.exe scripts/monthly_bc_rep
 3. **実物を読んで判断**: テキスト抽出して構造を把握し、042スキーマ定義に照らしてadapterを修正
    ```bash
    # PDF の場合
-   PYTHONUTF8=1 C:/venvs/investment-agent/Scripts/python.exe -c "
+   PYTHONUTF8=1 <python> -c "
    import pdfplumber
    with pdfplumber.open('C:/tmp/<filename>') as pdf:
        for page in pdf.pages:
@@ -206,7 +206,7 @@ GCSに月次開示文書がない、または文書内容が月次データと�
 - **GCSファイル一覧**: `gcloud storage ls gs://stock_data_1930932/monthly/docs/{ticker}/`
 - **HTMLテーブル数カウント**:
   ```bash
-  PYTHONUTF8=1 C:/venvs/investment-agent/Scripts/python.exe -c "
+  PYTHONUTF8=1 <python> -c "
   import re, sys
   html = open(sys.argv[1], encoding='utf-8').read()
   tables = re.findall(r'<table[^>]*>(.*?)</table>', html, re.DOTALL)
@@ -240,7 +240,7 @@ DL系エラーは従来通り調査が必要:
 修正したadapterで1社テスト実行:
 
 ```bash
-PYTHONUTF8=1 C:/venvs/investment-agent/Scripts/python.exe scripts/extract_monthly_data.py --tickers <ticker> --no-batch
+PYTHONUTF8=1 <python> scripts/extract_monthly_data.py --tickers <ticker> --no-batch
 ```
 
 - 正しい値が抽出されたか確認（件数、年月範囲、数値の妥当性）
@@ -250,12 +250,12 @@ PYTHONUTF8=1 C:/venvs/investment-agent/Scripts/python.exe scripts/extract_monthl
 
 Gemini adapter かつ `overwrite_past_months: true`（累積型PDF）の銘柄は `--since` で直近年に絞り、API呼び出しを最小化する:
 ```bash
-PYTHONUTF8=1 C:/venvs/investment-agent/Scripts/python.exe scripts/extract_monthly_data.py --tickers <ticker> --no-batch --since <直近年>
+PYTHONUTF8=1 <python> scripts/extract_monthly_data.py --tickers <ticker> --no-batch --since <直近年>
 ```
 
 DL系修正の場合:
 ```bash
-PYTHONUTF8=1 C:/venvs/investment-agent/Scripts/python.exe scripts/download_monthly.py --tickers <ticker> --dry-run
+PYTHONUTF8=1 <python> scripts/download_monthly.py --tickers <ticker> --dry-run
 ```
 
 ### Step 5: 本番投入

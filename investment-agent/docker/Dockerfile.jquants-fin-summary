@@ -7,7 +7,8 @@ RUN pip install --no-cache-dir \
     pandas>=2.0 \
     pyarrow>=14.0 \
     pandas-gbq>=0.26 \
-    google-cloud-bigquery>=3.17
+    google-cloud-bigquery>=3.17 \
+    structlog>=23.0
 
 COPY scripts/jquants_get_fin_summary.py scripts/jquants_get_fin_summary.py
 COPY scripts/jquants_common.py scripts/jquants_common.py

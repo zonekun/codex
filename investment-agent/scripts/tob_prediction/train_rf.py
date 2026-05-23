@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import argparse
 import sys
+from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
 import numpy as np
@@ -63,8 +64,15 @@ CONTINUOUS_FEATURES = [
     "financial_inst_ratio",
     "other_corp_ratio",
     "top10_concentration",
+    "owner_count_in_top10",
+    "owner_ratio_in_top10",
 ]
-BINARY_FEATURES = ["has_activist", "top_shareholder_is_public"]
+BINARY_FEATURES = [
+    "has_activist",
+    "top_shareholder_is_public",
+    "real_top_is_individual",
+    "has_famous_investor",
+]
 
 
 # ---------------------------------------------------------------------------
@@ -129,7 +137,9 @@ def _load_shareholders(client: bigquery.Client) -> pd.DataFrame:
       TICKER, FISCAL_YEAR_END,
       TOP_SHAREHOLDER_RATIO, TOP_SHAREHOLDER_IS_PUBLIC,
       FOREIGN_RATIO, INDIVIDUAL_RATIO, FINANCIAL_INST_RATIO,
-      OTHER_CORP_RATIO, TOP10_CONCENTRATION, HAS_ACTIVIST
+      OTHER_CORP_RATIO, TOP10_CONCENTRATION, HAS_ACTIVIST,
+      REAL_TOP_TYPE, OWNER_COUNT_IN_TOP10, OWNER_RATIO_IN_TOP10, HAS_FAMOUS_INVESTOR,
+      HAS_BUSINESS_PARTNER_INVESTOR, BUSINESS_PARTNER_RATIO_IN_TOP10
     FROM `gmailpj-357912.STOCK.SHAREHOLDER_COMPOSITION`
     """
     return client.query(sql).to_dataframe()
@@ -314,6 +324,14 @@ def build_feature_matrix(
         df["top10_concentration"] = df["TOP10_CONCENTRATION"]
         df["has_activist"] = df["HAS_ACTIVIST"].astype("boolean").fillna(False).astype(int)
         df["top_shareholder_is_public"] = df["TOP_SHAREHOLDER_IS_PUBLIC"].astype("boolean").fillna(False).astype(int)
+        df["real_top_is_individual"] = (df["REAL_TOP_TYPE"] == "INDIVIDUAL").astype(int)
+        df["owner_count_in_top10"] = df["OWNER_COUNT_IN_TOP10"].fillna(0).astype(float)
+        df["owner_ratio_in_top10"] = df["OWNER_RATIO_IN_TOP10"].fillna(0.0)
+        df["has_famous_investor"] = df["HAS_FAMOUS_INVESTOR"].astype("boolean").fillna(False).astype(int)
+        df["has_business_partner_investor"] = (
+            df["HAS_BUSINESS_PARTNER_INVESTOR"].astype("boolean").fillna(False).astype(int)
+        )
+        df["business_partner_ratio_in_top10"] = df["BUSINESS_PARTNER_RATIO_IN_TOP10"].fillna(0.0)
 
         # --- Label ---
         df["label"] = [1 if (t, year) in label_set else 0 for t in df["TICKER"]]
@@ -432,6 +450,7 @@ def main() -> None:
     parser.add_argument("--refresh", action="store_true", help="BQキャッシュ無視")
     parser.add_argument("--eval-year", type=int, help="単年のみ評価")
     parser.add_argument("--trials", type=int, default=OPTUNA_TRIALS)
+    parser.add_argument("--note", type=str, default="", help="ランログに記録する変更点の1行説明")
     args = parser.parse_args()
 
     eval_years = [args.eval_year] if args.eval_year else EVAL_YEARS
@@ -461,8 +480,13 @@ def main() -> None:
         logger.info("eval_start", year=eval_year)
 
         train_years = list(range(eval_year - TRAIN_WINDOW, eval_year))
-        df_train = features[features["year"].isin(train_years)].dropna(subset=feature_cols)
-        df_test = features[features["year"] == eval_year].dropna(subset=feature_cols)
+        df_train = features[features["year"].isin(train_years)].copy()
+        df_test = features[features["year"] == eval_year].copy()
+
+        # Median imputation (train median → train & test) to avoid NaN exclusion
+        train_medians = df_train[feature_cols].median()
+        df_train[feature_cols] = df_train[feature_cols].fillna(train_medians)
+        df_test[feature_cols] = df_test[feature_cols].fillna(train_medians)
 
         X_train = df_train[feature_cols].values.astype(np.float64)
         y_train = df_train["label"].values.astype(int)
@@ -539,6 +563,9 @@ def main() -> None:
             "train_pos": n_pos_tr,
             "test_n": len(X_test),
             "test_pos": n_pos_te,
+            "top5pct_n": top5pct,
+            "top5pct_hits": int(top_tickers["label"].sum()),
+            "top5pct_hit_rate": round(float(hit_rate), 4),
             **best_params,
         })
 
@@ -555,6 +582,46 @@ def main() -> None:
     out_path = CACHE_DIR / "tob_rf_results.csv"
     rdf.to_csv(out_path, index=False, encoding="utf-8")
     logger.info("saved", path=str(out_path))
+
+    _append_run_log(rdf, note=args.note)
+
+
+def _append_run_log(rdf: "pd.DataFrame", note: str) -> None:
+    """Walk-Forward 結果を 007_tob_run_log.md に追記する。"""
+    run_log = PROJECT_ROOT / "docs/knowledges/analysis/007_tob_run_log.md"
+    jst = timezone(timedelta(hours=9))
+    ts = datetime.now(jst).strftime("%Y-%m-%d %H:%M JST")
+    n_features = len(CONTINUOUS_FEATURES) + len(BINARY_FEATURES)
+    header = note if note else "（--note 未指定）"
+
+    lines: list[str] = [
+        f"\n## {ts} — {n_features}変数（{header}）\n",
+        "\n",
+        "| 評価年 | ROC-AUC | PR-AUC | 訓練正例 | テスト正例 | Top5%ヒット率 |\n",
+        "|--------|---------|--------|----------|-----------|-------------|\n",
+    ]
+    for _, row in rdf.iterrows():
+        hits = int(row.get("top5pct_hits", 0))
+        n5 = int(row.get("top5pct_n", 0))
+        hit_pct = f"{row['top5pct_hit_rate'] * 100:.1f}%（{hits}/{n5}）" if n5 else "—"
+        lines.append(
+            f"| {int(row['year'])} | {row['roc_auc']:.3f} | {row['pr_auc']:.3f}"
+            f" | {int(row['train_pos'])} | {int(row['test_pos'])} | {hit_pct} |\n"
+        )
+    avg_roc = rdf["roc_auc"].mean()
+    avg_pr = rdf["pr_auc"].mean()
+    lines.append(f"| **平均** | **{avg_roc:.3f}** | **{avg_pr:.3f}** | | | |\n")
+    lines.append("\n---\n")
+
+    # 先頭コメント行の直後（最新エントリが上）に挿入
+    text = run_log.read_text(encoding="utf-8")
+    insert_marker = "<!-- 最新エントリが上 -->"
+    if insert_marker in text:
+        text = text.replace(insert_marker, insert_marker + "\n" + "".join(lines))
+    else:
+        text += "\n" + "".join(lines)
+    run_log.write_text(text, encoding="utf-8")
+    logger.info("run_log_appended", path=str(run_log), ts=ts)
 
 
 if __name__ == "__main__":

@@ -29,7 +29,6 @@ from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 import numpy as np
-import PyPDF2
 from google import genai
 from google.cloud import bigquery, storage
 from google.cloud.bigquery import LoadJobConfig, SourceFormat, WriteDisposition
@@ -42,7 +41,6 @@ if str(_PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(_PROJECT_ROOT))
 
 from src.llm.page_aware_text import PAGE_MARKER_PATTERN  # noqa: E402
-from src.llm.truncation import truncate_for_model  # noqa: E402
 
 
 def _log_rss(logger, tag: str) -> None:
@@ -60,7 +58,6 @@ def _log_rss(logger, tag: str) -> None:
     except Exception:
         pass
 
-logging.getLogger("PyPDF2").setLevel(logging.ERROR)
 
 # ╔══════════════════════════════════════════════════════════════════╗
 # ║  ★ 実行設定                                                        ║
@@ -72,8 +69,6 @@ DATE_FROM   = "20260301"
 DATE_TO     = "20260331"
 
 BATCH_POLL_INTERVAL = 60  # バッチジョブ完了ポーリング間隔（秒）
-GEMINI_MODEL        = "gemini-3-flash-preview"  # 分析モデル（全カテゴリ統一）
-GEMINI_LOCATION     = "global"                  # 3.x 系は global のみ
 
 # ============================================================
 # 実行環境の自動判別
@@ -152,19 +147,6 @@ def _get_bq_client() -> bigquery.Client:
     return bigquery.Client(project=PROJECT_ID)
 
 
-def _get_genai_client() -> genai.Client:
-    """google-genai クライアントを取得する（Gemini 3.x 分析用: global）."""
-    creds = _get_credentials()
-    kwargs: dict = {
-        "project": PROJECT_ID,
-        "location": GEMINI_LOCATION,
-        "vertexai": True,
-    }
-    if creds:
-        kwargs["credentials"] = creds
-    return genai.Client(**kwargs)
-
-
 def _get_genai_client_embedding() -> genai.Client:
     """google-genai クライアントを取得する（Embedding 用: us-central1）."""
     creds = _get_credentials()
@@ -231,17 +213,19 @@ VALID_CATEGORIES: list[str] = [
 ]
 VALID_CATEGORIES_STR = ", ".join(VALID_CATEGORIES)
 
+# ファイル名 _sanitize() で "/" が除去されたカテゴリ → 正規形マッピング（自動生成）
+_FILENAME_ALIASES: dict[str, str] = {
+    cat.replace("/", ""): cat for cat in VALID_CATEGORIES if "/" in cat
+}
+
 # ============================================================
-# カテゴリ判定に Gemini 分析が必要なカテゴリ集合
+# カテゴリ判定
 # ============================================================
 
 _AMBIGUOUS_OVERWRITE: set[str] = {"その他（未分類）"}
-_NEEDS_SUB_CATEGORIES: set[str] = {"決算短信", "決算説明資料"}
-_NEEDS_GEMINI_ANALYSIS: set[str] = (
-    _AMBIGUOUS_OVERWRITE | _NEEDS_SUB_CATEGORIES | {
-        "業績予想", "大型受注・契約", "業績の重要な先行指標", "受注高/受注残高",
-    }
-)
+# ★ 同期義務: gemma_tpu_worker.py の _PASS2_CATEGORIES と一致させること
+# （両ファイルは独立スクリプトで import 経路なし。片方修正時は必ず両方更新）
+_PASS2_CATEGORIES: set[str] = {"決算短信", "決算説明資料"}
 
 # ============================================================
 # DocInfo データクラス
@@ -264,8 +248,6 @@ class DocInfo:
     page_count: int = 0
     extract_method: str = "none"
     needs_vision: bool = False
-    needs_analysis: bool = False
-    analysis_model: str = GEMINI_MODEL
     # バッチ結果
     is_monthly: bool = False
     sub_categories: list[str] = field(default_factory=list)
@@ -318,6 +300,7 @@ def _correct_category_by_title(main_category: str, doc_title: str, ticker: str =
 
     ticker 個別ハードコーディング例外（`_TICKER_SPECIFIC_MONTHLY`）も適用する。
     """
+    main_category = _FILENAME_ALIASES.get(main_category, main_category)
     if main_category == "月次開示":
         return main_category
     if _MONTHLY_DOC_PATTERN.search(doc_title):
@@ -391,24 +374,33 @@ def _normalize_page_text(page_text: str) -> str:
     return "\n".join(result_lines).strip()
 
 
-def _extract_text_pypdf2(pdf_bytes: bytes) -> tuple[str, int]:
-    """PyPDF2でテキスト抽出（主手段）。(text, page_count) を返す。
+def _extract_text_pymupdf(pdf_bytes: bytes) -> tuple[str, int]:
+    """PyMuPDF（fitz）でテキスト抽出。戻り値: (text, page_count)。
 
-    ページ境界を保持するため、各ページの先頭に `[PAGE N]` マーカーを入れて
-    `[PAGE N]\\n{ページ本文}\\n\\n` の形式で連結する。
-    改行は保持し、連続する空白・タブのみ圧縮する。
+    [PAGE N] マーカーを維持（BQ CHUNK_TEXT との互換性保持）。
+    fitz.open 失敗時は ("", 0) を返す（呼び出し側でフォールバック）。
+    T-6対応: 各ページテキストに `_normalize_page_text()` を必ず通す
+      （サロゲートペア除去 + 連続空白圧縮 + 空行圧縮）。
+      過去事故 2026-04-25 (`tdnet-ai-prepare-28cd5`) の再発防止。
+    T-7対応: content_length は呼出し側で `_content_length()` 判定（マーカー除去後）。
     """
+    # ImportError は silent 吸収しない（Dockerfile から pymupdf が抜けた場合の早期検知）
+    import fitz  # noqa: PLC0415
+    doc = None
     try:
-        reader     = PyPDF2.PdfReader(io.BytesIO(pdf_bytes))
-        page_count = len(reader.pages)
+        doc = fitz.open(stream=pdf_bytes, filetype="pdf")
+        page_count = len(doc)
         buf: list[str] = []
-        for idx, page in enumerate(reader.pages, start=1):
-            extracted = page.extract_text() or ""
-            normalized = _normalize_page_text(extracted)
-            buf.append(f"[PAGE {idx}]\n{normalized}")
-        return "\n\n".join(buf).strip(), page_count
+        for i, page in enumerate(doc, 1):
+            text = page.get_text("text")
+            text = _normalize_page_text(text)  # ★ T-6: サロゲート除去含む正規化を必ず経由
+            buf.append(f"[PAGE {i}]\n{text}\n")
+        return "\n".join(buf), page_count
     except Exception:
         return "", 0
+    finally:
+        if doc is not None:
+            doc.close()
 
 
 def _extract_text_pdfminer(pdf_bytes: bytes) -> str:
@@ -617,7 +609,7 @@ def phase1_scan_and_extract(
             skipped += 1
             continue
 
-        # テキスト抽出（PyPDF2 → pdfminer）
+        # テキスト抽出（PyMuPDF → pdfminer フォールバック）
         try:
             pdf_bytes = blob.download_as_bytes()
         except Exception as e:
@@ -625,8 +617,8 @@ def phase1_scan_and_extract(
             skipped += 1
             continue
 
-        text, page_count = _extract_text_pypdf2(pdf_bytes)
-        extract_method = "pypdf2"
+        text, page_count = _extract_text_pymupdf(pdf_bytes)
+        extract_method = "pymupdf"
 
         if _content_length(text) < _MIN_TEXT_LEN:
             text_pm = _extract_text_pdfminer(pdf_bytes)
@@ -635,13 +627,10 @@ def phase1_scan_and_extract(
                 extract_method = "pdfminer"
                 logger.log(f"  フォールバック抽出 (pdfminer) 成功: {blob.name}")
 
-        needs_vision = _content_length(text) < _MIN_TEXT_LEN
-        if needs_vision:
+        # Vision OCR 廃止: content_length < _MIN_TEXT_LEN でも Vision 送信しない（text="" 扱い）
+        if _content_length(text) < _MIN_TEXT_LEN:
+            text = ""
             extract_method = "none"
-
-        # Gemini 分析が必要か判定
-        needs_analysis = main_category in _NEEDS_GEMINI_ANALYSIS
-        analysis_model = GEMINI_MODEL
 
         disclosure_time = (time_map or {}).get(doc_id, "")
 
@@ -657,15 +646,13 @@ def phase1_scan_and_extract(
             text=text,
             page_count=page_count,
             extract_method=extract_method,
-            needs_vision=needs_vision,
-            needs_analysis=needs_analysis,
-            analysis_model=analysis_model,
         )
         docs.append(doc)
 
+    image_pdf_cnt = sum(1 for d in docs if d.extract_method == "none")
     logger.log(f"Phase 1 完了: 対象 {len(docs)} 件, スキップ {skipped} 件")
-    logger.log(f"  Vision OCR 必要: {sum(1 for d in docs if d.needs_vision)} 件")
-    logger.log(f"  Gemini 分析必要: {sum(1 for d in docs if d.needs_analysis)} 件")
+    logger.log(f"  テキスト抽出成功: {sum(1 for d in docs if d.text)} 件")
+    logger.log(f"  画像PDF（テキストなし）: {image_pdf_cnt} 件")
     return docs
 
 
@@ -723,407 +710,6 @@ def _download_batch_results(bucket, output_prefix: str) -> dict[str, dict]:
     return results
 
 
-# ============================================================
-# Phase 2: Gemini Vision Batch（OCR）
-# ============================================================
-
-def phase2_vision_batch(
-    docs: list[DocInfo], bucket, client: genai.Client, logger: BatchLogger,
-) -> None:
-    """テキスト抽出失敗 PDF を Gemini Vision でバッチ OCR する."""
-    vision_docs = [d for d in docs if d.needs_vision]
-    if not vision_docs:
-        logger.log("Phase 2: Vision OCR 不要（スキップ）")
-        return
-
-    logger.log(f"Phase 2: Gemini Vision Batch OCR 開始 ({len(vision_docs)} 件)")
-
-    # JSONL 作成（既存プロンプト文言を一言一句維持）
-    timestamp = datetime.now(JST).strftime("%Y%m%d_%H%M%S")
-    input_path  = f"{GCS_BATCH_PREFIX}/vision_{timestamp}_input.jsonl"
-    output_path = f"{GCS_BATCH_PREFIX}/vision_{timestamp}_output/"
-
-    lines: list[str] = []
-    for i, doc in enumerate(vision_docs):
-        gcs_uri = f"gs://{BUCKET_NAME}/{doc.blob_name}"
-        doc_title_hint = doc.blob_name.split("/")[-1].replace(".pdf", "")
-        request_obj = {
-            "key": f"vision_{i}",
-            "request": {
-                "contents": [{
-                    "role": "user",
-                    "parts": [
-                        {
-                            "fileData": {
-                                "fileUri": gcs_uri,
-                                "mimeType": "application/pdf",
-                            }
-                        },
-                        {
-                            "text": (
-                                f"以下のPDF文書（タイトル: {doc_title_hint}）から"
-                                "すべてのテキストを抽出してください。"
-                                "表・数値・箇条書きも含め、元の内容をできる限り"
-                                "正確にテキストとして出力してください。"
-                            ),
-                        },
-                    ],
-                }],
-            },
-        }
-        lines.append(json.dumps(request_obj, ensure_ascii=False))
-
-    input_uri = _upload_jsonl_to_gcs(bucket, input_path, lines)
-    logger.log(f"  JSONL アップロード完了: {input_uri}")
-
-    # バッチジョブ投入
-    job = client.batches.create(
-        model=GEMINI_MODEL,
-        src=input_uri,
-        config=genai.types.CreateBatchJobConfig(
-            dest=f"gs://{BUCKET_NAME}/{output_path}",
-        ),
-    )
-    logger.log(f"  Vision バッチジョブ投入: {job.name}")
-
-    # ポーリング
-    success = _poll_batch_job(client, job.name, logger, "Vision")
-    if not success:
-        logger.log("  Vision バッチジョブ失敗 → Vision 対象は全件テキスト無しで続行")
-        return
-
-    # 結果取得
-    results = _download_batch_results(bucket, output_path)
-    logger.log(f"  Vision バッチ結果取得: {len(results)} 件")
-
-    # M-7: 個別 parse 失敗・結果欠落・テキスト短すぎを件数カウント
-    vision_ok = 0
-    vision_parse_fail = 0
-    vision_no_result = 0
-    vision_too_short = 0
-    for i, doc in enumerate(vision_docs):
-        key = f"vision_{i}"
-        if key in results:
-            resp = results[key]
-            try:
-                text = resp["response"]["candidates"][0]["content"]["parts"][0]["text"]
-                text = text.strip()
-                # Vision結果にはマーカーが含まれないため len(text) で判定
-                if len(text) >= _MIN_TEXT_LEN:
-                    doc.text = text
-                    doc.extract_method = "gemini_vision"
-                    logger.log(f"  ★WARNING★ Gemini Vision フォールバック使用（画像PDF疑い）: {doc.blob_name}")
-                    vision_ok += 1
-                else:
-                    logger.log(f"  警告 (Vision OCR テキスト短すぎ) → スキップ: {doc.blob_name}")
-                    vision_too_short += 1
-            except (KeyError, IndexError):
-                logger.log(f"  Vision OCR 結果パース失敗: {doc.blob_name}")
-                vision_parse_fail += 1
-        else:
-            logger.log(f"  Vision OCR 結果なし: {doc.blob_name}")
-            vision_no_result += 1
-
-    logger.log(
-        f"Phase 2 完了: 成功 {vision_ok} / 結果パース失敗 {vision_parse_fail} / "
-        f"結果なし {vision_no_result} / テキスト短すぎ {vision_too_short}"
-    )
-
-
-# ============================================================
-# Phase 3: Gemini 分析 Batch（統合プロンプト: 月次判定 + サブカテゴリ）
-# ============================================================
-
-def _build_merged_prompt(doc_title: str, text: str, doc_category: str | None = None) -> str:
-    """統合プロンプトを構築する.
-
-    既存の2つのプロンプト文言は一言一句変更しない。
-    タスクラベルと統合出力形式のみ追加。
-
-    Args:
-        doc_title: 文書タイトル。
-        text: 抽出済みフルテキスト。
-        doc_category: 文書カテゴリ（MAIN_CATEGORY）。決算短信等は切り詰め対象外。
-    """
-    truncated = truncate_for_model(text, "gemini-3-flash-batch", doc_category=doc_category)
-    return f"""以下のTDnet適時開示文書を分析し、2つの判定を行ってください。
-
-【タスク1: 月次開示判定】
-タイトル「{doc_title}」は「月次開示」（月次売上・月次業績・月次受注、月次顧客数等の、企業業績に影響ある定期的な月次報告）ですか？
-
-【タスク2: サブカテゴリ抽出】
-投資判断に影響を与える【他カテゴリの重要情報】が内包されているか抽出してください。
-
-以下のカテゴリ名からのみ選択すること（一言一句違わず出力）:
-{VALID_CATEGORIES_STR}
-
-※カテゴリ選択における特記事項:
-- 「業績の重要な先行指標」: SaaSの解約率やARPU、小売の新規出店数/退店数、販売数量・出荷台数、不動産の客室稼働率・オフィス入居率など
-- 「受注高/受注残高」: 上記の先行指標の一部だが、極めて重要な情報のため独立カテゴリとして選択
-
-文書タイトル: {doc_title}
-テキスト: {truncated}
-
-【出力形式】必ず単一のJSONオブジェクトのみを返してください。配列で包まないこと。
-{{ "is_monthly": true, "sub_categories": ["カテゴリ1", "カテゴリ2"] }}
-- is_monthly: 月次開示なら true、そうでなければ false
-- sub_categories: 抽出したカテゴリのリスト（該当なしは空リスト []）"""
-
-
-# Phase 3 Gemini Batch 並列分割設定（2026-04-20 追加）
-# 5,000+ 件を 1 batch で投入すると Vertex AI Batch の compute が 3h+ 長期化するため
-# 並列分割して投げる。コストは同じ、wall time が 1/N に短縮。
-PHASE3_PARALLEL = 5              # 最大並列 batch 数
-PHASE3_MIN_PER_CHUNK = 200       # 1 chunk あたり最低件数（細切れすぎ回避）
-
-
-def _compute_phase3_chunks(n_total: int) -> list[tuple[int, int]]:
-    """analysis_docs を分割するための (start, end) リストを返す.
-
-    件数が少ない場合は 1 chunk、大量時は PHASE3_PARALLEL 個まで分割。
-    """
-    if n_total < PHASE3_MIN_PER_CHUNK * 2:
-        return [(0, n_total)]
-    n_chunks = min(PHASE3_PARALLEL, n_total // PHASE3_MIN_PER_CHUNK)
-    size = n_total // n_chunks
-    chunks: list[tuple[int, int]] = []
-    for i in range(n_chunks):
-        start = i * size
-        end = (i + 1) * size if i < n_chunks - 1 else n_total
-        chunks.append((start, end))
-    return chunks
-
-
-def _phase3_submit(
-    docs: list[DocInfo], bucket, client: genai.Client, logger: BatchLogger,
-    filter_fn=None,
-) -> list[dict] | None:
-    """Phase 3 バッチ投入のみ。ジョブ情報リスト（分割数分）を返す（ポーリングしない）.
-
-    2026-04-20 以降は PHASE3_PARALLEL 個まで分割して並列投入。戻り値は list[dict]。
-    後方互換: 呼び出し側で `isinstance(info, dict) or isinstance(info, list)` で分岐。
-
-    Args:
-        filter_fn: doc を受けて bool を返す predicate。None なら従来の
-            `d.needs_analysis and d.text` が使われる。G-3 対応。
-    """
-    if filter_fn is None:
-        filter_fn = lambda d: d.needs_analysis and bool(d.text)
-    analysis_docs = [d for d in docs if filter_fn(d)]
-    if not analysis_docs:
-        logger.log("Phase 3: Gemini 分析不要（スキップ）")
-        return None
-
-    n_total = len(analysis_docs)
-    chunks = _compute_phase3_chunks(n_total)
-    n_chunks = len(chunks)
-
-    logger.log(f"Phase 3: Gemini 分析 Batch 投入 ({GEMINI_MODEL}: {n_total} 件 / {n_chunks} 分割並列)")
-
-    timestamp = datetime.now(JST).strftime("%Y%m%d_%H%M%S")
-    infos: list[dict] = []
-
-    for idx, (start, end) in enumerate(chunks):
-        part = f"p{idx + 1}of{n_chunks}"
-        chunk_docs = analysis_docs[start:end]
-        key_to_blob: dict[str, str] = {}
-
-        input_path = f"{GCS_BATCH_PREFIX}/analysis_{timestamp}_{part}_input.jsonl"
-        output_path = f"{GCS_BATCH_PREFIX}/analysis_{timestamp}_{part}_output/"
-
-        lines: list[str] = []
-        for i, doc in enumerate(chunk_docs):
-            key = f"a_{idx}_{i}"  # chunk 間で key 衝突しないよう idx を含める
-            key_to_blob[key] = doc.blob_name
-            prompt = _build_merged_prompt(doc.doc_title, doc.text, doc_category=doc.main_category)
-            request_obj = {
-                "key": key,
-                "request": {
-                    "contents": [{"role": "user", "parts": [{"text": prompt}]}],
-                    "generation_config": {
-                        "response_mime_type": "application/json",
-                        "temperature": 0.1,
-                    },
-                },
-            }
-            lines.append(json.dumps(request_obj, ensure_ascii=False))
-
-        input_uri = _upload_jsonl_to_gcs(bucket, input_path, lines)
-        logger.log(f"  [{part}] JSONL アップロード: {input_uri} ({len(lines)} 件)")
-
-        job = client.batches.create(
-            model=GEMINI_MODEL,
-            src=input_uri,
-            config=genai.types.CreateBatchJobConfig(
-                dest=f"gs://{BUCKET_NAME}/{output_path}",
-            ),
-        )
-        logger.log(f"  [{part}] batch job 投入: {job.name}")
-
-        infos.append({
-            "job": job.name,
-            "output": output_path,
-            "key_to_blob": key_to_blob,
-            "timestamp": timestamp,
-            "part": part,
-        })
-
-    return infos
-
-
-def _phase3_poll_and_apply(
-    docs: list[DocInfo], bucket, client: genai.Client, logger: BatchLogger,
-    phase3_info,
-) -> None:
-    """Phase 3 バッチ結果をポーリングし、docs に適用する.
-
-    phase3_info の型:
-      - list[dict]: 新（並列分割）フォーマット（2026-04-20〜）
-      - dict + 'job' key: 旧単一 batch
-      - dict + 'flash_job' key: 超旧 legacy
-    """
-    import concurrent.futures
-
-    # 後方互換: 旧フォーマット（flash_job/pro_job）→ legacy ハンドラ
-    if isinstance(phase3_info, dict) and "flash_job" in phase3_info and "job" not in phase3_info:
-        _phase3_poll_and_apply_legacy(docs, bucket, client, logger, phase3_info)
-        return
-
-    # 単一 dict を list に包む（単一 batch フォーマットの後方互換）
-    if isinstance(phase3_info, dict):
-        infos = [phase3_info]
-    else:
-        infos = phase3_info
-
-    if not infos:
-        logger.log("Phase 3 (poll): info 空でスキップ")
-        return
-
-    # blob_name → doc マッピング
-    doc_by_blob: dict[str, DocInfo] = {d.blob_name: d for d in docs}
-
-    # 並列ポーリング: 各 batch を別スレッドで poll、全完了を待つ
-    def _poll_one(info: dict):
-        job_name = info.get("job")
-        part = info.get("part", "single")
-        if not job_name:
-            return (info, {})
-        success = _poll_batch_job(client, job_name, logger, f"Analysis-{part}")
-        if not success:
-            logger.log(f"  [{part}] 分析バッチジョブ失敗")
-            return (info, {})
-        results = _download_batch_results(bucket, info["output"])
-        logger.log(f"  [{part}] バッチ結果取得: {len(results)} 件")
-        return (info, results)
-
-    total_results = 0
-    with concurrent.futures.ThreadPoolExecutor(max_workers=max(1, len(infos))) as pool:
-        futures = [pool.submit(_poll_one, info) for info in infos]
-        for fut in concurrent.futures.as_completed(futures):
-            info, results = fut.result()
-            key_to_blob = info["key_to_blob"]
-            for key, resp_obj in results.items():
-                blob_name = key_to_blob.get(key)
-                if blob_name is None:
-                    continue
-                doc = doc_by_blob.get(blob_name)
-                if doc is None:
-                    continue
-                try:
-                    text_resp = resp_obj["response"]["candidates"][0]["content"]["parts"][0]["text"]
-                    parsed = json.loads(text_resp)
-                    if isinstance(parsed, list):
-                        parsed = parsed[0] if parsed else {}
-                    doc.is_monthly = parsed.get("is_monthly", False)
-                    if doc.main_category in _NEEDS_SUB_CATEGORIES:
-                        raw_subs = parsed.get("sub_categories", [])
-                        doc.sub_categories = [c for c in raw_subs if c in VALID_CATEGORIES]
-                except (KeyError, IndexError, json.JSONDecodeError) as e:
-                    logger.log(f"  分析結果パース失敗 ({key}): {e}")
-            total_results += len(results)
-
-    logger.log(f"  全 batch 結果適用完了: {total_results} 件 (batch 数 {len(infos)})")
-
-    # カテゴリ補正ロジック
-    analysis_docs = [d for d in docs if d.needs_analysis and d.text]
-    for doc in analysis_docs:
-        if doc.main_category in _AMBIGUOUS_OVERWRITE and doc.is_monthly:
-            logger.log(
-                f"  ★PATTERN_MISS★ Gemini=月次/その他未分類を月次上書き "
-                f"タイトル='{doc.doc_title}': {doc.blob_name}"
-            )
-            doc.main_category = "月次開示"
-
-    logger.log("Phase 3 完了")
-
-
-def _phase3_poll_and_apply_legacy(
-    docs: list[DocInfo], bucket, client: genai.Client, logger: BatchLogger,
-    phase3_info: dict,
-) -> None:
-    """後方互換: 旧フォーマット（flash_job/pro_job 2バッチ）の結果を適用する."""
-    flash_job_name = phase3_info.get("flash_job")
-    pro_job_name   = phase3_info.get("pro_job")
-    flash_output   = phase3_info.get("flash_output", "")
-    pro_output     = phase3_info.get("pro_output", "")
-    key_to_blob    = phase3_info.get("key_to_blob", {})
-
-    doc_by_blob: dict[str, DocInfo] = {d.blob_name: d for d in docs}
-
-    for job_name, tag in [(flash_job_name, "flash"), (pro_job_name, "pro")]:
-        if job_name is None:
-            continue
-        success = _poll_batch_job(client, job_name, logger, f"Analysis-{tag}")
-        if not success:
-            logger.log(f"  [{tag}] 分析バッチジョブ失敗")
-
-    for tag, output_path in [("flash", flash_output), ("pro", pro_output)]:
-        if not output_path:
-            continue
-        results = _download_batch_results(bucket, output_path)
-        logger.log(f"  [{tag}] バッチ結果取得: {len(results)} 件")
-
-        for key, resp_obj in results.items():
-            blob_name = key_to_blob.get(key)
-            if blob_name is None:
-                continue
-            doc = doc_by_blob.get(blob_name)
-            if doc is None:
-                continue
-            try:
-                text_resp = resp_obj["response"]["candidates"][0]["content"]["parts"][0]["text"]
-                parsed = json.loads(text_resp)
-                if isinstance(parsed, list):
-                    parsed = parsed[0] if parsed else {}
-                doc.is_monthly = parsed.get("is_monthly", False)
-                if doc.main_category in _NEEDS_SUB_CATEGORIES:
-                    raw_subs = parsed.get("sub_categories", [])
-                    doc.sub_categories = [c for c in raw_subs if c in VALID_CATEGORIES]
-            except (KeyError, IndexError, json.JSONDecodeError) as e:
-                logger.log(f"  分析結果パース失敗 ({key}): {e}")
-
-    # カテゴリ補正ロジック
-    analysis_docs = [d for d in docs if d.needs_analysis and d.text]
-    for doc in analysis_docs:
-        if doc.main_category in _AMBIGUOUS_OVERWRITE and doc.is_monthly:
-            doc.main_category = "月次開示"
-    logger.log("Phase 3 完了 (legacy format)")
-
-
-def phase3_analysis_batch(
-    docs: list[DocInfo], bucket, client: genai.Client, logger: BatchLogger,
-    filter_fn=None,
-) -> None:
-    """Phase 3 一気通貫（full mode 用ラッパー）: 投入→ポーリング→適用.
-
-    Args:
-        filter_fn: doc を受けて bool を返す predicate。None なら従来の
-            `d.needs_analysis and d.text` が使われる。G-3 対応。
-    """
-    info = _phase3_submit(docs, bucket, client, logger, filter_fn=filter_fn)
-    if info is None:
-        return
-    _phase3_poll_and_apply(docs, bucket, client, logger, info)
 
 
 # ============================================================
@@ -1148,8 +734,6 @@ def _serialize_docs(docs: list[DocInfo]) -> list[dict]:
             "page_count": d.page_count,
             "extract_method": d.extract_method,
             "needs_vision": d.needs_vision,
-            "needs_analysis": d.needs_analysis,
-            "analysis_model": d.analysis_model,
             "is_monthly": d.is_monthly,
             "sub_categories": d.sub_categories,
             "disclosure_time": getattr(d, "disclosure_time", None),
@@ -1174,8 +758,6 @@ def _deserialize_docs(data: list[dict]) -> list[DocInfo]:
             page_count=item.get("page_count", 0),
             extract_method=item.get("extract_method", "none"),
             needs_vision=item.get("needs_vision", False),
-            needs_analysis=item.get("needs_analysis", False),
-            analysis_model=item.get("analysis_model", GEMINI_MODEL),
             is_monthly=item.get("is_monthly", False),
             sub_categories=item.get("sub_categories", []),
         )
@@ -1415,10 +997,15 @@ def phase5_bq_insert(
                     "TEXT_LENGTH":      len(doc.text),
                     "SECTION_CATEGORY": doc.doc_title,
                     "FILE_NAME":        doc.blob_name,
+                    "EXTRACTED_AT":     datetime.now(JST).isoformat(),
                 }
                 if doc.chunks:
                     for ci, chunk_data in enumerate(doc.chunks):
-                        row = {**base_row, "CHUNK_TEXT": chunk_data["chunk_text"]}
+                        row = {
+                            **base_row,
+                            "CHUNK_TEXT":  chunk_data["chunk_text"],
+                            "CHUNK_INDEX": ci,
+                        }
                         if (doc.embedding_set and ci < len(doc.embedding_set)
                                 and doc.embedding_set[ci]):
                             row["EMBEDDING"] = doc.embeddings[ci].tolist()
@@ -1426,7 +1013,11 @@ def phase5_bq_insert(
                         tmp.write("\n")
                         row_count += 1
                 else:
-                    row = {**base_row, "CHUNK_TEXT": None}
+                    row = {
+                        **base_row,
+                        "CHUNK_TEXT":  None,
+                        "CHUNK_INDEX": None,
+                    }
                     tmp.write(json.dumps(row, ensure_ascii=False))
                     tmp.write("\n")
                     row_count += 1
@@ -1506,9 +1097,11 @@ def phase5_bq_insert_load(
                     "TEXT_LENGTH":      len(doc.text),
                     "SECTION_CATEGORY": doc.doc_title,
                     "CHUNK_TEXT":       None,
+                    "CHUNK_INDEX":      None,
                     "FILE_NAME":        doc.blob_name,
                     "AI_STATUS":        "pending",
                     "AI_PROCESSED_AT":  None,
+                    "EXTRACTED_AT":     datetime.now(JST).isoformat(),
                 }
                 tmp.write(json.dumps(row, ensure_ascii=False))
                 tmp.write("\n")
@@ -1632,15 +1225,15 @@ def phase1_extract_for_docs(
             logger.log(f"  parse_tdnet_filename 失敗: {doc.blob_name} - {e}")
             doc.main_category = "その他（未分類）"
 
-        # GCS PDF ダウンロード → テキスト抽出（PyPDF2 → pdfminer フォールバック）
+        # GCS PDF ダウンロード → テキスト抽出（PyMuPDF → pdfminer フォールバック）
         try:
             pdf_bytes = bucket.blob(doc.blob_name).download_as_bytes()
         except Exception as e:
             logger.log(f"  GCS ダウンロード失敗: {doc.blob_name} - {e}")
             continue
 
-        text, page_count = _extract_text_pypdf2(pdf_bytes)
-        doc.extract_method = "pypdf2"
+        text, page_count = _extract_text_pymupdf(pdf_bytes)
+        doc.extract_method = "pymupdf"
         if _content_length(text) < _MIN_TEXT_LEN:
             text_pm = _extract_text_pdfminer(pdf_bytes)
             if _content_length(text_pm) >= _MIN_TEXT_LEN:
@@ -1650,13 +1243,17 @@ def phase1_extract_for_docs(
         doc.text = text
         if page_count:
             doc.page_count = page_count
-        doc.needs_vision = _content_length(text) < _MIN_TEXT_LEN
-        if doc.needs_vision:
+        # Vision OCR 廃止: content_length < _MIN_TEXT_LEN でも Vision 送信しない（text="" 扱い）
+        if _content_length(text) < _MIN_TEXT_LEN:
+            doc.text = ""
             doc.extract_method = "none"
+        # B-2b: 画像PDF（text=""）は skipped_image_pdf に遷移して pending 滞留を防止
+        doc.needs_vision = False
 
+    image_pdf_cnt = sum(1 for d in docs if d.extract_method == "none")
     logger.log(f"Phase 1 (ai-prepare) 完了: "
                f"抽出成功 {sum(1 for d in docs if d.text)} / "
-               f"Vision OCR 必要 {sum(1 for d in docs if d.needs_vision)}")
+               f"画像PDF（テキストなし） {image_pdf_cnt}")
 
 
 def _save_ai_prepare_state(
@@ -1687,6 +1284,7 @@ def _save_ai_prepare_state(
                 doc_obj = {
                     "doc_id": d.doc_id,
                     "ticker": d.sec_code,
+                    "filer_name": d.filer_name or "",
                     "submission_date": d.sub_date,
                     "file_name": d.blob_name,
                     "doc_title": d.doc_title,
@@ -1794,7 +1392,7 @@ def _docs_from_ai_state(state: dict) -> list[DocInfo]:
             blob_name=d.get("file_name", ""),
             sub_date=d.get("submission_date", ""),
             sec_code=d.get("ticker", ""),
-            filer_name="",
+            filer_name=d.get("filer_name", ""),
             main_category=d.get("pre_main_category") or "",
             doc_title=d.get("doc_title", ""),
             doc_id=d.get("doc_id", ""),
@@ -1859,50 +1457,80 @@ def _apply_gemma_results(docs: list[DocInfo], gemma_results: dict[str, dict],
     return missing
 
 
-def phase_gemini_tanshin_batch(
-    docs: list[DocInfo], bucket, genai_client, logger: BatchLogger,
-) -> None:
-    """Gemini Flash Batch: MAIN_CATEGORY='決算短信' のみを対象に走らせ、受注判定用結果を得る.
+def _load_gemma_pass2_results(bucket, run_id: str) -> dict[str, dict]:
+    """Gemma Pass 2 結果（gemma_pass2_CURRENT.jsonl）を読み込む。
 
-    G-3 対応: filter_fn で決算短信のみを選択。needs_analysis 一時 mutation を廃止。
-    Gemini 結果は doc.sub_categories に入るので、_merge_gemini_juchu で
-    sub_categories_gemma とマージする。
+    Pass 2 対象外 doc（決算短信・決算説明資料以外）は空 dict を返す。
+    G-1対応: blob.open("r") で行単位ストリーム読み。
     """
-    targets = [d for d in docs if d.main_category == "決算短信" and d.text]
-    if not targets:
-        logger.log("Gemini Flash Batch: 決算短信の対象なし → スキップ")
-        return
+    path = f"ai_job/{run_id}/gemma_pass2_CURRENT.jsonl"
+    blob = bucket.blob(path)
+    if not blob.exists():
+        return {}
+    results: dict[str, dict] = {}
+    parse_errors = 0
+    with blob.open("r", encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                rec = json.loads(line)
+                doc_id = rec.get("doc_id")
+                if doc_id:
+                    results[doc_id] = rec
+            except json.JSONDecodeError:
+                parse_errors += 1
+                continue
+    if parse_errors:
+        # silent continue は禁則（004 A-3）
+        print(f"[WARN] gemma_pass2_CURRENT.jsonl: {parse_errors} 行がパース失敗", file=sys.stderr)
+    return results
 
-    logger.log(f"Gemini Flash Batch (決算短信のみ): {len(targets)} 件を投入")
-    try:
-        phase3_analysis_batch(
-            docs, bucket, genai_client, logger,
-            filter_fn=lambda d: d.main_category == "決算短信" and bool(d.text),
-        )
-    except Exception as e:
-        logger.log(f"警告: Gemini Flash Batch 失敗 → Gemma 結果のみで続行: {e}")
-        logger.log(traceback.format_exc())
 
+def _merge_gemma_pass2(
+    docs: list[DocInfo],
+    pass2_results: dict[str, dict],
+    logger: BatchLogger,
+) -> None:
+    """Gemma Pass 2 の受注判定を Pass 1 の SUB に差分適用する。
 
-def _merge_gemini_juchu(docs: list[DocInfo], logger: BatchLogger) -> None:
-    """Gemini Flash Batch 結果の「受注高/受注残高」を Gemma SUB に差分適用する.
-
-    前提: doc.sub_categories_gemma = Gemma 結果 / doc.sub_categories = Gemini 結果（決算短信のみ）
-    決算短信以外: Gemma 結果をそのまま doc.sub_categories にセット（Gemini は動いてない）
-    決算短信: Gemma 結果 + Gemini の受注判定（add/remove）
+    Pass 2 対象: 決算短信 + 決算説明資料（従来は決算短信のみ）
+    マージ内容: 「受注高/受注残高」のみ（他のSUBはPass 1 Gemmaを維持）
+    Pass 2 結果なし: Pass 1結果をそのまま使用（safe fallback）
     """
     merged_cnt = 0
+    no_pass2_cnt = 0
+    error_cnt = 0
+    added_cnt = 0
+    removed_cnt = 0
     for doc in docs:
         gemma_sub = set(doc.sub_categories_gemma or [])
-        if doc.main_category == "決算短信":
-            gemini_sub = set(doc.sub_categories or [])
-            if "受注高/受注残高" in gemini_sub:
-                gemma_sub.add("受注高/受注残高")
+        if doc.main_category in _PASS2_CATEGORIES:
+            p2 = pass2_results.get(doc.doc_id, {})
+            # Pass 2 結果に error あり → Pass 1 結果（gemma_sub のまま）を保持
+            # error レコードは sub_categories=[] になるが「該当なし」と区別必須
+            if p2 and not p2.get("error"):
+                pass2_sub = set(p2.get("sub_categories", []))
+                if "受注高/受注残高" in pass2_sub:
+                    if "受注高/受注残高" not in gemma_sub:
+                        added_cnt += 1
+                    gemma_sub.add("受注高/受注残高")
+                else:
+                    if "受注高/受注残高" in gemma_sub:
+                        removed_cnt += 1
+                    gemma_sub.discard("受注高/受注残高")
+                merged_cnt += 1
+            elif p2 and p2.get("error"):
+                error_cnt += 1  # Pass 2 API error → Pass 1 維持
             else:
-                gemma_sub.discard("受注高/受注残高")
-            merged_cnt += 1
+                no_pass2_cnt += 1  # Pass 2 結果なし → Pass 1 維持
         doc.sub_categories = sorted(gemma_sub)
-    logger.log(f"受注マージ完了: 決算短信 {merged_cnt} 件で Gemini 受注判定を反映")
+    logger.log(
+        f"Pass2マージ完了: {_PASS2_CATEGORIES} 対象 {merged_cnt}件マージ "
+        f"(追加 {added_cnt}件/削除 {removed_cnt}件) / "
+        f"Pass2結果なし(fallback) {no_pass2_cnt}件 / Pass2 error {error_cnt}件"
+    )
 
 
 def _delete_pending_gemma_rows(
@@ -1997,10 +1625,15 @@ def phase5_bq_insert_finalize(
                     "FILE_NAME":        doc.blob_name,
                     "AI_STATUS":        "completed",
                     "AI_PROCESSED_AT":  now_ts,
+                    "EXTRACTED_AT":     now_ts,
                 }
                 if doc.chunks:
                     for ci, chunk_data in enumerate(doc.chunks):
-                        row = {**base_row, "CHUNK_TEXT": chunk_data["chunk_text"]}
+                        row = {
+                            **base_row,
+                            "CHUNK_TEXT":  chunk_data["chunk_text"],
+                            "CHUNK_INDEX": ci,
+                        }
                         if doc.sub_categories:
                             row["SUB_CATEGORIES"] = doc.sub_categories
                         # numpy 保持 → BQ 書込時に float list へ変換
@@ -2012,7 +1645,11 @@ def phase5_bq_insert_finalize(
                         row_count += 1
                 else:
                     # Embedding 対象外: メタデータ1行のみ
-                    row = {**base_row, "CHUNK_TEXT": None}
+                    row = {
+                        **base_row,
+                        "CHUNK_TEXT":  None,
+                        "CHUNK_INDEX": None,
+                    }
                     if doc.sub_categories:
                         row["SUB_CATEGORIES"] = doc.sub_categories
                     tmp.write(json.dumps(row, ensure_ascii=False))
@@ -2062,9 +1699,9 @@ def _cleanup_ai_state(bucket, run_id: str, logger: BatchLogger) -> None:
 
 
 def phase_ai_prepare(
-    bucket, genai_client, docs: list[DocInfo], run_id: str, logger: BatchLogger,
+    bucket, docs: list[DocInfo], run_id: str, logger: BatchLogger,
 ) -> tuple[int, int]:
-    """ai-prepare 本体: OCR + 正規表現月次補正 + state.json 保存.
+    """ai-prepare 本体: テキスト抽出 + 正規表現月次補正 + state.json 保存.
 
     Returns: (成功 doc 数, エラー doc 数)
     """
@@ -2073,8 +1710,9 @@ def phase_ai_prepare(
         return 0, 0
 
     # 0. 同 run_id の GCS 残骸削除（対策 A: 再実行時の resume 誤動作を防ぐ）
-    #    gemma_CURRENT.jsonl / _SUCCESS を削除。state.json は upload_from_string で上書きされるので対象外
-    for name in ("gemma_CURRENT.jsonl", "_SUCCESS"):
+    #    gemma_CURRENT.jsonl / gemma_pass2_CURRENT.jsonl / _SUCCESS を削除。
+    #    state.json は upload_from_string で上書きされるので対象外
+    for name in ("gemma_CURRENT.jsonl", "gemma_pass2_CURRENT.jsonl", "_SUCCESS"):
         path = f"{AI_JOB_STATE_PREFIX}/{run_id}/{name}"
         try:
             blob = bucket.blob(path)
@@ -2084,22 +1722,24 @@ def phase_ai_prepare(
         except Exception as e:
             logger.log(f"[cleanup] {path} 削除失敗（続行）: {e}")
 
-    # 1. Vision OCR（Phase 1 再抽出で needs_vision になった分）
-    try:
-        phase2_vision_batch(docs, bucket, genai_client, logger)
-        logger.flush_to_gcs()
-    except Exception as e:
-        logger.log(f"警告: Vision OCR 中にエラー（続行）: {e}")
-        logger.log(traceback.format_exc())
+    # 1. Vision OCR 廃止（2026-05-21）: 画像PDFは text="" で skip
+    logger.log("Phase 2 (Vision OCR): 廃止済み → スキップ")
 
     # 2. MAIN_CATEGORY は phase1_extract_for_docs で既に parse_tdnet_filename +
     #    _correct_category_by_title により設定済み（state.json の pre_main_category として保存）
 
-    # 3. state.json を GCS に保存
-    _save_ai_prepare_state(bucket, run_id, docs, logger)
+    # 3. state.json には text あり doc のみ含める（画像PDF は AI 処理対象外、TPU Pass 1 投入回避）
+    #    画像PDF doc は load 時の BQ 行 + `skipped_image_pdf` ステータスで完結
+    docs_with_text = [d for d in docs if d.text]
+    skipped_count = len(docs) - len(docs_with_text)
+    if skipped_count:
+        logger.log(f"state.json から除外: 画像PDF（text 空） {skipped_count} 件")
 
-    success = sum(1 for d in docs if d.text)
-    errors = len(docs) - success
+    # 4. state.json を GCS に保存
+    _save_ai_prepare_state(bucket, run_id, docs_with_text, logger)
+
+    success = len(docs_with_text)
+    errors = skipped_count
     return success, errors
 
 
@@ -2202,7 +1842,6 @@ def run_tdnet_batch_etl(
         run_id = os.environ.get("RUN_ID") or str(uuid.uuid4())
         logger.log(f"[ai-prepare] run_id={run_id}")
         try:
-            genai_client = _get_genai_client()
             docs = _load_pending_docs_from_bq(
                 date_from, date_to, ticker_from, ticker_to, logger,
             )
@@ -2219,11 +1858,16 @@ def run_tdnet_batch_etl(
             # state 保存 → DB update 失敗 の旧順序だと orphan state.json が残りやすい
             doc_ids_with_text = [d.doc_id for d in docs if d.text]
             _update_ai_status(doc_ids_with_text, "pending_gemma", logger)
+            # B-2b: 画像PDF（text=""）は skipped_image_pdf に遷移して pending 滞留を防止
+            doc_ids_image_pdf = [d.doc_id for d in docs if not d.text and d.extract_method == "none"]
+            if doc_ids_image_pdf:
+                _update_ai_status(doc_ids_image_pdf, "skipped_image_pdf", logger)
+                logger.log(f"  画像PDF（テキストなし） → skipped_image_pdf: {len(doc_ids_image_pdf)} 件")
             logger.flush_to_gcs()
 
             # DB update 成功後に state.json 生成 + GCS upload
             success, errors_cnt = phase_ai_prepare(
-                bucket, genai_client, docs, run_id, logger,
+                bucket, docs, run_id, logger,
             )
             logger.flush_to_gcs()
 
@@ -2253,7 +1897,6 @@ def run_tdnet_batch_etl(
         logger.log(f"[ai-finalize] run_id={run_id}")
         try:
             _log_rss(logger, "start")
-            genai_client = _get_genai_client()
             embed_client = _get_genai_client_embedding()
 
             # 1. state.json + gemma_CURRENT.jsonl 読込
@@ -2273,17 +1916,14 @@ def run_tdnet_batch_etl(
             _log_rss(logger, "after gemma apply")
             logger.flush_to_gcs()
 
-            # 2. Gemini Flash Batch（決算短信のみ、受注判定）
-            phase_gemini_tanshin_batch(docs, bucket, genai_client, logger)
-            _log_rss(logger, "after gemini batch")
+            # 2. Gemma Pass 2 結果マージ（決算短信 + 決算説明資料の受注判定）
+            pass2_results = _load_gemma_pass2_results(bucket, run_id)
+            logger.log(f"gemma_pass2_CURRENT.jsonl: {len(pass2_results)} 件")
+            _merge_gemma_pass2(docs, pass2_results, logger)
             logger.flush_to_gcs()
 
-            # 3. 受注判定を Gemma SUB にマージ（決算短信以外は Gemma 結果そのまま）
-            _merge_gemini_juchu(docs, logger)
-            logger.flush_to_gcs()
-
-            # 4. Embedding Batch（3カテゴリ限定、既存ロジック流用）
-            phase4_chunk_and_embed(docs, bucket, genai_client, logger, embed_client)
+            # 3. Embedding Batch（3カテゴリ限定、既存ロジック流用）
+            phase4_chunk_and_embed(docs, bucket, embed_client, logger, embed_client)
             _log_rss(logger, "after embedding batch (peak)")
             logger.flush_to_gcs()
 
@@ -2348,114 +1988,11 @@ def run_tdnet_batch_etl(
             print(f"ログファイル出力完了: gs://{BUCKET_NAME}/{log_blob_name}")
         return
 
-    # ── 従来互換（job_mode='full'）: 以下は既存ロジック ──
-    genai_client = _get_genai_client()
-    embed_client = _get_genai_client_embedding()
-
-    try:
-        if run_mode == "resume":
-            # ── resume モード: GCS から state を読み込み Phase 3 結果適用から再開 ──
-            logger.log("resume モード: state を GCS から読み込み中...")
-            docs, phase3_info = _load_backfill_state(
-                bucket, date_from, date_to, logger,
-                ticker_from=ticker_from, ticker_to=ticker_to,
-            )
-            logger.flush_to_gcs()
-
-            _phase3_poll_and_apply(docs, bucket, genai_client, logger, phase3_info)
-            logger.flush_to_gcs()
-
-            phase4_chunk_and_embed(docs, bucket, genai_client, logger, embed_client)
-            logger.flush_to_gcs()
-
-            processed, skipped = phase5_bq_insert(docs, bucket, logger)
-            if processed > 0:
-                _create_vector_index(logger)
-
-            # state / docs / ロックをクリーンアップ
-            state_id = _backfill_state_id(date_from, date_to, ticker_from, ticker_to)
-            for suffix in [".json", "_docs.json.gz", ".json.resume_triggered"]:
-                path = f"{BACKFILL_STATE_PREFIX}_{state_id}{suffix}"
-                try:
-                    bucket.blob(path).delete()
-                except Exception:
-                    pass
-            logger.log("state クリーンアップ完了")
-
-        else:
-            # ── full / submit モード: Phase 1 から開始 ──
-
-            # ガード: バックフィル（31日超）で full モード禁止（Gemini再分析の二重課金防止）
-            _from = datetime.strptime(date_from, "%Y%m%d")
-            _to   = datetime.strptime(date_to,   "%Y%m%d")
-            if run_mode == "full" and (_to - _from).days > 31:
-                msg = (
-                    f"fullモードはバックフィル（{(_to - _from).days}日間）では禁止です。"
-                    " submit/resume を使用してください（Gemini Phase 3 二重課金防止）。"
-                    " 強制実行するには環境変数 ALLOW_FULL_BACKFILL=1 を設定してください。"
-                )
-                if not os.environ.get("ALLOW_FULL_BACKFILL"):
-                    logger.log(f"[BLOCKED] {msg}")
-                    logger.flush_to_gcs()
-                    raise SystemExit(msg)
-                logger.log(f"[WARNING] {msg}（ALLOW_FULL_BACKFILL=1 で強制実行中）")
-
-            logger.log("BQ 取込済みファイル一覧を取得中...")
-            processed_files = _load_processed_file_names(date_from, date_to)
-            logger.log(f"取込済みファイル数: {len(processed_files)} 件")
-
-            time_map = _load_disclosure_time_map(bucket, date_from, date_to, logger)
-
-            docs = phase1_scan_and_extract(
-                bucket, date_from, date_to, ticker_from, ticker_to, processed_files, logger,
-                time_map=time_map,
-            )
-            logger.flush_to_gcs()
-
-            if not docs:
-                logger.log("処理対象ドキュメントなし → 終了")
-                return
-
-            phase2_vision_batch(docs, bucket, genai_client, logger)
-            logger.flush_to_gcs()
-
-            if run_mode == "submit":
-                # ── submit モード: バッチ投入 → state 保存 → exit ──
-                phase3_info = _phase3_submit(docs, bucket, genai_client, logger)
-                if phase3_info:
-                    _save_backfill_state(
-                        bucket, date_from, date_to, docs, phase3_info, logger,
-                        ticker_from=ticker_from, ticker_to=ticker_to,
-                    )
-                logger.log("submit モード完了: バッチ投入済み。Cloud Functions で resume を待機。")
-                logger.flush_to_gcs()
-                return
-
-            # ── full モード: 一気通貫 ──
-            phase3_analysis_batch(docs, bucket, genai_client, logger)
-            logger.flush_to_gcs()
-
-            phase4_chunk_and_embed(docs, bucket, genai_client, logger, embed_client)
-            logger.flush_to_gcs()
-
-            processed, skipped = phase5_bq_insert(docs, bucket, logger)
-            if processed > 0:
-                _create_vector_index(logger)
-
-    except Exception as e:
-        logger.log(f"致命的なエラーで処理が中断: {e}")
-        logger.log(traceback.format_exc())
-        errors = 1
-        raise  # main() で exit 1 させるため再送出（B-1）
-
-    finally:
-        logger.log("=== TDnet Batch ETL 処理結果サマリー ===")
-        logger.log(f"対象期間              : {date_from} ～ {date_to}")
-        logger.log(f"run_mode              : {run_mode}")
-        logger.log(f"総ドキュメント数       : {len(docs)} 件")
-        logger.log(f"成功/スキップ/エラー  : {processed} / {skipped} / {errors}")
-        logger.flush_to_gcs()
-        print(f"ログファイル出力完了: gs://{BUCKET_NAME}/{log_blob_name}")
+    # ── 旧 full / submit / resume モードは Gemini Phase 3 廃止に伴い撤去（プラン C-4） ──
+    raise SystemExit(
+        f"job_mode='{run_mode}' は Gemma専用パイプライン化 (2026-05-21) で廃止されました。"
+        " load / ai-prepare / ai-finalize のいずれかを指定してください。"
+    )
 
 
 # ============================================================

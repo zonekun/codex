@@ -42,20 +42,26 @@ fi
 # data/logs/ → ローカル保管に移行（C:\tmp\claude_logs\）。GCS同期不要
 
 # claude-memory/ (Claude Code メモリ: ~/.claude/projects/.../memory/)
+# Windows と Linux VM で autoMemoryDirectory に合わせた固定パスを使う。
+# find ベースは不使用（別プロジェクトの memory/ を拾うリスクがある）。
+# 除外ファイル: line_conversation_mode.md（端末固有のLINE会話状態。他端末に同期不要）
 MEMORY_DIR=""
 if [ -d "/c/Users/zonekun/.claude/projects/G---------claude/memory" ]; then
+    # Windows (Git Bash)
     MEMORY_DIR="/c/Users/zonekun/.claude/projects/G---------claude/memory"
-elif [ -d "$HOME/.claude/projects" ]; then
-    # Linux VM: プロジェクトパスは異なるが memory/ を探す
-    MEMORY_DIR=$(find "$HOME/.claude/projects" -type d -name "memory" 2>/dev/null | head -1)
+else
+    # Linux VM: ~/.claude/settings.json の autoMemoryDirectory と同じパスを使う
+    MEMORY_DIR="$HOME/.claude/projects/G---------claude/memory"
 fi
 
 if [ -n "$MEMORY_DIR" ] && [ -d "$MEMORY_DIR" ]; then
-    gcloud storage rsync -r "$MEMORY_DIR/" "$BUCKET/claude-memory/" \
+    gcloud storage rsync -r \
+        --exclude="line_conversation_mode\.md" \
+        "$MEMORY_DIR/" "$BUCKET/claude-memory/" \
         && echo "[OK] claude-memory/" \
         || echo "[NG] claude-memory/"
 else
-    echo "[SKIP] claude-memory/ not found"
+    echo "[SKIP] claude-memory/ not found: $MEMORY_DIR"
 fi
 
 echo ""

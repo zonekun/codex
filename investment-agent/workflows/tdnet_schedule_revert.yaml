@@ -1,9 +1,10 @@
 # tdnet_schedule_revert — 決算特別スケジュールから通常スケジュールへの復帰
 #
-# 決算特別スケジュール終了時に自動実行:
+# 決算特別シフト終了時に自動実行:
 #   1. tdnet-daily-pipeline-scheduler を PAUSE
 #   2. tdnet-download-daily を RESUME
 #   3. tdnet-load-daily-daily を RESUME
+#   4. 013_tdnet_load.md のタイトルから【決算特別シフトON ...】を除去（GitHub API経由）
 #
 # 起動:
 #   自動: one-shot Cloud Scheduler（特別スケジュール終了翌営業日の 00:00 JST）
@@ -17,6 +18,7 @@ main:
         assign:
           - project_id: "gmailpj-357912"
           - scheduler_location: "us-west1"
+          - cloudrun_region: "us-west1"
 
     - pause_pipeline:
         call: googleapis.cloudscheduler.v1.projects.locations.jobs.pause
@@ -36,6 +38,27 @@ main:
           name: ${"projects/" + project_id + "/locations/" + scheduler_location + "/jobs/tdnet-load-daily-daily"}
         result: resume_load_result
 
+    # ──────────────────────────────────────────
+    # Step 4: 013 MD タイトルから【決算特別シフトON ...】を除去（GitHub API経由）
+    # best-effort: 失敗してもスケジューラ復帰の成功を阻害しない
+    - update_shift_md:
+        try:
+          call: googleapis.run.v2.projects.locations.jobs.run
+          args:
+            name: ${"projects/" + project_id + "/locations/" + cloudrun_region + "/jobs/tdnet-shift-md-updater"}
+            body:
+              overrides:
+                timeout: "120s"
+            connector_params:
+              timeout: 120
+          result: md_update_result
+        except:
+          as: md_error
+          steps:
+            - log_md_error:
+                assign:
+                  - md_update_result: '${"md_update_failed: " + md_error.message}'
+
     - done:
         return:
           status: "reverted_to_normal"
@@ -43,3 +66,4 @@ main:
           resumed:
             - "tdnet-download-daily"
             - "tdnet-load-daily-daily"
+          md_updated: ${md_update_result}

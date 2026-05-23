@@ -5,6 +5,7 @@
 **ステータス**: 有効
 **投資アイデアステータス**: BACKTEST_FAIL（遅延報告単体ロング）/ 条件付きANALYZED_PASS（SCORE≥8×アクティビスト: 250D CAR+13.76%, N=22, 統計的有意性不十分）
 **アイデアソース**: note.com(@note_en) — 「本日ストップ高の8289 Olympicグループを解読」
+**計画**: `docs/plans/analysis-008_edinet_delay_tob_screening_20260522_222912.md`（方向性3・4 残分析）
 **関連ファイル**:
 - `scripts/screen_edinet_delay_tob.py` — スクリーニングスクリプト
 - `scripts/edinet_delay.py` — EDINET遅延報告自動取得（Cloud Run Job `edinet-delay`）

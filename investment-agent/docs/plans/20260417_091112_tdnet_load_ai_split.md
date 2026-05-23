@@ -311,3 +311,28 @@ us-central1-b（アイオワ、米中西部 CT）のスポット需要を避け�
 - Cloud Run Job の task-timeout 最大 12時間（43200s）。finalize は 6h で設計、超える場合は分割
 - 現行の `_correct_category_by_title`、`_EMBED_CATEGORIES`、統合プロンプト等は ai-prepare/finalize 側に移植
 - 現行 `tdnet-load-parallel` は新アーキ稼働3ヶ月後に廃止（段階的移行）
+
+---
+
+## Phase II: Gemma専用パイプライン化（2026-05-21 実装完了）
+
+**プラン**: `docs/plans/tools-013_gemma_only_pipeline_20260520_220510.md`
+**コミット**: `92d5113d`（A〜E 全実装完了）
+
+### 主要変更（Phase I からの差分）
+
+| 変更点 | Phase I | Phase II |
+|-------|---------|---------|
+| PDF テキスト抽出 | PyPDF2 → pdfminer フォールバック | **PyMuPDF (fitz)** → pdfminer フォールバック |
+| 画像PDF | Vision OCR Batch（Gemini） | **廃止** → `AI_STATUS='skipped_image_pdf'`（pending 滞留防止） |
+| 受注高/受注残高判定 | Gemini Flash Batch（決算短信のみ） | **Gemma Pass 2**（決算短信 + 決算説明資料） |
+| Gemma 処理 | Pass 1 のみ | Pass 1（全件）+ **Pass 2**（`_PASS2_CATEGORIES` 対象） |
+| Pass 2 GCS 出力 | なし | `ai_job/{run_id}/gemma_pass2_CURRENT.jsonl` |
+| コスト | ~$11.5/週（Gemini $5.5 含む） | **~$6/週**（Gemini 廃止） |
+
+### 完了（E-2〜E-5 全完了 2026-05-21）
+
+- **E-2** ✅: load モード smoke test — 既存247件スキップ確認、exit(0)
+- **E-3** ✅: ai-prepare smoke test — PyMuPDF抽出確認、skipped_image_pdf遷移確認
+- **E-4** ✅: ai-finalize smoke test（mock JSONL）— Pass 2 マージ確認、BQ Insert成功
+- **E-5** ✅: Cloud Build + 3 Job デプロイ（Build: `c3152a7b`）

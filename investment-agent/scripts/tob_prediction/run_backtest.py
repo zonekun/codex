@@ -16,9 +16,11 @@ import pandas as pd
 from google.cloud import bigquery
 from google.oauth2 import service_account
 
-CREDENTIALS_PATH = Path(__file__).resolve().parents[2] / "keys" / "gcp-service-account.json"
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+CREDENTIALS_PATH = PROJECT_ROOT / "keys" / "gcp-service-account.json"
 BQ_PROJECT = "gmailpj-357912"
 CACHE_DIR = Path("C:/tmp/tob_prediction")
+OUTPUT_DIR = PROJECT_ROOT / "data/output/tob_prediction"
 EVAL_YEARS = [2022, 2023, 2024, 2025]
 TOP_PCTS = [0.05, 0.15, 0.25]
 TRANSACTION_COST = 0.001
@@ -35,7 +37,7 @@ def _bq_client() -> bigquery.Client:
 def load_predictions() -> pd.DataFrame:
     dfs = []
     for year in EVAL_YEARS:
-        p = CACHE_DIR / f"predictions_{year}.csv"
+        p = OUTPUT_DIR / f"predictions_{year}.csv"
         if not p.exists():
             raise FileNotFoundError(f"{p} not found. Run train_rf.py first.")
         df = pd.read_csv(p, encoding="utf-8", dtype={"TICKER": str})
@@ -181,7 +183,8 @@ def main() -> None:
                 f"({hit_rate:.1%}), base={base_rate:.1%}, lift={lift:.1f}x"
             )
 
-    out = CACHE_DIR / "bt_results.csv"
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    out = OUTPUT_DIR / "bt_results.csv"
     bt.to_csv(out, index=False, encoding="utf-8")
     print(f"\nSaved: {out}")
 

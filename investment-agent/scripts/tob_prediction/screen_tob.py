@@ -25,6 +25,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 CREDENTIALS_PATH = PROJECT_ROOT / "keys" / "gcp-service-account.json"
 BQ_PROJECT = "gmailpj-357912"
 CACHE_DIR = Path("C:/tmp/tob_prediction")
+OUTPUT_DIR = PROJECT_ROOT / "data/output/tob_prediction"
 
 FEATURE_LABELS = {
     "top_shareholder_ratio": ("筆頭株主比率", "↑高いほどTOB候���"),
@@ -67,21 +68,21 @@ def _bq_client() -> bigquery.Client:
 def detect_latest_year() -> int:
     """predictions_YYYY.csv の最新年を検出."""
     years = []
-    for p in CACHE_DIR.glob("predictions_*.csv"):
+    for p in OUTPUT_DIR.glob("predictions_*.csv"):
         try:
             y = int(p.stem.split("_")[1])
             years.append(y)
         except (IndexError, ValueError):
             pass
     if not years:
-        logger.error("no_predictions_found", cache_dir=str(CACHE_DIR))
+        logger.error("no_predictions_found", output_dir=str(OUTPUT_DIR))
         sys.exit(1)
     return max(years)
 
 
 def load_predictions(year: int) -> pd.DataFrame:
     """指定年の予測結果CSVを読み込み."""
-    p = CACHE_DIR / f"predictions_{year}.csv"
+    p = OUTPUT_DIR / f"predictions_{year}.csv"
     if not p.exists():
         logger.error("predictions_not_found", path=str(p))
         sys.exit(1)
@@ -236,7 +237,7 @@ def main() -> None:
     # Load predictions
     if args.multi_year:
         prev_year = latest_year - 1
-        p1 = CACHE_DIR / f"predictions_{prev_year}.csv"
+        p1 = OUTPUT_DIR / f"predictions_{prev_year}.csv"
         if not p1.exists():
             logger.warning("prev_year_missing", year=prev_year)
             preds = load_predictions(latest_year)

@@ -17,8 +17,7 @@
 
 **投資メカニズム（2つの経路）**:
 1. **直接効果**: 実際にTOBが発生した場合、買収プレミアムによる株価急騰（異常収益）を取得できる
-2. **間接効果**: TOBが実際に発生しなくても、予測確率が高い銘柄（＝割安・株主構成上の問題を抱える銘柄）は
-   市場がTOB可能性を織り込んで株価が上昇しやすい傾向がある
+2. **間接効果**: TOBが実際に発生しなくても、予測確率が高い銘柄（＝割安・株主構成上の問題を抱える銘柄）は市場がTOB可能性を織り込んで株価が上昇しやすい傾向がある
 
 **ポイント**: TOBの「当たり外れ」に関わらず、予測確率自体が株価上昇の先行指標として機能する。
 
@@ -40,15 +39,14 @@
 - 2018〜2022年: 42〜57件/年
 - 2023年: 73件、2024年: 85件（近年急増傾向）
 
-**説明変数（計30変数）**:
+**説明変数（計26変数、自前実装）**:
 
-| カテゴリ | 主要変数 |
-|---------|---------|
-| アナリスト予想系 | 予想配当利回り、予想CF/株価、予想ROE、予想ROA成長率、予想経常利益成長率 |
-| 財務健全性系 | 流動比率、自己資本比率、有利子負債依存度、キャッシュリッチレシオ |
-| 市場評価系 | log(時価総額)、PBR、60日リターン、240日リターン、240日ボラティリティ、出来高回転率 |
-| 株主構成系 | 外国人保有比率、個人保有比率、**筆頭株主の保有比率(TOP_WEIGHT)**、筆頭株主の国内上場の有無 |
-| 実績指標 | ROE(実績)、配当性向、東証17業種フラグ |
+| カテゴリ | 変数 |
+|---------|------|
+| 財務系 (10) | equity_ratio, pbr, roe, payout_ratio, ln_market_cap, cash_rich_ratio, forecast_div_yield, forecast_profit_growth, cfo_to_mcap, operating_margin |
+| 市場系 (4) | ret_60d, ret_240d, vol_240d, turnover_ratio |
+| 株主構成系 (8) | top_shareholder_ratio, individual_ratio, foreign_ratio, financial_inst_ratio, other_corp_ratio, top10_concentration, has_activist, top_shareholder_is_public |
+| オーナー色系 (4) | owner_count_in_top10, owner_ratio_in_top10, real_top_is_individual, has_famous_investor |
 
 ---
 
@@ -56,241 +54,77 @@
 
 **主手法: Random Forest（ランダムフォレスト）**
 
-**選択理由**:
-- 特徴量の重要度解釈が容易（SHAPと組み合わせて使いやすい）
-- 高次元・多重共線性に強い
-- 過学習が比較的起きにくい（アンサンブル学習）
+**選択理由**: 特徴量の重要度解釈が容易（SHAP）、高次元・多重共線性に強い、過学習が比較的起きにくい。
 
 **不均衡データ対処（6ステップ前処理）**:
 
-| Step | 処理内容 | 理由 |
-|------|---------|------|
-| 1 | 欠損値を含む銘柄を削除 | データ品質確保 |
-| 2 | 連続変数を月次クロスセクション方向に標準化 | 銘柄間相対比較・近傍探索のスケール統一 |
-| 3 | 予測対象年=テスト、過去5年=訓練に分割（ウォークフォワード） | 時変性への対応・過去データの発生メカニズム変化を除外 |
-| 4 | RandomUnderSampling（多数派を削減、比率を1:20に） | 過度な削減を防ぎつつ不均衡を緩和 |
-| 5 | Tomek Links（クラス境界付近の多数派ノイズ除去） | 境界付近の曖昧サンプルを除去して分類精度向上 |
-| 6 | SMOTENC（少数派を合成生成、最終比率1:10に） | 疑似データ過剰生成を防ぎつつ少数派を補強 |
+| Step | 処理内容 |
+|------|---------|
+| 1 | 欠損値を含む銘柄を削除 |
+| 2 | 連続変数を月次クロスセクション方向に標準化 |
+| 3 | 予測対象年=テスト、過去5年=訓練に分割（ウォークフォワード） |
+| 4 | RandomUnderSampling（多数派を削減、比率を1:20に） |
+| 5 | Tomek Links（クラス境界付近の多数派ノイズ除去） |
+| 6 | SMOTENC（少数派を合成生成、最終比率1:10に） |
 
 **ハイパーパラメータ最適化**: Optuna（PR-AUCを最大化指標として最適化、年ごとに再チューニング）
 
-**SHAP分析**: 説明変数の予測への寄与度を可視化
-
 ---
 
-## 結果
+## データパイプライン
 
-### モデル精度
+### A. 初期構築（一度だけ実行）
 
-| 指標 | 値 | 備考 |
-|-----|------|------|
-| ROC-AUC | 0.60〜0.75 | 年別に変動（2018〜2024年の評価） |
-| PR-AUC | 0.04〜0.09 | TOB発生件数が少なく低め（正例稀なため） |
+#### A-1. TOBラベル作成
 
-ROC-AUC 0.60〜0.75はランダム(=0.50)を有意に上回り、予測能力を確認。
+**BQテーブル**: `STOCK.DELISTED_STOCKS`（既存テーブルに列追加）
 
-### SHAP分析による重要特徴量（寄与度が高い順）
+**スクリプト**: `scripts/fetch_tob_announcements.py`（docTypeCode=240 を subjectEdinetCode で逆引き）
 
-1. **筆頭株主の保有比率 (TOP_WEIGHT)** — 最重要。親子上場解消TOBの予測に直結
-2. **筆頭株主の国内上場の有無 (SHAREHOLDER_PUBLIC)** — 同上
-3. **個人保有比率 (KOJIN)** — 低いほどTOB対象になりやすい（プレミアムコスト抑制）
-4. **log(時価総額) (LnMV)** — 小さいほどTOB対象になりやすい（買収コスト小）
-5. **PBR** — 低いほどTOB対象になりやすい（割安＝買収メリット大）
-6. **240日リターン (R240)** — 低いほどTOB対象になりやすい
-7. **配当性向 (PayoutRatio)** — 低いほどTOB対象になりやすい（フリーキャッシュフロー仮説）
-8. **業種フラグ** — 情報通信・サービスその他(TSEFlag10)が比較的高め、その他業種の寄与は低い
+**追加カラム**: `TOB_ANNOUNCEMENT_DATE` / `TOB_PRICE` / `PRICE_BEFORE_ANNOUNCEMENT` / `PREMIUM_RATE` / `TOB_TYPE` / `TOB_ACQUIRER` / `TOB_DOC_ID`
 
-### ポートフォリオ運用シミュレーション（2018〜2024年、単利、年次リバランス）
-
-| ポートフォリオ | リターン | TOPIX比較 |
-|-------------|---------|----------|
-| 予測確率上位5% | 最高 | TOPIX超過 |
-| 予測確率上位15% | 中位 | TOPIX超過 |
-| 予測確率上位25% | 最低（3者中） | TOPIX超過 |
-
-- **3グループとも TOPIX を上回るリターンを獲得**
-- 上位5% > 上位15% > 上位25%の順で層状にリターンが並ぶ → 予測確率の有用性を実証
-
-### TOB発生有無別の予測確率とリターンの関係
-
-| サンプル区分 | 回帰直線の傾き | 解釈 |
-|------------|-------------|-----|
-| TOBが実際に発生した銘柄 | 左肩上がり（サプライズ方向） | 「予測できなかった」意外なTOBほど株価急騰（サプライズ効果）。機械学習が市場予測能力の限界に近いレベルで学習していることを示唆。統計的に有意。 |
-| TOBが実際に発生しなかった銘柄 | **右肩上がり** | 予測確率が高い銘柄ほど株価が上昇。TOB未発生でも市場がTOB可能性を先読みして株価を押し上げる。統計的に有意。 |
-
----
-
-## ★ バックテスト結果（2022-2025、自前データ再現）
-
-**実施日**: 2026-04-29
-**スクリプト**: `scripts/tob_prediction/run_backtest.py`, `scripts/tob_prediction/backtest_tob_portfolio.ipynb`
-**モデル**: `scripts/tob_prediction/train_rf.py`（Walk-Forward RF、Optuna PR-AUC最適化）
-
-### 年度別リターン（6月初→翌5月末、等ウェイト、往復20bp控除）
-
-| 年度 | Top 5% | Top 15% | Top 25% | TOPIX | Top5% Alpha |
-|------|--------|---------|---------|-------|-------------|
-| 2022/23 | +18.9% | +15.2% | +12.9% | +9.9% | +9.0% |
-| 2023/24 | +15.8% | +14.3% | +16.4% | +29.0% | -13.2% |
-| 2024/25 | +11.6% | +10.9% | +8.9% | +0.1% | +11.5% |
-| 2025/26 | +11.1% | +12.1% | +13.4% | +34.5% | -23.4% |
-
-### 累積（4年複利）
-
-| ポートフォリオ | 累積リターン |
-|-------------|-----------|
-| Top 5% | +70.6% |
-| Top 15% | +63.7% |
-| Top 25% | +62.3% |
-| TOPIX | +90.9% |
-
-### TOBヒット分析（Top 5%）
-
-| 年 | ヒット | 選定数 | ヒット率 | ベースレート | リフト |
-|----|-------|-------|---------|-----------|-------|
-| 2022 | 4 | 131 | 3.1% | 0.8% | 3.8x |
-| 2023 | 8 | 134 | 6.0% | 1.6% | 3.8x |
-| 2024 | 8 | 142 | 5.6% | 1.7% | 3.3x |
-| 2025 | 19 | 140 | 13.6% | 2.2% | 6.1x |
-
-### 判定: BACKTEST_PASS
-
-**絶対リターン基準で合格**:
-- Top 5%が4年連続2桁プラス（+11.1%〜+18.9%）で安定
-- TOBヒットリフト3.3-6.1xでモデルの予測能力は確実に機能
-- Top5% > Top15% > Top25%の層状構造（予測確率の有用性）が2022, 2024で確認
-
-**TOPIX比劣後の要因分析**:
-- 2023年・2025年のTOPIX大幅上昇（+29%, +34.5%）は大型株・半導体主導の相場
-- TOB予測ポートフォリオは小型割安バイアスが強く、大型主導相場に構造的に弱い
-- TOPIX-ヘッジ（ロングポート＋TOPIXショート）の場合、alpha正は2/4年で安定せず
-
-**ステータス遷移**: ANALYZED_PASS → BACKTEST_PASS
-
----
-
-## 判定と理由
-
-**判定: BACKTEST_PASS（自前データ再現で絶対リターン基準合格）**
-
-**有効性の根拠**:
-- ROC-AUC 0.60〜0.75 は統計的に意味ある予測能力
-- 予測確率上位ポートフォリオが全期間でTOPIXを上回る
-- TOB発生・未発生の両サンプルで予測確率とリターンに統計的に有意な正の関係を確認
-- 「予測確率の有用性」が「TOBの予測精度」だけに依存しない点が実務上有利
-  （TOBが実際に発生しなくてもリターンが出る）
-
-**懸念点・注意事項**:
-- 評価期間(2018〜2024年)は比較的短く、様々な相場環境での検証は限定的
-- TOB件数の年次変動（31件〜85件）が激しく、年によって精度が大きくブレる（AUC 0.60〜0.75）
-- 単利運用のシミュレーションであり、取引コスト・市場インパクトが考慮されていない可能性
-- 近年（2023〜2024年）のTOB急増（東証の企業価値向上要請の影響）が今後も続くかは不明
-- 特徴量の多くは日経NEEDS-FinancialQUESTや東洋経済データサービス（有料）から取得
-
----
-
-## 次のステップ
-
-### データ取得の検討
-
-| 特徴量 | 代替取得方法 |
-|-------|-----------|
-| 財務指標（PBR・時価総額・ROE・配当性向等） | J-Quants /fins/summary, BQの FIN_SUMMARY テーブル |
-| 株主構成（筆頭株主比率・外国人比率・個人比率） | EDINET 大量保有報告書（既存パイプラインあり）、四季報データ |
-| TOBラベル（正解データ） | EDINET 公開買付届出書（TOB-F form）からスクレイピング |
-| アナリスト予想（予想ROE等） | ⚠️ BQ `STOCK.CONSENSUS` は PROFIT（経常利益予想）のみ。予想ROE・ROA・配当利回り・CFは現在のデータレイクに存在しない。実績値（J-Quants `/fins/statements`）で代替するか省略して構築する |
-
-### バックテスト設計案
-
-- **戦略**: 毎年5月末にモデルを再構築し、予測確率上位N%銘柄を等ウェイトでロング、6月〜翌5月末まで保持
-- **比較ベンチマーク**: TOPIX（BQの INDEX_PRICE テーブル、または yfinance の `^TOPX`）
-- **評価指標**: 総リターン・年率・Sharpe比・MaxDD、TOPIX比超過リターン（アルファ）
-- **費用**: 年1回リバランス・売買手数料・スリッページを考慮
-- **シミュレーション期間**: 2018〜2024年（論文に合わせた7年間）
-
-### 優先度の高い実装項目
-
-1. ~~**TOBラベルの作成**~~: ✅ **完了（2026-04-20）** — `STOCK.DELISTED_STOCKS` を拡張し EDINET公開買付届出書からバックフィル。
-   - 追加カラム: TOB_ANNOUNCEMENT_DATE / TOB_PRICE / PRICE_BEFORE_ANNOUNCEMENT / PREMIUM_RATE / TOB_TYPE / TOB_ACQUIRER / TOB_DOC_ID
-   - スクレイピング: `scripts/fetch_tob_announcements.py`（docTypeCode=240 を subjectEdinetCode で逆引き）
-   - 詳細: `docs/knowledges/api/006_edinet_api.md`（「TOB公告情報抽出」セクション）
-   - プレミアム5%以上フィルタは下流で `PREMIUM_RATE >= 0.05` で適用
-2. **株主構成データの整備**: 筆頭株主の保有比率・国内上場の有無はキーとなる変数。
-   EDINET大量保有報告書またはJ-Quantsの大株主データから取得可能か確認
-3. **Random Forest モデルの実装**: 論文の前処理6ステップを忠実に再現
-4. **SHAP分析**: 特徴量重要度の確認（特に国内データでの筆頭株主比率の影響）
-
-### TOBラベル作成の実装ノウハウ（2026-04-20追加）
-
-**データソース**: EDINET 公開買付届出書（docTypeCode=**240**、040ではない）
-
-**抽出精度（初期4件テスト）**: 価格・公告日・買付者・プレミアム全て正常。TOB_TYPE判定はXBRL本文のキーワード（"対象者の経営陣"等）だと誤マッチするため DELISTING_REASON の文字列マッチで判定する方針に変更。
-
-**他社株TOB vs MBO の扱い**:
-- 論文の対象は「他社株TOB」= `TOB_TYPE = 'OTHER'`
-- MBO（経営陣による買収）は **別ラベル** として区別（`TOB_TYPE = 'MBO'`）
-- 学習時は `TOB_TYPE IN ('OTHER', 'MBO')` のいずれで訓練するか選択可能
-- 自己株TOB（`SELF`）は定義上 DELISTED_STOCKS に入らない
-
-### IS_PAPER_TOB_LABEL 論文正解ラベル定義
-
-BQ `STOCK.DELISTED_STOCKS.IS_PAPER_TOB_LABEL` (BOOL)。条件:
+**IS_PAPER_TOB_LABEL の定義**（BQ BOOL列）:
 ```sql
 TOB_PRICE IS NOT NULL
   AND PREMIUM_RATE >= 0.05
   AND TOB_TYPE IN ('OTHER', 'MBO')
 ```
 
-**バックフィル実績 (2026-04-20)**: 577件の IS_TOB_MBO=TRUE 中 **289件が IS_PAPER_TOB_LABEL=TRUE**（288件はEDINET自動取得 + 1件は 7968 TASAKI を WebSearch裏取りで手動追加）。
+**バックフィル実績**: 577件の IS_TOB_MBO=TRUE 中 **289件が IS_PAPER_TOB_LABEL=TRUE**（完了: 2026-04-20）
 
-**条件緩和の経緯**: 当初は `TOB_DOC_ID IS NOT NULL` を条件に含めていたが、EDINET v2 の 2019年以前不安定期や subjectEdinetCode 未設定ケースで TOB-F docID が取得できない有効TOBを取り逃してしまう。実態としてTOB公告があり5%以上プレミアムが確認できれば含める方針に変更。TOB_DOC_ID は provenance メタデータとして保持。
+**設計判断**:
+- `TOB_TYPE = 'OTHER'`（他社株TOB）と `'MBO'`（経営陣買収）を両方含める。`'SELF'`（自己株TOB）は除外
+- `TOB_DOC_ID IS NOT NULL` は条件から外した（EDINET v2 の 2019年以前不安定期で有効TOBを取り逃すため）
+- `TOB_TYPE` 判定は XBRL 本文キーワードではなく `DELISTING_REASON` 文字列マッチで行う（誤マッチ対策）
+- 詳細: `docs/knowledges/api/006_edinet_api.md`（「TOB公告情報抽出」セクション）
+
+**IS_TOB_MBO と IS_PAPER_TOB_LABEL の役割分担**:
+
+| フラグ | 定義 | 粒度 |
+|---|---|---|
+| `IS_TOB_MBO` | Gemini が TDnet 180日分テキストから判定した広義のTOB性取引（スクイーズアウト・実質買収全般を含む） | 広義 |
+| `IS_PAPER_TOB_LABEL` | 論文定義の「他社株TOB」。EDINET公開買付届出書あり ∧ プレミアム≥5% ∧ TOB_TYPE∈{OTHER,MBO} | 狭義 |
+
+**IS_TOB_MBO=TRUE かつ IS_PAPER_TOB_LABEL=FALSE の 289件**は EDINET で公開買付届出書が見つからなかったケース（スクイーズアウト段階の廃止136件・方式不明85件・組織再編29件など）。「IS_TOB_MBO=FALSE に戻す」一括訂正は行わない（Gemini判定は広義のTOB性判定として保持）。
 
 **ラベル利用例**:
 ```sql
--- 学習用正解ラベル取得（tickerごとに「TOB年」を取得）
 SELECT TICKER, DATE_TRUNC(TOB_ANNOUNCEMENT_DATE, YEAR) AS tob_year
 FROM `gmailpj-357912.STOCK.DELISTED_STOCKS`
 WHERE IS_PAPER_TOB_LABEL = TRUE
 ```
 
-### IS_TOB_MBO と IS_PAPER_TOB_LABEL の役割分担
+#### A-2. 株主構成テーブル構築
 
-| フラグ | 定義 | 粒度 |
-|---|---|---|
-| `IS_TOB_MBO` | Gemini が TDnet 180日分テキストから判定した「広義のTOB性取引」。スクイーズアウト・実質買収全般を含む | 広義 |
-| `IS_PAPER_TOB_LABEL` | 論文定義の「他社株TOB」。EDINET公開買付届出書あり ∧ プレミアム≥5% ∧ TOB_TYPE∈{OTHER,MBO} | 狭義 |
+**BQテーブル**: `STOCK.SHAREHOLDER_COMPOSITION`（37,657行 / 4,411銘柄 / 2015-2026年）
 
-IS_TOB_MBO は Gemini が意図的に TRUE を付けた時点で「実質TOB性あり」と判定済み。IS_PAPER_TOB_LABEL はそこから論文の厳密定義に合致するものだけを絞った二層構造。
+**データソース**: EDINET 有価証券報告書 XBRL から抽出（大株主上位10名テーブル）
 
-### IS_TOB_MBO=TRUE だが IS_PAPER_TOB_LABEL=FALSE の内訳（289件）
+**スクリプト**: `scripts/fetch_shareholder_composition.py`
 
-**重要**: 以下のカテゴリは DELISTING_REASON の文字列マッチで分類したに過ぎず、「TOB先行あり/なし」は個別調査でないと断定できない。IS_PAPER_TOB_LABEL=FALSE は「**EDINET公開買付届出書が見つからなかった**」という事実のみを表す。
+**詳細手順**: `docs/knowledges/tools/081_shareholder_composition.md` / 計画: `docs/plans/tools-081_shareholder_composition_20260420_155621.md`（完了）
 
-| カテゴリ | 件数 | 解釈 |
-|---|---|---|
-| 「株式の併合」「株式等売渡請求」 | 136 | TOB後のスクイーズアウト段階の廃止。一部は TOB公告存在するが EDINET `subjectEdinetCode` 不設定で検索不能（親会社が非EDINET登録等）|
-| 「完全子会社化（方式不明）」 | 85 | TOB/株式交換/株式移転の混在 |
-| 「株式交換」「株式移転」 | 29 | 新設持株会社化等の純粋な組織再編が多数だが、TOB先行型スクイーズアウトが紛れている場合もあり要個別確認 |
-| 「合併」 | 11 | **TOB先行の可能性が高いケースが含まれる**（非上場PEへの合併、子会社化目的の合併など）。例: 7968 TASAKI→スターダスト（非上場PE）、7825 ダンロップスポーツ→住友ゴム |
-| 「民事再生・虚偽記載・内部管理・提出遅延・時価総額未満・申請による」 | 8 | **これのみ確実にTOB無関係**（取引所ルール発動の強制廃止）|
-| TOB_DOC_ID取得済だがプレミアム<5% | 11 | 論文しきい値外 |
-| その他 | 9 | 要個別調査 |
-
-**注意**:
-- 「IS_TOB_MBO=FALSE に戻す」という一括訂正は行わない。Gemini判定は広義のTOB性判定として保持する
-- カテゴリ分類は「強制廃止8件」を除き「TOBが実際に存在しないこと」を意味しない
-- 論文ラベル向上したい場合は将来タスクで個別救済
-
-**将来タスク**:
-- 136件の救済: TOB-F を対象会社名マッチで全件列挙 or TDNET_DOCUMENTS_ENHANCED からdocID検索
-- 85件・11件・9件の個別調査: TDnet文書確認でTOB有無を判別
-- 合併11件の個別確認: TOB先行の有無をTDnet/WebSearchで確認
-
-### 株主構成データ整備 (2026-04-20 完了)
-
-`STOCK.SHAREHOLDER_COMPOSITION` テーブルに全上場銘柄 × 2015-2026年の株主構成スナップショットを格納（37,657行 / 4,411銘柄）。EDINET 有価証券報告書 XBRL から抽出。
-
-**論文SHAP特徴量のマッピング**:
+**論文SHAP特徴量のBQカラムへのマッピング**:
 | 論文変数 | BQ カラム |
 |---|---|
 | TOP_WEIGHT | `TOP_SHAREHOLDER_RATIO` |
@@ -298,54 +132,80 @@ IS_TOB_MBO は Gemini が意図的に TRUE を付けた時点で「実質TOB性�
 | KOJIN | `INDIVIDUAL_RATIO` |
 | 外国人保有比率 | `FOREIGN_RATIO` |
 
-**追加因子（論文にない日本市場固有）**:
-| カラム | 意味 |
-|---|---|
-| `HAS_ACTIVIST` | TOP10 にアクティビスト保有あり (2,217銘柄年 = 5.9%) |
-| `ACTIVIST_NAMES` | マッチしたファンド名 |
-| `ACTIVIST_MAX_SCORE` | マッチ信頼度 |
+**追加因子（論文にない日本市場固有）**: `HAS_ACTIVIST`（アクティビスト保有）、`ACTIVIST_NAMES`、`ACTIVIST_MAX_SCORE`
 
-**筆頭株主の国内上場判定**: 正規化厳密マッチ516名義 + `gemini-3-flash-preview` バッチ判定751名義 = 計1,267名義が上場企業として特定。レコード単位で 7,153件 (19%) が `TOP_SHAREHOLDER_IS_PUBLIC=TRUE`。
+#### A-3. 株主名 TYPE 分類（EXTEND テーブル）
 
-詳細: `docs/knowledges/tools/081_shareholder_composition.md`, 計画: `docs/plans/tools-081_shareholder_composition_20260420_155621.md`
+**BQテーブル**: `STOCK.SHAREHOLDER_COMPOSITION_EXTEND`（56,160名）
 
-### Random Forest 実装結果 (2026-04-25)
+**TYPE 種別と件数（2026-05-18時点）**:
 
-**スクリプト**: `scripts/tob_prediction/train_rf.py`
+| TYPE | 件数 | 説明 |
+|------|------|------|
+| INDIVIDUAL | 19,251 | 個人名 |
+| INSTITUTION | 12,602 | 国内機関投資家 |
+| FOREIGN_CUSTODIAN | 10,239 | 外国カストディ |
+| PRIVATE_CORP | 7,776 | 非上場法人（資産管理会社等） |
+| TRUST_BANK | 2,128 | 信託銀行 |
+| LISTED_CORP | 1,978 | 上場事業法人（STOCK_CODE_LISTから照合） |
+| ASSET_MGMT | 1,793 | オーナー色資産管理会社（irbank.netスクレイピング判定） |
+| UNCLASSIFIED | 393 | Sonnet判定 |
 
-**特徴量 (22変数)**:
-- 財務系 (10): equity_ratio, pbr, roe, payout_ratio, ln_market_cap, cash_rich_ratio, forecast_div_yield, forecast_profit_growth, cfo_to_mcap, operating_margin
-- 市場系 (4): ret_60d, ret_240d, vol_240d, turnover_ratio
-- 株主構成系 (8): top_shareholder_ratio, individual_ratio, foreign_ratio, financial_inst_ratio, other_corp_ratio, top10_concentration, has_activist, top_shareholder_is_public
-- ~~業種ダミー (17)~~: 除外（2026-04-25）。ind17_10（機械）がSHAP 2位だったが、2025年の3件のみ（物流再編等の特殊事情）で汎化しない
+**スクリプト（実行順）**:
+1. `export_listed_company_names.py` — STOCK_CODE_LIST + DELISTED_STOCKS → `data/master/listed_company_names.csv`
+2. `classify_shareholder_names.py --listed-names-csv data/master/listed_company_names.csv` — ルールベース分類（LISTED_CORP付き）
+3. `load_shareholder_name_types.py` — EXTEND テーブルに BQ INSERT（WRITE_APPEND）
 
-**データソース**: fin_summary (FY) + SHAREHOLDER_COMPOSITION + STOCK_PRICE_JQUANTS + STOCK_CODE_LIST + DELISTED_STOCKS (ラベル289件)
+**注意事項**:
+- アクティビスト（`data/master/activist_aliases.csv` 315件）は ASSET_MGMT に昇格しない（誤包含防止）
+- 上場事業法人は PRIVATE_CORP から LISTED_CORP に昇格（照合は正規化済みマッチ）
 
-**Walk-Forward 評価結果**:
+#### A-4. オーナー色因子算出
 
-| 評価年 | ROC-AUC | PR-AUC | 訓練正例 | テスト正例 | Top5%ヒット率 |
-|--------|---------|--------|----------|-----------|-------------|
-| 2022 | 0.788 | 0.080 | 19 | 21 | 3.1% |
-| 2023 | 0.767 | 0.073 | 40 | 42 | 8.2% |
-| 2024 | 0.757 | 0.054 | 82 | 49 | 5.6% |
-| 2025 | 0.813 | 0.209 | 131 | 62 | 20.0% |
-| **平均** | **0.781** | **0.104** | | | |
+**BQテーブル**: `STOCK.SHAREHOLDER_COMPOSITION`（派生カラム追加: OWNER_COUNT / OWNER_RATIO 等）
 
-**論文比較**: ROC-AUC 0.78 (論文 0.60-0.75 の上限付近)、PR-AUC 0.10 (論文 0.04-0.09 をやや上回る)。訓練データ増加に伴い精度改善（2025年が最良）。
+**スクリプト**: `compute_owner_features.py --mode full`（37,607行更新）
 
-**特徴量重要度 (全年共通 Top5)**:
-1. `top_shareholder_ratio` — 論文の最重要変数と一致
-2. `other_corp_ratio` — 法人株主比率 (親子上場解消TOB)
-3. `top10_concentration` — 上位10株主集中度
-4. `ret_240d` / `ret_60d` — 株価リターン (割安銘柄)
-5. `financial_inst_ratio` — 金融機関持株比率
+**オーナー候補（ASSET_MGMT昇格）の判定方法**:
+- `family_holding_candidates_classified.csv` で「要確認」銘柄を抽出
+- `owner_judge_batch.py --offset N`（irbank.net スクレイピング）でYES/NO判定
+- `owner-judge-commander` スキルで少量をClaudeが直接判定
+- 結果を `classify_shareholder_names.py` にフィードバック → `load_shareholder_name_types.py` でBQへ
 
-**注意: STOCK_CODE_LIST リーケージ**:
-STOCK_CODE_LIST は現在上場銘柄のみ保持。廃止済みTOB対象銘柄の業種コードが欠損し、全業種ダミー=0 のパターンがリーケージとなる。初版では業種コード=NaN とし専用ダミーを作らないことで軽減。将来は廃止済み銘柄の歴史的業種コード取得で根治する。
+### B. 年次更新（新年度データ追加時）
 
-**キャッシュ**: `C:\tmp\tob_prediction\*.csv` (BQ再クエリ回避)。`--refresh` で強制更新。
+1. `fetch_shareholder_composition.py` 実行（新年度レコードをBQ INSERT）
+2. 新出株主名を検出:
+   ```sql
+   SELECT DISTINCT JSON_VALUE(e, '$.name') AS name
+   FROM STOCK.SHAREHOLDER_COMPOSITION, UNNEST(JSON_QUERY_ARRAY(TOP10_NAMES_JSON)) AS e
+   WHERE FISCAL_YEAR_END >= DATE_SUB(CURRENT_DATE(), INTERVAL 1 YEAR)
+   EXCEPT DISTINCT
+   SELECT NAME FROM STOCK.SHAREHOLDER_COMPOSITION_EXTEND
+   ```
+3. 新出名を `classify_shareholder_names.py` でルール分類 → UNCLASSIFIED残はSonnet判定
+4. `load_shareholder_name_types.py` で EXTEND テーブルに INSERT（WRITE_APPEND）
+5. `compute_owner_features.py` で新年度行の派生カラム再計算
 
-### スクリーニングツール (2026-04-29)
+### C. スクリプト一覧
+
+| スクリプト | 入力 | 出力 BQ | 目的 |
+|-----------|------|---------|------|
+| `fetch_tob_announcements.py` | EDINET API | `STOCK.DELISTED_STOCKS`（列追加） | TOBラベル作成 |
+| `fetch_shareholder_composition.py` | EDINET XBRL | `STOCK.SHAREHOLDER_COMPOSITION` | 株主構成テーブル構築 |
+| `export_listed_company_names.py` | `STOCK.STOCK_CODE_LIST` + `STOCK.DELISTED_STOCKS` | `data/master/listed_company_names.csv` | LISTED_CORP照合用 |
+| `classify_shareholder_names.py` | SHAREHOLDER_COMPOSITION + listed_company_names.csv | ローカルCSV | 株主名TYPE分類 |
+| `load_shareholder_name_types.py` | ローカルCSV | `STOCK.SHAREHOLDER_COMPOSITION_EXTEND` | BQロード |
+| `owner_judge_batch.py` | family_holding_candidates_classified.csv | ローカルCSV | ASSET_MGMT昇格候補判定 |
+| `compute_owner_features.py` | SHAREHOLDER_COMPOSITION + EXTEND | SHAREHOLDER_COMPOSITION（派生列） | オーナー色因子算出 |
+| `train_rf.py` | FIN_SUMMARY + SHAREHOLDER_COMPOSITION + STOCK_PRICE_JQUANTS | ローカルCSV（predictions） | RFモデル学習・予測 |
+| `screen_tob.py` | predictions CSV + BQキャッシュ | stdout | 予測確率上位銘柄スクリーニング |
+
+**キャッシュ**: `C:\tmp\tob_prediction\*.csv`（BQ再クエリ回避）。`--refresh` で強制更新
+
+---
+
+## スクリーニングツール
 
 **スクリプト**: `scripts/tob_prediction/screen_tob.py`
 
@@ -368,7 +228,48 @@ STOCK_CODE_LIST は現在上場銘柄のみ保持。廃止済みTOB対象銘柄�
 
 **データソース**: predictions CSV (train_rf.py出力) + STOCK_CODE_LIST (銘柄名) + YF_STOCK_INFO (時価総額) + DELISTED_STOCKS (除外) + train_rf.py特徴量マトリクス (根拠)。全BQデータはCSVキャッシュ (`C:\tmp\tob_prediction\`)。
 
-### 関連する既存スクリプト・知見
+---
+
+## モデル精度（最新）
+
+**最新スコア（2026-05-18）**: ROC-AUC **0.758** / PR-AUC **0.082**（ASSET_MGMT 619件昇格後、26変数）
+
+詳細・精度推移・SHAP重要度: `docs/knowledges/analysis/007_tob_model_metrics.md`
+
+**STOCK_CODE_LIST リーケージ**: 現在上場銘柄のみ保持のため廃止済みTOB銘柄の業種コードが欠損。業種ダミーを除外することで軽減済み。根治は廃止済み銘柄の歴史的業種コード取得が必要。
+
+---
+
+## バックテスト結果
+
+**ステータス**: BACKTEST_PASS — Top5%累積+70.6%、年平均+14.4%（4年連続2桁プラス）、TOBヒットリフト3.3-6.1x
+
+詳細・年度別リターン・TOBヒット分析・TOPIX比較: `docs/knowledges/analysis/007_tob_backtest_results.md`
+
+---
+
+## 既知の限界・残課題
+
+**MBO/オーナー型TOB未捕捉（構造的限界）**:
+- ASSET_MGMT 619件昇格後もオーナー型（久光4530/マンダム4917）はTop5%未達（2026-05-18確認）
+- 根本原因: 創業家保有が希薄化（5〜10%未満）し機関投資家が上位を占有する構造。株主名以外の情報（役員・定款等）なしでは検出困難
+- 現モデルは親子上場型TOBに特化
+
+**TOBラベル救済候補**（IS_TOB_MBO=TRUE かつ IS_PAPER_TOB_LABEL=FALSE の 289件）:
+- 136件（スクイーズアウト段階の廃止）: TOB-F を対象会社名マッチで列挙 or TDNET_DOCUMENTS_ENHANCED から docID 検索
+- 85件（方式不明）・9件（その他）: TDnet 文書確認で TOB 有無を個別判別
+- 11件（合併）: TOB先行の有無を個別確認（TASAKI, ダンロップスポーツ等）
+
+**candidate生成スクリプト**: `generate_family_holding_candidates.py`（アクティビスト・上場事業法人除外ロジック実装済み）
+
+**将来改善候補**（優先順）:
+1. モデル再学習 — 特徴量追加や期間延長による精度向上検証
+2. 歴史的業種コード取得 — STOCK_CODE_LIST リーケージの根治
+3. オーナー型 TOB 検出強化 — 役員・定款情報の活用
+
+---
+
+## 関連する既存スクリプト・知見
 
 - EDINET パイプライン: `docs/knowledges/tools/009_edinet_download.md`
 - EDINET TOB公告情報抽出: `docs/knowledges/api/006_edinet_api.md`
@@ -376,5 +277,6 @@ STOCK_CODE_LIST は現在上場銘柄のみ保持。廃止済みTOB対象銘柄�
 - アクティビスト判定: `docs/knowledges/tools/063_activist_detection.md`
 - JPX 上場廃止銘柄スクレイピング: `docs/knowledges/tools/058_scrape_jpx_delisted.md`
 - J-Quants /fins/summary: `docs/knowledges/tools/008_jquants_fin_summary.md`
-- 楽天証券コンセンサス: `docs/knowledges/tools/022_conse_rakuten.md`
 - バックテスト設計: `docs/knowledges/tools/039_backtest_daily_pnl_model.md`, `docs/knowledges/tools/045_backtest_evaluation_metrics.md`
+- 精度推移ログ: `docs/knowledges/analysis/007_tob_model_metrics.md`
+- バックテスト結果: `docs/knowledges/analysis/007_tob_backtest_results.md`

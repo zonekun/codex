@@ -131,6 +131,7 @@ def resolve_dates(args: argparse.Namespace) -> tuple[date, date]:
 EXTRACT_SQL = """
 WITH tdnet_docs AS (
   -- TDNET_DOCUMENTS_ENHANCED から決算短信・業績予想を抽出（重複チャンク除去）
+  -- 訂正・差替え・お知らせを除外（最初の実績のみ保持）
   SELECT DISTINCT
     TICKER,
     SUBMISSION_DATE,
@@ -140,6 +141,10 @@ WITH tdnet_docs AS (
   FROM `{project}.STOCK.TDNET_DOCUMENTS_ENHANCED`
   WHERE MAIN_CATEGORY IN ('決算短信', '業績予想')
     AND SUBMISSION_DATE BETWEEN @date_from AND @date_to
+    AND DOC_TITLE NOT LIKE '%訂正%'
+    AND DOC_TITLE NOT LIKE '%差替え%'
+    AND DOC_TITLE NOT LIKE '%のお知らせ'
+    AND DOC_TITLE NOT LIKE '%に関するお知らせ'
 ),
 fin AS (
   -- fin_summary から開示時刻・四半期・決算期末を取得

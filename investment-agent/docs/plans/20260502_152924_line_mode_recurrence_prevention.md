@@ -43,11 +43,11 @@
 # before (CLAUDE.md L107の後に項目なし)
 
 # after (L107の後に1項目追加)
-- **Bash パス表記**: Windows パス `C:\...` はそのまま Bash に渡せない（`\` がエスケープ文字）。Bash ツールではフォワードスラッシュ `C:/venvs/investment-agent/Scripts/python.exe` または Unix 形式 `/c/venvs/...` を使う。日本語 Windows では `\` が `¥`（円マーク）表示で視認しにくい点にも注意
+- **Bash パス表記**: Windows パス `C:\...` はそのまま Bash に渡せない（`\` がエスケープ文字）。Bash ツールではフォワードスラッシュ `<python>` または Unix 形式 `/c/venvs/...` を使う。日本語 Windows では `\` が `¥`（円マーク）表示で視認しにくい点にも注意
 ```
 
 **呼び出し側への波及**: なし
-**検証**: `Bash(command="C:/venvs/investment-agent/Scripts/python.exe --version")`
+**検証**: `Bash(command="<python> --version")`
 **ロールバック**: git revert
 
 ---
@@ -67,13 +67,13 @@ Bash ツールで notify.py を呼ぶ場合、**Windows パス `C:\...` はそ�
 
 ```bash
 # OK: フォワードスラッシュ
-PYTHONUTF8=1 C:/venvs/investment-agent/Scripts/python.exe scripts/notify.py ntfy "メッセージ"
+PYTHONUTF8=1 <python> scripts/notify.py ntfy "メッセージ"
 
 # OK: Unix 形式
-PYTHONUTF8=1 /c/venvs/investment-agent/Scripts/python.exe scripts/notify.py ntfy "メッセージ"
+PYTHONUTF8=1 <python> scripts/notify.py ntfy "メッセージ"
 
 # NG: バックスラッシュ → command not found
-PYTHONUTF8=1 C:\venvs\investment-agent\Scripts\python.exe scripts/notify.py ntfy "メッセージ"
+PYTHONUTF8=1 <python> scripts/notify.py ntfy "メッセージ"
 ```
 
 **日本語 Windows 固有の罠**: `\`（U+005C）が `¥`（円マーク）として表示される。エラーメッセージのパスが `C:¥venvs¥...` と表示され、パス区切り問題に気付きにくい（2026-05-02 事故）。

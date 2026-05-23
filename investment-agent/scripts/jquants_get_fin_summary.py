@@ -21,6 +21,7 @@ import json
 import os
 import sys
 import traceback
+import structlog
 import pandas as pd
 from datetime import datetime, timedelta, timezone
 
@@ -55,6 +56,7 @@ def detect_runtime() -> str:
 
 
 RUNTIME: str = detect_runtime()
+log = structlog.get_logger()
 
 # ╔══════════════════════════════════════════════════════════════╗
 # ║  ★ 実行設定（Colab ではここを直接書き換えて使う）                 ║
@@ -104,12 +106,13 @@ def get_bq_client() -> bigquery.Client:
 # 日付解決（DATE_MODE に従う）
 # ============================================================
 
-def _resolve_dates() -> tuple[datetime, datetime]:
+def _resolve_dates(shift_day: int = 0) -> tuple[datetime, datetime]:
     """DATE_MODE に従って (date_from, date_to) を解決する."""
     today = datetime.now(JST).replace(hour=0, minute=0, second=0, microsecond=0)
     if DATE_MODE == "t":
-        return today, today
-    elif DATE_MODE == "1":
+        d = today + timedelta(days=shift_day)
+        return d, d
+    elif DATE_MODE == "1":  # (省略: "1"/"r" ブランチは変更なし)
         d = datetime.strptime(DATE_SINGLE, "%Y%m%d")
         return d, d
     elif DATE_MODE == "r":
@@ -129,7 +132,7 @@ def parse_args() -> argparse.Namespace:
     argparse をスキップし、設定ブロックの値を使用する。
     """
     if RUNTIME in ("colab_personal", "colab_enterprise"):
-        return argparse.Namespace(date_from=None, date_to=None)
+        return argparse.Namespace(date_from=None, date_to=None, shift_day=0)
 
     parser = argparse.ArgumentParser(
         description="J-Quants /fins/summary → BigQuery ロード",
@@ -143,6 +146,8 @@ def parse_args() -> argparse.Namespace:
                         help="開始日 YYYYMMDD")
     parser.add_argument("--to",   dest="date_to",   default=None,
                         help="終了日 YYYYMMDD（省略時は --from と同日）")
+    parser.add_argument("--shift-day", dest="shift_day", type=int, default=0,
+                        help="DATE_MODE=t 時に today からシフトする日数（例: -1 で前日）")
     return parser.parse_args()
 
 
@@ -410,6 +415,7 @@ def main() -> None:
     log_cap    = LogCapture()
     log_cap.start()
     date_label = "不明"
+    args = None
 
     try:
         print(f"実行環境: {RUNTIME}")
@@ -420,7 +426,11 @@ def main() -> None:
             date_from = datetime.strptime(args.date_from, "%Y%m%d")
             date_to   = datetime.strptime(args.date_to or args.date_from, "%Y%m%d")
         else:
-            date_from, date_to = _resolve_dates()
+            date_from, date_to = _resolve_dates(shift_day=args.shift_day)
+        log.info("date_resolved",
+                 date_from=f"{date_from:%Y-%m-%d}",
+                 date_to=f"{date_to:%Y-%m-%d}",
+                 shift_day=args.shift_day)
 
         date_label = (
             f"{date_from:%Y-%m-%d} ～ {date_to:%Y-%m-%d}"
@@ -464,6 +474,7 @@ def main() -> None:
         load_to_bq(df, date_from, date_to)
 
         elapsed = datetime.now(JST) - start_time
+        log.info("completed", elapsed_sec=round(elapsed.total_seconds(), 1))
 
         log_cap.stop()
 
@@ -475,6 +486,7 @@ def main() -> None:
             f"[JQUANTS] エラー {date_label}",
             f"J-Quants /fins/summary 取得でエラーが発生しました。\n\n"
             f"対象期間  : {date_label}\n"
+            f"shift_day : {getattr(args, 'shift_day', '未取得')}\n"
             f"エラー    : {e}\n\n"
             f"トレースバック:\n{tb_str}",
             attachment_text=log_text or None,

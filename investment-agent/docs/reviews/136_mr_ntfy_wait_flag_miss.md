@@ -257,7 +257,7 @@ MR-134は1回の指摘で気付いたが、MR-136は3回の指摘を要した。
 ```markdown
 ```bash
 # --wait でリプライ待ちモードに入る（デフォルト3600秒待機）
-PYTHONUTF8=1 C:/venvs/investment-agent/Scripts/python.exe scripts/notify.py ntfy \
+PYTHONUTF8=1 <python> scripts/notify.py ntfy \
     "銘柄 7203 を再試行しますか？ (yes/skip/abort)" --wait --timeout 1800 --sender ATP --task "NG調査"
 
 # 標準出力にリプライ本文が出る。タイムアウト時は exit code 2
@@ -270,7 +270,7 @@ PYTHONUTF8=1 C:/venvs/investment-agent/Scripts/python.exe scripts/notify.py ntfy
 
 ```bash
 # --wait でリプライ待ちモードに入る（デフォルト3600秒待機）
-PYTHONUTF8=1 C:/venvs/investment-agent/Scripts/python.exe scripts/notify.py ntfy \
+PYTHONUTF8=1 <python> scripts/notify.py ntfy \
     "銘柄 7203 を再試行しますか？ (yes/skip/abort)" --wait --timeout 1800 --sender ATP --task "NG調査"
 
 # 標準出力にリプライ本文が出る。タイムアウト時は exit code 2

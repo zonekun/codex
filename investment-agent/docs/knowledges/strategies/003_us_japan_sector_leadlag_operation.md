@@ -79,7 +79,7 @@
 
 ```bash
 # 本番スクリプト（要作成: scripts/signal_011_4_daily.py）
-PYTHONUTF8=1 C:/venvs/investment-agent/Scripts/python.exe scripts/signal_011_4_daily.py
+PYTHONUTF8=1 <python> scripts/signal_011_4_daily.py
 ```
 
 出力例:

@@ -42,7 +42,7 @@ PYTHONUTF8=1 python scripts/tdnet_download.py --from 20260217 --to 20260224 --ti
 `scripts/tdnet_download.py` の冒頭の設定ブロックで `DATE_MODE` を選択する:
 
 ```python
-DATE_MODE   = "t"          # "t"=今日 / "1"=特定の1日 / "r"=期間
+DATE_MODE   = "t"          # "t"=前日〜今日 / "1"=特定の1日 / "r"=期間
 
 DATE_SINGLE = "20260224"   # MODE="1" のときの日付 (YYYYMMDD)
 
@@ -52,7 +52,7 @@ DATE_TO     = "20260224"   # MODE="r" のときの終了日 (YYYYMMDD)
 
 | MODE | 動作 |
 |------|------|
-| `"t"` | 実行日（システム日付）のみ取得。デフォルト |
+| `"t"` | 前日〜当日の2日分を取得。デフォルト（20:03以降開示・土日開示の取りこぼし防止） |
 | `"1"` | `DATE_SINGLE` の1日のみ取得 |
 | `"r"` | `DATE_FROM` ～ `DATE_TO` の期間を取得 |
 
@@ -158,6 +158,7 @@ gcloud run jobs update tdnet-download \
 - ページ取得間隔: 0.5秒、PDFダウンロード間隔: 0.3秒（変更しないこと）
 - 休日・祝日はTDnetにページが存在しないため自動スキップされる
 - 既存ファイルは再ダウンロードせずスキップ（冪等性あり）
+- `DATE_MODE="t"` は前日〜当日の2日分を取得する（2026-05-15改修: 20:03以降開示・土日開示の取りこぼし防止。GCSスキップにより重複コストなし）
 - 実行時は必ず `PYTHONUTF8=1` を付ける（日本語の print が文字化けする）
 
 ---

@@ -15,7 +15,7 @@
 | TDnet過去データ（irbank.net） | `docs/knowledges/tools/021_irbank_tdnet_download.md` |
 | コンセンサス取得（RAKU/IFIS）を改修 | `docs/knowledges/tools/022_consensus_load.md` |
 | PS1 / PowerShellローカル実行メニュー改修 | `docs/knowledges/tools/023_powershell_menu.md` |
-| TDnet ETL（GCS PDF → BQ、決算特別スケジュール） | `tools/013_tdnet_load.md`, `tools/003_tdnet_download.md` |
+| TDnet ETL（GCS PDF → BQ、決算特別シフト） | `tools/013_tdnet_load.md`, `tools/003_tdnet_download.md` |
 | EDINET パイプライン取得・改修 | `tools/009_edinet_download.md`, `tools/012_edinet_load.md` |
 | EDINET API（有報大株主抽出・日付スキャン最適化） | `docs/knowledges/api/006_edinet_api.md` |
 | TDnetカテゴリ分類を変更 | `docs/knowledges/tools/006_tdnet_category_classification.md` |
@@ -32,6 +32,9 @@
 | 決算スケジュール減衰（Earnings Schedule Decay） | `docs/knowledges/analysis/009_earnings_schedule_decay.md` |
 | 決算じっくり分析（セグメント構成変化等、中長期視点の深掘り） | `docs/knowledges/analysis/093_earnings_deep_analysis.md` |
 | FY弱気ガイダンス反復スクリーニング | `docs/knowledges/analysis/014_fy_conservative_guidance_screener.md` |
+| TOBインサイダー疑い検出スクリーナー（静止スコア×発火スコア） | `docs/knowledges/analysis/015_tob_insider_screener.md` |
+| VCP日次スクリーナー Cloud Run Job（Dropbox追記・Minervini VCP） | `docs/knowledges/analysis/016_vcp_insider_daily.md` |
+| TOB価格パターン ML予測（LightGBM / lift@5%=1.73 / 部分採用） | `docs/knowledges/analysis/017_tob_price_pattern_ml.md` |
 | スクリプトを新規作成・改修 | `docs/knowledges/tools/004_coding_conventions.md` |
 | コードレビュー不備の蓄積ログ・傾向分析（※メインエージェントは閲覧のみ。追記は Agent ツールで起動した reviewer サブエージェントの責務） | `docs/knowledges/tools/004-1_code_review_findings_log.md` |
 | MDレビュー（AI可読性レビュー） | `/md-reviewer`（正本: `skills/md-reviewer.md`） |
@@ -83,7 +86,8 @@
 | 決算反応モデル反省会ログ（銘柄別ログ・改善方針の時系列記録） | `docs/knowledges/tools/059-1_hanseikai_log.md` |
 | 決算予測・答え合わせの複数日バッチ再実行（BQクエリ7本共通化・04/14等を保全） | `scripts/earnings_model/batch_rerun_predict.py` → `docs/knowledges/tools/059_earnings_model_eda.md`（「バッチ再実行」セクション） |
 | 決算反応モデル学習データ除外管理 | `docs/knowledges/tools/076_earnings_exclusion_mechanism.md` |
-| ディスク容量クリーンアップ（data/logs + ~/.claude/ キャッシュ・stale projects） | `docs/knowledges/tools/077_cleanup_disk.md` |
+| ディスク容量クリーンアップ / ガベージ（data/logs + ~/.claude/ キャッシュ・stale projects） | `docs/knowledges/tools/077_cleanup_disk.md` |
+| C:\tmp フォルダ管理台帳（登録・削除ルール） | `docs/knowledges/tools/103_tmp_folder_registry.md` |
 | Google Colab（無料枠）開発ノウハウ | `docs/knowledges/tools/061_colab_free_tier_knowhow.md` |
 | TDnet/EDINET PDF処理戦略（ライブラリ・LLMルーティング） | `docs/knowledges/tools/062_pdf_processing_strategy.md` |
 | 逆日歩買い戦略 | `docs/knowledges/analysis/001_gyakuhibu_buyer_strategy.md` |
@@ -92,6 +96,8 @@
 | UKI予測モデル（高値安値20日） | `docs/knowledges/analysis/005_uki_predictor_high_low_20d.md` |
 | 騰落率ショックエントリー戦略 | `docs/knowledges/analysis/006_breadth_ratio_shock_entry.md` |
 | TOB ML予測モデル | `docs/knowledges/analysis/007_tob_ml_prediction.md` |
+| TOB ML予測モデル — 精度推移ログ | `docs/knowledges/analysis/007_tob_model_metrics.md` |
+| TOB ML予測モデル — バックテスト結果 | `docs/knowledges/analysis/007_tob_backtest_results.md` |
 | ファクターモデル残差相関（銘柄グループ構造分析） | `docs/knowledges/analysis/010_factor_model_residual_corr.md` |
 | 部分空間正則化PCAリードラグ 応用アイデア集 | `docs/knowledges/analysis/011_subspace_pca_leadlag_applications.md` |
 | 011-1: overnight→daytime × クラスタ（**FAIL**、個人1日ラグで崩壊） | `docs/knowledges/analysis/011-1_cluster_overnight_daytime_leadlag.md` |
@@ -100,6 +106,7 @@
 | 011-4: 米国セクターETF→日本セクターETF（論文再現） | `docs/knowledges/analysis/011-4_us_japan_sector_leadlag.md` |
 | 月次開示→決算予測 ミスプライシングスクリーニング | `docs/knowledges/analysis/012_monthly_disclosure_earnings_screening.md` |
 | サプライチェーン決算連鎖（先行好決算→後攻決算またぎ） | `docs/knowledges/analysis/013_supply_chain_earnings_cascade.md` |
+| 013-1: サプライチェーンマスタ構築記録（2026年5月版、偽陽性除去・検証手法・年次更新注意） | `docs/knowledges/analysis/013-1_supply_chain_master_build_202605.md` |
 | データカタログ日付ポリシー | `docs/knowledges/data/001_data_catalog_date_policy.md` |
 | EDINET 2024ダウンロード状況 | `docs/knowledges/data/002_edinet_2024_download_status.md` |
 | 日証金データ ソース切替（MARGIN_BALANCE/SHINA_RATES、2025-09-26境界） | `docs/knowledges/data/003_taisyaku_source_switch.md` |
@@ -118,6 +125,7 @@
 | browser-use CLI 2.0（JSレンダリングページ取得） | `docs/knowledges/tools/064_browser_use_cli.md` |
 | nodriver + Google Chrome + Xvfb（Linux 1GB RAM スクレイピング） | `docs/knowledges/tools/069_nodriver_chrome_linux.md` |
 | 決算発表予定スクレイピング・BQロード | `docs/knowledges/tools/065_earnings_schedule_load.md` |
+| 決算実績ロード（TDnet→EARNINGS_DISCLOSURE_CALENDAR RECORD_TYPE='A'） | `docs/knowledges/tools/101_earnings_actual_load.md` |
 | ザラ場ツール（決算リアルタイム監視・スコアリング） | `docs/knowledges/tools/066_zaraba_tool.md` |
 | ザラ場ツール反省会ログ（066サブファイル） | `docs/knowledges/tools/066-1_zaraba_retrospective.md` |
 | ザラ場ツール詳細リファレンス（066サブファイル） | `docs/knowledges/tools/066-2_zaraba_detail.md` |
@@ -146,6 +154,7 @@
 | BC月次KPIダウンロード（download_bc_kpi.py 仕様） | `docs/knowledges/tools/091_download_bc_kpi.md` |
 | 外部リファレンス管理（保存ルール・付随資料・ToC登録） | `docs/knowledges/tools/092_reference_management.md` |
 | 監視・見張りの義務と設計パターン（動作検証・ScheduleWakeup併用・圧縮後棚卸し・長時間待機手段選択） | `docs/knowledges/tools/093_monitoring_obligation.md` |
+| 時間指定ローカル実行・スケジュール手段選択（CronCreate / タスクスケジューラ / RemoteTrigger 使い分け、100%トークン到達時の対応） | `docs/knowledges/tools/102_scheduled_execution.md` |
 | QUICKコンセンサス取得（松井証券リサーチネット経由） | `docs/knowledges/tools/095_consensus_quick.md` |
 | スクレイピング新規開発ガイド（ツール選定・フレーム攻略・認証移植・bot対策） | `docs/knowledges/tools/096_scraping_development_guide.md` |
 | レビュー提出・返却・苦情申し立て（提出側ワークフロー統合） | `docs/knowledges/tools/097_review_submission_guide.md` |

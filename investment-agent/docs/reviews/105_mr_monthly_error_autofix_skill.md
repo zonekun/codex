@@ -31,7 +31,7 @@
 ### Accuracy / 正確性: A
 
 - GCSパス構造（`monthly/meta/{ticker}/extract_adapter.json` 等）は042 §ファイルマッピング絶対表と整合
-- Python venvパス `C:/venvs/investment-agent/Scripts/python.exe` はCLAUDE.md §実行環境と整合
+- Python venvパス `<python>` はCLAUDE.md §実行環境と整合
 - `PYTHONUTF8=1` 環境変数はCLAUDE.md §スクリプト実行と整合
 - `--no-batch` オプション、`--region us-west1` はCLAUDE.md §Cloud Run Job locationと整合
 - Gemini API使用許可セクション（L31-36）がCLAUDE.md §Gemini APIの制約に対する明示的例外として正しく記載：081 #4指摘の対処済み
@@ -154,7 +154,7 @@ gsutil ls gs://stock_data_1930932/monthly/docs/{ticker}/ | tail -1
 gsutil cp gs://stock_data_1930932/monthly/docs/{ticker}/{filename} C:/tmp/
 
 # Step 3A-3: テキスト抽出
-PYTHONUTF8=1 C:/venvs/investment-agent/Scripts/python.exe -c "
+PYTHONUTF8=1 <python> -c "
 import pdfplumber
 with pdfplumber.open('C:/tmp/{filename}') as pdf:
     for page in pdf.pages:

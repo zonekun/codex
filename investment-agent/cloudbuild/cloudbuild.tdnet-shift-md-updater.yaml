@@ -1,0 +1,25 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - build
+      - -f
+      - docker/Dockerfile.tdnet-shift-md-updater
+      - -t
+      - us-west1-docker.pkg.dev/gmailpj-357912/tools/tdnet-shift-md-updater:latest
+      - .
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - push
+      - us-west1-docker.pkg.dev/gmailpj-357912/tools/tdnet-shift-md-updater:latest
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        set -e
+        echo "Updating job: tdnet-shift-md-updater"
+        gcloud run jobs update tdnet-shift-md-updater --region=us-west1 \
+          --image=us-west1-docker.pkg.dev/gmailpj-357912/tools/tdnet-shift-md-updater:latest
+
+images:
+  - us-west1-docker.pkg.dev/gmailpj-357912/tools/tdnet-shift-md-updater:latest

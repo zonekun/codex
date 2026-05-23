@@ -85,7 +85,7 @@ monthly_bc_repair/inspect_ticker.py: adapter・records・BC値・PDF構造を一
 
 ```bash
 # BC値取得（直近年月）
-PYTHONUTF8=1 C:/venvs/investment-agent/Scripts/python.exe -c "
+PYTHONUTF8=1 <python> -c "
 import csv, sys
 ticker = sys.argv[1]
 with open('data/csv/bc_monthly_kpi.csv', encoding='utf-8') as f:

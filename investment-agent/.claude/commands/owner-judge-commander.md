@@ -1,0 +1,1 @@
+skills/owner_judge_commander.md を Read し、その指示に会話内で従え。

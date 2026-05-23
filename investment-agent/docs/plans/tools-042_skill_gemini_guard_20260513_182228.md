@@ -61,7 +61,7 @@
 ```
 Gemini adapterの銘柄は `--since YYYY` で直近年に絞り、API呼び出しを最小化する:
 ```bash
-PYTHONUTF8=1 C:/venvs/investment-agent/Scripts/python.exe scripts/extract_monthly_data.py --tickers <ticker> --no-batch --since <直近年>
+PYTHONUTF8=1 <python> scripts/extract_monthly_data.py --tickers <ticker> --no-batch --since <直近年>
 ```
 ```
 

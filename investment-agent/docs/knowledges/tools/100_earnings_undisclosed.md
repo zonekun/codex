@@ -29,7 +29,7 @@
 ## 実行コマンド
 
 ```bash
-PYTHONUTF8=1 C:/venvs/investment-agent/Scripts/python.exe scripts/menu_earnings_undisclosed.py
+PYTHONUTF8=1 <python> scripts/menu_earnings_undisclosed.py
 ```
 
 PSメニューから選択して実行可能。番号は [`023_powershell_menu.md`](023_powershell_menu.md) を参照。

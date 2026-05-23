@@ -42,7 +42,7 @@
 **v2方針は根本原因に正しく対処している。**
 
 - **事象1（Bashでの `C:\` パス解決失敗）**: 根本原因は「エージェントがBashコマンド生成時にWindows形式 `C:\...` を出力すること」。v2の対策「Bashツールではフォワードスラッシュ `C:/...` を使う」は、この原因に直接対処するルールであり適切
-- 068知見MDのCLI例（L46 `C:/venvs/investment-agent/Scripts/python.exe`、L82 同形式）は既にフォワードスラッシュで記載されている。つまりドキュメント上は正しいが、CLAUDE.md §実行環境にBash用パス変換ルールが明示されていなかったため、エージェントがCLAUDE.md L104の `C:\gdrive\...` 表記をそのままBashコマンドに持ち込んだ。v2はこの「ルール欠落」を埋めるもの
+- 068知見MDのCLI例（L46 `<python>`、L82 同形式）は既にフォワードスラッシュで記載されている。つまりドキュメント上は正しいが、CLAUDE.md §実行環境にBash用パス変換ルールが明示されていなかったため、エージェントがCLAUDE.md L104の `C:\gdrive\...` 表記をそのままBashコマンドに持ち込んだ。v2はこの「ルール欠落」を埋めるもの
 - **事象2（PowerShell auto-background化）**: P0-3で068知見MD L228を「Bash / PowerShell 両ツール」に拡大。これも適切
 
 **v1からの改善点の評価**:
@@ -58,7 +58,7 @@
 
 ### 抜け漏れ（類似観点での横展開含む）
 
-- [ ] **CLAUDE.md §実行環境 L104のバックスラッシュ表記への注記**: L104 `C:\gdrive\claude\investment-agent` は「常に使う」パスの定義。P0-1で追加されるBashパス表記ルールとの関係で、「Bashコマンド内では `C:/gdrive/claude/investment-agent` と書く」という適用例が暗黙的に求められるが、L104自体の表記を変更する必要はない（Windowsのファイルシステムパスとしての定義なので）。ただし、P0-1の追加ルール内の例示 `C:/venvs/investment-agent/Scripts/python.exe` に加えて、`C:/gdrive/...` も例として含めると、L104との関係が明確になる（任意改善）
+- [ ] **CLAUDE.md §実行環境 L104のバックスラッシュ表記への注記**: L104 `C:\gdrive\claude\investment-agent` は「常に使う」パスの定義。P0-1で追加されるBashパス表記ルールとの関係で、「Bashコマンド内では `C:/gdrive/claude/investment-agent` と書く」という適用例が暗黙的に求められるが、L104自体の表記を変更する必要はない（Windowsのファイルシステムパスとしての定義なので）。ただし、P0-1の追加ルール内の例示 `<python>` に加えて、`C:/gdrive/...` も例として含めると、L104との関係が明確になる（任意改善）
 - [ ] **他のスクリプト実行でも同じBashパス問題が潜在**: notify.py以外のスクリプトをBashで実行する場合も、`C:\venvs\...` と書けば同じ問題が発生する。v2のP0-1はCLAUDE.md §実行環境に**汎用的な**Bashパス表記ルールを追加するため、notify.py固有の問題だけでなく全スクリプト実行に適用される。これはv1（PowerShell固定=notify.py限定）よりスコープが広く、横展開として優れている
 - [ ] **P0-2の落とし穴セクション追加内容にtimeout言及がない**: P0-2で追加される「落とし穴: Bash パス表記 — フォワードスラッシュ必須」セクション（プランL94-110）はパス表記のみに焦点。同じ事故で発生した事象2（auto-background）への言及・相互参照がない。落とし穴セクションを読む際に「パス表記だけ直せばOK」と誤認するリスクがある。「※ auto-background問題も併せて上記§落とし穴: `send_ntfy_and_wait`の実行方法 を参照」程度の相互リンクがあるとよい（任意改善）
 
@@ -92,14 +92,14 @@
 ### #1 P0-2のNG例にバックスラッシュの具体的症状を追加
 
 - 箇所: `docs/plans/20260502_152924_line_mode_recurrence_prevention.md:100-107`
-- 現状: P0-2のNG例 `PYTHONUTF8=1 C:\venvs\investment-agent\Scripts\python.exe scripts/notify.py ntfy "メッセージ"` は表記のみ。実際のエラーメッセージ（`command not found` 等）が併記されていない
+- 現状: P0-2のNG例 `PYTHONUTF8=1 <python> scripts/notify.py ntfy "メッセージ"` は表記のみ。実際のエラーメッセージ（`command not found` 等）が併記されていない
 - 提案: NG例の直後にコメントとして実際のエラー出力例を追加すると、エージェントがエラーメッセージから問題を自己診断できる
 
 ### #2 smoke testにフォワードスラッシュとUnix形式の両方のテストを含める
 
 - 箇所: `docs/plans/20260502_152924_line_mode_recurrence_prevention.md:162`
 - 現状: smoke testが `C:/venvs/...` 形式のみ。P0-2では `/c/venvs/...` 形式もOKとして記載
-- 提案: smoke testに `/c/venvs/investment-agent/Scripts/python.exe --version` も含めると、Unix形式パスの動作確認も行える
+- 提案: smoke testに `<python> --version` も含めると、Unix形式パスの動作確認も行える
 
 ## 【確認できなかった事項】
 

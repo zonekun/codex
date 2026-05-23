@@ -1,0 +1,32 @@
+FROM python:3.12-slim
+
+WORKDIR /app
+
+# git が必要（VCP スキルの clone に使用）
+RUN apt-get update && apt-get install -y --no-install-recommends git \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN pip install --no-cache-dir \
+    google-cloud-bigquery>=3.11 \
+    google-cloud-bigquery-storage>=2.22 \
+    db-dtypes>=1.1 \
+    pyarrow>=14.0 \
+    pandas>=2.0 \
+    numpy>=1.26 \
+    structlog>=23.1 \
+    dropbox>=11.36 \
+    openpyxl>=3.1
+
+# VCP スキルを clone（calculators/ scorer.py report_generator.py fmp_client.py）
+RUN git clone --depth 1 https://github.com/tradermonty/claude-trading-skills /tmp/claude-trading-skills
+
+COPY scripts/tob_prediction/screen_tob_insider.py scripts/tob_prediction/screen_tob_insider.py
+COPY scripts/tob_prediction/jquants_bq_client.py scripts/tob_prediction/jquants_bq_client.py
+COPY scripts/tob_prediction/screen_vcp_jp.py scripts/tob_prediction/screen_vcp_jp.py
+COPY scripts/tob_prediction/vcp_daily_cloud.py scripts/tob_prediction/vcp_daily_cloud.py
+
+ENV PYTHONUTF8=1
+ENV PYTHONUNBUFFERED=1
+ENV VCP_SKILL_DIR=/tmp/claude-trading-skills/skills/vcp-screener/scripts
+
+ENTRYPOINT ["python", "scripts/tob_prediction/vcp_daily_cloud.py"]

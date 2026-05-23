@@ -56,12 +56,12 @@ from notify import send_mail, LogCapture
 # ║  ★ 実行設定（ここを直接書き換えて使う）                                ║
 # ╠══════════════════════════════════════════════════════════════════╣
 # ║  DATE_MODE を選択:                                                ║
-# ║    "t"  今日の日付でダウンロード ← デフォルト                         ║
+# ║    "t"  前日〜今日の2日分をダウンロード ← デフォルト                    ║
 # ║    "1"  DATE_SINGLE の1日のみダウンロード                            ║
 # ║    "r"  DATE_FROM ～ DATE_TO の期間でダウンロード                     ║
 # ╚══════════════════════════════════════════════════════════════════╝
 
-DATE_MODE   = "t"          # "t"=今日 / "1"=特定の1日 / "r"=期間
+DATE_MODE   = "t"          # "t"=前日〜今日 / "1"=特定の1日 / "r"=期間
 
 DATE_SINGLE = "20260224"   # MODE="1" のときの日付 (YYYYMMDD)
 
@@ -685,9 +685,11 @@ def _delete_resume_log(log_ref: "Path | str") -> None:
 
 def _resolve_dates() -> tuple[str, str]:
     """DATE_MODE に従って (date_from, date_to) を解決する."""
-    today = date.today().strftime("%Y%m%d")
+    today = datetime.now(JST).date()
+    today_s = today.strftime("%Y%m%d")
+    yesterday_s = (today - timedelta(days=1)).strftime("%Y%m%d")
     if DATE_MODE == "t":
-        return today, today
+        return yesterday_s, today_s
     elif DATE_MODE == "1":
         return DATE_SINGLE, DATE_SINGLE
     elif DATE_MODE == "r":

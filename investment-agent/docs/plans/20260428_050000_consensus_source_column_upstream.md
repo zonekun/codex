@@ -158,14 +158,14 @@ bq_rows = [{"DATAAT": dataat, "TICKER": code, "FY": fy_period, "SOURCE": "RAKU",
 **検証**:
 ```bash
 # 1. py_compile
-PYTHONUTF8=1 C:\venvs\investment-agent\Scripts\python.exe -m py_compile scripts/update_conse_ifis.py
+PYTHONUTF8=1 <python> -m py_compile scripts/update_conse_ifis.py
 
 # 2. dry-run（BQ未接続でも動く）
-PYTHONUTF8=1 C:\venvs\investment-agent\Scripts\python.exe scripts/update_conse_ifis.py --ticker 6723 --dry-run
+PYTHONUTF8=1 <python> scripts/update_conse_ifis.py --ticker 6723 --dry-run
 # 期待: FY=202612, 1Q=90400, 2Q=170900, 3Q=267600, FY=372075
 
 # 3. BQ insert smoke（SOURCE カラム追加・埋め戻し完了後）
-PYTHONUTF8=1 C:\venvs\investment-agent\Scripts\python.exe scripts/update_conse_ifis.py --ticker 6723
+PYTHONUTF8=1 <python> scripts/update_conse_ifis.py --ticker 6723
 # BQ確認:
 # SELECT * FROM STOCK.CONSENSUS WHERE TICKER = '6723' AND SOURCE = 'IFIS' ORDER BY DATAAT DESC;
 ```

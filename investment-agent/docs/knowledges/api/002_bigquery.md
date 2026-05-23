@@ -537,6 +537,7 @@ def _get_cached_blobs(storage_client, ticker: str) -> list[str]:
 | テーブル名を推測してクエリ | `Not found: Table xxx was not found` | **必ず先に `client.list_tables()` でテーブル一覧を確認してからクエリを書く** |
 | カラム名を推測してクエリ | `Unrecognized name: XXX` | **BQクエリを書く前に必ず `data_catalog.md` のスキーマ定義を読む**。特に `STOCK_CODE_LIST` は `Code`/`CompanyName` でなく `TICKER`/`STOCK_NAME` |
 | `DATE` をカラム名に使う | `Unrecognized name: DATE` | BQ予約語。実際のカラム名をスキーマで確認する（例: `SUBMISSION_DATE`） |
+| `COUNT(*) AS ROWS` 等の予約語エイリアス | `Unexpected keyword ROWS` | BQ予約語をエイリアスに使用禁止。`row_cnt`, `dt`, `min_date` 等で回避 |
 | ストリーミング挿入直後に DELETE/UPDATE | `400 UPDATE or DELETE ... would affect rows in the streaming buffer` | **1〜2時間待つか、CTAS（CREATE TABLE AS SELECT で対象外レコードを別テーブルにコピー → swap → DROP）で対処** |
 
 ### Windows ローカルでの SSL エラー回避

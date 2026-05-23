@@ -4,6 +4,7 @@
 **作成日**: 2026-02-25
 **ステータス**: 有効
 **適用範囲**: プロジェクト全体（すべてのスクリプト・モジュール）
+**計画**: `docs/plans/tools-004_coding_conventions_20260517_124100.md`
 
 ## 概要
 
@@ -13,38 +14,7 @@
 
 ## 定数・モード値は短く
 
-ユーザーが直接書き換える定数やモード値は、**短い文字列または記号**にする。
-
-### 理由
-
-- 書き換えコストが低い（タイプ量が少ない）
-- 視認性が高い（差分がひと目でわかる）
-- コメントに説明を書けば十分
-
-### 実例（tdnet_download.py の DATE_MODE）
-
-```python
-# ❌ 冗長
-DATE_MODE = "today"    # または "single" / "range"
-
-# ✅ 短く
-DATE_MODE = "t"        # "t"=今日 / "1"=特定の1日 / "r"=期間
-```
-
-### 適用パターン
-
-| 用途 | 冗長（避ける） | 短く（推奨） |
-|------|--------------|------------|
-| モード選択 | `"today"` / `"single"` / `"range"` | `"t"` / `"1"` / `"r"` |
-| フラグ | `"enabled"` / `"disabled"` | `"on"` / `"off"` または `True` / `False` |
-| 環境 | `"production"` / `"development"` | `"prod"` / `"dev"` |
-| 方向 | `"ascending"` / `"descending"` | `"asc"` / `"desc"` |
-
-### 注意
-
-- 短さを優先するのは**ユーザーが直接書き換える箇所**に限る
-- 内部ロジックの変数名・関数名は可読性優先で通常の命名規則に従う
-- 選択肢と意味はコメントに必ず記載する（短くしても意味を失わない）
+ユーザーが直接書き換える定数は**短い文字列または記号**にする。選択肢と意味はコメントに必ず記載する。内部ロジックの変数名・関数名は可読性優先で通常の命名規則に従う。
 
 ---
 
@@ -52,39 +22,9 @@ DATE_MODE = "t"        # "t"=今日 / "1"=特定の1日 / "r"=期間
 
 日時処理は **stdlib の `datetime.timezone`** に統一する。`pytz` は使わない。
 
-### 書き方
-
-```python
-from datetime import datetime, timezone, timedelta
-
-JST = timezone(timedelta(hours=+9), "JST")
-
-# ✅ 正しい
-now = datetime.now(JST)
-
-# ❌ 使わない（pytz 依存、インストール不要にする）
-import pytz
-JST_pytz = pytz.timezone('Asia/Tokyo')
-now = datetime.now(JST_pytz)
-```
-
-### 適用範囲
-
-- すべてのスクリプト・モジュールでこの書き方に統一する
-- `datetime.now()`（タイムゾーンなし）は UTC になるため使用禁止。必ず `JST` を渡す
+- すべてのスクリプト・モジュールでこの書き方に統一する: `JST = timezone(timedelta(hours=+9), "JST")`
+- タイムゾーン非明示の日時取得・表示・出力は禁止（`datetime.now()` / `date.today()` 等）。必ず `JST` を渡す
 - `notify.py` の `send_mail()` に渡す時刻表示も JST で統一する
-
-### 適用済みスクリプト
-
-| スクリプト | 対応状況 |
-|-----------|---------|
-| `scripts/edinet_download.py` | ✅ JST 適用済み |
-| `scripts/tdnet_download.py` | ✅ JST 適用済み |
-| `scripts/jquants_get_fin_summary.py` | ✅ JST 適用済み |
-| `scripts/edinet_load.py` | ✅ JST 適用済み |
-| `scripts/tdnet_load.py` | ✅ JST 適用済み |
-| `scripts/stock_price_load.py` | ✅ JST 適用済み |
-| `scripts/stock_code_list_load.py` | ✅ JST 適用済み |
 
 ---
 
@@ -106,83 +46,16 @@ pandas の `read_csv` は列の全値が数値のみの場合 `int64` に推論�
 
 ## Cloud Run Job / バックグラウンド実行では PYTHONUNBUFFERED=1 必須
 
-### 問題
-
-Python はターミナル以外（Cloud Run・バックグラウンドプロセス）に出力するとき、
-stdout をバッファに溜めてからまとめて書き出す。
-
-結果:
-- Cloud Run Job のログがジョブ終了まで Cloud Logging に流れない（監視不能）
-- `run_in_background=true` で実行したとき、進捗の `print()` がファイルに現れない
-- stderr（警告・例外）は即時出力されるため、stderr だけ見えて stdout が消えたように見える
-
-### 対処
-
-すべての Cloud Run Job 向け Dockerfile に必ず両方を設定する:
-
-```dockerfile
-ENV PYTHONUTF8=1
-ENV PYTHONUNBUFFERED=1
-```
-
-`PYTHONUTF8=1` だけでは**バッファリングは解消されない**（エンコーディングのみ変更）。
-
-### 適用ルール
-
-- Dockerfile を新規作成するときは必ず両方追加
-- MCP サーバー系（HTTP ポート待受）は対象外
+Dockerfile に `ENV PYTHONUTF8=1` と `ENV PYTHONUNBUFFERED=1` を**必ず両方**設定する。`PYTHONUTF8=1` だけではバッファリングは解消されない（エンコーディングのみ変更）。MCP サーバー系（HTTP ポート待受）は対象外。
 
 ---
 
 ## ノートブック・スクリプトでの BQ コスト最適化（必須）
 
-### 問題
-
-BQ クエリを複数セルで個別に実行すると、セル再実行のたびに課金が発生する。
-特に EDA ノートブックでは試行錯誤で何度もセルを再実行するため、BQ 料金が莫大になる。
-
-### ルール
-
 1. **BQ アクセスは1回のみ**: 必要な全テーブルを1つのセル/関数でまとめてダウンロードする
-2. **ローカルキャッシュ必須**: ダウンロードしたデータは CSV としてローカルに保存する
-   - Colab: `/content/<cache_dir>/`
-   - ローカル: `C:\tmp\<cache_dir>/`
+2. **ローカルキャッシュ必須**: ダウンロードしたデータは CSV としてローカルに保存する（Colab: `/content/<cache_dir>/`、ローカル: `C:\tmp\<cache_dir>/`）
 3. **2回目以降はキャッシュから読む**: `FORCE_RELOAD` フラグで明示的に再ダウンロードしない限り、ローカル CSV から読み込む
-4. **JOIN・フィルタ・集計はすべて pandas で行う**: BQ 側で JOIN するクエリを複数回投げない。各テーブルを単純 SELECT で取得し、pandas でメモリ上結合する
-
-### パターン
-
-```python
-FORCE_RELOAD = False
-CACHE_DIR = Path('/content/cache')
-_CACHE = {
-    'table_a': CACHE_DIR / f'{tag}_table_a.csv',
-    'table_b': CACHE_DIR / f'{tag}_table_b.csv',
-}
-
-def _download_all():
-    """BQ から全テーブルを1回でダウンロード → CSV 保存."""
-    for name, query in queries.items():
-        df = bq.query(query).to_dataframe()
-        df.to_csv(_CACHE[name], index=False)
-
-if FORCE_RELOAD or not all(p.exists() for p in _CACHE.values()):
-    _download_all()
-
-df_a = pd.read_csv(_CACHE['table_a'])
-df_b = pd.read_csv(_CACHE['table_b'])
-```
-
-### 禁止パターン
-
-```python
-# ❌ セルごとに個別 BQ クエリ（再実行のたびに課金）
-df_sector = bq.query("SELECT ... FROM STOCK_CODE_LIST").to_dataframe()
-# 別セル
-df_price = bq.query("SELECT ... FROM STOCK_PRICE_JQUANTS").to_dataframe()
-# さらに別セル
-df_consensus = bq.query("SELECT ... FROM CONSENSUS").to_dataframe()
-```
+4. **JOIN・フィルタ・集計はすべて pandas で行う**: BQ 側で JOIN するクエリを複数回投げない
 
 ---
 
@@ -197,34 +70,13 @@ df_consensus = bq.query("SELECT ... FROM CONSENSUS").to_dataframe()
 | プロジェクト内 | `scripts/<feature>/xxx.ipynb` | git管理・ローカル実行 |
 | Colab Notebooks | `G:\マイドライブ\Colab Notebooks\xxx.ipynb` | Colab から直接開く |
 
-ノートブックを新規作成・更新したら**常に両方に保存**すること。
+ノートブックを新規作成・更新したら**常に両方に保存**すること。コピーコマンド: `cp scripts/<feature>/xxx.ipynb "/g/マイドライブ/Colab Notebooks/xxx.ipynb"`
 
-**チェックポイント管理**: Jupyter が自動生成する `.ipynb_checkpoints/` は `data/tmp/.jupyter_checkpoints/` に集約設定済み（`~/.jupyter/jupyter_notebook_config.py`）。`.gitignore` で除外済み。散在を見つけたら手動削除。
-
-```bash
-# コピーコマンド（Git Bash）
-cp scripts/<feature>/xxx.ipynb "/g/マイドライブ/Colab Notebooks/xxx.ipynb"
-```
+**チェックポイント管理**: Jupyter が自動生成する `.ipynb_checkpoints/` は `data/tmp/.jupyter_checkpoints/` に集約設定済み。`.gitignore` で除外済み。散在を見つけたら手動削除。
 
 ### 実行環境（Colab / ローカル 両対応）
 
-ノートブックは Colab と Windows ローカルの **両方で動く** ように書く。
-Setup セルで `RUNTIME` を自動判定し、認証・パスを分岐する。
-
-```python
-try:
-    from google.colab import auth, userdata
-    RUNTIME = 'colab'
-except ImportError:
-    RUNTIME = 'local'
-
-if RUNTIME == 'colab':
-    auth.authenticate_user()
-    bq = bigquery.Client(project='gmailpj-357912')
-else:
-    # ローカル: SSL workaround + サービスアカウント
-    ...
-```
+ノートブックは Colab と Windows ローカルの **両方で動く** ように書く。Setup セルで `google.colab` の import 成功/失敗で `RUNTIME = 'colab'` / `'local'` を自動判定し、認証・パスを分岐する。
 
 ---
 
@@ -316,10 +168,7 @@ else:
 - [ ] D-3: 部分失敗時の orphan cancel
 - [ ] D-4: BQ DML は public API (`num_dml_affected_rows`)
 - [ ] E-1/E-2: 設定は環境変数経由、mutable global 禁止
-- [ ] CLAUDE.md§コーディング規約: `print()` 不使用、`structlog` でロギング
 - [ ] CLAUDE.md§コーディング規約: GCP認証は `settings.google_application_credentials` 経由
-- [ ] CLAUDE.md§コーディング規約: docstring は Google style（Args/Returns/Raises 記載）
-- [ ] CLAUDE.md§コーディング規約: 全関数に型ヒント
 - [ ] 一時ファイル・バックアップファイルの知見MD記載（下記ルール参照）
 
 ---
@@ -349,23 +198,10 @@ else:
 
 **名前の同一性 ≠ 意味の同一性**。ローカル↔GCS や異なるディレクトリ間で同期・コピー・上書きする際は、**内容の意味種別（スキーマ・キー・用途）を検証**してから操作する。
 
-### 反面教師事例（2026-04-20）
-
-`sync_latest_adapters_bg.py` がローカル `meta/monthly/{ticker}_extract_adapter.json`（extract adapter = `fields`/`row_label_regex`）を GCS `monthly/meta/{ticker}/adapter.json`（URL adapter = `ir_page_url`/`type`）と同一視し、`updated_at` 比較だけで **245 件の URL adapter を破壊**。両者ともファイル名が `adapter.json` / `{ticker}.json` で紛らわしかったのに意味種別を検証しなかったのが原因。
-
-### 恒久ルール
-
 1. **両者の意味種別を判定する手段を用意**（判定キー・必須フィールド等）
 2. **種別不一致なら即エラー停止**。`updated_at` 比較は種別一致を確認した後で初めて意味を持つ
 3. **dry-run で 10 件以上、種別一致を目視確認**してから本実行
 4. **ペアリング（どのパスがどの意味か）を docstring に明記**。逆方向同期で対応関係が破綻しないか設計段階で検証
-
-### チェックリスト
-
-- [ ] 両パスの意味種別を事前定義したか
-- [ ] sync/copy 前に種別比較で不一致停止するか
-- [ ] dry-run で 10 件の種別一致を目視確認したか
-- [ ] docstring にペアリング表を書いたか
 
 ---
 
@@ -381,21 +217,7 @@ else:
 - **bucket/quota 系**: `gsutil rsync -d`, jobs delete, secrets 削除
 - **副作用のあるスクリプトを `| head` 等のパイプで部分確認しない**: パイプ閉鎖前に副作用は実行される
 
-### 事故事例
-
-### sync_latest_adapters_bg.py 245本破壊（2026-04-20）
-
-`sync_latest_adapters_bg.py` がローカル extract adapter を GCS URL adapter に誤マッピングで上書き → **245 本破壊**。原因: dry-run 未実装・内容種別検証無し・全銘柄一発実行。`monthly_adapter_index.csv` から再構築で復旧。
-
-### monitor_backfill.py パイプ経由二重起動（2026-04-29）
-
-`monitor_backfill.py ... | head -5` で設定パース確認のつもりが、`head` がパイプを閉じる前に Cloud Run Job がサブミットされ、孤立ジョブが稼働。その後の本番実行で2つ目の同一ジョブが並走。原因: `--dry-run` が既に実装済みなのに使わず `| head -5` で代用。→ review 028。
-
-### GCPリソース変更時のMD更新漏れ（2026-05-02）
-
-`tdnet-ai-weekly` Scheduler 作成 + `ai_processing_flow` Workflow 改修を完了したが、知見ファイル（013_tdnet_load.md）の「⚠️ Scheduler 未設定」表記を更新せず。ユーザー指摘まで陳腐化放置。→ review 060。
-
-**ルール**: GCPリソース（Scheduler/Cloud Run Job/Workflows/Functions）を変更・作成・削除したら、変更完了直後に関連知見ファイルの「現況サマリ」「ステータス」「残課題」を自発更新する。判定:「次セッションがこのMDを読んだとき現在のGCP状態と矛盾しないか？」
+**GCPリソース変更後のMD更新義務**: GCPリソース（Scheduler/Cloud Run Job/Workflows/Functions）を変更・作成・削除したら、変更完了直後に関連知見ファイルの「現況サマリ」「ステータス」「残課題」を自発更新する。判定:「次セッションがこのMDを読んだとき現在のGCP状態と矛盾しないか？」
 
 ---
 
@@ -407,104 +229,23 @@ else:
 
 ## 一時スクリプトの命名（tmp_*.py）
 
-### ルール
+一過性の処理（調査・デバッグ・バッチ修正・PoC・1回限りの移行等）は **`tmp_`** プレフィックスで命名する。`.gitignore` で除外（`scripts/tmp_*.py`）。成果は正規の場所に反映し、スクリプト自体は用が済んだら削除する。
 
-一過性の処理（調査・デバッグ・バッチ修正・PoC・1回限りの移行等）は **`tmp_`** プレフィックスで命名する。
-
-```
-scripts/tmp_investigate_7345.py      # 個別銘柄調査
-scripts/tmp_debug_extract_2305.py    # デバッグ
-scripts/tmp_apply_fixes_round3.py    # バッチ修正
-scripts/tmp_poc_ocr_compare.py       # PoC実験
-scripts/tmp_backfill_2023_efg.py     # 一過性バックフィル
-```
-
-### .gitignore で除外
-
-```gitignore
-scripts/tmp_*.py
-```
-
-一時スクリプトはコミットしない。成果（知見・データ・adapter修正等）は正規の場所に反映し、スクリプト自体は用が済んだら削除する。
-
-### 判定基準
-
-「3ヶ月後に別セッションがこのスクリプトを実行する場面があるか？」
-
-- **No** → `tmp_` をつける
-- **Yes** → 通常命名（`investigate_monthly_ng.py` 等）
-
-### 旧命名との対応（参考）
-
-| 旧パターン（もう使わない） | 今後の命名 |
-|---------------------------|-----------|
-| `*_bg.py`（セッション内BG処理） | `tmp_*_bg.py` または `tmp_*` |
-| `investigate_<ticker>.py` | `tmp_investigate_<ticker>.py` |
-| `poc_<実験名>.py` | `tmp_poc_<実験名>.py` |
-| `debug_*.py` | `tmp_debug_*.py` |
-| `apply_batch_fixes_round*.py` | `tmp_apply_fixes_*.py` |
-| `*_copy.py` / `*コピー*.py` | `tmp_*` |
+**判定**: 「3ヶ月後に別セッションがこのスクリプトを実行する場面があるか？」No → `tmp_`、Yes → 通常命名
 
 ---
 
 ## テストスクリプト（test_*.py）
 
-### 配置・命名
+繰り返し実行する検証・動作確認スクリプトは **`scripts/` 配下に `test_` プレフィックス**で配置する。`C:\tmp\` やプロジェクト外への配置は禁止（git管理外になるため）。命名: `test_<機能の短い説明>.py`
 
-テストスクリプトは **`scripts/` 配下に `test_` プレフィックス**で配置する。`C:\tmp\` やプロジェクト外への配置は禁止（git 管理外になりバージョン管理・コードレビュー・他端末での再利用が不可能になるため）。
-
-```
-scripts/test_conse_quick.py       # コンセンサス取得テスト
-scripts/test_yutai_nav.py         # 株主優待ナビゲーションテスト
-```
-
-### 命名規則
-
-`test_<機能の短い説明>.py`
-
-- `test_` で始めることで通常のスクリプト（本番バッチ等）と区別する
-- テスト対象がわかる名前をつける
-
-### 一時スクリプトとの違い
-
-| 種別 | プレフィックス | git管理 | 用途 |
-|------|--------------|---------|------|
-| テストスクリプト | `test_` | する | 繰り返し実行する検証・動作確認 |
-| 一時スクリプト | `tmp_` | しない（.gitignore除外） | 1回限りの調査・デバッグ・PoC |
-
-判定基準: 「3ヶ月後に別セッションがこのスクリプトを実行する場面があるか？」Yes → `test_`、No → `tmp_`
-
-### 事故事例
-
-review 118: テストスクリプトを `C:\tmp\test_yutai_nav.py` に配置 → ユーザー指摘で `scripts/test_yutai_nav.py` に再作成。原因: 004 を参照せずに Write し、「テスト」→「一時的」→「テンポラリディレクトリ」と意味的に連想した。
+**判定**: 「3ヶ月後に別セッションがこのスクリプトを実行する場面があるか？」Yes → `test_`（git管理）、No → `tmp_`（git除外）
 
 ---
 
 ## scripts/ 共通ライブラリ（lib_*.py）
 
-### 配置・命名
-
-複数スクリプトから共通で使う関数は `scripts/` 直下に `lib_` プレフィックス付きで置く。専用ディレクトリ（`scripts/lib/` 等）は作らない。
-
-```
-scripts/
-  lib_conse_csv_from_view.py   # コンセンサスCSV出力（VIEW→ローカルCSV）
-  update_conse_ifis.py         # ← import して使う
-  update_conse_rakuten.py      # ← import して使う
-```
-
-### 命名規則
-
-`lib_<機能の短い説明>.py`
-
-- `lib_` で始めることで通常のスクリプト（直接実行するもの）と区別する
-- 機能がわかる名前をつける（`lib_utils.py` のような汎用名は避ける）
-
-### 既存一覧
-
-| ファイル | 用途 | 利用元 |
-|---------|------|--------|
-| `lib_conse_csv_from_view.py` | `V_CONSENSUS_MERGED` VIEW → ローカルCSV出力 | `update_conse_ifis.py`, `update_conse_rakuten.py` |
+複数スクリプトから共通で使う関数は `scripts/` 直下に `lib_` プレフィックス付きで置く。専用ディレクトリ（`scripts/lib/` 等）は作らない。命名: `lib_<機能の短い説明>.py`（`lib_utils.py` のような汎用名は避ける）。
 
 ---
 
@@ -513,9 +254,8 @@ scripts/
 > CLAUDE.md から詳細を移動。
 
 - **あらゆる日付時刻はJST（UTC+9）を使用**。ログ・API・BQ・gcloud・MCP・GCS・Colab等、出所を問わず変換する。UTC出力はNG
-- **コード上**: `datetime.now()` は禁止。`datetime.now(tz=ZoneInfo('Asia/Tokyo'))` を使う。ファイル名・created_at・ログ等すべてJSTで統一
-- **MD記述時**: プランMD・知見MD・レビューMD等に日付時刻を記載する際は、JST現在日付時刻を確認してから記述する。記憶・推定による日付時刻記載は禁止
-- **JST取得方法**: Git Bash の `date` / `TZ=Asia/Tokyo date` はWindows環境でUTC値をJSTラベル付きで返す事故がある。`python -c "from datetime import datetime; from zoneinfo import ZoneInfo; print(datetime.now(tz=ZoneInfo('Asia/Tokyo')))"` を使うこと
+- **コード上**: タイムゾーン非明示の日時取得・表示・出力は禁止。`datetime.now()` / `date.today()` → `datetime.now(tz=JST)` / `datetime.now(tz=JST).date()` に置換。ファイル名・created_at・ログ等すべてJSTで統一
+- **日付時刻・曜日・営業日・祝日の記載**: MD・会話出力・ログ・コメントを問わず全ての文脈で、JST基準で python/date で確認してから記述する。記憶・暗算による曜日/日付断定は禁止。確認コマンド: `python -c "from datetime import datetime, timezone, timedelta; JST=timezone(timedelta(hours=9)); print(datetime.now(tz=JST).strftime('%A, %Y-%m-%d %H:%M JST'))"`（任意日の曜日確認は `python -c "from datetime import date; print(date(YYYY,M,D).strftime('%A'))"`）。Git Bash の `date` / `TZ=Asia/Tokyo date` はWindows環境でUTC値をJSTラベル付きで返す事故があるため使用禁止。`zoneinfo.ZoneInfo('Asia/Tokyo')` はWindows環境では `tzdata` パッケージ未インストール時にクラッシュするため使用禁止（MR-058相当）
 
 ---
 
@@ -615,13 +355,36 @@ AIがN件（N>=3）の対象を手動で反復処理する場合（adapter修正
 
 ## シェルからのPython実行
 
-PowerShellから直接python.exeを叩く。パスは日本語を含まないジャンクション `C:\gdrive\` を使う。here-stringは `@'...'@`（単一引用符）でPythonコード内にバックスラッシュや日本語を入れない。Bash + `source activate` はWindows venvで動かない。
+PowerShellから直接python.exeを叩く。パスは日本語を含まないジャンクション `C:\gdrive\` を使う。Bash + `source activate` はWindows venvで動かない。
+
+- `python -c "..."` → バックスラッシュが展開されSyntaxWarning
+- `python -c @'...'@` → 複数行文字列でunterminated string literal
+- **3行超は `$env:TEMP\xxx.py` に書き出してから実行**
+- **PS1 エンコーディング**: NG: Write ツールのみで作成（PS 5.1 は BOM なし UTF-8 を SJISに誤読） / OK: 作成後 `Out-File -Encoding utf8 -FilePath <path>` で上書き（MR-215）
+- **PowerShell 構文チェック**: NG: `python -m py_compile path` (NativeCommandError) / OK: `python -c "import ast; ast.parse(open(r'path',encoding='utf-8').read())"`
+
+---
+
+## PowerShell→外部exe クオート
+
+スペース+ダブルクォート含む引数は `--%` で生渡し。PS5.1 は埋込 `"` を剥がす。
+- OK: `schtasks --% /tr "cmd /c start \"Title\" ..."`
+- NG: `schtasks /tr 'cmd /c start "Title" ...'`
+
+---
+
+## Claude Code フック設定ルール
+
+- **Python 実行は venv 直接指定必須**: フックコマンドに `uv run python` を使うと、CWD の `pyproject.toml` を検出して Google Drive 上に `.venv` を自動生成する（CLAUDE.md §6 違反）。`C:/venvs/investment-agent/Scripts/python.exe` を直接指定する
+- **UV_PROJECT_ENVIRONMENT 前置必須**: フックコマンド冒頭に `UV_PROJECT_ENVIRONMENT=C:/venvs/investment-agent` を付ける。万が一 `uv run` が混入しても GDrive に `.venv` を作らない二重ロック
+- **venvパスはハードコード禁止**: `.claude.local.md` の `venv_dir` を参照するか、`C:/venvs/investment-agent` を直書き（Google Drive パス厳禁）
 
 ---
 
 ## その他（CLAUDE.mdから委譲）
 
 - **gcloud**: Git Bash を第一選択。クォートを含む複雑なコマンドは PowerShell で事故りやすい
+- **Windows/Linux 両対応コマンド**: `python` → `python3` に単純置換はNG（Windows側が壊れる）。両環境で動かすスクリプトは `python3 ... 2>/dev/null || python ...` パターンか `pathlib.Path` でパス区切りを吸収する。Cloud Run/Dockerfile はLinux前提でよい（コンテナ=Linux）
 - **グラフ**: JupyterLab ノートブック（.ipynb）で実装・実行する。`matplotlib.use("Agg")`+PNG保存は使わない
 - **ローカルDL保存先**: `C:\tmp\`（Google Drive・Dropbox禁止）。検証後は削除する
 - **requests.Session**: スレッドセーフでない。`ThreadPoolExecutor` 並列化時は `threading.local()` でスレッド毎にインスタンス分離

@@ -34,20 +34,44 @@ gcloud storage cp "$BUCKET/keys/gcp-service-account.json" \
 # data/logs/ → ローカル保管に移行（C:\tmp\claude_logs\）。GCS同期不要
 
 # claude-memory/ (Claude Code メモリ: ~/.claude/projects/.../memory/)
+# Windows と Linux VM で autoMemoryDirectory に合わせた固定パスを使う。
+# 除外ファイル: line_conversation_mode.md（端末固有のLINE会話状態。上書きしない）
 MEMORY_DIR=""
-if [ -d "/c/Users/zonekun/.claude/projects/G---------claude/memory" ]; then
+if [ -d "/c/Users/zonekun/.claude/projects/G---------claude/memory" ] || \
+   [ "$(uname -o 2>/dev/null)" = "Msys" ] || [ -n "$WINDIR" ]; then
+    # Windows (Git Bash)
     MEMORY_DIR="/c/Users/zonekun/.claude/projects/G---------claude/memory"
-elif [ -d "$HOME/.claude/projects" ]; then
-    MEMORY_DIR=$(find "$HOME/.claude/projects" -type d -name "memory" 2>/dev/null | head -1)
+else
+    # Linux VM: ~/.claude/settings.json の autoMemoryDirectory と同じパスを使う
+    MEMORY_DIR="$HOME/.claude/projects/G---------claude/memory"
 fi
 
-if [ -n "$MEMORY_DIR" ]; then
-    mkdir -p "$MEMORY_DIR"
-    gcloud storage rsync -r "$BUCKET/claude-memory/" "$MEMORY_DIR/" \
-        && echo "[OK] claude-memory/" \
-        || echo "[SKIP] claude-memory/ not found in GCS"
-else
-    echo "[SKIP] claude-memory/ destination not found"
+mkdir -p "$MEMORY_DIR"
+gcloud storage rsync -r \
+    --exclude="line_conversation_mode\.md" \
+    "$BUCKET/claude-memory/" "$MEMORY_DIR/" \
+    && echo "[OK] claude-memory/" \
+    || echo "[SKIP] claude-memory/ not found in GCS"
+
+# Linux VM のみ: ~/.claude/settings.json に autoMemoryDirectory を自動設定
+# これがないと Claude Code が別パス（プロジェクトハッシュ由来）に書き続けて同期が無意味になる
+if [ "$(uname -s)" = "Linux" ]; then
+    SETTINGS="$HOME/.claude/settings.json"
+    if command -v jq &>/dev/null; then
+        if [ -f "$SETTINGS" ]; then
+            TMP=$(mktemp)
+            jq --arg d "$MEMORY_DIR" '.autoMemoryDirectory = $d' "$SETTINGS" > "$TMP" \
+                && mv "$TMP" "$SETTINGS" \
+                && echo "[OK] settings.json autoMemoryDirectory → $MEMORY_DIR"
+        else
+            mkdir -p "$HOME/.claude"
+            printf '{"autoMemoryDirectory":"%s"}\n' "$MEMORY_DIR" > "$SETTINGS"
+            echo "[OK] settings.json 新規作成 autoMemoryDirectory → $MEMORY_DIR"
+        fi
+    else
+        echo "[WARN] jq が見つかりません。以下を手動で ~/.claude/settings.json に追加してください:"
+        echo "       \"autoMemoryDirectory\": \"$MEMORY_DIR\""
+    fi
 fi
 
 # uv sync (git pull で pyproject.toml が更新された場合に依存を同期)

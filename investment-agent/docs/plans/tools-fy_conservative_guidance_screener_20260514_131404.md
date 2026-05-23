@@ -238,7 +238,7 @@ FY 決算発表時点の翌期予想を、直前 FY 実績と比較する。
 
 ```powershell
 $env:PYTHONUTF8='1'
-C:\venvs\investment-agent\Scripts\python.exe scripts\fy_conservative_guidance_screener.py `
+<python> scripts\fy_conservative_guidance_screener.py `
   --date-from 2024-01-01 `
   --date-to 2026-05-14 `
   --limit-tickers 200 `
@@ -254,7 +254,7 @@ C:\venvs\investment-agent\Scripts\python.exe scripts\fy_conservative_guidance_sc
 
 ```powershell
 $env:PYTHONUTF8='1'
-C:\venvs\investment-agent\Scripts\python.exe scripts\fy_conservative_guidance_screener.py `
+<python> scripts\fy_conservative_guidance_screener.py `
   --date-from 2018-01-01 `
   --date-to 2026-05-14 `
   --output-dir data/output/fy_conservative_guidance

@@ -79,16 +79,16 @@
 
 ```bash
 # 全銘柄取得（GCS structure.json 全件）
-PYTHONUTF8=1 C:/venvs/investment-agent/Scripts/python.exe scripts/download_bc_kpi.py
+PYTHONUTF8=1 <python> scripts/download_bc_kpi.py
 
 # 特定銘柄のみ
-PYTHONUTF8=1 C:/venvs/investment-agent/Scripts/python.exe scripts/download_bc_kpi.py --tickers 3097 2294
+PYTHONUTF8=1 <python> scripts/download_bc_kpi.py --tickers 3097 2294
 
 # 中断後の再開
-PYTHONUTF8=1 C:/venvs/investment-agent/Scripts/python.exe scripts/download_bc_kpi.py --resume
+PYTHONUTF8=1 <python> scripts/download_bc_kpi.py --resume
 
 # CSV指定 + 消込
-PYTHONUTF8=1 C:/venvs/investment-agent/Scripts/python.exe scripts/download_bc_kpi.py --targets-csv data/csv/bc_kpi_missing_2603.csv
+PYTHONUTF8=1 <python> scripts/download_bc_kpi.py --targets-csv data/csv/bc_kpi_missing_2603.csv
 ```
 
 ---

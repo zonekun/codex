@@ -1,9 +1,12 @@
 # ai_processing_flow — TDnet AI処理 Workflows（本番）
 #
-# Step 1: tdnet-ai-prepare Cloud Run Job 呼出（OCR+正規表現+state.json）
-# Step 2: Callback endpoint 作成 + TPU VM 起動（Gemma 推論）
+# Step 1: tdnet-ai-prepare Cloud Run Job 呼出（PyMuPDF抽出+正規表現+state.json）
+# Step 2: Callback endpoint 作成 + TPU VM 起動（Gemma 2-pass 推論）
 # Step 3: Gemma 完了 callback 待機（最大24時間）
-# Step 4: tdnet-ai-finalize Cloud Run Job 呼出（Gemini受注+Embedding+BQ）
+# Step 4: tdnet-ai-finalize Cloud Run Job 呼出（Gemma Pass2適用+Embedding+BQ）
+#
+# 変更履歴（2026-05-21）: Gemini Flash Batch（受注判定）廃止 → Gemma Pass 2 に置き換え
+#   詳細: docs/plans/tools-013_gemma_only_pipeline_20260520_220510.md
 #
 # 起動:
 #   手動:     gcloud workflows execute ai_processing_flow --location=us-central1 --data='{"date_from":"YYYYMMDD","date_to":"YYYYMMDD"}'

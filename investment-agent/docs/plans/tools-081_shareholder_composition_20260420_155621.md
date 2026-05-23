@@ -2,6 +2,7 @@
 
 **起票日**: 2026-04-20 15:56 JST
 **目的**: TOB予測モデル（`docs/knowledges/analysis/007_tob_ml_prediction.md`）の説明変数である株主構成系データを全上場銘柄・年次でBQに整備する
+**ステータス**: 完了（2026-05-18: SHAREHOLDER_COMPOSITION テーブル構築・EXTEND分類・compute_owner_features全完了。手順を 007_tob_ml_prediction.md §データパイプライン A-2 に統合済み）
 **依存**: DELISTED_STOCKS 拡張完了（IS_PAPER_TOB_LABEL=288件）
 
 ---

@@ -44,7 +44,7 @@
 
 ### 4.1 確認優先
 事実確認が可能なことを、確認せずに発言・報告しない。
-- データ属性はBQ・CSV等で裏取り。日付属性はpython/dateで確認
+- データ属性はBQ・CSV等で裏取り。日付・時刻に言及する前は必ず確認ツール（Get-Date / python date等）で実値確認。推測・記憶で発言禁止
 - 不在断定禁止: 知見MDで永続化先を全て確認してから判断
 - ログは症状。原因は中間ログ→コード→手動テスト差異→1社分詳細の順で追跡
 - 知見ファイルは最後まで読む（制約は後半の「注意事項」に集約）
@@ -55,7 +55,7 @@
 指定された手順・参照先・手段・ツールを、自分の判断で省略/改変してはならない。
 
 - 適用判定: 「指定された手段Xを省略/変更しようとしている」と認識した時点で発火
-- 異常報告を受けたら外部要因より先に自分を疑う: ユーザーが「動いていない」「おかしい」「壊れている」「アホ」「違う」等を報告したら、外部要因の前に**自分の直前の実行内容を知見MDの記載手順と照合**して自己検証する。自己検証で問題なしと確認した場合のみ外部要因を検討（MR-136: 3回のユーザー指摘を外部帰責で無視した事故）
+- 異常報告を受けたら外部要因より先に自分を疑う: ユーザーが「動いていない」「おかしい」「壊れている」「アホ」「違う」「欠落」「ない」「来ていない」「入っていない」等を報告したら、外部要因の前に**自分の直前の実行内容を知見MDの記載手順と照合**して自己検証する。自己検証で問題なしと確認した場合のみ外部要因を検討（MR-136/196: 外部帰責で自コードバグを見逃した事故）
 - ユーザーが同じ指示を2回繰り返したら、前回の実装を0ベースで再評価
 - 破壊的な結果を招く場合のみ実行リスクを提示
 
@@ -67,16 +67,18 @@
 - 新規規約の導入は文書化とアトミック（「適用」だけ行い「文書化」を後回しにすることを禁止）
 - 調査結果・再発防止策のメモリ保存は厳禁 → `docs/knowledges/` または `docs/plans/` に記載
 - プロジェクト全体の取り決めもメモリNG。判定: 「別端末でも必要か?」Yes→プロジェクトdocs
+- **feedbackライフサイクル**: 新規 feedback は CLAUDE.md 反映後にメモリから削除。project memory は次アクション未定義になった時点で削除し、完了宣言時は必ず削除する
 
 ### 4.4 破壊的操作
 dry-run → 小範囲10件確認 → 全件展開。全件一発実行禁止。承認された範囲のみ。
+プロセス名指定の操作（taskkill /IM・Stop-Process -Name 等）は全同名プロセスkill → /PID 特定必須。他セッション確認なしに /IM 使用禁止。
 → 定義・詳細・事故事例: `004_coding_conventions.md` §破壊的操作
 
 ### 4.5 マルチターン待機
 明示的GO（OK/進めて等）がなければ作業開始しない。デフォルトは**待機**。
 - **GOシグナル**: 「OK」「進めて」「やって」「GO」「お願い」等の実行指示
 - **非GO（追加入力待ち）**: 「続き」「続きあり」「あと」「それと」「補足」、体言止め・名詞句の羅列
-- 判定基準: 「未完了シグナルの不在」ではなく「GOシグナルの存在」で判定する
+- 判定基準: 「未完了シグナルの不在」ではなく「GOシグナルの存在」で判定する。GOシグナルは会話状態に依存しない — 待機中・確認中を問わず即トリガー
 
 ---
 
@@ -108,18 +110,20 @@ CLI構成は068 §② のテンプレートを参照（記憶ベース構成禁�
 
 ## 6. 実行環境
 
-- **Gemini API**: 明示指示なし → 使用禁止。使用したい場合は事前確認
-- **OS**: Windows 10+ / Git Bash（`python3` 不可 → `python` を使う）
-- **Python管理**: uv（venv: `C:\venvs\investment-agent`、Google Drive上禁止）
+- **「LLM使用/LLMパワー」趣旨の指示**: Claude Code自身（Opus/Sonnet）を指す。Gemini / Anthropic API ではない。Claude CodeのPython自動生成も意味しない。
+- **Gemini**: 明示指示ある場合を除いて 使用禁止。
+- **OS**: Windows 10+ / Git Bash（`python3` 不可 → `python` を使う。`mkdir -p` は `-p` フラグ不可 → `mkdir` 単体か `New-Item -ItemType Directory -Force` を使う）
+- **Python管理**: uv（Google Drive上禁止）。**venvパスはMD直書き禁止**。`.claude.local.md` の `<python>` / `venv_dir` を参照（端末固有）
 - **パス**: `C:\gdrive\claude\investment-agent`（ジャンクション経由ASCIIパス）
 - **スクリプト実行**: 必ず `PYTHONUTF8=1` を付ける
 - **ファイルopen**: `encoding=` 必ず明示。ソースコード/JSON/YAML/MD → `utf-8`、CSV出力（外部共有）→ `shift_jis`、外部ファイル → 実際のエンコーディングに合わせる
-- **Bash パス表記**: フォワードスラッシュ `C:/venvs/...` または `/c/venvs/...` を使う
-- **Cloud Build**: `docs/knowledges/` 内の該当ドキュメントからコマンドをコピー。手打ち禁止
+- **Bash パス表記**: Windows パス `C:\...` はBashで使えない（`\` がエスケープ）。フォワードスラッシュ `C:/...` または `/c/...` を使う
+- **Cloud Build**: `docs/knowledges/` 内の該当ドキュメントからコマンドをコピー。手打ち禁止。Windows + Google Drive 環境では一時ビルドディレクトリ必須（`005_cloudrun_job_deploy.md §⑥` 参照）
 - **Cloud Scheduler / Cloud Run Job**: `--location=us-west1` 統一
-- **時間指定ローカル実行**: `CronCreate` 第一選択
+- **時間指定ローカル実行**: `CronCreate` 第一選択。100%トークン到達見込み時は Windows タスクスケジューラ第二選択 → `102_scheduled_execution.md`
 - **ファイルコピー**: 単純コピー・移動・リネームでは Read/Write/Edit を使わない。`copy`/`xcopy`/`robocopy`/`move` を使う。内容解析・編集が必要な場合のみ Read/Write を許可
 - **ファイルDL**: WebFetchは要約してしまうためファイル取得に使わない。`Invoke-WebRequest` で直接DL
+- **ダウンロード先**: 検証用DLは `C:\tmp\` を使う。Google Drive（`C:\gdrive\` / `G:\`）への保存禁止（容量逼迫・他端末同期の問題）。`C:\tmp\` に置くものは **台帳MD** を `Read 103_tmp_folder_registry.md limit=3` で更新ルール確認→ `printf >>` で末尾追記。作りっぱなし放置禁止
 - **セキュリティ**: APIキーは.envで管理。絶対にコミットしない
 → その他の規約: `004_coding_conventions.md` §GCS非git同期 / §ディスク管理 / §その他
 
@@ -132,8 +136,10 @@ CLI構成は068 §② のテンプレートを参照（記憶ベース構成禁�
 - **データモデル**: Pydantic v2
 - **GCP認証**: `service_account.Credentials` を明示的に構築
 - **Gemini**: `google-genai` 統一（`google-generativeai` / `google-cloud-aiplatform` 禁止）
-- **日時**: `datetime.now(tz=ZoneInfo('Asia/Tokyo'))` を使用（`datetime.now()` 禁止）→ 詳細: `004_coding_conventions.md` §日付時刻ルール
+- **日時**: タイムゾーン非明示の日時取得・表示・出力は禁止（`datetime.now()` / `date.today()` 等）。JST指定必須 → 詳細: `004_coding_conventions.md` §日付時刻ルール
 - **Git コミット**: `feat:` / `fix:` / `refactor:` / `docs:` / `test:` プレフィックス
+- **知見ファイル整合義務**: スクリプト追加／変更時・プランのONE STEP完了時・GCPリソース追加／変更時に対応知見MDを最新化
+
 → 全規約: `docs/knowledges/tools/004_coding_conventions.md`
 
 ---
@@ -141,8 +147,8 @@ CLI構成は068 §② のテンプレートを参照（記憶ベース構成禁�
 ## 8. スキル・エージェント
 
 正本: `skills/*.md`（編集はここだけ）、ラッパー: `.claude/commands/*.md`（ポインタのみ）
-- **Skill**（会話内実行）: `/planning`, `/idea-pipeline`, `/backtest-design`, `/ai-engineer`, `/twitter-reader`
-- **Agent**（独立実行→結果返却）: `/code-reviewer`, `/md-reviewer`, `/structure-optimizer`, `/monthly-error-autofix`
+- **Skill**（会話内実行）: `/planning`, `/idea-pipeline`, `/backtest-design`, `/ai-engineer`, `/twitter-reader`, `/owner-judge-commander`
+- **Agent**（独立実行→結果返却）: `/code-reviewer`, `/md-reviewer`, `/structure-optimizer`, `/monthly-error-autofix`, `/owner-judge-soldier`
 実行時冒頭に `🎯 [<スキル名>] <タスク概要>` を出力。
 
 ---
@@ -158,9 +164,10 @@ CLI構成は068 §② のテンプレートを参照（記憶ベース構成禁�
 
 ## 10. 知見索引
 
-タスクを受けたら**まず下記テーブルを確認**し、意味的に該当すれば即座にそのファイルを Read する。該当なしなら `docs/knowledges/INDEX.md` で特定。glob/grep 探索はINDEXでも見つからなかった場合のフォールバック。
+タスクを受けたら**まず下記タスクテーブルを確認**し、意味的に該当すれば即座にそのファイルを Read する。該当なしなら `docs/knowledges/INDEX.md` で特定。glob/grep 探索はINDEX.mdでも見つからなかった場合の最後の手段。
 
-| タスク | 必ず読むファイル |
+> **タスクテーブル**
+| タスク | ファイル |
 |--------|----------------|
 | BigQueryを使うコードを書く | `docs/knowledges/api/002_bigquery.md` |
 | BQリソース（テーブル/VIEW/TVF）を作成・変更 | `docs/knowledges/api/002_bigquery.md` |
@@ -168,13 +175,14 @@ CLI構成は068 §② のテンプレートを参照（記憶ベース構成禁�
 | Cloud Run Jobにデプロイ | `docs/knowledges/tools/005_cloudrun_job_deploy.md` |
 | Cloud Workflows | `docs/knowledges/tools/080_workflows_runbook.md` |
 | TDnet ETL（GCS PDF → BQ） | `013_tdnet_load.md`, `003_tdnet_download.md` |
-| 決算特別スケジュール | `013_tdnet_load.md` §決算特別スケジュール |
+| 決算特別シフト | `013_tdnet_load.md` §決算特別シフト |
 | 月次開示パイプライン全体像 | `042_monthly_disclosure_master.md` |
 | 月次開示エラー全自動修復 | `/monthly-error-autofix`、パターンDB: `042-1_monthly_error_fix_patterns.md` |
 | データ取り込み・更新タスク | `data_catalog.md` |
 | 銘柄属性・会社名・業種 | `docs/data_catalog/bq_stock_code_list.md` |
 | 決算反応モデル EDA・予測 | `059_earnings_model_eda.md` |
 | 決算答え合わせ・反省会 | `059_earnings_model_eda.md` §反省会の運用手順、ログ: `059-1_hanseikai_log.md` |
+| 決算実績ロード（earnings-actual-load） | `docs/knowledges/tools/101_earnings_actual_load.md` |
 | ザラ場ツール | `066_zaraba_tool.md` |
 | 最新決算表示・XBRL四半期推移 | `099_xbrl_lookup.md` |
 | PS1 / PSメニュー | `023_powershell_menu.md` |
@@ -188,16 +196,15 @@ CLI構成は068 §② のテンプレートを参照（記憶ベース構成禁�
 | EDINET遅延TOBスクリーニング | `008_edinet_delay_tob_screening.md` |
 | 事故・事故報告 | `/md-reviewer` パターン2/4 で `docs/reviews/` に記録 |
 | サブエージェント中断・ハング | `docs/knowledges/tools/100_agent_stuck_recovery.md` |
+| ディスク掃除 / ガベージ / cleanup | `docs/knowledges/tools/077_cleanup_disk.md` |
+| Dropbox / ドロップボックス（UL/DL/temp置き場） | `docs/knowledges/tools/016_dropbox.md` |
 | スクリーナー/裁量ツール一覧 | `docs/knowledges/tools/trading_tools_index.md` |
+| `.claude.json` 破損・復旧 | `docs/knowledges/tools/claudecode_recovery.md` |
 
 > **全索引**: `docs/knowledges/INDEX.md`
-> **知見ファイル整合義務**: スクリプト変更時・プラン完了時・GCPリソース変更直後に対応知見MDを更新
 
 ---
 
 ## 11. 設計思想
 
-- 分析結果でそのまま使えるものは少数。試行回数を増やすことで期待値が上がる
-- 知見の蓄積が最大の資産。繰り返し使うデータは事前クレンジングしてローカル保存
-- `reference_code/` の分析コードを参考として与えると自分好みの結果が得られる
 - アイディアソース優先順位・ステータス遷移 → `skills/idea_pipeline.md`

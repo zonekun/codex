@@ -211,7 +211,7 @@ yanoshin API → TDnet HTML スクレイピング → BQ。特別配当・自社
 
 ```bash
 # 04/01-04/13 の営業日9日を一括再実行（デフォルト）
-PYTHONUTF8=1 C:/venvs/investment-agent/Scripts/python.exe \
+PYTHONUTF8=1 <python> \
     scripts/earnings_model/batch_rerun_predict.py
 ```
 
@@ -250,11 +250,11 @@ PYTHONUTF8=1 C:/venvs/investment-agent/Scripts/python.exe \
 
 ```bash
 # Step 1: GCS → ローカルDL（prediction + actual）
-PYTHONUTF8=1 C:/venvs/investment-agent/Scripts/python.exe \
+PYTHONUTF8=1 <python> \
     scripts/earnings_model/download_review_data.py YYYYMMDD
 
 # Step 2: レポート生成（CSV + MD）
-PYTHONUTF8=1 C:/venvs/investment-agent/Scripts/python.exe \
+PYTHONUTF8=1 <python> \
     scripts/earnings_model/review_report.py YYYYMMDD --out-dir C:/tmp/earnings_review
 
 # Step 3: MD を Read して分析・報告
@@ -264,7 +264,7 @@ PYTHONUTF8=1 C:/venvs/investment-agent/Scripts/python.exe \
 **ワンコマンド代替（推奨）**: 上記3ステップを一発で実行し、Claude が直接読めるコンパクトなサマリーを stdout に出力するスクリプト:
 
 ```bash
-PYTHONUTF8=1 C:/venvs/investment-agent/Scripts/python.exe \
+PYTHONUTF8=1 <python> \
     scripts/earnings_model/hanseikai_summary.py YYYYMMDD
 ```
 

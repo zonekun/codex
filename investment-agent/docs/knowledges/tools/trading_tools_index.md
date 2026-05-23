@@ -17,6 +17,8 @@ NO12　サプライチェーンマスタ、連鎖マスタのクリーニング 
 | 14 | FY弱気ガイダンス | 弱気初期ガイダンス→売られ→実績上振れの繰返しパターン検出 | `scripts/fy_conservative_guidance_screener.py` | `analysis/014_fy_conservative_guidance_screener.md` |
 | 15 | アクティビストスキャン | EDINET大量保有報告書からアクティビストファンド保有を検出 | `scripts/activist_edinet_scan.py` | — |
 | 16 | TOB ML予測 | ML特徴量でTOB確率を予測しランキング | `scripts/screen_tob.py` | `analysis/007_tob_ml_prediction.md` |
+| 17 | VCP日次スクリーナー | Minervini VCP で Stage2 収縮→ブレイク候補を毎日抽出（Cloud Run 19:00 JST） | `scripts/tob_prediction/vcp_daily_cloud.py` | `analysis/016_vcp_insider_daily.md` |
+| 18 | TOB価格パターン ML | LightGBM で TOBターゲット株を日次予測（lift@5%=1.73 / 部分採用） | `scripts/tob_prediction/predict_tob_ml.py` | `analysis/017_tob_price_pattern_ml.md` |
 
 ## ザラバツール（20番台）
 

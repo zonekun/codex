@@ -48,7 +48,7 @@ type: tools
 ### 追加
 
 ```bash
-PYTHONUTF8=1 C:/venvs/investment-agent/Scripts/python.exe \
+PYTHONUTF8=1 <python> \
     scripts/earnings_model/exclusion_manager.py add 3387 20260414 "子会社統合（特殊イベント）"
 ```
 
@@ -59,11 +59,11 @@ PYTHONUTF8=1 C:/venvs/investment-agent/Scripts/python.exe \
 
 ```bash
 # 全件
-PYTHONUTF8=1 C:/venvs/investment-agent/Scripts/python.exe \
+PYTHONUTF8=1 <python> \
     scripts/earnings_model/exclusion_manager.py list
 
 # 特定 predict_date でフィルタ
-PYTHONUTF8=1 C:/venvs/investment-agent/Scripts/python.exe \
+PYTHONUTF8=1 <python> \
     scripts/earnings_model/exclusion_manager.py list --predict-date 20260414
 ```
 
@@ -72,7 +72,7 @@ PYTHONUTF8=1 C:/venvs/investment-agent/Scripts/python.exe \
 ### 削除（論理削除）
 
 ```bash
-PYTHONUTF8=1 C:/venvs/investment-agent/Scripts/python.exe \
+PYTHONUTF8=1 <python> \
     scripts/earnings_model/exclusion_manager.py remove 3387 20260414
 ```
 

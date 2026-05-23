@@ -234,7 +234,7 @@ Step 5「30秒間隔でジョブ完了をポーリング」はCLAUDE.md §監視
 **現状**: 「初回はローカル実行で1社のみ確認（本番Job投入前）」
 **提案**: ローカルでのdry-run実行コマンドを明示:
   ```bash
-  PYTHONUTF8=1 C:\venvs\investment-agent\Scripts\python.exe scripts/extract_monthly_data.py --tickers <ticker> --local-only
+  PYTHONUTF8=1 <python> scripts/extract_monthly_data.py --tickers <ticker> --local-only
   ```
   または該当オプションがなければ「ローカル実行の具体手段は042知見MDの§ローカルテスト手順を参照」とポインタを張る
 **期待効果**: AIが「ローカル実行」の解釈に迷わない

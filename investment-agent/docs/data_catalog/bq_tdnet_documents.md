@@ -3,7 +3,7 @@
 
 | テーブル名 | 説明 | 更新頻度 | 備考 |
 |-----------|------|---------|------|
-| `gmailpj-357912.STOCK.TDNET_DOCUMENTS_ENHANCED` | TDnet適時開示書類のテキスト・チャンク・埋め込みベクトル | 日次 | `tdnet-load-daily`（火〜土 02:00 JST）で BQ投入、`ai_processing_flow` Workflows で AI判定（Gemma + Gemini） |
+| `gmailpj-357912.STOCK.TDNET_DOCUMENTS_ENHANCED` | TDnet適時開示書類のテキスト・チャンク・埋め込みベクトル | 日次 | `tdnet-load-daily`（火〜土 02:00 JST）で BQ投入、`ai_processing_flow` Workflows で AI判定（Gemma 2-pass） |
 
 **`STOCK.TDNET_DOCUMENTS_ENHANCED` スキーマ:**
 
@@ -21,8 +21,9 @@
 | PAGE_COUNT | INT64 | ページ数 |
 | TEXT_LENGTH | INT64 | テキスト全体の文字数 |
 | SECTION_CATEGORY | STRING | セクション区分（チャンク単位の分類） |
-| CHUNK_TEXT | STRING | チャンクテキスト（分割済みテキスト） |
-| EMBEDDING | ARRAY\<FLOAT64\> | テキスト埋め込みベクトル（text-embedding-004, 768次元。3カテゴリ＝決算短信/決算説明資料/月次開示のみ付与） |
+| CHUNK_TEXT | STRING | チャンクテキスト（分割済みテキスト）。**詳細は §チャンク化仕様 参照** |
+| CHUNK_INDEX | INT64 | 同一 DOC_ID 内のチャンク順序（0 始まり）。NULL の意味は 2 通り: (a) CHUNK_TEXT NULL のメタデータのみ行、(b) **2026-05-18 以前にロードされた旧データ**（遡及採番なし）。本文順復元は `ORDER BY CHUNK_INDEX`、NULL を除外したい場合は `WHERE CHUNK_INDEX IS NOT NULL` |
+| EMBEDDING | ARRAY\<FLOAT64\> | テキスト埋め込みベクトル（text-embedding-004, 768次元、3カテゴリ限定）。**詳細は §Vector Index 仕様 参照** |
 | FILE_NAME | STRING | 元ファイル名 |
 | EXTRACTED_AT | TIMESTAMP | 抽出日時（DEFAULT CURRENT_TIMESTAMP()） |
 | **AI_STATUS** | STRING | AI判定状態（`pending` / `pending_gemma` / `pending_finalize` / `completed`）|
@@ -50,7 +51,7 @@
     → gemma_CURRENT.jsonl continuous append + resume
   Step 3: Gemma 完了 callback 待機
   Step 4: tdnet-ai-finalize (Cloud Run Job CPU)
-    → Gemini Flash Batch（MAIN='決算短信' のみ、受注マージ）
+    → Gemma Pass 2（決算短信 + 決算説明資料、受注高/受注残高マージ）
     → Embedding Batch（3カテゴリ限定）
     → BQ DELETE（pending_gemma行）+ INSERT（completed）
 ```
@@ -132,11 +133,101 @@ AND (
 )
 ```
 
+## 使い分けガイド: CHUNK_INDEX の3ケース
+
+> ⚠️ **禁則**: `CHUNK_INDEX IS NOT NULL` を検索条件に加えない。2026-05-18 以前のロード分は全件 NULL のため、その条件で絞ると旧データが全件消える。
+
+2026-05-18 以降の新規ロード分は `CHUNK_INDEX` が採番されるが、**利用側に縛り（必ず IS NOT NULL）はかけない**。順序が要らないユースケースでは過去データも有効に使える。ケース別パターン:
+
+```sql
+-- ケースA: 順序復元が必要（LLM 全文読み・全文連結など）
+-- 新規ロード分のみ対象。旧データは順序不能のため除外
+SELECT CHUNK_TEXT
+FROM `gmailpj-357912.STOCK.TDNET_DOCUMENTS_ENHANCED`
+WHERE DOC_ID = 'X'
+  AND CHUNK_INDEX IS NOT NULL
+ORDER BY CHUNK_INDEX;
+
+-- ケースB: 順序不要（Vector Search・集計・存在確認）
+-- CHUNK_INDEX を見る必要なし。従来クエリのまま動く
+SELECT DOC_ID, CHUNK_TEXT
+FROM `gmailpj-357912.STOCK.TDNET_DOCUMENTS_ENHANCED`
+WHERE TICKER = '7011'
+  AND EMBEDDING IS NOT NULL;  -- Vector Search 用
+
+-- ケースC: 順序が望ましいが旧データも含めたい
+-- NULL を末尾に回して連結（旧データはバラバラだが含まれる）
+SELECT STRING_AGG(CHUNK_TEXT, '\n' ORDER BY CHUNK_INDEX NULLS LAST)
+FROM `gmailpj-357912.STOCK.TDNET_DOCUMENTS_ENHANCED`
+WHERE DOC_ID = 'X';
+```
+
+### 重複行への注意（INSERT→DELETE 非原子の既知症状）
+
+`phase5_bq_insert_finalize` は INSERT→DELETE 順序入替済み（004 B-4 / `013_tdnet_load.md §T-1`）だが、INSERT 成功後・DELETE 失敗の中断 → 再実行で **同 DOC_ID の completed 行が重複追加** されるケースが既知。CHUNK_INDEX 列追加後はこの重複行が **同じ `(DOC_ID, CHUNK_INDEX)` で 2 セット返る**。順序復元クエリでは以下のいずれかで重複除去:
+
+```sql
+-- 案1: DISTINCT で重複行除去（軽量・推奨）
+-- EXTRACTED_AT が NULL の旧データでも動作する
+SELECT DISTINCT CHUNK_INDEX, CHUNK_TEXT
+FROM `gmailpj-357912.STOCK.TDNET_DOCUMENTS_ENHANCED`
+WHERE DOC_ID = 'X' AND CHUNK_INDEX IS NOT NULL
+ORDER BY CHUNK_INDEX;
+
+-- 案2: 最新 EXTRACTED_AT のセットだけ採用（厳密）
+-- ⚠️ EXTRACTED_AT は 2026-05-18 以前ロード分が NULL のため、過去データを含む汎用クエリでは案1を使うこと
+-- 新規ロード分（2026-05-18 以降）のみ対象にする場合に限り案2を使用可
+SELECT CHUNK_INDEX, CHUNK_TEXT
+FROM (
+  SELECT *, ROW_NUMBER() OVER (
+    PARTITION BY DOC_ID, CHUNK_INDEX
+    ORDER BY EXTRACTED_AT DESC
+  ) AS rn
+  FROM `gmailpj-357912.STOCK.TDNET_DOCUMENTS_ENHANCED`
+  WHERE DOC_ID = 'X' AND CHUNK_INDEX IS NOT NULL
+)
+WHERE rn = 1
+ORDER BY CHUNK_INDEX;
+```
+
+### 健全性監視クエリ
+
+deploy 初日・1週間後・1ヶ月後に実行を推奨（`<cutoff>` は `2026-05-18` 以降の本番適用日を指定）:
+
+```sql
+-- 監視1: ai-finalize 後の CHUNK_INDEX NULL 漏れ検知
+SELECT COUNT(*) AS leaked_rows
+FROM `gmailpj-357912.STOCK.TDNET_DOCUMENTS_ENHANCED`
+WHERE SUBMISSION_DATE >= '<cutoff>'
+  AND AI_STATUS = 'completed' AND CHUNK_TEXT IS NOT NULL
+  AND CHUNK_INDEX IS NULL;
+-- 期待: 0。1 以上は書込み修正の欠落
+
+-- 監視2: CHUNK_INDEX 連番健全性（doc あたり MAX(CHUNK_INDEX)+1 = チャンク行数）
+SELECT DOC_ID, COUNT(*) AS rows, MAX(CHUNK_INDEX) AS max_ci,
+       COUNT(*) - 1 = MAX(CHUNK_INDEX) AS is_healthy
+FROM `gmailpj-357912.STOCK.TDNET_DOCUMENTS_ENHANCED`
+WHERE SUBMISSION_DATE >= '<cutoff>' AND CHUNK_TEXT IS NOT NULL
+GROUP BY DOC_ID
+HAVING NOT is_healthy
+LIMIT 20;
+
+-- 監視3: 同一 (DOC_ID, CHUNK_INDEX) 重複検知
+SELECT DOC_ID, CHUNK_INDEX, COUNT(*) AS dup_cnt
+FROM `gmailpj-357912.STOCK.TDNET_DOCUMENTS_ENHANCED`
+WHERE SUBMISSION_DATE >= '<cutoff>' AND CHUNK_TEXT IS NOT NULL
+GROUP BY DOC_ID, CHUNK_INDEX
+HAVING dup_cnt > 1
+LIMIT 20;
+```
+
 **注意事項:**
+- **EXTRACTED_AT は 2026-05-18 以前ロード分が NULL**（案1: NULL 許容で据え置き。固定値 UPDATE はコスト/虚偽情報の観点から非実施）。重複除去クエリは案1（DISTINCT）を標準とし、案2（ORDER BY EXTRACTED_AT DESC）は新規ロード分のみに使用する（`tools-013_bq_past_data_recovery_20260518_232030.md` 参照）
+- **FILER_NAME は 2026-05-18 以前の旧ロード分も遡及修正済み**（2026-05-20 UPDATE実施）。アルファベット ticker は FILE_NAME から REGEXP 抽出、数字 ticker は STOCK_CODE_LIST JOIN（上場廃止銘柄は FILE_NAME REGEXP fallback）。修正後の全件残存=0
 - FILER_ID は TDnet に EDINET コードが存在しないため NULL
 - EMBEDDING は Google text-embedding-004 モデルによる 768次元ベクトル
 - **EMBEDDING / CHUNK_TEXT は NULL になりうる**: 決算短信・決算説明資料・月次開示のみ Embedding 対象。それ以外のカテゴリはメタデータのみ（CHUNK_TEXT=NULL, EMBEDDING=NULL の1行）
-- Gemini 分析モデル: `gemini-3-flash-preview`（グローバルエンドポイント）
+- **CHUNK_INDEX は 2026-05-18 以降の新規ロード分のみ採番**（過去データは NULL のまま据え置き、遡及採番なし）。本文順復元が必要なら `ORDER BY CHUNK_INDEX`、旧データを除外したい場合は `WHERE CHUNK_INDEX IS NOT NULL` を併用。**縛りはかけない方針** — Vector Search・単一チャンク・順序不要集計など旧データでも有効に使える場面が多い。詳細は §使い分けガイド 参照
 - CHUNK_TEXT はページ・セクション単位でテキストを分割したもの（全文ではない）
 - パーティション列 SUBMISSION_DATE に基づいてクエリコストの最適化が可能
 - TICKER + MAIN_CATEGORY クラスタリングにより銘柄・カテゴリ別フィルタリングが高速
@@ -157,6 +248,7 @@ CREATE OR REPLACE TABLE `gmailpj-357912.STOCK.TDNET_DOCUMENTS_ENHANCED` (
     TEXT_LENGTH INT64,
     SECTION_CATEGORY STRING,
     CHUNK_TEXT STRING,
+    CHUNK_INDEX INT64,
     EMBEDDING ARRAY<FLOAT64>,
     FILE_NAME STRING,
     EXTRACTED_AT TIMESTAMP DEFAULT CURRENT_TIMESTAMP()
@@ -185,6 +277,51 @@ CLUSTER BY TICKER, MAIN_CATEGORY;
 - `TICKER`：企業単位での絞り込みが最頻ユースケース
 - `MAIN_CATEGORY`：「決算短信だけ」「業績修正だけ」の文書種別絞り込みも頻繁
 - 組み合わせることで「A社の決算関連文書」のような典型クエリが高速化。Vector Searchで類似文書を発見した後の深掘り分析にも有効
+
+---
+
+## チャンク化仕様（CHUNK_TEXT カラム生成ロジック）
+
+実装: `create_chunks_for_tdnet()` (`scripts/tdnet_load_parallel.py:451`)
+
+| 項目 | 値 |
+|------|-----|
+| ライブラリ | langchain_text_splitters.RecursiveCharacterTextSplitter |
+| chunk_size | 400 文字 |
+| chunk_overlap | 50 文字（実質前進 350 文字/chunk） |
+| セパレータ優先順 | `["\n\n[PAGE", "\n\n", "\n", "。", "、", " "]` |
+| プレフィックス | 各 CHUNK_TEXT 冒頭に固定で `文書タイトル: {doc_title}\n` |
+| 対象カテゴリ | `_EMBED_CATEGORIES = {"決算短信", "決算説明資料", "月次開示"}` のみ |
+| 対象外カテゴリ | チャンク化されず、メタデータ1行のみ BQ 格納（CHUNK_TEXT NULL）|
+| チャンク数の目安 | 5万文字（典型決算短信）で約 130〜160 チャンク |
+
+## Vector Index 仕様（EMBEDDING カラムベクトル検索）
+
+実装: ETL 完了後（`processed > 0` の場合のみ）に自動作成。詳細は `docs/knowledges/tools/013_tdnet_load.md §BQ Vector Index 設定`
+
+| 項目 | 値 |
+|------|-----|
+| インデックス名 | `tdnet_doc_vector_index` |
+| 対象列 | `EMBEDDING ARRAY<FLOAT64>` (768次元) |
+| モデル | text-embedding-004（Vertex AI Batch Embedding API、リージョン us-central1） |
+| コスト | 文字課金 $0.025/1M chars |
+| index_type | IVF |
+| distance_type | COSINE |
+| ivf_options | `{"num_lists": 1000}` |
+
+### 検索クエリ例
+
+```sql
+-- 類似チャンク検索（クエリベクトル指定）
+SELECT base.DOC_ID, base.CHUNK_TEXT, distance
+FROM VECTOR_SEARCH(
+  TABLE `gmailpj-357912.STOCK.TDNET_DOCUMENTS_ENHANCED`,
+  'EMBEDDING',
+  (SELECT @query_embedding AS embedding),
+  top_k => 20,
+  distance_type => 'COSINE'
+);
+```
 
 ---
 

@@ -157,7 +157,7 @@ tickers = sorted(df["コード"].str.zfill(4).tolist())  # 約3768銘柄
 
 **根本原因**: venv が `G:\マイドライブ\...`（日本語パス）に置かれている場合に発生。`C:\venvs\investment-agent` に配置することで解決済み。
 
-**対策**: `C:\venvs\investment-agent\Scripts\python.exe` を使用する（CLAUDE.md §実行環境参照）。
+**対策**: `<python>` を使用する（CLAUDE.md §実行環境参照）。
 
 ## 根拠・出典
 

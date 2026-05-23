@@ -24,6 +24,24 @@ PYTHONUTF8=1 python scripts/cleanup_disk.py --skip-mem
 
 # claude-mem DB の VACUUM（--execute と併用）
 PYTHONUTF8=1 python scripts/cleanup_disk.py --skip-logs --skip-claude --mem-vacuum --execute
+
+# Git GC（dry-run: .git サイズ表示 + .gitignore チェック）
+PYTHONUTF8=1 python scripts/cleanup_disk.py --git-gc
+
+# Git GC 実行
+PYTHONUTF8=1 python scripts/cleanup_disk.py --git-gc --execute
+
+# Git GC 対象ディレクトリを変更（デフォルト: C:\gdrive\claude, ~/.claude）
+PYTHONUTF8=1 python scripts/cleanup_disk.py --git-gc --git-targets C:\other\path --execute
+
+# C:\tmp 台帳チェック（期限切れエントリを表示）
+PYTHONUTF8=1 python scripts/cleanup_disk.py --skip-logs --skip-claude --skip-mem
+
+# C:\tmp 台帳チェック + 実削除 + 台帳から行削除
+PYTHONUTF8=1 python scripts/cleanup_disk.py --skip-logs --skip-claude --skip-mem --execute
+
+# 全部入り（ファイル削除 + Git GC + DB VACUUM）
+PYTHONUTF8=1 python scripts/cleanup_disk.py --git-gc --mem-vacuum --execute
 ```
 
 ## スコープ
@@ -35,12 +53,14 @@ PYTHONUTF8=1 python scripts/cleanup_disk.py --skip-logs --skip-claude --mem-vacu
 | `data/logs/` | 空ファイル | 常に |
 | `data/logs/` | `active_jobs.md` | **常に除外**（実運用ファイル） |
 | `~/.claude/` | `debug/` `telemetry/` `file-history/` `shell-snapshots/` `paste-cache/` `cache/` 配下 | ファイル mtime が N 日以上前 |
-| `~/.claude/projects/<enc_path>/` | プロジェクト単位 | 内部ファイルの最新 mtime が N 日以上前 |
+| `~/.claude/projects/<enc_path>/` | 個別ファイル単位 | ファイル mtime が N 日以上前（アクティブプロジェクト含む） |
 | `claude-mem` logs/ | 日次ログファイル | N 日以上前（デフォルト 90 日） |
 | `claude-mem` trash/ | ソフト削除データ | **常に全削除** |
 | `claude-mem` backups/ | DBバックアップ | N 日以上前（デフォルト 90 日） |
+| `C:\tmp\` | 103 台帳の期限列が `YYYY-MM-DD` かつ当日以前のエントリ | 期限日 ≤ 今日 → 実体削除 + 台帳行削除 |
 | `claude-mem` DB | observations / session_summaries / user_prompts | created_at が N 日以上前 |
 | `claude-mem` DB | VACUUM + WAL checkpoint | `--mem-vacuum` 指定時のみ |
+| Git GC | 対象ディレクトリ配下の `.git/` | `--git-gc` 指定時。`git gc --aggressive --prune=now` |
 
 ## `~/.claude/` キャッシュ系の保持判断
 
@@ -55,17 +75,24 @@ PYTHONUTF8=1 python scripts/cleanup_disk.py --skip-logs --skip-claude --mem-vacu
 | `paste-cache/` | 画像・ファイル貼付けキャッシュ | エフェメラル |
 | `cache/` | 各種内部キャッシュ | 自動再生成 |
 
-**残すべきもの**（cleanup対象外）: `projects/<アクティブなセッション>/`, `settings.json`, `plugins/`, `plans/`, `tasks/`, `todos/`, `sessions/`, `backups/`, `.credentials.json`, `mcp-needs-auth-cache.json`, `stats-cache.json`。スクリプトは `CLAUDE_CACHE_DIRS` にリストアップした6ディレクトリのみを対象にしているので、それ以外は触らない。
+**残すべきもの**（cleanup対象外）: `settings.json`, `plugins/`, `plans/`, `tasks/`, `todos/`, `sessions/`, `backups/`, `.credentials.json`, `mcp-needs-auth-cache.json`, `stats-cache.json`。スクリプトは `CLAUDE_CACHE_DIRS` にリストアップした6ディレクトリ + `projects/` のみを対象にしているので、それ以外は触らない。
 
-## 落とし穴
+## `~/.claude/projects/` の仕様
 
-- **`~/.claude/projects/` 配下のディレクトリ名は不可逆エンコード**: パス区切りと `:` が `-` に
-  置換されるため、例えば `G:\マイドライブ\claude\investment-agent` は
-  `G---------claude-investment-agent`（日本語 `マイドライブ` が `---------` に化ける）となる。
-  「ディレクトリ名からパス復元 → `Path.exists()` で存在確認」は日本語パスで誤爆するため、
-  **必ず mtime ベースで stale 判定する**。
-- `active_jobs.md` を誤って消さないこと（Cloud Run Job 実行状態の単一真実）。
-- 実行前に必ず dry-run で候補件数・サイズを目視確認する。
+- **個別ファイル単位で mtime 判定**。アクティブプロジェクトであっても N 日超のファイルは削除候補
+- プロジェクトディレクトリ自体は削除しない（古いファイルのみ除去）
+- `--claude-days` で保持日数を指定（デフォルト 30 日）
+
+## Git GC の仕様
+
+- `--git-gc` 指定時に実行。デフォルト対象: `C:\gdrive\claude\` と `~/.claude\` の直下リポジトリ（1階層のみ探索。2階層以上の入れ子は `--git-targets` で個別指定）
+- `--git-targets` で対象ディレクトリを変更可能
+- 各リポジトリで `git gc --aggressive --prune=now` を実行（不要オブジェクト・古い reflog・未参照ブロブを圧縮削除）
+- GC 前後の `.git/` サイズを表示
+- `.git/index.lock` または `.git/gc.pid` が存在するリポジトリはスキップ（別プロセスが操作中）
+- `.gitignore` に `node_modules/`, `.venv/`, `__pycache__/` が含まれていなければ警告（glob構文 `**/node_modules` 等も認識）
+- ジャンクション/シンボリックリンクは `resolve()` で正規化し、同一リポジトリの二重実行を防止
+- タイムアウト: リポジトリあたり 5 分。`--aggressive` は大規模リポジトリで超過する場合がある（その場合は個別に `git gc` を手動実行）
 
 ## 実例（2026-04-16 クリーンアップ）
 

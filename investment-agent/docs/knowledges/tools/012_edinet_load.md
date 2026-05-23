@@ -140,13 +140,13 @@ Embedding 対象外: 経理の状況（連結/個別財務諸表、注記含む�
 
 ```bash
 # full モード（日次・既存動作）
-PYTHONUTF8=1 C:\venvs\investment-agent\Scripts\python.exe scripts/edinet_load_parallel.py --from 20260407 --to 20260407
+PYTHONUTF8=1 <python> scripts/edinet_load_parallel.py --from 20260407 --to 20260407
 
 # submit モード（バックフィル開始）
-PYTHONUTF8=1 RUN_MODE=submit C:\venvs\investment-agent\Scripts\python.exe scripts/edinet_load_parallel.py --from 20240101 --to 20240630
+PYTHONUTF8=1 RUN_MODE=submit <python> scripts/edinet_load_parallel.py --from 20240101 --to 20240630
 
 # resume モード（バックフィル完了）
-PYTHONUTF8=1 RUN_MODE=resume C:\venvs\investment-agent\Scripts\python.exe scripts/edinet_load_parallel.py --from 20240101 --to 20240630
+PYTHONUTF8=1 RUN_MODE=resume <python> scripts/edinet_load_parallel.py --from 20240101 --to 20240630
 ```
 
 ### Cloud Run 実行

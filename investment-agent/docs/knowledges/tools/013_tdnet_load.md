@@ -2,15 +2,19 @@
 
 **カテゴリ**: tools
 **作成日**: 2026-03-01
-**更新日**: 2026-05-10
-**ステータス**: 有効（決算特別スケジュール 〜5/15、日次パイプライン ENABLED）
+**更新日**: 2026-05-21
 **計画**: `docs/plans/tools-013_gemma_preemption_resilience_20260504_212000.md`（Gemma TPU プリエンプション耐性改善）
+**計画**: `docs/plans/tools-013_tdnet_shift_md_auto_update_20260515_222900.md`（決算特別シフト MD自動更新）
+**計画**: `docs/plans/archive/202605/tools-013_tdnet_chunk_index_column_20260517_223000.md`（CHUNK_INDEX 列追加 / 順序保証 — 完了 2026-05-18）
+**計画**: `docs/plans/tools-013_gemma_only_pipeline_20260520_220510.md`（Gemini廃止 → Gemma専用パイプライン化 / PyMuPDF換装）
+**計画**: `docs/plans/tools-013_chunk_embed_eval_20260521_155500.md`（決算説明資料 スライド単位チャンク化 + gemini-embedding-001 移行評価）
+**計画**: `docs/plans/tools-013_qwen3_32b_tpu_trial_20260522_001314.md`（Qwen3-32B dense TPU v6e-4 試行評価 — Gemma 4 31B 代替可否）
 
 ---
 
-## 決算特別スケジュール
+## 決算特別シフト
 
-ユーザーが「決算特別スケジュール」と指示した場合、以下の手順で通常スケジュールを決算繁忙期用に切り替える。
+ユーザーが「決算特別シフト」と指示した場合、以下の手順で通常スケジュールを決算繁忙期用に切り替える。
 
 ### 概要
 
@@ -18,7 +22,7 @@
 
 ### 発動条件
 
-- ユーザーが「決算特別スケジュール」と指示
+- ユーザーが「決算特別シフト」と指示
 - **終了日を必ず確認する**。ユーザーが指定していなければ聞くこと
 - 終了日は「5/15まで」等の形式。翌営業日（例: 5/18月）の00:00 JSTに自動復帰
 
@@ -47,9 +51,15 @@
      --oauth-token-scope="https://www.googleapis.com/auth/cloud-platform"
    ```
 
-4. **013_tdnet_load.md 現況サマリを更新**（スケジューラ状態の反映）
+4. **本ファイル1行目のタイトルに「決算特別シフトON」を記載**:
+   - 形式: `# TDnet 適時開示 ETL スクリプト（...）【決算特別シフトON M/DD〜M/DD】`
+   - **開始日・終了日の両方を必ず記載**する（開始日不明だと復旧ジョブの対象期間が特定できない）
+   - 1行目を見ればジョブスケジュールが特別シフト中と即座に判別できるようにする
+   - 通常復帰時に【】を除去する
 
-5. **AI週次（tdnet-ai-weekly）は ENABLED 維持**（安全網: 日次で取りこぼした pending を土曜に回収）
+5. **013_tdnet_load.md 現況サマリを更新**（開始日・終了日・スケジューラ状態の反映）
+
+6. **AI週次（tdnet-ai-weekly）は ENABLED 維持**（安全網: 日次で取りこぼした pending を土曜に回収）
 
 ### 無効化（通常復帰）
 
@@ -57,6 +67,9 @@
 - `tdnet-daily-pipeline-scheduler` → PAUSE
 - `tdnet-download-daily` → RESUME
 - `tdnet-load-daily-daily` → RESUME
+- 013 MD タイトルの【決算特別シフトON ...】を自動除去（`tdnet-shift-md-updater` Cloud Run Job 経由、GitHub Contents API で PUT）
+  - best-effort: 失敗しても上記スケジューラ復帰は完遂する（Workflow の try/except で分離）
+  - GitHub PAT 失効時は Secret Manager `github-pat` を更新して手動再実行
 
 手動: `gcloud workflows execute tdnet-schedule-revert --location=us-central1`
 
@@ -75,6 +88,8 @@ gcloud scheduler jobs delete tdnet-schedule-revert-YYYYMMDD --location=us-west1
 | `tdnet-schedule-revert` | Cloud Workflows (us-central1) | スケジューラ状態を通常に復帰 |
 | `workflows/tdnet_daily_pipeline.yaml` | ソース | パイプライン定義 |
 | `workflows/tdnet_schedule_revert.yaml` | ソース | 復帰ワークフロー定義 |
+| `tdnet-shift-md-updater` | Cloud Run Job (us-west1) | 013 MD タイトルの【】自動除去（GitHub API） |
+| `github-pat` | Secret Manager | GitHub Contents API 用 PAT（Fine-grained, repo scope） |
 
 ### 運用実績
 
@@ -95,18 +110,49 @@ gcloud scheduler jobs delete tdnet-schedule-revert-YYYYMMDD --location=us-west1
 - **動作**: `ai_processing_flow` を `recent_only: true` で起動 → 直近14日以内の `AI_STATUS='pending'` のみ処理
 - **バックフィル安全**: `recent_only` パラメータにより過去年バックフィルの pending を横取りしない（※ これはデータレベルの安全性のみ。Cloud Run Job レベルの競合リスクは §バックフィルと日次パイプラインの共存制約 を参照）
 - **`recent_only` モードの使い分け**: `recent_only: true`（週次/日次）= 14日ガード、`recent_only: false`（手動/monitor_backfill）= 全期間最古、`date_from`/`date_to` 明示 = 指定期間のみ
-- **コスト**: ~$1.6/週（TPU $1 + Embedding $0.1 + Gemini $0.5）
+- **コスト**: ~$1.6/週（TPU $1 + Embedding $0.1 + Gemini $0.5）→ **2026-05-21 以降 ~$1.1/週（Gemini 廃止）**
 
 **2026-04-20 修正済み**: `phase5_bq_insert_finalize` NameError / exit(0) 偽陽性 / 例外握り潰し / `_cleanup_ai_state` gate / DELETE→INSERT 非原子 / ai-prepare DB status 更新順 — 計 6 件修正。詳細は「TDnet ETL 固有の再発防止ルール」（T-1〜T-5）および `078_gemma4_operation.md §7`（G-1〜G-3）参照。インシデント詳細: `013-2_monitor_backfill.md`。
+
+---
+
+## 📌 現況サマリ（2026-05-21）
+
+**Gemini Flash Batch 廃止・Gemma専用パイプライン化完了（2026-05-21）**:
+- **PDF抽出**: PyPDF2/pdfminer → **PyMuPDF（fitz）** + pdfminer フォールバック に換装
+- **Vision OCR**: 廃止（画像PDF は `text=""` で AI処理スキップ、`AI_STATUS='skipped_image_pdf'` に遷移）
+- **Gemini Flash Batch**: 廃止（`phase_gemini_tanshin_batch` / `_merge_gemini_juchu` 削除）
+- **Gemma 2-pass**: 追加（Pass 1: 全件、Pass 2: 決算短信+決算説明資料 → 受注高/受注残高 判定）
+- **詳細**: `docs/plans/tools-013_gemma_only_pipeline_20260520_220510.md`
+- **コスト**: ~$1.1/週（TPU $1 + Embedding $0.1、Gemini $0.5 廃止）
+
+| コンポーネント | 役割（2026-05-21〜） |
+|-------------|------|
+| `tdnet-load-daily` | GCS PDF → PyMuPDF/pdfminer 抽出 → BQ Load Job（AI_STATUS='pending'） |
+| `ai_processing_flow` Workflows | ai-prepare → Gemma TPU 2-pass 推論 → ai-finalize オーケストレーション |
+| `tdnet-ai-prepare` | PyMuPDF抽出 + 正規表現月次補正 + state.json 保存（pending_gemma へ） |
+| `tdnet-gemma-runner` | bash: TPU v6e-4 作成 → vLLM + worker.py（2-pass） → 削除 |
+| `tdnet-ai-finalize` | Gemma Pass 1+2 適用 + Embedding + BQ Insert（completed へ） |
+
+**スモークテスト・本番デプロイ完了（2026-05-21）。E-2〜E-5 全完了。**
+
+---
+
+## 📌 現況サマリ（2026-05-20）
+
+**FILER_NAME 遡及修正完了（2026-05-20）**:
+- 原因: `tdnet-ai-prepare` が `state.json` に `filer_name` を保存しておらず、`tdnet-ai-finalize` が空文字で INSERT していた（commit `8459c94a` で修正済み）。
+- 修正内容: アルファベット ticker（40,073行/338銘柄、2024-09-24〜）→ FILE_NAME REGEXP 抽出、数字 ticker（9,315,255行/4,999銘柄、2017〜）→ STOCK_CODE_LIST JOIN + REGEXP fallback。修正後残存=0。
+- 詳細プラン: `docs/plans/tools-013_bq_past_data_recovery_20260518_232030.md`
 
 ---
 
 ## 📌 現況サマリ（2026-05-10）
 
 **本番稼働中のアーキ**: BQロード / AI判定分離、Cloud Workflows 主導（2026-04-17〜）
-**決算特別スケジュール**: `tdnet-daily-pipeline-scheduler` ENABLED（月〜金 20:03 JST、〜5/15）→ 5/18 自動復帰
-**日次ロード**: `tdnet-load-daily-daily` **PAUSED**（特別スケジュール中）
-**日次DL**: `tdnet-download-daily` **PAUSED**（特別スケジュール中）
+**決算特別シフト**: `tdnet-daily-pipeline-scheduler` ENABLED（月〜金 20:03 JST、〜5/15）→ 5/18 自動復帰
+**日次ロード**: `tdnet-load-daily-daily` **PAUSED**（決算特別シフト中）
+**日次DL**: `tdnet-download-daily` **PAUSED**（決算特別シフト中）
 **AI処理**: `tdnet-ai-weekly` ENABLED（毎週土 07:00 JST、安全網として維持）
 **バックフィル**: 2017-2022年 ✅ / 2024年 ✅ / 2025年 ✅ / 2026年1-2月漏れ ✅ — **全年（2016-2026）pending=0**（2022年のみ確認済み 05/10、他年は04/27確認）
 **P0-1 修正**: `_content_length()` 導入（commit `19a7c7f`）— ページマーカーが閾値判定をすり抜けるバグ修正
@@ -204,8 +250,8 @@ gs://stock_data_1930932/
 | `ai_processing_flow` | Cloud Workflows | - | - | - | 1年 |
 | `tdnet-ai-prepare` | Cloud Run Job CPU | `--job-mode=ai-prepare` | 1 | 2Gi | 3600s |
 | TPU v6e-4 spot VM | Compute Engine + vLLM | - | - | - | spot |
-| `tdnet-gemma-runner` | Cloud Run Job CPU | bash (gcloud wrapper) | 1 | 2Gi | 14400s |
-| `tdnet-ai-finalize` | Cloud Run Job CPU | `--job-mode=ai-finalize` | **2** | **8Gi** | 21600s |
+| `tdnet-gemma-runner` | Cloud Run Job CPU | bash (gcloud wrapper) | 1 | 2Gi | 3600s |
+| `tdnet-ai-finalize` | Cloud Run Job CPU | `--job-mode=ai-finalize` | **2** | **8Gi** | 3600s |
 
 ### Cloud Run Job リソース設計の根拠（2026-04-20 実測で確定版）
 
@@ -303,16 +349,18 @@ doc.sub_categories = sorted(gemma_sub)
 |------|------|
 | `pending` | load 完了、AI処理未着手 |
 | `pending_gemma` | ai-prepare 完了、Gemma推論中 |
-| `pending_finalize` | Gemma完了、Gemini/Embedding/UPDATE 待ち（短時間状態、クラッシュ検出用） |
+| `pending_finalize` | Gemma完了、Embedding/UPDATE 待ち（短時間状態、クラッシュ検出用） |
+| `skipped_image_pdf` | 画像PDF（PyMuPDF+pdfminer 両者テキスト不足）、AI処理スキップ（2026-05-21〜） |
 | `completed` | AI処理完了 |
 
 ### GCS 状態ファイル
 
 ```
 gs://stock_data_1930932/ai_job/{run_id}/
-  ├─ state.json           — ai-prepare 出力（対象doc_id, OCR結果, 正規表現結果, 全文テキスト）
-  ├─ gemma_CURRENT.jsonl  — Gemma推論結果（1件ずつappend、preemption resume）
-  └─ _SUCCESS             — worker 完了マーカー（callback 不達時の fallback）
+  ├─ state.json                  — ai-prepare 出力（対象doc_id, テキスト, pre_main_category 等）
+  ├─ gemma_CURRENT.jsonl         — Gemma Pass 1 推論結果（全件、1件ずつappend、preemption resume）
+  ├─ gemma_pass2_CURRENT.jsonl   — Gemma Pass 2 推論結果（決算短信+決算説明資料のみ）（2026-05-21〜）
+  └─ _SUCCESS                    — worker 完了マーカー（Pass 2 完了後に生成）
 
 gs://stock_data_1930932/ai_job/scripts/
   ├─ gemma_tpu_worker.py          — TPU VM 上で動く worker
@@ -381,7 +429,7 @@ gcloud run jobs execute tdnet-load-daily --region us-west1 \
 
 **制約1 — Cloud Run Job リソース競合**:
 - バックフィル Load（`DATE_FROM/DATE_TO` 指定、数時間〜6h）と日次パイプラインの Load（数分）が同時に走ると、日次パイプラインの trigger_ai ステップが前段 Load の長時間実行により遅延する可能性がある
-- **決算特別スケジュール期間中**（パイプライン 20:03 JST 起動）にバックフィル Load を投入する場合、**19:00 JST 前に完了が見込めない場合は投入を避ける**
+- **決算特別シフト期間中**（パイプライン 20:03 JST 起動）にバックフィル Load を投入する場合、**19:00 JST 前に完了が見込めない場合は投入を避ける**
 - 通常スケジュール期間（Load 02:00 JST）も同様に、バックフィル Load が 01:00 JST 前に完了しない場合は日次側と衝突する
 
 **制約2 — `resolve_date_range` の日付選択**:
@@ -397,6 +445,36 @@ gcloud run jobs execute tdnet-load-daily --region us-west1 \
 **→ 実績・再利用ナレッジは `013-3_tdnet_backfill_archive.md` に集約**（全年バックフィル完了サマリ、整合性チェックSQL、OOM分割基準、preemptionタイミング、task-timeout設定値、Phase I設計ポイント）
 
 バックフィル監視ツール: `scripts/monitor_backfill.py` + `config/backfill/*.yaml`（詳細は `013-2_monitor_backfill.md`）
+
+---
+
+## 設計判断履歴: Gemini Flash 廃止 (2026-05-20)
+
+**目的**: 本セクションは将来の code-reviewer / md-reviewer が「Gemma 過剰検知 vs Gemini コスト」問題を繰り返し指摘しないために、意思決定の根拠を恒久記録する。
+
+### 判断内容
+
+Gemini Flash Batch（受注判定）を**廃止**し、Gemma Pass 2（`build_prompt_pass2()`）に置き換えた。
+
+### 背景となる過去 PoC 知見 (`013-1_ai_cost_and_gemma_poc.md`)
+
+- Gemma は受注高/受注残高を過剰検知する傾向がある
+- PoC v2（+ 受注ルール強化）は正解率 40.0% で逆効果 → 不採用
+- このため「ハイブリッド（決算短信受注のみ Gemini）」が採用されていた
+
+### 廃止の判断根拠
+
+- Gemini Flash Batch コスト: ~$0.5/週（月次 ~$2）
+- Gemma 過剰検知補正コスト（spike/PoC 実施工数）> Gemini 継続コスト という従来の判断から、**Gemini 廃止 + 過剰検知補正を別タスクでカバー** に方針転換
+- Pass 2 Gemma vs Gemini の精度比較 spike は**実施しない**（時間コスト > 期待便益）
+
+### 意思決定
+
+- **承認**: ユーザー意思決定 (2026-05-20)
+- **トレードオフ受容**: Gemma 過剰検知の事実を承知の上で廃止。過剰検知が問題化した場合は別タスクで後段フィルタ・軽量モデル等で補正する
+- **参照**: `docs/plans/tools-013_gemma_only_pipeline_20260520_220510.md §設計判断・トレードオフ`
+
+> **⚠ reviewer へ**: この判断はユーザーが意識的に行ったコスト vs 精度のトレードオフです。「PoC と矛盾する」「Gemma 精度が懸念」という指摘はすでに考慮済みです。再指摘は不要です。
 
 ---
 
@@ -518,11 +596,12 @@ LIMIT 100;
 |---|---|---|---|
 | T-1 | `phase5_bq_insert_finalize` / Phase 5 系関数全般 | GCS `bucket` を署名で受け取らず、モジュールや呼出元スコープの変数に暗黙依存 | 署名に `bucket` を追加。同一ファイル内 `phase5_bq_insert_load` は引数で受けている — **対称性の崩れを放置しない**。Phase 5 を触ったら `python -m py_compile` + 数件スモーク（BQ Load Job 実行確認まで）を deploy 前に必ず通す（004 F-1）。**過去事故**: 2026-04-20 batch A 7bd8f で 19,156 doc ロスト |
 | T-2 | `parse_tdnet_filename` | 不正ファイル名の fallback で `datetime.now()` / `uuid.uuid4()` を返して処理継続 | fallback は `raise ValueError(...)`、呼出側 (`phase1_scan_and_extract`) で `except → count + log + skip`。誤日付 BQ 挿入と retry 時重複を両方塞ぐ（004 A-5 の TDnet 実装） |
-| T-3 | `phase4_chunk_and_embed` | chunk → doc のマッピング key に `chunk_text` 文字列を使う | `(doc_id, chunk_index)` tuple を key に。同一テキスト chunk の衝突で embedding が紛失しない |
+| T-3 | `phase4_chunk_and_embed` | chunk → doc のマッピング key に `chunk_text` 文字列を使う | `(doc_id, chunk_index)` tuple を key に。同一テキスト chunk の衝突で embedding が紛失しない。**2026-05-18 追記**: `chunk_index` は BQ 列 `CHUNK_INDEX INT64` としても露出済み（CR-203 / tools-013_tdnet_chunk_index_column プラン）。新規ロード分は `ORDER BY CHUNK_INDEX` で本文順復元可、過去分は NULL |
 | T-4 | Phase 5 系（`phase5_bq_insert_finalize` / `phase5_bq_insert_load`）のエラー集計 | バッチ insert 失敗時に `errors += 1` を doc 単位で加算 | `errors += len(failed_rows)` で行数単位加算（004 A-6 の TDnet 実装）。サマリが実データ損失量を過小報告しない |
 | T-5 | mode 選択（`--job-mode` / `RUN_MODE`） | 旧 `phase5_bq_insert`（streaming insert 版）を resume / full モードから呼ぶ | 新 `phase5_bq_insert_load` / `phase5_bq_insert_finalize` に寄せ、`insert_rows_json` 経路を段階的に削除（004 C-5）。暫定的に残す場合は用途をコードコメントで限定 |
 | T-6 | `phase2_vision_batch` のテキスト代入 | Gemini Vision 結果を `doc.text = text` で直接セットし `_normalize_page_text` を経由しない（L804-807） | **TODO**: 次回 Phase 2 改修時に `_normalize_page_text` または同等のサロゲート除去を通す。現時点で Gemini API がサロゲートを返す実績はないが、3rd-party API の挙動変更で `_save_ai_prepare_state` が同じ `UnicodeEncodeError` で死ぬリスクあり。**過去事故**: 2026-04-25 PyPDF2 経由で同エラー発生（`tdnet-ai-prepare-28cd5`） |
 | T-7 | テキスト品質の閾値判定（`_MIN_TEXT_LEN` 比較） | `len(text)` で直接比較する（`[PAGE N]` マーカー文字列が実コンテンツ長を水増しし、pdfminer / Vision フォールバックが発動しない） | `_content_length(text)` を使い、`PAGE_MARKER_PATTERN` 除去後の非空白トークン数で判定する。Phase 2 Vision 結果はマーカーを含まないため `len(text)` で判定してよい（コメント明記済み）。**過去事故**: 2026-05-06 全カテゴリ約 2,100 DOC がマーカーのみで BQ 格納 |
+| T-8 | `MAIN_CATEGORY` のカテゴリ名正規化（ファイル名由来 `/` 欠落） | `_sanitize()` が `/` を除去するため、ファイル名から復元した `main_category` が `受注高受注残高` のような不正値になる。その値がそのまま BQ に保存される | `_FILENAME_ALIASES` dict（`VALID_CATEGORIES` から自動生成）を `_correct_category_by_title` の先頭で適用し正規形に戻す。`VALID_CATEGORIES` に `/` を含む新カテゴリを追加すれば自動的に対応される。**過去事故**: 2026-05-18 `受注高受注残高`（スラッシュなし）が 30 DOC / 46 rows BQ に蓄積（BQ UPDATE で修正済み）。根本は `make_filename()` の `_sanitize(category)` 呼出し — DL側の修正は今後の検討課題 |
 
 ### 汎用ルールの TDnet 適用ポイント
 
@@ -556,4 +635,59 @@ LIMIT 100;
 
 - `004_coding_conventions.md §バッチジョブ・ETL アンチパターン集` — 汎用ルール（本節の前提）
 - `078_gemma4_operation.md §7 Gemma ↔ Gemini 結合部アンチパターン` — Gemma worker / Gemini Batch 結合部
+
+---
+
+## PDF処理戦略
+
+### ライブラリ構成（PDF前処理）
+
+用途別に使い分ける：
+
+| ライブラリ | 用途 |
+|-----------|------|
+| **PyMuPDF** | 本文テキスト抽出・ページMarkdown化・座標付き抽出 |
+| **pdfplumber** | 罫線あり表の抽出（PyMuPDFより高精度） |
+| **OCRmyPDF** | スキャンPDF・画像PDF専用（中小企業開示で出現）|
+
+extract_adapter の抽出0件バグ調査時、まずスキャンPDFかどうか確認し、該当ならOCRmyPDFを前段に挟む。表抽出精度改善時はpdfplumberを試す。
+
+### PyMuPDF 選定理由
+
+**TDnet ロード（決算短信・決算説明資料・月次開示）の主抽出ライブラリに PyMuPDF を採用した根拠**（2026-05-21 Gemma専用パイプライン化時に PyPDF2 → PyMuPDF 換装）。
+
+#### TDnet ロードの主抽出に PyMuPDF を使う理由
+
+| 比較軸 | PyMuPDF | pdfplumber | 選定根拠 |
+|--------|---------|-----------|---------|
+| テキスト抽出速度 | ◎ 高速 | △ 遅い | バックフィル 13M 行規模で速度差が顕在化 |
+| ページ境界マーカー | ◎ `[PAGE N]` を自前で挿入しやすい | △ page オブジェクト単位で取得は同等 | チャンク分割の `separators` 先頭に `\n\n[PAGE` を指定する設計と親和性が高い |
+| フォントサイズ・bbox 取得 | ◎ `get_text("dict")` でブロック単位に構造化 | △ `chars` 属性から自前集計が必要 | スライド見出し検出ヘルパー（A-1）の実装コストが低い |
+| 既存 Docker イメージへの収録 | ◎ 換装時に収録済み | — | 追加 Dockerfile 修正不要 |
+
+#### 月次開示が pdfplumber を使う理由（用途分担）
+
+月次開示（`extract_monthly_data.py`、`build_monthly_extractor.py`）は **数値テーブル（罫線表）の正確な列・行抽出** が主目的であり、`pdfplumber.extract_tables()` の罫線認識精度が PyMuPDF より高い。両者は競合ではなく PDF の性質による用途分担：
+
+- **スライド型 PDF**（決算説明資料）: テキスト + レイアウト構造 → PyMuPDF `get_text("dict")`
+- **罫線表 PDF**（月次開示・財務諸表）: テーブル抽出精度重視 → pdfplumber
+
+#### `get_text("text")` vs `get_text("dict")` の使い分け
+
+| モード | 取得内容 | 用途 |
+|--------|---------|------|
+| `get_text("text")` | プレーンテキストのみ | 現行の本文抽出（決算短信・月次開示など全般） |
+| `get_text("dict")` | `{"blocks": [{"lines": [{"spans": [{"size": 18.0, "bbox": (x0,y0,x1,y1), "text": "..."}]}]}]}` — フォントサイズ・位置情報付き | スライド見出し検出（A-1）。大きいフォント + 上部 1/4 bbox → 見出し判定 |
+
+A-1 実装は「ライブラリ新規追加」ではなく「既存 PyMuPDF の別 API モードを追加利用」にすぎない。
+
+### 難易度別ルーティング（LLM呼び出し戦略）
+
+```
+① PyMuPDF でテキスト抽出成功 → regex で数値取得（コスト最小）
+② regex 失敗 → Gemini 2.5 Flash（速い・安い）
+③ 画像PDF or 表崩れ → Gemini 2.5 Pro または Claude PDF（精度重視）
+```
+
+現状「失敗→Gemini一律」だが、PDF種別判定ロジック付きの3段構成への改修候補。`build_monthly_extractor.py` / `tdnet_load_parallel.py` のGeminiフォールバック部分が対象。
 - `api/002_bigquery.md` — Load Job vs streaming insert の選択指針

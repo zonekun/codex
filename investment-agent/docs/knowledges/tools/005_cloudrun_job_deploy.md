@@ -189,9 +189,11 @@ gcloud logging read \
 
 ## ⑥ スクリプト変更時の更新
 
+> **⚠️ Windows + Google Drive 必須ルール**: プロジェクトルート（`G:\マイドライブ\...` / `C:\gdrive\...`）から `gcloud builds submit .` を直接実行禁止。**`[WinError 32] file.tgz`（PermissionError / プロセスはファイルにアクセスできません）でリトライ無限ループに陥る**。下記「一時ビルドディレクトリ方式」（`/c/tmp/cloudbuild-*`）で必ず実行すること。理由: Google Drive 同期プロセスが staging tar 作成中の `file.tgz` をロックする + MR-171（Drive 全体 3216ファイル/20.5MiB がアップロードされ遅延）+ MR-204（2026-05-18 / 5回連続失敗事故）。
+>
 > **ルール**: スクリプト修正 → 再ビルド → `jobs update --image` の3ステップが1セット。`jobs update` を忘れると古いイメージが定時実行され続ける（`:latest` タグはdigestで固定されるため自動更新されない）。
 >
-> **自動化済み（2026-04-26〜）**: §③ テンプレートに `docker push` + `jobs update` ステップを組み込み済み。`gcloud builds submit` だけで Job のイメージも自動更新される。手動 `jobs update` は不要（フォールバックとして下記に残す）。
+> **テンプレート更新（2026-04-26〜）**: §③ テンプレートに `docker push` + `jobs update` ステップを追加。新規作成時は必ず §③ 形式を使用すること。旧形式のファイルは手動 `jobs update` が必要（次回修正時に §③ へ移行推奨）。**見分け方**: cloudbuild.yaml 内に `gcloud run jobs update` があれば新形式、なければ旧形式。
 >
 > **過去事故（2026-04-25）**: サロゲート修正を Cloud Build したが `jobs update` を忘れ、3 Job が旧イメージで再失敗。
 
@@ -344,7 +346,7 @@ else:
 | `gsutil rsync -r ...` on Windows | `Permission denied: .../gsutil/VERSION` | **`gcloud storage rsync -r` を使う** |
 | **Playwright ベースイメージのバージョン固定** | `mcr.microsoft.com/playwright/python:v1.50.0-jammy` に `pip install playwright>=1.50` を入れると最新版がインストールされバイナリ不一致でクラッシュ | `pip install "playwright==1.50.0"` とベースイメージと**完全一致**でピンする |
 | **スクリプトリネーム時の Dockerfile パス更新漏れ** | `scripts/foo_v2.py` → `scripts/foo.py` リネーム後に Dockerfile の `COPY`/`ENTRYPOINT` が古いパスのままでビルド失敗 | リネーム時は ① Dockerfile の COPY/ENTRYPOINT、② Dockerfile 自体のリネーム、③ cloudbuild.yaml の参照、④ スケジューラ/Artifact Registry を一括更新。ビルドが通ることを確認してから完了とする |
-| **プロジェクトルートから `gcloud builds submit` するとビルドコンテキスト肥大化** | Dockerfile は1ファイルしか COPY しないのに Google Drive 上のプロジェクト全体 3216ファイル/20.5MiB がアップロードされた（MR-171） | §⑥ の一時ビルドディレクトリ方式を使う。ローカルSSD上に必要ファイルだけコピーしてビルド。Google Drive の遅延も回避できる |
+| **プロジェクトルートから `gcloud builds submit` するとビルドコンテキスト肥大化 + Windows ファイルロック (`WinError 32` / `file.tgz`)** | (1) Dockerfile は1ファイルしか COPY しないのに Google Drive 上のプロジェクト全体 3216ファイル/20.5MiB がアップロードされ遅延（MR-171）。(2) Google Drive 同期プロセスが staging tar（`file.tgz`）をロックし `PermissionError` でリトライ無限ループ（MR-204: 2026-05-18 / 5回連続失敗事故） | §⑥ の一時ビルドディレクトリ方式（`/c/tmp/cloudbuild-*`）を使う。ローカルSSD上に必要ファイルだけコピーしてビルド。Google Drive の遅延もロックも回避できる |
 
 ---
 
@@ -368,3 +370,5 @@ else:
 | `stock-price-yf-am-load` | `scripts/stock_price_yf_am_load.py` | `stock/stock-price-yf-am-load` | 2400s | 毎営業日 11:45 JST（`stock-price-yf-am-load-daily`）。4並列タスク |
 | `signal-011-4-daily` | `scripts/signal_011_4_daily.py` | `stock/signal-011-4` | 600s | 毎日 06:30 JST（Scheduler: `signal-011-4-daily-scheduler`）⛔停止中 |
 | `paper-trade-011-4-pnl` | `scripts/paper_trade_011_4_pnl.py` | `stock/paper-trade-011-4` | 600s | 毎日 19:00 JST（Scheduler: `paper-trade-011-4-pnl-scheduler`）⛔停止中 |
+| `tdnet-shift-md-updater` | `scripts/tdnet_shift_md_updater.py` | `tools/tdnet-shift-md-updater` | 120s | Workflow `tdnet-schedule-revert` から呼び出し（年4回） |
+| `vcp-insider-daily` | `scripts/tob_prediction/vcp_daily_cloud.py` | `tob/vcp-insider-daily` | 3600s | 毎営業日 19:00 JST（`vcp-insider-daily-scheduler`）。Dropbox `/stock/AI分析優待/インサイダーVCP.xlsx` に追記 |

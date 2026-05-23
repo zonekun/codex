@@ -3,7 +3,7 @@ FROM python:3.12-slim
 WORKDIR /app
 
 RUN pip install --no-cache-dir \
-    PyPDF2>=3.0 \
+    PyMuPDF>=1.27.2 \
     google-cloud-storage>=2.16 \
     google-cloud-bigquery>=3.0 \
     google-genai>=1.0 \

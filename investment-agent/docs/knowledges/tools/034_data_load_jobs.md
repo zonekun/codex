@@ -24,7 +24,7 @@
 | `edinet-download-daily` | `edinet-download` | `0 23 * * 1-5` | 平日 23:00 | GCS保存のみ |
 | `edinet-delay-daily` | `edinet-delay` | `30 18 * * 1-5` | 平日 18:30 | 遅延開示の追加取得 |
 | `edinet-load-parallel-daily` | `edinet-load-parallel` | `0 1 * * 2-6` | 火〜土 01:00 | BQ `IR_DOCUMENTS_ENHANCED` |
-| `jquants-fin-summary-daily` | `jquants-fin-summary` | `0 2 * * 2-6` | 火〜土 02:00 | BQ `FIN_SUMMARY` |
+| `jquants-fin-summary-daily` | `jquants-fin-summary` | `0 2 * * 2-6` | 火〜土 02:00 | BQ `FIN_SUMMARY`（`--shift-day=-1` 注入済み：00:30公開の前日確報を取得） |
 | `is-holiday-daily` | `is-holiday` | `0 8 * * *` | 毎日 08:00 | 休日マスタ更新 |
 | `shina-margin-balance-load-17` | `shina-margin-balance-load` | `0 17 * * 1-5` | 平日 17:00 | BQ `SHINA_RATES`, `MARGIN_BALANCE` |
 | `shina-margin-balance-load-20` | `shina-margin-balance-load` | `0 20 * * 1-5` | 平日 20:00 | 同上（1日2回） |

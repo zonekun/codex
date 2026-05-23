@@ -162,9 +162,9 @@ AIは042 MDの「Step 5→6b | 月次抽出 | 本運用パイプライン」と�
 - **推奨対応**: 以下を追加:
   ```bash
   # Step 6b: 全社月次抽出（本運用）
-  PYTHONUTF8=1 C:/venvs/investment-agent/Scripts/python.exe scripts/extract_monthly_data.py --all --since 2020
+  PYTHONUTF8=1 <python> scripts/extract_monthly_data.py --all --since 2020
   # Step 6b: テスト実行（30社サンプル）
-  PYTHONUTF8=1 C:/venvs/investment-agent/Scripts/python.exe scripts/extract_monthly_data.py --sample 30 --since 2024
+  PYTHONUTF8=1 <python> scripts/extract_monthly_data.py --sample 30 --since 2024
   ```
 - **MD修正だけで足りるか**: Yes
 
