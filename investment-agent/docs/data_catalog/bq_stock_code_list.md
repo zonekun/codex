@@ -14,7 +14,7 @@
 | TICKER | STRING (REQUIRED) | 銘柄コード（4桁数字 `"1301"` またはアルファナメリック `"130A"` ） |
 | EXCHANGE | STRING (REQUIRED) | 証券取引所（`TSE`, `FSE`, `SSE`, `NSE`） |
 | STOCK_NAME | STRING | 銘柄名（企業名・ファンド名・ETF名など） |
-| MARKET_CATEGORY | STRING | 市場・商品区分（プライム, スタンダード, グロース, 本則市場, アンビシャス, プレミア, メイン, ネクスト等） |
+| MARKET_CATEGORY | STRING | 市場・商品区分（TSEは `プライム（内国株式）`, `スタンダード（内国株式）`, `グロース（内国株式）`, ETF・ETN, REIT等。FSE/SSE/NSEは本則市場, アンビシャス, プレミア, メイン, ネクスト等） |
 | INDUSTRY_33_CODE | STRING | 33業種コード（TSE 33業種分類に準拠） |
 | INDUSTRY_33_CATEGORY | STRING | 33業種区分（水産・農林業, 食料品, 電気機器など） |
 | INDUSTRY_17_CODE | STRING | 17業種コード（TSE 17業種分類に準拠） |
@@ -27,6 +27,7 @@
 **注意事項:**
 - すべての列が STRING 型。コード値の比較は文字列比較で行うこと（例: `TICKER = '7203'`）
 - ETF・ETN等、業種が定義されていない銘柄は `INDUSTRY_*` / `SIZE_*` 列が NULL になる
+- TSE内国株式3市場を抽出する場合は `MARKET_CATEGORY IN ('プライム（内国株式）','スタンダード（内国株式）','グロース（内国株式）')` を使う。`プライム` などサフィックスなしの値では一致しない
 - テーブル名・カラム名はすべて大文字で指定すること
 - TSE のデータソース: 日本取引所グループ（JPX）公開データ。Cloud Run Job `stock-code-list-load` で毎月第3営業日 20:00 JST に自動更新（`scripts/stock_code_list_load.py`）
 - **トリガー構成**: Cloud Scheduler（毎日 cron）→ Cloud Functions `stock-code-list-scheduler`（`functions/stock_code_list_scheduler/`）→ 第3営業日のみ Cloud Run Job `stock-code-list-load` を起動。cron では第N営業日を表現できないため Functions を経由する設計（詳細: `docs/knowledges/tools/034_data_load_jobs.md`）

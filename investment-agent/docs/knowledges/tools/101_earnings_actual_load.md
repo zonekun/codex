@@ -11,7 +11,7 @@
 
 ## 概要
 
-`STOCK.TDNET_DOCUMENTS_ENHANCED` から決算短信・業績予想を抽出し、`STOCK.fin_summary` と JOIN して補完した上で `STOCK.EARNINGS_DISCLOSURE_CALENDAR` に `RECORD_TYPE='A'`（実績）でロードする。
+`STOCK.fin_summary` から決算短信・業績予想修正を抽出し、`STOCK.EARNINGS_DISCLOSURE_CALENDAR` に `RECORD_TYPE='A'`（実績）でロードする。
 
 ## BQ テーブル
 
@@ -22,13 +22,19 @@
 ## データフロー
 
 ```
-TDNET_DOCUMENTS_ENHANCED
-  WHERE MAIN_CATEGORY IN ('決算短信', '業績予想')
-  AND SUBMISSION_DATE BETWEEN @date_from AND @date_to
+fin_summary
+  WHERE DISCLOSED_DATE BETWEEN @date_from AND @date_to
+    AND (
+      TYPE_OF_DOCUMENT LIKE '%FinancialStatements%'
+      OR TYPE_OF_DOCUMENT IN ('EarnForecastRevision', 'REITEarnForecastRevision')
+    )
     │
-    └── LEFT JOIN fin_summary
-          ON TICKER = LOCAL_CODE AND SUBMISSION_DATE = DISCLOSED_DATE
-          （同一銘柄×同一日複数行はDISCLOSURE_NUMBER DESCで最新1件）
+    ├── valid_tickers で対象銘柄を制限
+    │     STOCK_CODE_LIST: TSE 内国株式（プライム/スタンダード/グロース）
+    │     DELISTED_STOCKS: 旧東証主要市場（バックフィル用）
+    │
+    ├── R: 同一銘柄×開示日×FY で DISCLOSURE_NUMBER DESC 最新1件
+    └── F: 同一銘柄×FY×QUARTER で DISCLOSURE_NUMBER ASC 連番
                 │
            変換・マッピング
                 │
@@ -41,13 +47,15 @@ TDNET_DOCUMENTS_ENHANCED
 
 | カラム | 元データ | 変換ルール |
 |--------|---------|-----------|
-| `CATEGORY` | `MAIN_CATEGORY` | 決算短信→`R` / 業績予想→`F` |
+| `CATEGORY` | `TYPE_OF_DOCUMENT` | `%FinancialStatements%`→`R` / `EarnForecastRevision`, `REITEarnForecastRevision`→`F` |
 | `QUARTER` | `TYPE_OF_CURRENT_PERIOD` (fin_summary) | FY/4Q/5Q→`本決算` / 2Q→`中間決算` / 1Q/3Q→そのまま / NULL→`不明` |
 | `FISCAL_YEAR_END` | `CURRENT_FISCAL_YEAR_END_DATE` (fin_summary) | NULL許容 |
 | `DISCLOSURE_TIME` | `DISCLOSED_TIME` (fin_summary) | NULL許容 |
-| `REVISION_SEQ` | 計算値 | F(業績予想): 銘柄×FISCAL_YEAR_END×QUARTERで開示日昇順連番 / R(決算): 常に1 |
-| `SOURCE` | 固定 | `"tdnet"` |
-| `DISCLOSURE_NUMBER` | `DOC_ID` (TDNET_DOCUMENTS_ENHANCED) | TDnet開示番号 |
+| `REVISION_SEQ` | 計算値 | F(業績予想): 銘柄×FISCAL_YEAR_END×QUARTERで `DISCLOSURE_NUMBER ASC` 連番 / R(決算): 常に1 |
+| `SOURCE` | 固定 | `"jquants"` |
+| `DISCLOSURE_NUMBER` | 固定 | 既存BQスキーマ互換のため NULL 固定（将来DROP候補） |
+| `TYPE_OF_DOCUMENT` | 固定 | 既存BQスキーマ互換のため NULL 固定（将来DROP候補） |
+| `DOC_TITLE` | 固定 | 既存BQスキーマ互換のため NULL 固定（将来DROP候補） |
 
 ## 引数
 
@@ -100,9 +108,10 @@ gcloud run jobs execute earnings-actual-load \
 
 ## 既知の制約
 
-- fin_summary に対応レコードがない場合（開示が TDnet にあるが fin_summary 未取得）は `QUARTER='不明'`、`FISCAL_YEAR_END=NULL`、`DISCLOSURE_TIME=NULL` になる
-- J-REIT/ETF 系銘柄（1672-1697 等）は fin_summary カバー外のため常に `QUARTER='不明'` → **仕様**
-- 同一銘柄×同一日に連結/単体等の複数 fin_summary レコードがある場合、`DISCLOSURE_NUMBER DESC` 最新1件のみ使用
+- fin_summary 起点のため、fin_summary 未取得のTDnet開示は実績Aに入らない
+- J-REIT/ETF 系銘柄（1672-1697 等）は `STOCK_CODE_LIST.MARKET_CATEGORY` フィルタで通常ロード対象外
+- 同一銘柄×同一開示日×同一FYに複数の決算短信がある場合、`DISCLOSURE_NUMBER DESC` 最新1件のみ使用
+- `DISCLOSURE_NUMBER` / `TYPE_OF_DOCUMENT` / `DOC_TITLE` は現行テーブル互換のため NULL 固定。予定Sロード側も同じスキーマを使うため、物理DROPは参照側改修後に行う
 - `--week` は常に今日起点で7日前〜今日。土日・休日も含む（TDnet は土日開示あり）
 
 ## バグ修正履歴
@@ -126,3 +135,13 @@ gcloud run jobs execute earnings-actual-load \
 - 根本原因: 旧 Cloud Run Job spec に `--shift-day` 引数なし = shift_day=0 → 02:00 JST 時点では J-Quants API に当日データが未反映でサイレント0件
 - 対処: `--from=20260330 --to=20260515` と `--from=20260516 --to=20260522` で再実行 → **2,568 → 247件**（ETF/REIT カバー外のみ）
 - 再発防止: Phase 3 で fin_summary 最新日チェックを追加予定
+
+### 2026-05-23: Phase 4 fin_summary 起点への転換（Codex ローカル実装）
+
+- 変更: `EXTRACT_SQL` を `TDNET_DOCUMENTS_ENHANCED` 起点から `fin_summary` 起点へ全面変更
+- 訂正書類除外: `DOC_TITLE LIKE` 依存を廃止し、Rは `DISCLOSURE_NUMBER DESC` 最新1件を採用
+- 銘柄絞り込み: `STOCK_CODE_LIST.MARKET_CATEGORY` の内国株式3市場 + `DELISTED_STOCKS` 旧東証主要市場
+- SOURCE: 実績Aは `jquants`
+- 互換: `DISCLOSURE_NUMBER` / `TYPE_OF_DOCUMENT` / `DOC_TITLE` は NULL 固定
+- smoke: 2162/2026-05-11 は `3Q×1件` になることをBQで確認
+- 未実施: デプロイ、BQ DDL DROP、2017年以降バックフィル

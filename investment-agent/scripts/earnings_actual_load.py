@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
-"""TDNET_DOCUMENTS_ENHANCED → EARNINGS_DISCLOSURE_CALENDAR 実績ロード
+"""fin_summary → EARNINGS_DISCLOSURE_CALENDAR 実績ロード
 
 実行環境: Windows ローカル / Cloud Run Job
-ソース  : BQ STOCK.TDNET_DOCUMENTS_ENHANCED (MAIN_CATEGORY IN ('決算短信','業績予想'))
+ソース  : BQ STOCK.fin_summary
 ロード先: BQ STOCK.EARNINGS_DISCLOSURE_CALENDAR (RECORD_TYPE='A')
-補完    : fin_summary と JOIN → DISCLOSED_TIME, QUARTER, FISCAL_YEAR_END, TYPE_OF_DOCUMENT
 
 引数:
   --from YYYYMMDD  開始日
@@ -49,12 +48,6 @@ QUARTER_MAP: dict[str, str] = {
     "5Q": "本決算",
 }
 
-# MAIN_CATEGORY → CATEGORY マッピング
-CATEGORY_MAP: dict[str, str] = {
-    "決算短信": "R",
-    "業績予想": "F",
-}
-
 log = structlog.get_logger()
 
 
@@ -95,9 +88,7 @@ def get_bq_client() -> bigquery.Client:
 
 def parse_args() -> argparse.Namespace:
     """引数をパースする."""
-    parser = argparse.ArgumentParser(
-        description="TDNET実績 → EARNINGS_DISCLOSURE_CALENDAR ロード",
-    )
+    parser = argparse.ArgumentParser(description="fin_summary実績 → EARNINGS_DISCLOSURE_CALENDAR ロード")
     parser.add_argument("--from", dest="date_from", default=None,
                         help="開始日 YYYYMMDD")
     parser.add_argument("--to", dest="date_to", default=None,
@@ -129,56 +120,103 @@ def resolve_dates(args: argparse.Namespace) -> tuple[date, date]:
 # ============================================================
 
 EXTRACT_SQL = """
-WITH tdnet_docs AS (
-  -- TDNET_DOCUMENTS_ENHANCED から決算短信・業績予想を抽出（重複チャンク除去）
-  -- 訂正・差替え・お知らせを除外（最初の実績のみ保持）
-  SELECT DISTINCT
-    TICKER,
-    SUBMISSION_DATE,
-    MAIN_CATEGORY,
-    DOC_TITLE,
-    DOC_ID
-  FROM `{project}.STOCK.TDNET_DOCUMENTS_ENHANCED`
-  WHERE MAIN_CATEGORY IN ('決算短信', '業績予想')
-    AND SUBMISSION_DATE BETWEEN @date_from AND @date_to
-    AND DOC_TITLE NOT LIKE '%訂正%'
-    AND DOC_TITLE NOT LIKE '%差替え%'
-    AND DOC_TITLE NOT LIKE '%のお知らせ'
-    AND DOC_TITLE NOT LIKE '%に関するお知らせ'
+WITH valid_tickers AS (
+  SELECT TICKER
+  FROM `{project}.STOCK.STOCK_CODE_LIST`
+  WHERE EXCHANGE = 'TSE'
+    AND MARKET_CATEGORY IN (
+      'プライム（内国株式）',
+      'スタンダード（内国株式）',
+      'グロース（内国株式）'
+    )
+  UNION DISTINCT
+  SELECT TICKER
+  FROM `{project}.STOCK.DELISTED_STOCKS`
+  WHERE MARKET_SEGMENT IN (
+    'プライム',
+    'スタンダード',
+    'グロース',
+    '東証プライム',
+    '東証スタンダード',
+    '東証グロース',
+    '第一部',
+    '第二部',
+    'マザーズ',
+    'JQスタンダード',
+    'JQグロース'
+  )
 ),
-fin AS (
-  -- fin_summary から開示時刻・四半期・決算期末を取得
-  -- 同一銘柄×同一日に複数レコード（連結+単体等）がある場合は最初の1件のみ
+fin_base AS (
+  SELECT
+    f.LOCAL_CODE,
+    f.DISCLOSED_DATE,
+    f.DISCLOSED_TIME,
+    f.DISCLOSURE_NUMBER,
+    f.TYPE_OF_DOCUMENT,
+    f.TYPE_OF_CURRENT_PERIOD,
+    f.CURRENT_FISCAL_YEAR_END_DATE
+  FROM `{project}.STOCK.fin_summary` f
+  INNER JOIN valid_tickers vt
+    ON f.LOCAL_CODE = vt.TICKER
+  WHERE f.DISCLOSED_DATE BETWEEN @date_from AND @date_to
+    AND (
+      f.TYPE_OF_DOCUMENT LIKE '%FinancialStatements%'
+      OR f.TYPE_OF_DOCUMENT IN ('EarnForecastRevision', 'REITEarnForecastRevision')
+    )
+),
+result_docs AS (
   SELECT
     LOCAL_CODE,
     DISCLOSED_DATE,
     DISCLOSED_TIME,
     TYPE_OF_CURRENT_PERIOD,
-    TYPE_OF_DOCUMENT,
     CURRENT_FISCAL_YEAR_END_DATE,
+    'R' AS CATEGORY,
+    1 AS REVISION_SEQ
+  FROM fin_base
+  WHERE TYPE_OF_DOCUMENT LIKE '%FinancialStatements%'
+  QUALIFY ROW_NUMBER() OVER (
+    PARTITION BY LOCAL_CODE, DISCLOSED_DATE, CURRENT_FISCAL_YEAR_END_DATE
+    ORDER BY
+      DISCLOSURE_NUMBER DESC,
+      CASE WHEN TYPE_OF_DOCUMENT LIKE '%Consolidated%' THEN 0 ELSE 1 END
+  ) = 1
+),
+forecast_docs AS (
+  SELECT
+    LOCAL_CODE,
+    DISCLOSED_DATE,
+    DISCLOSED_TIME,
+    TYPE_OF_CURRENT_PERIOD,
+    CURRENT_FISCAL_YEAR_END_DATE,
+    'F' AS CATEGORY,
     ROW_NUMBER() OVER (
-      PARTITION BY LOCAL_CODE, DISCLOSED_DATE
-      ORDER BY DISCLOSURE_NUMBER DESC
-    ) AS rn
-  FROM `{project}.STOCK.fin_summary`
-  WHERE DISCLOSED_DATE BETWEEN @date_from AND @date_to
+      PARTITION BY LOCAL_CODE, CURRENT_FISCAL_YEAR_END_DATE, TYPE_OF_CURRENT_PERIOD
+      ORDER BY DISCLOSURE_NUMBER ASC
+    ) AS REVISION_SEQ
+  FROM fin_base
+  WHERE TYPE_OF_DOCUMENT IN ('EarnForecastRevision', 'REITEarnForecastRevision')
 )
 SELECT
-  t.TICKER,
-  t.SUBMISSION_DATE,
-  t.MAIN_CATEGORY,
-  t.DOC_TITLE,
-  t.DOC_ID,
-  f.DISCLOSED_TIME,
-  f.TYPE_OF_CURRENT_PERIOD,
-  f.TYPE_OF_DOCUMENT,
-  f.CURRENT_FISCAL_YEAR_END_DATE
-FROM tdnet_docs t
-LEFT JOIN fin f
-  ON t.TICKER = f.LOCAL_CODE
-  AND t.SUBMISSION_DATE = f.DISCLOSED_DATE
-  AND f.rn = 1
-ORDER BY t.SUBMISSION_DATE, t.TICKER
+  LOCAL_CODE AS TICKER,
+  DISCLOSED_DATE,
+  DISCLOSED_TIME,
+  TYPE_OF_CURRENT_PERIOD,
+  CURRENT_FISCAL_YEAR_END_DATE,
+  CATEGORY,
+  REVISION_SEQ
+FROM result_docs
+UNION ALL
+SELECT
+  LOCAL_CODE AS TICKER,
+  DISCLOSED_DATE,
+  DISCLOSED_TIME,
+  TYPE_OF_CURRENT_PERIOD,
+  CURRENT_FISCAL_YEAR_END_DATE,
+  CATEGORY,
+  REVISION_SEQ
+FROM forecast_docs
+ORDER BY DISCLOSED_DATE, TICKER, CATEGORY, REVISION_SEQ
 """.format(project=PROJECT_ID)
 
 
@@ -208,8 +246,8 @@ def transform(df: pd.DataFrame) -> pd.DataFrame:
     now_jst = datetime.now(JST).strftime("%Y-%m-%d %H:%M:%S")
 
     for _, row in df.iterrows():
-        category = CATEGORY_MAP.get(row["MAIN_CATEGORY"])
-        if category is None:
+        category = row.get("CATEGORY")
+        if category not in {"R", "F"}:
             continue
 
         # QUARTER マッピング（NOT NULL 制約あり。不明時は "不明"）
@@ -231,29 +269,20 @@ def transform(df: pd.DataFrame) -> pd.DataFrame:
             else:
                 disclosure_time = str(t)
 
-        # TYPE_OF_DOCUMENT
-        type_of_doc = None
-        if pd.notna(row.get("TYPE_OF_DOCUMENT")):
-            type_of_doc = row["TYPE_OF_DOCUMENT"]
-
-        # DOC_TITLE
-        doc_title = None
-        if pd.notna(row.get("DOC_TITLE")):
-            doc_title = str(row["DOC_TITLE"])
-
         records.append({
             "TICKER": row["TICKER"],
             "FISCAL_YEAR_END": fiscal_year_end,
             "QUARTER": quarter,
             "CATEGORY": category,
             "RECORD_TYPE": "A",
-            "REVISION_SEQ": 1,  # 後で上書き
-            "DISCLOSURE_DATE": str(row["SUBMISSION_DATE"]),
+            "REVISION_SEQ": int(row["REVISION_SEQ"]),
+            "DISCLOSURE_DATE": str(row["DISCLOSED_DATE"]),
             "DISCLOSURE_TIME": disclosure_time,
-            "DISCLOSURE_NUMBER": str(row["DOC_ID"]) if pd.notna(row.get("DOC_ID")) else None,
-            "TYPE_OF_DOCUMENT": type_of_doc,
-            "DOC_TITLE": doc_title,
-            "SOURCE": "tdnet",
+            # Phase 4移行中は既存BQスキーマ互換のためNULL固定。DDL DROPは別作業。
+            "DISCLOSURE_NUMBER": None,
+            "TYPE_OF_DOCUMENT": None,
+            "DOC_TITLE": None,
+            "SOURCE": "jquants",
             "LOADED_AT": now_jst,
         })
 
@@ -261,21 +290,6 @@ def transform(df: pd.DataFrame) -> pd.DataFrame:
 
     if out.empty:
         return out
-
-    # REVISION_SEQ: 業績予想(F)は同一銘柄×決算期×QUARTERで日付順に連番
-    # 決算(R)は常に1
-    def assign_seq(group: pd.DataFrame) -> pd.DataFrame:
-        group = group.sort_values("DISCLOSURE_DATE")
-        group["REVISION_SEQ"] = range(1, len(group) + 1)
-        return group
-
-    f_mask = out["CATEGORY"] == "F"
-    if f_mask.any():
-        f_df = out[f_mask].copy()
-        f_df = f_df.groupby(
-            ["TICKER", "FISCAL_YEAR_END", "QUARTER"], group_keys=False, dropna=False,
-        ).apply(assign_seq, include_groups=False)
-        out.loc[f_mask, "REVISION_SEQ"] = f_df["REVISION_SEQ"]
 
     out["REVISION_SEQ"] = out["REVISION_SEQ"].astype(int)
 

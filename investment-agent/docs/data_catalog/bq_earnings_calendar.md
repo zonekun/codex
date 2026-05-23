@@ -5,7 +5,7 @@
 
 | テーブル名 | 説明 | 更新頻度 | 備考 |
 |-----------|------|---------|------|
-| `gmailpj-357912.STOCK.EARNINGS_DISCLOSURE_CALENDAR` | 決算開示カレンダー（予定/実績） | 日次 | 予定: ghostrader.net、実績: TDNET_DOCUMENTS_ENHANCED |
+| `gmailpj-357912.STOCK.EARNINGS_DISCLOSURE_CALENDAR` | 決算開示カレンダー（予定/実績） | 日次 | 予定: ghostrader.net、実績: fin_summary |
 
 **用途:**
 - 業績予想の発表パターンの企業別把握
@@ -23,10 +23,10 @@
 | REVISION_SEQ | INT64 | NO | 業績予想修正の連番（R=1固定、F=1,2,3...） |
 | DISCLOSURE_DATE | DATE | YES | 開示日 |
 | DISCLOSURE_TIME | TIME | YES | 開示時刻 |
-| DISCLOSURE_NUMBER | STRING | YES | TDnet開示番号（Aのみ） |
-| TYPE_OF_DOCUMENT | STRING | YES | J-Quants書類種別（Aのみ） |
-| DOC_TITLE | STRING | YES | TDnet書類タイトル（Aのみ） |
-| SOURCE | STRING | NO | `ghostrader` / `tdnet` |
+| DISCLOSURE_NUMBER | STRING | YES | 旧互換列。Phase 4以降の実績AはNULL固定（将来DROP候補） |
+| TYPE_OF_DOCUMENT | STRING | YES | 旧互換列。Phase 4以降の実績AはNULL固定（将来DROP候補） |
+| DOC_TITLE | STRING | YES | 旧互換列。Phase 4以降の実績AはNULL固定（将来DROP候補） |
+| SOURCE | STRING | NO | `ghostrader` / `jquants` / `tdnet`（旧実績） |
 | LOADED_AT | DATETIME | NO | BQ格納日時（JST） |
 
 **論理PK:** `(TICKER, FISCAL_YEAR_END, QUARTER, CATEGORY, RECORD_TYPE, REVISION_SEQ)`
@@ -38,13 +38,13 @@
 | CATEGORY | RECORD_TYPE | 説明 | ソース |
 |:--|:--|:--|:--|
 | R | S | 決算発表予定 | ghostrader.net（日次蓄積） |
-| R | A | 決算短信（実績） | TDNET_DOCUMENTS_ENHANCED WHERE MAIN_CATEGORY='決算短信' |
-| F | A | 業績予想修正（実績） | TDNET_DOCUMENTS_ENHANCED WHERE MAIN_CATEGORY='業績予想' |
+| R | A | 決算短信（実績） | fin_summary WHERE TYPE_OF_DOCUMENT LIKE '%FinancialStatements%' |
+| F | A | 業績予想修正（実績） | fin_summary WHERE TYPE_OF_DOCUMENT IN ('EarnForecastRevision', 'REITEarnForecastRevision') |
 | F | S | 存在しない | — |
 
 **QUARTER マッピング:**
 
-| ghostrader | TDnet (fin_summary) | 本テーブル |
+| ghostrader | fin_summary | 本テーブル |
 |:--|:--|:--|
 | 本決算 | FY | 本決算 |
 | 1Q | 1Q | 1Q |
@@ -59,10 +59,13 @@
     ※ 翌営業日分のみ公開。毎日蓄積が必須
 
 ■ 実績（RECORD_TYPE='A'）
-  STOCK.TDNET_DOCUMENTS_ENHANCED
-    WHERE MAIN_CATEGORY IN ('決算短信', '業績予想')
-    → CATEGORY マッピング: 決算短信→R / 業績予想→F
-    → fin_summary と TICKER+開示日で JOIN して FISCAL_YEAR_END, QUARTER, TYPE_OF_DOCUMENT を補完
+  STOCK.fin_summary
+    WHERE TYPE_OF_DOCUMENT LIKE '%FinancialStatements%'
+       OR TYPE_OF_DOCUMENT IN ('EarnForecastRevision', 'REITEarnForecastRevision')
+    → CATEGORY マッピング: FinancialStatements→R / EarnForecastRevision系→F
+    → Rは同一銘柄×開示日×FYでDISCLOSURE_NUMBER DESC最新1件
+    → Fは同一銘柄×FY×QUARTERでDISCLOSURE_NUMBER ASC連番
+    → STOCK_CODE_LISTのTSE内国株式3市場 + DELISTED_STOCKS旧東証主要市場に限定
 ```
 
 
