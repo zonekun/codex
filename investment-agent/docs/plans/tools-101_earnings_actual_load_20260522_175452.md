@@ -166,7 +166,10 @@ AND DOC_TITLE NOT LIKE '%に関するお知らせ'
 - [x] **4-6.** デプロイ（一時ビルドディレクトリ方式: 005 §⑥）
   - Cloud Build `7df5bacd-c8b0-4426-9f39-be8c8eab30fd` SUCCESS
   - Cloud Run Job `earnings-actual-load` generation 4 に更新
-- [ ] **4-7.** バックフィル実行（`--from=20170101 --to=20260522` 想定、別途実行計画）
+- [ ] **4-7.** バックフィル実行（計画策定済み・未実行）
+  - 対象期間: `20170101`〜`20260522`
+  - 実行方針: BQバックアップ作成後、Cloud Run Jobを小分けチャンクで実行
+  - 実行開始は別途明示指示を待つ
 - [x] **4-8.** 知見MD更新
   - `101_earnings_actual_load.md`: データフロー図 / カラムマッピング / 既知制約
   - `bq_earnings_calendar.md`: スキーマ・SOURCE 値・列削除
@@ -177,6 +180,146 @@ AND DOC_TITLE NOT LIKE '%に関するお知らせ'
 - 同一 (TICKER, DISCLOSED_DATE) で TDnet 書類が複数あるケースの扱いは TDnet JOIN 廃止により自然解消
 - 業績予想 (CATEGORY='F') は `EarnForecastRevision` / `REITEarnForecastRevision` を対象にし、同一 `(LOCAL_CODE, FY, Q)` 内で `DISCLOSURE_NUMBER ASC` 連番とする
 - 既存 EARNINGS_DISCLOSURE_CALENDAR の `DISCLOSURE_NUMBER` / `DOC_TITLE` / `TYPE_OF_DOCUMENT` は Phase 4 で物理DROPし、`scripts/earnings_schedule_load.py` からも出力を削除する
+
+---
+
+## Phase 4-7 バックフィル実行計画（未実行）
+
+### 目的
+
+Phase 4で実績Aロードを `fin_summary` 起点に切り替えたため、`EARNINGS_DISCLOSURE_CALENDAR` の過去実績Aを 2017-01-01 以降で再構築する。予定Sは対象外で、実行スクリプトは対象期間の `RECORD_TYPE='A'` のみ DELETE → INSERT する。
+
+### 前提
+
+- BQ DDL DROP 済み: `DISCLOSURE_NUMBER` / `TYPE_OF_DOCUMENT` / `DOC_TITLE` は現行テーブルに存在しない
+- Cloud Run Job `earnings-actual-load` は Phase 4版へデプロイ済み
+- バックフィル対象上限は `2026-05-22`
+- `fin_summary` の対象ソース行数: 176,299行（2017-01-04〜2026-05-22）
+- 現行カレンダーのA行は2026年分のみ 3,976行（2026-05-23時点確認）
+
+### 投入想定件数（Phase 4ロジック適用後）
+
+| 年 | F | R | 合計 |
+|---:|---:|---:|---:|
+| 2017 | 3,114 | 14,515 | 17,629 |
+| 2018 | 2,596 | 14,690 | 17,286 |
+| 2019 | 2,596 | 14,902 | 17,498 |
+| 2020 | 3,417 | 15,075 | 18,492 |
+| 2021 | 3,191 | 15,249 | 18,440 |
+| 2022 | 2,495 | 15,418 | 17,913 |
+| 2023 | 2,352 | 15,593 | 17,945 |
+| 2024 | 2,078 | 15,725 | 17,803 |
+| 2025 | 1,876 | 15,735 | 17,611 |
+| 2026-01-01〜2026-05-22 | 979 | 7,409 | 8,388 |
+| **合計** | **24,694** | **144,311** | **169,005** |
+
+### 実行前チェック
+
+1. 現行スキーマ確認
+   ```sql
+   SELECT column_name
+   FROM `gmailpj-357912.STOCK.INFORMATION_SCHEMA.COLUMNS`
+   WHERE table_name = 'EARNINGS_DISCLOSURE_CALENDAR'
+   ORDER BY ordinal_position;
+   ```
+2. 実行直前バックアップ
+   ```sql
+   CREATE OR REPLACE TABLE `gmailpj-357912.STOCK.EARNINGS_DISCLOSURE_CALENDAR_BAK_YYYYMMDD_HHMMSS` AS
+   SELECT * FROM `gmailpj-357912.STOCK.EARNINGS_DISCLOSURE_CALENDAR`;
+   ```
+3. S予定行の件数を控える
+   ```sql
+   SELECT COUNT(*) AS scheduled_rows
+   FROM `gmailpj-357912.STOCK.EARNINGS_DISCLOSURE_CALENDAR`
+   WHERE RECORD_TYPE = 'S';
+   ```
+
+### 実行順
+
+まず1か月だけ実行し、件数・重複・代表銘柄を確認してから年次チャンクへ進む。
+
+```bash
+# 0. 先行パイロット
+gcloud run jobs execute earnings-actual-load \
+  --project gmailpj-357912 \
+  --region us-west1 \
+  --args="--from,20170101,--to,20170131" \
+  --wait
+
+# 1. 年次チャンク
+gcloud run jobs execute earnings-actual-load --project gmailpj-357912 --region us-west1 --args="--from,20170201,--to,20171231" --wait
+gcloud run jobs execute earnings-actual-load --project gmailpj-357912 --region us-west1 --args="--from,20180101,--to,20181231" --wait
+gcloud run jobs execute earnings-actual-load --project gmailpj-357912 --region us-west1 --args="--from,20190101,--to,20191231" --wait
+gcloud run jobs execute earnings-actual-load --project gmailpj-357912 --region us-west1 --args="--from,20200101,--to,20201231" --wait
+gcloud run jobs execute earnings-actual-load --project gmailpj-357912 --region us-west1 --args="--from,20210101,--to,20211231" --wait
+gcloud run jobs execute earnings-actual-load --project gmailpj-357912 --region us-west1 --args="--from,20220101,--to,20221231" --wait
+gcloud run jobs execute earnings-actual-load --project gmailpj-357912 --region us-west1 --args="--from,20230101,--to,20231231" --wait
+gcloud run jobs execute earnings-actual-load --project gmailpj-357912 --region us-west1 --args="--from,20240101,--to,20241231" --wait
+gcloud run jobs execute earnings-actual-load --project gmailpj-357912 --region us-west1 --args="--from,20250101,--to,20251231" --wait
+gcloud run jobs execute earnings-actual-load --project gmailpj-357912 --region us-west1 --args="--from,20260101,--to,20260522" --wait
+```
+
+### チャンクごとの検証
+
+```sql
+-- 年別・カテゴリ別件数
+SELECT EXTRACT(YEAR FROM DISCLOSURE_DATE) AS y, CATEGORY, COUNT(*) AS rows
+FROM `gmailpj-357912.STOCK.EARNINGS_DISCLOSURE_CALENDAR`
+WHERE RECORD_TYPE = 'A'
+  AND DISCLOSURE_DATE BETWEEN '2017-01-01' AND '2026-05-22'
+GROUP BY y, CATEGORY
+ORDER BY y, CATEGORY;
+
+-- 論理PK重複
+SELECT COUNT(*) AS duplicate_key_count
+FROM (
+  SELECT TICKER, FISCAL_YEAR_END, QUARTER, CATEGORY, RECORD_TYPE, REVISION_SEQ, COUNT(*) AS cnt
+  FROM `gmailpj-357912.STOCK.EARNINGS_DISCLOSURE_CALENDAR`
+  WHERE RECORD_TYPE = 'A'
+    AND DISCLOSURE_DATE BETWEEN '2017-01-01' AND '2026-05-22'
+  GROUP BY 1,2,3,4,5,6
+  HAVING cnt > 1
+);
+
+-- 予定Sが変化していないこと
+SELECT COUNT(*) AS scheduled_rows
+FROM `gmailpj-357912.STOCK.EARNINGS_DISCLOSURE_CALENDAR`
+WHERE RECORD_TYPE = 'S';
+
+-- 既知サンプル
+SELECT TICKER, DISCLOSURE_DATE, DISCLOSURE_TIME, QUARTER, FISCAL_YEAR_END, CATEGORY, RECORD_TYPE, REVISION_SEQ, SOURCE
+FROM `gmailpj-357912.STOCK.EARNINGS_DISCLOSURE_CALENDAR`
+WHERE RECORD_TYPE = 'A'
+  AND TICKER = '2162'
+  AND DISCLOSURE_DATE = '2026-05-11'
+ORDER BY CATEGORY, REVISION_SEQ;
+```
+
+### 停止条件
+
+- Cloud Run Job が失敗、またはログに `fatal` が出た場合
+- 論理PK重複が1件以上出た場合
+- S予定行数が実行前から変化した場合
+- チャンク投入件数が想定件数から大きく乖離し、`fin_summary` 更新以外の説明がつかない場合
+- 2162/2026-05-11 が `3Q` のR 1件にならない場合
+
+### ロールバック
+
+実行直前バックアップから復元する。
+
+```sql
+CREATE OR REPLACE TABLE `gmailpj-357912.STOCK.EARNINGS_DISCLOSURE_CALENDAR` AS
+SELECT * FROM `gmailpj-357912.STOCK.EARNINGS_DISCLOSURE_CALENDAR_BAK_YYYYMMDD_HHMMSS`;
+```
+
+### 完了条件
+
+- 2017-01-01〜2026-05-22 のAレコードが Phase 4ロジックで再作成済み
+- 年別・カテゴリ別件数が投入想定件数と整合
+- 論理PK重複が0件
+- S予定行数が不変
+- 2162/2026-05-11 が `3Q` のR 1件
+- 実行ログ、検証SQL結果、バックアップテーブル名を本MDへ追記
 
 ---
 
