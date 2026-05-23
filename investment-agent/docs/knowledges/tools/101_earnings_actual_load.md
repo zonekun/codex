@@ -6,6 +6,7 @@
 **計画**: `docs/plans/tools-101_earnings_actual_load_20260522_175452.md`
 **関連ファイル**:
 - `scripts/earnings_actual_load.py`
+- `scripts/earnings_actual_backfill.py`
 - `docker/Dockerfile.earnings-actual-load`
 - `cloudbuild/cloudbuild.earnings-actual-load.yaml`
 
@@ -66,6 +67,19 @@ fin_summary
 ## ロード方式
 
 **冪等**: 対象期間の `RECORD_TYPE='A'` レコードを DELETE → 再 INSERT。
+
+## Phase 4-7 バックフィル
+
+専用プログラム: `scripts/earnings_actual_backfill.py`
+
+- 既定は dry-run。BQ更新には `--execute` が必須
+- 対象期間は `2017-01-01`〜`2026-05-22` に制限
+- Rはバックフィル全期間で銘柄×FISCAL_YEAR_END×QUARTERごとに最新開示1件を採用する
+- Fの `REVISION_SEQ` はチャンク内ではなくバックフィル全期間で採番してから対象チャンクを切り出す
+- 実行時は `EARNINGS_DISCLOSURE_CALENDAR_BAK_YYYYMMDD_HHMMSS` を作成
+- チャンクごとにステージングテーブルへロード後、BQトランザクションで対象A行を置換
+- 検証: スキーマ、S予定行数不変、投入件数、論理PK重複、2162/2026-05-11サンプル
+- 実行ログは `docs/plans/tools-101_earnings_actual_load_20260522_175452.md` に追記
 
 ## Cloud Run Job
 

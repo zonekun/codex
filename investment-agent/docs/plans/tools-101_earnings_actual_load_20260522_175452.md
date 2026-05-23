@@ -166,9 +166,11 @@ AND DOC_TITLE NOT LIKE '%に関するお知らせ'
 - [x] **4-6.** デプロイ（一時ビルドディレクトリ方式: 005 §⑥）
   - Cloud Build `7df5bacd-c8b0-4426-9f39-be8c8eab30fd` SUCCESS
   - Cloud Run Job `earnings-actual-load` generation 4 に更新
-- [ ] **4-7.** バックフィル実行（計画策定済み・未実行）
+- [ ] **4-7.** バックフィル実行（専用プログラム実装済み・本実行未実行）
   - 対象期間: `20170101`〜`20260522`
-  - 実行方針: BQバックアップ作成後、Cloud Run Jobを小分けチャンクで実行
+  - 実行方針: BQバックアップ作成後、専用ローカルラッパーを小分けチャンクで実行
+  - 専用プログラム: `scripts/earnings_actual_backfill.py`
+  - dry-run確認: `--mode pilot` は 2017-01-01〜2017-01-31 で 1,300件（F=214, R=1,086）を抽出・変換
   - 実行開始は別途明示指示を待つ
 - [x] **4-8.** 知見MD更新
   - `101_earnings_actual_load.md`: データフロー図 / カラムマッピング / 既知制約
@@ -187,12 +189,16 @@ AND DOC_TITLE NOT LIKE '%に関するお知らせ'
 
 ### 目的
 
-Phase 4で実績Aロードを `fin_summary` 起点に切り替えたため、`EARNINGS_DISCLOSURE_CALENDAR` の過去実績Aを 2017-01-01 以降で再構築する。予定Sは対象外で、実行スクリプトは対象期間の `RECORD_TYPE='A'` のみ DELETE → INSERT する。
+Phase 4で実績Aロードを `fin_summary` 起点に切り替えたため、`EARNINGS_DISCLOSURE_CALENDAR` の過去実績Aを 2017-01-01 以降で再構築する。予定Sは対象外で、専用プログラム `scripts/earnings_actual_backfill.py` は対象期間の `RECORD_TYPE='A'` のみステージングテーブル経由で置換する。
 
 ### 前提
 
 - BQ DDL DROP 済み: `DISCLOSURE_NUMBER` / `TYPE_OF_DOCUMENT` / `DOC_TITLE` は現行テーブルに存在しない
 - Cloud Run Job `earnings-actual-load` は Phase 4版へデプロイ済み
+- 4-7実行は Cloud Run Job ではなく `scripts/earnings_actual_backfill.py` を使う
+- `scripts/earnings_actual_backfill.py` は dry-run 既定。BQ更新には `--execute` が必須
+- Rは `2017-01-01`〜`2026-05-22` 全体で銘柄×FISCAL_YEAR_END×QUARTERごとに最新開示1件を採用する
+- Fの `REVISION_SEQ` は `2017-01-01`〜`2026-05-22` 全体で採番してから対象チャンクを切り出す（年次チャンク境界で再始番しない）
 - バックフィル対象上限は `2026-05-22`
 - `fin_summary` の対象ソース行数: 176,299行（2017-01-04〜2026-05-22）
 - 現行カレンダーのA行は2026年分のみ 3,976行（2026-05-23時点確認）
@@ -236,27 +242,24 @@ Phase 4で実績Aロードを `fin_summary` 起点に切り替えたため、`EA
 
 ### 実行順
 
-まず1か月だけ実行し、件数・重複・代表銘柄を確認してから年次チャンクへ進む。
+まず1か月だけdry-runと実行を行い、件数・重複・代表銘柄を確認してから年次チャンクへ進む。
 
 ```bash
-# 0. 先行パイロット
-gcloud run jobs execute earnings-actual-load \
-  --project gmailpj-357912 \
-  --region us-west1 \
-  --args="--from,20170101,--to,20170131" \
-  --wait
+# 0. 先行パイロット dry-run
+python scripts/earnings_actual_backfill.py --mode pilot
 
-# 1. 年次チャンク
-gcloud run jobs execute earnings-actual-load --project gmailpj-357912 --region us-west1 --args="--from,20170201,--to,20171231" --wait
-gcloud run jobs execute earnings-actual-load --project gmailpj-357912 --region us-west1 --args="--from,20180101,--to,20181231" --wait
-gcloud run jobs execute earnings-actual-load --project gmailpj-357912 --region us-west1 --args="--from,20190101,--to,20191231" --wait
-gcloud run jobs execute earnings-actual-load --project gmailpj-357912 --region us-west1 --args="--from,20200101,--to,20201231" --wait
-gcloud run jobs execute earnings-actual-load --project gmailpj-357912 --region us-west1 --args="--from,20210101,--to,20211231" --wait
-gcloud run jobs execute earnings-actual-load --project gmailpj-357912 --region us-west1 --args="--from,20220101,--to,20221231" --wait
-gcloud run jobs execute earnings-actual-load --project gmailpj-357912 --region us-west1 --args="--from,20230101,--to,20231231" --wait
-gcloud run jobs execute earnings-actual-load --project gmailpj-357912 --region us-west1 --args="--from,20240101,--to,20241231" --wait
-gcloud run jobs execute earnings-actual-load --project gmailpj-357912 --region us-west1 --args="--from,20250101,--to,20251231" --wait
-gcloud run jobs execute earnings-actual-load --project gmailpj-357912 --region us-west1 --args="--from,20260101,--to,20260522" --wait
+# 1. 先行パイロット実行（BQバックアップ作成 + 検証 + MDログ追記）
+python scripts/earnings_actual_backfill.py --mode pilot --execute
+
+# 2. 全チャンク dry-run
+python scripts/earnings_actual_backfill.py --mode all
+
+# 3. 全チャンク実行（別途明示GO後）
+python scripts/earnings_actual_backfill.py --mode all --execute
+
+# 任意の単一チャンク
+python scripts/earnings_actual_backfill.py --mode chunk --from 20260101 --to 20260522
+python scripts/earnings_actual_backfill.py --mode chunk --from 20260101 --to 20260522 --execute
 ```
 
 ### チャンクごとの検証
