@@ -386,3 +386,27 @@ Phase 4 は Phase 1-3 とは独立した根本対策。Sonnet 追加版（git st
   - J-REIT/ETF系（1672-1697等）は fin_summary カバー外。QUARTER='不明'として残存するのは仕様
   - fin_summary の shift_day=0 → 02:00 JST では当日データ未反映でサイレント0件取得（根本原因）
   - 訂正書類タイトルには全角`（訂正`と半角`(訂正`の両方が混在するが `%訂正%` で一括除外可能
+
+---
+
+## Phase 4-7 実行ログ: 2026-05-24 11:25 JST
+
+- run_id: `20260524_112440`
+- backup_table: `EARNINGS_DISCLOSURE_CALENDAR_BAK_20260524_112440`
+- status: completed
+
+| chunk | from | to | expected | inserted | duplicate_keys | category_counts |
+|---|---:|---:|---:|---:|---:|---|
+| pilot_201701 | 2017-01-01 | 2017-01-31 | 1300 | 1300 | 0 | F=214, R=1086 |
+
+---
+
+## Phase 4-7 実行ログ: 2026-05-24 11:28 JST
+
+- run_id: `20260524_112756`
+- backup_table: `EARNINGS_DISCLOSURE_CALENDAR_BAK_20260524_112756`
+- status: completed
+
+| chunk | from | to | expected | inserted | duplicate_keys | category_counts |
+|---|---:|---:|---:|---:|---:|---|
+| pilot_201701 | 2017-01-01 | 2017-01-31 | 1300 | 1300 | 0 | F=214, R=1086 |

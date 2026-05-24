@@ -457,8 +457,37 @@ def restore_from_backup(client: bigquery.Client, backup_table: str) -> None:
     """Restore the target table from a verified backup table."""
     validate_backup_table(client, backup_table)
     sql = f"""
-    CREATE OR REPLACE TABLE `{TABLE_FQN}` AS
-    SELECT * FROM `{table_ref_from_name(backup_table)}`
+    BEGIN TRANSACTION;
+
+    DELETE FROM `{TABLE_FQN}`
+    WHERE TRUE;
+
+    INSERT INTO `{TABLE_FQN}` (
+      TICKER,
+      FISCAL_YEAR_END,
+      QUARTER,
+      CATEGORY,
+      RECORD_TYPE,
+      REVISION_SEQ,
+      DISCLOSURE_DATE,
+      DISCLOSURE_TIME,
+      SOURCE,
+      LOADED_AT
+    )
+    SELECT
+      TICKER,
+      FISCAL_YEAR_END,
+      QUARTER,
+      CATEGORY,
+      RECORD_TYPE,
+      REVISION_SEQ,
+      DISCLOSURE_DATE,
+      DISCLOSURE_TIME,
+      SOURCE,
+      LOADED_AT
+    FROM `{table_ref_from_name(backup_table)}`;
+
+    COMMIT TRANSACTION;
     """
     client.query(sql).result()
     log.error("target_restored_from_backup", backup_table=backup_table)
@@ -581,6 +610,47 @@ def duplicate_key_count(client: bigquery.Client, d_from: date, d_to: date) -> in
     )
     """
     rows = list(client.query(sql, job_config=date_query_config(d_from, d_to)).result())
+    return int(rows[0]["duplicate_key_count"])
+
+
+def duplicate_inserted_key_count(client: bigquery.Client, stage_table: str) -> int:
+    """Count full-table duplicate logical keys for keys present in the stage table."""
+    sql = f"""
+    WITH stage_keys AS (
+      SELECT DISTINCT
+        TICKER,
+        FISCAL_YEAR_END,
+        QUARTER,
+        CATEGORY,
+        RECORD_TYPE,
+        REVISION_SEQ
+      FROM `{PROJECT_ID}.{DATASET_ID}.{stage_table}`
+    ),
+    target_key_counts AS (
+      SELECT
+        tgt.TICKER,
+        tgt.FISCAL_YEAR_END,
+        tgt.QUARTER,
+        tgt.CATEGORY,
+        tgt.RECORD_TYPE,
+        tgt.REVISION_SEQ,
+        COUNT(*) AS cnt
+      FROM `{TABLE_FQN}` AS tgt
+      INNER JOIN stage_keys AS sk
+        ON tgt.TICKER = sk.TICKER
+       AND COALESCE(tgt.FISCAL_YEAR_END, DATE '0001-01-01') = COALESCE(sk.FISCAL_YEAR_END, DATE '0001-01-01')
+       AND tgt.QUARTER = sk.QUARTER
+       AND tgt.CATEGORY = sk.CATEGORY
+       AND tgt.RECORD_TYPE = sk.RECORD_TYPE
+       AND tgt.REVISION_SEQ = sk.REVISION_SEQ
+      WHERE tgt.RECORD_TYPE = 'A'
+      GROUP BY 1,2,3,4,5,6
+      HAVING cnt > 1
+    )
+    SELECT COUNT(*) AS duplicate_key_count
+    FROM target_key_counts
+    """
+    rows = list(client.query(sql).result())
     return int(rows[0]["duplicate_key_count"])
 
 
@@ -716,7 +786,7 @@ def run_chunk(
         target_rows_after, stage_rows = merge_stage_chunk(client, chunk, stage_table)
         merged = True
         scheduled_after = count_scheduled_rows(client)
-        dupes = duplicate_key_count(client, BACKFILL_FROM, BACKFILL_TO)
+        dupes = duplicate_inserted_key_count(client, stage_table)
 
         if scheduled_before != scheduled_after:
             raise RuntimeError(f"S rows changed: before={scheduled_before}, after={scheduled_after}")
