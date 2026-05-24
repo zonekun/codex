@@ -39,6 +39,7 @@ The operational source of truth remains the Claude Code side unless a task is ex
 - Claude Code <-> Codex message board and board rules: `docs/codex-to-claude-handoff.md`
 - Claude Markdown sync and Codex artifact protection: `docs/claude-md-sync.md`
 - Parallel work policy: `docs/codex/parallel-operation-policy.md`
+- Segment structure earnings analysis procedure: `docs/codex/segment-structure-codex-procedure.md`
 - Codex code review runbook: `skills/codex-code-reviewer.md`
 
 ## Startup And Workflow Routing
