@@ -656,7 +656,7 @@ def fetch_sample_rows(client: bigquery.Client) -> list[dict]:
             bigquery.ScalarQueryParameter("sample_date", "DATE", str(SAMPLE_DATE)),
         ],
     )
-    return [dict(row) for row in client.query(sql, job_config=job_config).result()]
+    return [dict(row.items()) for row in client.query(sql, job_config=job_config).result()]
 
 
 def verify_sample_rows(client: bigquery.Client) -> None:
