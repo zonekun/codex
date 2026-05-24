@@ -24,6 +24,36 @@ KEY_FILE = Path("keys/gcp-service-account.json")
 DEFAULT_INPUT = Path(r"C:\Users\zonekun\Dropbox\stock\temp\oyako.txt")
 DEFAULT_CACHE = Path("data/cache/oyako_tob_expectation_events.csv")
 DEFAULT_OUTPUT = Path("data/output/oyako_tob_expectation_classification.csv")
+EXPECTED_EARNINGS_OUTPUT_COL = "エントリ基準日算出の仮の決算予定日"
+OUTPUT_COLUMNS = [
+    "TICKER",
+    "STOCK_NAME",
+    "MARKET_CATEGORY",
+    "market_cap_oku_yen",
+    "INDUSTRY_33_CATEGORY",
+    "next_expected_earnings_date",
+    "entry_date",
+    "next_earnings_date",
+    "pattern_score",
+    "pattern_class",
+    "runup_event_rate",
+    "event_count",
+    "best_pre_abn_median",
+    "timing_class",
+    "next_expected_earnings_date",
+    "entry_date",
+    "next_earnings_date",
+    "fade_class",
+    "fade_after_runup_rate",
+    "best_pre_window_days",
+    "abn_pre5_median",
+    "abn_pre10_median",
+    "abn_pre20_median",
+    "abn_pre40_median",
+    "volume_ratio_median",
+    "latest_disclosed_date",
+    "pattern_rank",
+]
 
 
 EVENT_FEATURE_SQL = """
@@ -188,6 +218,57 @@ LEFT JOIN bench bq5
 ORDER BY ep.TICKER, ep.DISCLOSED_DATE
 """
 
+CALENDAR_ACTUAL_SQL = """
+SELECT
+  TICKER,
+  FISCAL_YEAR_END,
+  QUARTER,
+  DISCLOSURE_DATE,
+  DISCLOSURE_TIME,
+  ROW_NUMBER() OVER (
+    PARTITION BY TICKER, FISCAL_YEAR_END, QUARTER
+    ORDER BY DISCLOSURE_DATE DESC, DISCLOSURE_TIME DESC, REVISION_SEQ DESC, LOADED_AT DESC
+  ) AS rn
+FROM `gmailpj-357912.STOCK.EARNINGS_DISCLOSURE_CALENDAR`
+WHERE TICKER IN UNNEST(@tickers)
+  AND CATEGORY = 'R'
+  AND RECORD_TYPE = 'A'
+  AND DISCLOSURE_DATE IS NOT NULL
+  AND DISCLOSURE_DATE >= @start_date
+QUALIFY rn = 1
+ORDER BY TICKER, DISCLOSURE_DATE
+"""
+
+NEXT_EARNINGS_SCHEDULE_SQL = """
+SELECT
+  TICKER,
+  DISCLOSURE_DATE AS next_earnings_date
+FROM `gmailpj-357912.STOCK.EARNINGS_DISCLOSURE_CALENDAR`
+WHERE TICKER IN UNNEST(@tickers)
+  AND CATEGORY = 'R'
+  AND RECORD_TYPE = 'S'
+  AND DISCLOSURE_DATE >= @as_of
+QUALIFY ROW_NUMBER() OVER (
+  PARTITION BY TICKER
+  ORDER BY DISCLOSURE_DATE ASC, DISCLOSURE_TIME ASC, REVISION_SEQ DESC, LOADED_AT DESC
+) = 1
+ORDER BY TICKER
+"""
+
+MARKET_CAP_SQL = """
+SELECT
+  TICKER,
+  ROUND(SAFE_DIVIDE(MARKET_CAP, 100000000), 1) AS market_cap_oku_yen
+FROM `gmailpj-357912.STOCK.YF_STOCK_INFO`
+WHERE TICKER IN UNNEST(@tickers)
+  AND MARKET_CAP IS NOT NULL
+QUALIFY ROW_NUMBER() OVER (
+  PARTITION BY TICKER
+  ORDER BY LOADED_DATE DESC, LOADED_AT DESC
+) = 1
+ORDER BY TICKER
+"""
+
 
 def read_tickers(path: Path) -> list[str]:
     rows = pd.read_csv(path, sep="\t", header=None, dtype=str, encoding="cp932")
@@ -208,6 +289,35 @@ def fetch_event_features(tickers: list[str], start_date: str) -> pd.DataFrame:
         ]
     )
     return get_bq_client().query(EVENT_FEATURE_SQL, job_config=cfg).to_dataframe()
+
+
+def fetch_calendar_actuals(tickers: list[str], start_date: str) -> pd.DataFrame:
+    cfg = bigquery.QueryJobConfig(
+        query_parameters=[
+            bigquery.ArrayQueryParameter("tickers", "STRING", tickers),
+            bigquery.ScalarQueryParameter("start_date", "DATE", start_date),
+        ]
+    )
+    return get_bq_client().query(CALENDAR_ACTUAL_SQL, job_config=cfg).to_dataframe()
+
+
+def fetch_next_earnings_dates(tickers: list[str], as_of: date) -> pd.DataFrame:
+    cfg = bigquery.QueryJobConfig(
+        query_parameters=[
+            bigquery.ArrayQueryParameter("tickers", "STRING", tickers),
+            bigquery.ScalarQueryParameter("as_of", "DATE", as_of.isoformat()),
+        ]
+    )
+    return get_bq_client().query(NEXT_EARNINGS_SCHEDULE_SQL, job_config=cfg).to_dataframe()
+
+
+def fetch_market_caps(tickers: list[str]) -> pd.DataFrame:
+    cfg = bigquery.QueryJobConfig(
+        query_parameters=[
+            bigquery.ArrayQueryParameter("tickers", "STRING", tickers),
+        ]
+    )
+    return get_bq_client().query(MARKET_CAP_SQL, job_config=cfg).to_dataframe()
 
 
 def add_event_scores(df: pd.DataFrame) -> pd.DataFrame:
@@ -242,6 +352,18 @@ def _next_period(period: object) -> str | None:
     }.get(period_text)
 
 
+def _next_calendar_quarter(quarter: object) -> str | None:
+    quarter_text = str(quarter)
+    return {
+        "1Q": "中間決算",
+        "2Q": "3Q",
+        "中間決算": "3Q",
+        "3Q": "本決算",
+        "FY": "1Q",
+        "本決算": "1Q",
+    }.get(quarter_text)
+
+
 def _project_next_expected_date(g: pd.DataFrame, as_of: pd.Timestamp) -> pd.Timestamp | pd.NaT:
     ordered = g.dropna(subset=["DISCLOSED_DATE"]).copy()
     if ordered.empty:
@@ -267,16 +389,61 @@ def _project_next_expected_date(g: pd.DataFrame, as_of: pd.Timestamp) -> pd.Time
     return projected.normalize()
 
 
+def _project_next_expected_date_from_calendar(
+    calendar_g: pd.DataFrame,
+    fallback_event_g: pd.DataFrame,
+    as_of: pd.Timestamp,
+) -> pd.Timestamp | pd.NaT:
+    ordered = calendar_g.dropna(subset=["DISCLOSURE_DATE"]).copy()
+    if ordered.empty:
+        return _project_next_expected_date(fallback_event_g, as_of)
+
+    ordered["DISCLOSURE_DATE"] = pd.to_datetime(ordered["DISCLOSURE_DATE"])
+    latest = ordered.sort_values(["DISCLOSURE_DATE", "DISCLOSURE_TIME"]).iloc[-1]
+    target_quarter = _next_calendar_quarter(latest["QUARTER"])
+    quarter_dates = ordered.loc[ordered["QUARTER"].eq(target_quarter), "DISCLOSURE_DATE"]
+    if quarter_dates.empty:
+        quarter_dates = ordered["DISCLOSURE_DATE"]
+
+    candidates = []
+    for value in pd.to_datetime(quarter_dates.dropna()):
+        projected = value
+        while projected.date() <= as_of.date():
+            projected = projected + pd.DateOffset(years=1)
+        candidates.append(projected.normalize())
+    if not candidates:
+        return pd.NaT
+    projected = min(candidates)
+    if projected.weekday() >= 5:
+        projected = projected - pd.offsets.BDay(1)
+    return projected.normalize()
+
+
 def _entry_date(expected_date: pd.Timestamp | pd.NaT, window_days: str) -> pd.Timestamp | pd.NaT:
     if pd.isna(expected_date) or not window_days:
         return pd.NaT
     return (expected_date - pd.offsets.BDay(int(window_days))).normalize()
 
 
-def classify(events: pd.DataFrame, as_of: date) -> pd.DataFrame:
+def classify(
+    events: pd.DataFrame,
+    as_of: date,
+    calendar_actuals: pd.DataFrame,
+    next_earnings_dates: pd.DataFrame,
+    market_caps: pd.DataFrame,
+) -> pd.DataFrame:
     scored = add_event_scores(events)
     rows: list[dict[str, object]] = []
     as_of_ts = pd.Timestamp(as_of)
+    calendar_groups = {ticker: g for ticker, g in calendar_actuals.groupby("TICKER", dropna=False)}
+    next_earnings_map = (
+        next_earnings_dates.set_index("TICKER")["next_earnings_date"].to_dict()
+        if not next_earnings_dates.empty
+        else {}
+    )
+    market_cap_map = (
+        market_caps.set_index("TICKER")["market_cap_oku_yen"].to_dict() if not market_caps.empty else {}
+    )
 
     for ticker, g in scored.groupby("TICKER", dropna=False):
         valid_pre = g[["abn_pre5", "abn_pre10", "abn_pre20", "abn_pre40"]].notna().any(axis=1)
@@ -329,7 +496,11 @@ def classify(events: pd.DataFrame, as_of: date) -> pd.DataFrame:
             timing_class = ""
 
         fade_class = "fade_after_earnings" if pd.notna(fade_rate) and fade_rate >= 0.40 else ""
-        next_expected_earnings_date = _project_next_expected_date(g, as_of_ts)
+        next_expected_earnings_date = _project_next_expected_date_from_calendar(
+            calendar_groups.get(ticker, pd.DataFrame()),
+            g,
+            as_of_ts,
+        )
         entry_date = _entry_date(next_expected_earnings_date, best_window)
 
         rows.append(
@@ -339,6 +510,7 @@ def classify(events: pd.DataFrame, as_of: date) -> pd.DataFrame:
                 "MARKET_CATEGORY": (
                     g["MARKET_CATEGORY"].dropna().iloc[0] if g["MARKET_CATEGORY"].notna().any() else ""
                 ),
+                "market_cap_oku_yen": market_cap_map.get(ticker, np.nan),
                 "INDUSTRY_33_CATEGORY": (
                     g["INDUSTRY_33_CATEGORY"].dropna().iloc[0]
                     if g["INDUSTRY_33_CATEGORY"].notna().any()
@@ -351,6 +523,7 @@ def classify(events: pd.DataFrame, as_of: date) -> pd.DataFrame:
                 "timing_class": timing_class,
                 "next_expected_earnings_date": next_expected_earnings_date,
                 "entry_date": entry_date,
+                "next_earnings_date": next_earnings_map.get(ticker, pd.NaT),
                 "fade_class": fade_class,
                 "runup_event_rate": round(runup_rate, 4) if pd.notna(runup_rate) else np.nan,
                 "fade_after_runup_rate": round(fade_rate, 4) if pd.notna(fade_rate) else np.nan,
@@ -372,6 +545,12 @@ def classify(events: pd.DataFrame, as_of: date) -> pd.DataFrame:
         ["pattern_rank", "pattern_score", "runup_event_rate", "best_pre_abn_median"],
         ascending=[True, False, False, False],
     )
+
+
+def build_output_frame(df: pd.DataFrame) -> pd.DataFrame:
+    out = df.reindex(columns=OUTPUT_COLUMNS)
+    out = out.rename(columns={"next_expected_earnings_date": EXPECTED_EARNINGS_OUTPUT_COL})
+    return out
 
 
 def main() -> None:
@@ -402,11 +581,23 @@ def main() -> None:
         events = fetch_event_features(tickers, args.start_date)
         events.to_csv(args.cache, index=False, encoding="utf-8-sig")
 
-    classification = classify(events, date.fromisoformat(args.as_of))
-    classification.to_csv(args.output, index=False, encoding="utf-8-sig")
+    as_of_date = date.fromisoformat(args.as_of)
+    calendar_actuals = fetch_calendar_actuals(tickers, args.start_date)
+    next_earnings_dates = fetch_next_earnings_dates(tickers, as_of_date)
+    market_caps = fetch_market_caps(tickers)
+
+    classification = classify(events, as_of_date, calendar_actuals, next_earnings_dates, market_caps)
+    output = build_output_frame(classification)
+    output.to_csv(args.output, index=False, encoding="utf-8-sig")
     print(f"events={len(events)} output_rows={len(classification)}")
+    print(
+        "supplemental="
+        f"calendar_actuals:{len(calendar_actuals)} "
+        f"next_earnings_dates:{len(next_earnings_dates)} "
+        f"market_caps:{len(market_caps)}"
+    )
     print(f"output={args.output}")
-    print(classification.head(20).to_string(index=False))
+    print(output.head(20).to_string(index=False))
 
 
 if __name__ == "__main__":
