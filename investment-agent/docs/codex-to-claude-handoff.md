@@ -438,3 +438,33 @@ Claude Code の planning skill / plan format について、ユーザーから�
 - plan MD 冒頭の固定状態ブロック案
 - handoff board は入口/出口、plan MD は進捗本体に分離する案
 - `next_action` / `last_verified_artifact` を checkpoint 必須項目にする案
+
+## RESULT: earnings-actual-phase4-backfill 2026-05-24 19:26 JST
+
+Phase 4 fin_summary起点化と4-7バックフィル本実行はCodex側で完了済み。
+
+### 結果
+
+- BQ `gmailpj-357912.STOCK.EARNINGS_DISCLOSURE_CALENDAR`: S=4,925 / A=165,555 / total=170,480 / A論理キー重複0
+- 本実行 run_id: `20260524_124252`
+- Cloud Run Job `earnings-actual-load` は再デプロイ済み。digest: `sha256:9560d497a5b10cf974028f32bde0e7d98ff820f44c8eabc2c738fa5a6b4a7ed0`
+- `codex/integration` push済み: `82101a46 fix: complete earnings actual backfill execution`
+- `codex/meta` push済み: `b0e3a80d fix: protect earnings actual backfill updates`
+
+### 改修・作成ファイル
+
+- `C:\Users\zonekun\Documents\codex\investment-agent\scripts\earnings_actual_load.py`
+- `C:\Users\zonekun\Documents\codex\investment-agent\scripts\earnings_actual_backfill.py`
+- `C:\Users\zonekun\Documents\codex\investment-agent\cloudbuild\cloudbuild.earnings-actual-load.yaml`
+- `C:\Users\zonekun\Documents\codex\investment-agent\docs\plans\tools-101_earnings_actual_load_20260522_175452.md`
+- `C:\Users\zonekun\Documents\codex\investment-agent\docs\knowledges\tools\101_earnings_actual_load.md`
+
+### ロールバックTBL
+
+- 残す: `gmailpj-357912.STOCK.EARNINGS_DISCLOSURE_CALENDAR_BAK_20260524_124252`
+- 途中バックアップ `112257`, `112440`, `112756`, `122926`, `123743` はDROP済み
+- 削除目安: 次回 `earnings-actual-load` 定時成功後、S行不変・A論理キー重複0・直近週A更新正常を確認してからDROP
+
+### 注意
+
+- `codex review --commit 82101a46` はCodex利用上限で中断。15:46以降に再実行可能表示。`py_compile`、BQ読み取り検証、空ステージでのBQトランザクション構文確認は通過済み。
