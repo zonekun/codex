@@ -7,6 +7,21 @@ steps:
       - -t
       - us-west1-docker.pkg.dev/gmailpj-357912/tools/earnings-schedule-load:latest
       - .
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - push
+      - us-west1-docker.pkg.dev/gmailpj-357912/tools/earnings-schedule-load:latest
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        set -e
+        echo "Updating job: earnings-schedule-load"
+        gcloud run jobs update earnings-schedule-load \
+          --project=gmailpj-357912 \
+          --region=us-west1 \
+          --image=us-west1-docker.pkg.dev/gmailpj-357912/tools/earnings-schedule-load:latest
 
 images:
   - us-west1-docker.pkg.dev/gmailpj-357912/tools/earnings-schedule-load:latest

@@ -104,3 +104,7 @@ gcloud run jobs execute earnings-schedule-load --region us-west1
 - After ページの時刻は未定（`--:--`）→ DISCLOSURE_TIME = NULL。当日ページで時刻が確定するため毎日のロードで上書きが必須
 - ghostrader.net は翌々営業日までしか公開しない → 毎日の蓄積が必須
 - 実績データ（`RECORD_TYPE='A'`）のロードは別途 TDNET_DOCUMENTS_ENHANCED からの ETL で対応（未実装）
+
+## 運用履歴
+
+- 2026-05-24: Phase 4 DDL で `EARNINGS_DISCLOSURE_CALENDAR` から `DISCLOSURE_NUMBER` / `TYPE_OF_DOCUMENT` / `DOC_TITLE` をDROP後、週次実行が旧イメージのロードスキーマで `Cannot add fields (field: DISCLOSURE_NUMBER)` により失敗。`cloudbuild/cloudbuild.earnings-schedule-load.yaml` を現行形式（`docker push` + `gcloud run jobs update`）へ更新し、Build `05c57ab3-1dc5-472d-89c7-47b304671b93` でJob generation 7へ更新。手動実行 `earnings-schedule-load-z5hvc` は成功し、`insert_done row_cnt=28` / Dropbox `row_cnt=28` を確認。
