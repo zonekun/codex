@@ -238,7 +238,20 @@ fin_base AS (
     f.DISCLOSURE_NUMBER,
     f.TYPE_OF_DOCUMENT,
     f.TYPE_OF_CURRENT_PERIOD,
-    f.CURRENT_FISCAL_YEAR_END_DATE
+    f.CURRENT_FISCAL_YEAR_END_DATE,
+    CASE
+      WHEN f.TYPE_OF_CURRENT_PERIOD IN ('FY', '4Q', '5Q') THEN 'FY'
+      WHEN f.TYPE_OF_CURRENT_PERIOD = '2Q' THEN '2Q'
+      WHEN f.TYPE_OF_CURRENT_PERIOD IN ('1Q', '3Q') THEN f.TYPE_OF_CURRENT_PERIOD
+      ELSE '__UNKNOWN__'
+    END AS CALENDAR_PERIOD_KEY,
+    CASE
+      WHEN f.TYPE_OF_CURRENT_PERIOD IN ('FY', '4Q', '5Q') THEN 4
+      WHEN f.TYPE_OF_CURRENT_PERIOD = '3Q' THEN 3
+      WHEN f.TYPE_OF_CURRENT_PERIOD = '2Q' THEN 2
+      WHEN f.TYPE_OF_CURRENT_PERIOD = '1Q' THEN 1
+      ELSE 0
+    END AS CALENDAR_PERIOD_RANK
   FROM `{project}.STOCK.fin_summary` f
   INNER JOIN valid_tickers vt
     ON f.LOCAL_CODE = vt.TICKER
@@ -248,6 +261,27 @@ fin_base AS (
       OR f.TYPE_OF_DOCUMENT IN ('EarnForecastRevision', 'REITEarnForecastRevision')
     )
 ),
+result_same_day AS (
+  SELECT
+    LOCAL_CODE,
+    DISCLOSED_DATE,
+    DISCLOSED_TIME,
+    TYPE_OF_CURRENT_PERIOD,
+    CURRENT_FISCAL_YEAR_END_DATE,
+    CALENDAR_PERIOD_KEY,
+    DISCLOSURE_NUMBER,
+    'R' AS CATEGORY,
+    1 AS REVISION_SEQ
+  FROM fin_base
+  WHERE TYPE_OF_DOCUMENT LIKE '%FinancialStatements%'
+  QUALIFY ROW_NUMBER() OVER (
+    PARTITION BY LOCAL_CODE, DISCLOSED_DATE, CURRENT_FISCAL_YEAR_END_DATE
+    ORDER BY
+      CALENDAR_PERIOD_RANK DESC,
+      DISCLOSURE_NUMBER DESC,
+      CASE WHEN TYPE_OF_DOCUMENT LIKE '%Consolidated%' THEN 0 ELSE 1 END
+  ) = 1
+),
 result_docs AS (
   SELECT
     LOCAL_CODE,
@@ -255,16 +289,12 @@ result_docs AS (
     DISCLOSED_TIME,
     TYPE_OF_CURRENT_PERIOD,
     CURRENT_FISCAL_YEAR_END_DATE,
-    'R' AS CATEGORY,
-    1 AS REVISION_SEQ
-  FROM fin_base
-  WHERE TYPE_OF_DOCUMENT LIKE '%FinancialStatements%'
+    CATEGORY,
+    REVISION_SEQ
+  FROM result_same_day
   QUALIFY ROW_NUMBER() OVER (
-    PARTITION BY LOCAL_CODE, CURRENT_FISCAL_YEAR_END_DATE, TYPE_OF_CURRENT_PERIOD
-    ORDER BY
-      DISCLOSED_DATE DESC,
-      DISCLOSURE_NUMBER DESC,
-      CASE WHEN TYPE_OF_DOCUMENT LIKE '%Consolidated%' THEN 0 ELSE 1 END
+    PARTITION BY LOCAL_CODE, CURRENT_FISCAL_YEAR_END_DATE, CALENDAR_PERIOD_KEY
+    ORDER BY DISCLOSED_DATE DESC, DISCLOSURE_NUMBER DESC
   ) = 1
 ),
 forecast_docs AS (
@@ -276,7 +306,7 @@ forecast_docs AS (
     CURRENT_FISCAL_YEAR_END_DATE,
     'F' AS CATEGORY,
     ROW_NUMBER() OVER (
-      PARTITION BY LOCAL_CODE, CURRENT_FISCAL_YEAR_END_DATE, TYPE_OF_CURRENT_PERIOD
+      PARTITION BY LOCAL_CODE, CURRENT_FISCAL_YEAR_END_DATE, CALENDAR_PERIOD_KEY
       ORDER BY DISCLOSURE_NUMBER ASC
     ) AS REVISION_SEQ
   FROM fin_base
@@ -745,6 +775,7 @@ def run_chunk(
     run_id: str,
     execute: bool,
     backup_table: str,
+    check_inserted_duplicates: bool = True,
 ) -> ChunkResult:
     """Run or dry-run one backfill chunk."""
     validate_backfill_range(chunk.date_from, chunk.date_to)
@@ -754,6 +785,8 @@ def run_chunk(
     counts = category_counts(out)
 
     if not execute:
+        if not out.empty:
+            validate_transformed_rows(out, chunk)
         log.info(
             "dry_run_chunk",
             chunk=chunk.name,
@@ -786,7 +819,7 @@ def run_chunk(
         target_rows_after, stage_rows = merge_stage_chunk(client, chunk, stage_table)
         merged = True
         scheduled_after = count_scheduled_rows(client)
-        dupes = duplicate_inserted_key_count(client, stage_table)
+        dupes = duplicate_inserted_key_count(client, stage_table) if check_inserted_duplicates else 0
 
         if scheduled_before != scheduled_after:
             raise RuntimeError(f"S rows changed: before={scheduled_before}, after={scheduled_after}")
@@ -849,9 +882,11 @@ def main() -> None:
     chunks = build_chunks(args)
     run_id = datetime.now(JST).strftime("%Y%m%d_%H%M%S")
     backup_table = args.backup_table or ""
+    data_committed = False
 
     log_cap = LogCapture()
     log_cap.start()
+    client: bigquery.Client | None = None
     try:
         client = get_bq_client()
         validate_schema(client)
@@ -870,8 +905,27 @@ def main() -> None:
             validate_backup_table(client, backup_table)
 
         results: list[ChunkResult] = []
+        check_inserted_duplicates = args.mode != "all"
         for chunk in chunks:
-            results.append(run_chunk(client, chunk, run_id, args.execute, backup_table))
+            results.append(
+                run_chunk(
+                    client,
+                    chunk,
+                    run_id,
+                    args.execute,
+                    backup_table,
+                    check_inserted_duplicates=check_inserted_duplicates,
+                ),
+            )
+
+        if args.execute and args.mode == "all":
+            final_dupes = duplicate_key_count(client, BACKFILL_FROM, BACKFILL_TO)
+            if final_dupes:
+                restore_from_backup(client, backup_table)
+                raise RuntimeError(f"Duplicate logical keys detected after all chunks: {final_dupes}")
+            verify_sample_rows(client)
+
+        data_committed = True
 
         if args.execute and args.append_log:
             append_plan_log(Path(args.plan_md), run_id, backup_table, results)
@@ -889,6 +943,8 @@ def main() -> None:
         )
 
     except Exception:
+        if args.execute and backup_table and client is not None and not data_committed:
+            restore_from_backup(client, backup_table)
         log.error("fatal", exc=traceback.format_exc())
         send_mail(
             subject="[earnings_actual_backfill] ERROR",

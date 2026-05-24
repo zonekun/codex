@@ -10,7 +10,7 @@
   --to   YYYYMMDD  終了日（省略時は --from と同日）
   --week           過去1週間分をロード（--from/--to より優先）
 
-方式: 対象期間の A レコードを DELETE → 再INSERT（冪等）
+方式: ステージテーブル経由で対象期間と出力論理キーの A レコードを置換（冪等）
 """
 
 import argparse
@@ -37,6 +37,7 @@ PROJECT_ID = "gmailpj-357912"
 DATASET_ID = "STOCK"
 TABLE_ID = "EARNINGS_DISCLOSURE_CALENDAR"
 TABLE_FQN = f"{PROJECT_ID}.{DATASET_ID}.{TABLE_ID}"
+SEQUENCE_FROM = date(2017, 1, 1)
 
 # QUARTER マッピング（fin_summary TYPE_OF_CURRENT_PERIOD → 本テーブル）
 QUARTER_MAP: dict[str, str] = {
@@ -47,6 +48,20 @@ QUARTER_MAP: dict[str, str] = {
     "4Q": "本決算",
     "5Q": "本決算",
 }
+QUARTER_UNKNOWN = "不明"
+
+REQUIRED_COLUMNS: tuple[str, ...] = (
+    "TICKER",
+    "FISCAL_YEAR_END",
+    "QUARTER",
+    "CATEGORY",
+    "RECORD_TYPE",
+    "REVISION_SEQ",
+    "DISCLOSURE_DATE",
+    "DISCLOSURE_TIME",
+    "SOURCE",
+    "LOADED_AT",
+)
 
 log = structlog.get_logger()
 
@@ -154,15 +169,49 @@ fin_base AS (
     f.DISCLOSURE_NUMBER,
     f.TYPE_OF_DOCUMENT,
     f.TYPE_OF_CURRENT_PERIOD,
-    f.CURRENT_FISCAL_YEAR_END_DATE
+    f.CURRENT_FISCAL_YEAR_END_DATE,
+    CASE
+      WHEN f.TYPE_OF_CURRENT_PERIOD IN ('FY', '4Q', '5Q') THEN 'FY'
+      WHEN f.TYPE_OF_CURRENT_PERIOD = '2Q' THEN '2Q'
+      WHEN f.TYPE_OF_CURRENT_PERIOD IN ('1Q', '3Q') THEN f.TYPE_OF_CURRENT_PERIOD
+      ELSE '__UNKNOWN__'
+    END AS CALENDAR_PERIOD_KEY,
+    CASE
+      WHEN f.TYPE_OF_CURRENT_PERIOD IN ('FY', '4Q', '5Q') THEN 4
+      WHEN f.TYPE_OF_CURRENT_PERIOD = '3Q' THEN 3
+      WHEN f.TYPE_OF_CURRENT_PERIOD = '2Q' THEN 2
+      WHEN f.TYPE_OF_CURRENT_PERIOD = '1Q' THEN 1
+      ELSE 0
+    END AS CALENDAR_PERIOD_RANK
   FROM `{project}.STOCK.fin_summary` f
   INNER JOIN valid_tickers vt
     ON f.LOCAL_CODE = vt.TICKER
-  WHERE f.DISCLOSED_DATE BETWEEN @date_from AND @date_to
+  WHERE f.DISCLOSED_DATE BETWEEN @seq_from AND @date_to
     AND (
       f.TYPE_OF_DOCUMENT LIKE '%FinancialStatements%'
       OR f.TYPE_OF_DOCUMENT IN ('EarnForecastRevision', 'REITEarnForecastRevision')
     )
+),
+result_same_day AS (
+  SELECT
+    LOCAL_CODE,
+    DISCLOSED_DATE,
+    DISCLOSED_TIME,
+    TYPE_OF_CURRENT_PERIOD,
+    CURRENT_FISCAL_YEAR_END_DATE,
+    CALENDAR_PERIOD_KEY,
+    DISCLOSURE_NUMBER,
+    'R' AS CATEGORY,
+    1 AS REVISION_SEQ
+  FROM fin_base
+  WHERE TYPE_OF_DOCUMENT LIKE '%FinancialStatements%'
+  QUALIFY ROW_NUMBER() OVER (
+    PARTITION BY LOCAL_CODE, DISCLOSED_DATE, CURRENT_FISCAL_YEAR_END_DATE
+    ORDER BY
+      CALENDAR_PERIOD_RANK DESC,
+      DISCLOSURE_NUMBER DESC,
+      CASE WHEN TYPE_OF_DOCUMENT LIKE '%Consolidated%' THEN 0 ELSE 1 END
+  ) = 1
 ),
 result_docs AS (
   SELECT
@@ -171,15 +220,12 @@ result_docs AS (
     DISCLOSED_TIME,
     TYPE_OF_CURRENT_PERIOD,
     CURRENT_FISCAL_YEAR_END_DATE,
-    'R' AS CATEGORY,
-    1 AS REVISION_SEQ
-  FROM fin_base
-  WHERE TYPE_OF_DOCUMENT LIKE '%FinancialStatements%'
+    CATEGORY,
+    REVISION_SEQ
+  FROM result_same_day
   QUALIFY ROW_NUMBER() OVER (
-    PARTITION BY LOCAL_CODE, DISCLOSED_DATE, CURRENT_FISCAL_YEAR_END_DATE
-    ORDER BY
-      DISCLOSURE_NUMBER DESC,
-      CASE WHEN TYPE_OF_DOCUMENT LIKE '%Consolidated%' THEN 0 ELSE 1 END
+    PARTITION BY LOCAL_CODE, CURRENT_FISCAL_YEAR_END_DATE, CALENDAR_PERIOD_KEY
+    ORDER BY DISCLOSED_DATE DESC, DISCLOSURE_NUMBER DESC
   ) = 1
 ),
 forecast_docs AS (
@@ -191,31 +237,43 @@ forecast_docs AS (
     CURRENT_FISCAL_YEAR_END_DATE,
     'F' AS CATEGORY,
     ROW_NUMBER() OVER (
-      PARTITION BY LOCAL_CODE, CURRENT_FISCAL_YEAR_END_DATE, TYPE_OF_CURRENT_PERIOD
+      PARTITION BY LOCAL_CODE, CURRENT_FISCAL_YEAR_END_DATE, CALENDAR_PERIOD_KEY
       ORDER BY DISCLOSURE_NUMBER ASC
     ) AS REVISION_SEQ
   FROM fin_base
   WHERE TYPE_OF_DOCUMENT IN ('EarnForecastRevision', 'REITEarnForecastRevision')
+),
+all_docs AS (
+  SELECT
+    LOCAL_CODE AS TICKER,
+    DISCLOSED_DATE,
+    DISCLOSED_TIME,
+    TYPE_OF_CURRENT_PERIOD,
+    CURRENT_FISCAL_YEAR_END_DATE,
+    CATEGORY,
+    REVISION_SEQ
+  FROM result_docs
+  UNION ALL
+  SELECT
+    LOCAL_CODE AS TICKER,
+    DISCLOSED_DATE,
+    DISCLOSED_TIME,
+    TYPE_OF_CURRENT_PERIOD,
+    CURRENT_FISCAL_YEAR_END_DATE,
+    CATEGORY,
+    REVISION_SEQ
+  FROM forecast_docs
 )
 SELECT
-  LOCAL_CODE AS TICKER,
+  TICKER,
   DISCLOSED_DATE,
   DISCLOSED_TIME,
   TYPE_OF_CURRENT_PERIOD,
   CURRENT_FISCAL_YEAR_END_DATE,
   CATEGORY,
   REVISION_SEQ
-FROM result_docs
-UNION ALL
-SELECT
-  LOCAL_CODE AS TICKER,
-  DISCLOSED_DATE,
-  DISCLOSED_TIME,
-  TYPE_OF_CURRENT_PERIOD,
-  CURRENT_FISCAL_YEAR_END_DATE,
-  CATEGORY,
-  REVISION_SEQ
-FROM forecast_docs
+FROM all_docs
+WHERE DISCLOSED_DATE BETWEEN @date_from AND @date_to
 ORDER BY DISCLOSED_DATE, TICKER, CATEGORY, REVISION_SEQ
 """.format(project=PROJECT_ID)
 
@@ -226,6 +284,7 @@ def fetch_source(client: bigquery.Client, d_from: date, d_to: date) -> pd.DataFr
         query_parameters=[
             bigquery.ScalarQueryParameter("date_from", "DATE", str(d_from)),
             bigquery.ScalarQueryParameter("date_to", "DATE", str(d_to)),
+            bigquery.ScalarQueryParameter("seq_from", "DATE", str(SEQUENCE_FROM)),
         ],
     )
     df = client.query(EXTRACT_SQL, job_config=job_config).to_dataframe()
@@ -251,9 +310,9 @@ def transform(df: pd.DataFrame) -> pd.DataFrame:
             continue
 
         # QUARTER マッピング（NOT NULL 制約あり。不明時は "不明"）
-        quarter = "不明"
+        quarter = QUARTER_UNKNOWN
         if pd.notna(row.get("TYPE_OF_CURRENT_PERIOD")):
-            quarter = QUARTER_MAP.get(row["TYPE_OF_CURRENT_PERIOD"], "不明")
+            quarter = QUARTER_MAP.get(row["TYPE_OF_CURRENT_PERIOD"], QUARTER_UNKNOWN)
 
         # FISCAL_YEAR_END
         fiscal_year_end = None
@@ -282,7 +341,7 @@ def transform(df: pd.DataFrame) -> pd.DataFrame:
             "LOADED_AT": now_jst,
         })
 
-    out = pd.DataFrame(records)
+    out = pd.DataFrame(records, columns=list(REQUIRED_COLUMNS))
 
     if out.empty:
         return out
@@ -297,29 +356,62 @@ def transform(df: pd.DataFrame) -> pd.DataFrame:
 # 3. BQ ロード
 # ============================================================
 
-def delete_actual_range(client: bigquery.Client, d_from: date, d_to: date) -> int:
-    """対象期間の A レコードを削除する."""
-    sql = f"""
-    DELETE FROM `{TABLE_FQN}`
-    WHERE RECORD_TYPE = 'A'
-      AND DISCLOSURE_DATE BETWEEN @date_from AND @date_to
-    """
-    job_config = bigquery.QueryJobConfig(
+def schema_fields() -> list[bigquery.SchemaField]:
+    """ステージロードで使うテーブルスキーマを返す."""
+    return [
+        bigquery.SchemaField("TICKER", "STRING", mode="REQUIRED"),
+        bigquery.SchemaField("FISCAL_YEAR_END", "DATE"),
+        bigquery.SchemaField("QUARTER", "STRING", mode="REQUIRED"),
+        bigquery.SchemaField("CATEGORY", "STRING", mode="REQUIRED"),
+        bigquery.SchemaField("RECORD_TYPE", "STRING", mode="REQUIRED"),
+        bigquery.SchemaField("REVISION_SEQ", "INTEGER", mode="REQUIRED"),
+        bigquery.SchemaField("DISCLOSURE_DATE", "DATE"),
+        bigquery.SchemaField("DISCLOSURE_TIME", "TIME"),
+        bigquery.SchemaField("SOURCE", "STRING", mode="REQUIRED"),
+        bigquery.SchemaField("LOADED_AT", "DATETIME", mode="REQUIRED"),
+    ]
+
+
+def date_query_config(d_from: date, d_to: date) -> bigquery.QueryJobConfig:
+    """日付範囲クエリパラメータを返す."""
+    return bigquery.QueryJobConfig(
         query_parameters=[
             bigquery.ScalarQueryParameter("date_from", "DATE", str(d_from)),
             bigquery.ScalarQueryParameter("date_to", "DATE", str(d_to)),
         ],
     )
-    result = client.query(sql, job_config=job_config).result()
-    deleted = result.num_dml_affected_rows or 0
-    log.info("delete_done", deleted=deleted, date_from=str(d_from), date_to=str(d_to))
-    return deleted
 
 
-def insert_rows(client: bigquery.Client, df: pd.DataFrame) -> int:
-    """変換済みデータを BQ に INSERT する."""
+def validate_transformed_rows(df: pd.DataFrame, d_from: date, d_to: date) -> None:
+    """BQ更新前に変換後データの列・日付・論理キーを検証する."""
+    if list(df.columns) != list(REQUIRED_COLUMNS):
+        raise RuntimeError(f"Unexpected transformed columns: {list(df.columns)}")
+
+    dates = pd.to_datetime(df["DISCLOSURE_DATE"]).dt.date
+    if ((dates < d_from) | (dates > d_to)).any():
+        raise RuntimeError(f"Transformed rows contain dates outside {d_from} - {d_to}")
+
+    if (df["RECORD_TYPE"] != "A").any():
+        raise RuntimeError("Transformed rows contain non-A records")
+
+    key_cols = [
+        "TICKER",
+        "FISCAL_YEAR_END",
+        "QUARTER",
+        "CATEGORY",
+        "RECORD_TYPE",
+        "REVISION_SEQ",
+    ]
+    duplicate_rows = df.duplicated(subset=key_cols, keep=False)
+    if duplicate_rows.any():
+        sample = df.loc[duplicate_rows, key_cols].head(5).to_dict("records")
+        raise RuntimeError(f"Duplicate transformed keys: {sample}")
+
+
+def load_stage_table(client: bigquery.Client, df: pd.DataFrame, stage_table: str) -> int:
+    """変換済みデータをステージテーブルへロードする."""
     if df.empty:
-        log.info("no_rows_to_insert")
+        log.info("no_rows_to_stage")
         return 0
 
     ndjson_lines = []
@@ -329,30 +421,129 @@ def insert_rows(client: bigquery.Client, df: pd.DataFrame) -> int:
     ndjson_bytes = ("\n".join(ndjson_lines)).encode("utf-8")
 
     job_config = bigquery.LoadJobConfig(
-        write_disposition=bigquery.WriteDisposition.WRITE_APPEND,
+        write_disposition=bigquery.WriteDisposition.WRITE_TRUNCATE,
         source_format=bigquery.SourceFormat.NEWLINE_DELIMITED_JSON,
-        schema=[
-            bigquery.SchemaField("TICKER", "STRING", mode="REQUIRED"),
-            bigquery.SchemaField("FISCAL_YEAR_END", "DATE"),
-            bigquery.SchemaField("QUARTER", "STRING", mode="REQUIRED"),
-            bigquery.SchemaField("CATEGORY", "STRING", mode="REQUIRED"),
-            bigquery.SchemaField("RECORD_TYPE", "STRING", mode="REQUIRED"),
-            bigquery.SchemaField("REVISION_SEQ", "INTEGER", mode="REQUIRED"),
-            bigquery.SchemaField("DISCLOSURE_DATE", "DATE"),
-            bigquery.SchemaField("DISCLOSURE_TIME", "TIME"),
-            bigquery.SchemaField("SOURCE", "STRING", mode="REQUIRED"),
-            bigquery.SchemaField("LOADED_AT", "DATETIME", mode="REQUIRED"),
-        ],
+        schema=schema_fields(),
     )
 
-    table_ref = f"{PROJECT_ID}.{DATASET_ID}.{TABLE_ID}"
     job = client.load_table_from_file(
-        io.BytesIO(ndjson_bytes), table_ref, job_config=job_config,
+        io.BytesIO(ndjson_bytes),
+        f"{PROJECT_ID}.{DATASET_ID}.{stage_table}",
+        job_config=job_config,
     )
     job.result()
 
-    log.info("insert_done", row_cnt=len(df))
+    log.info("stage_load_done", stage_table=stage_table, row_cnt=len(df))
     return len(df)
+
+
+def merge_stage_rows(client: bigquery.Client, stage_table: str, d_from: date, d_to: date) -> int:
+    """ステージ行で対象期間と今回の論理キーを置換する."""
+    sql = f"""
+    BEGIN TRANSACTION;
+
+    DELETE FROM `{TABLE_FQN}`
+    WHERE RECORD_TYPE = 'A'
+      AND DISCLOSURE_DATE BETWEEN @date_from AND @date_to;
+
+    DELETE FROM `{TABLE_FQN}` AS tgt
+    WHERE tgt.RECORD_TYPE = 'A'
+      AND EXISTS (
+        SELECT 1
+        FROM `{PROJECT_ID}.{DATASET_ID}.{stage_table}` AS src
+        WHERE tgt.TICKER = src.TICKER
+          AND COALESCE(tgt.FISCAL_YEAR_END, DATE '0001-01-01') = COALESCE(src.FISCAL_YEAR_END, DATE '0001-01-01')
+          AND tgt.QUARTER = src.QUARTER
+          AND tgt.CATEGORY = src.CATEGORY
+          AND tgt.RECORD_TYPE = src.RECORD_TYPE
+          AND tgt.REVISION_SEQ = src.REVISION_SEQ
+      );
+
+    INSERT INTO `{TABLE_FQN}` (
+      TICKER,
+      FISCAL_YEAR_END,
+      QUARTER,
+      CATEGORY,
+      RECORD_TYPE,
+      REVISION_SEQ,
+      DISCLOSURE_DATE,
+      DISCLOSURE_TIME,
+      SOURCE,
+      LOADED_AT
+    )
+    SELECT
+      TICKER,
+      FISCAL_YEAR_END,
+      QUARTER,
+      CATEGORY,
+      RECORD_TYPE,
+      REVISION_SEQ,
+      DISCLOSURE_DATE,
+      DISCLOSURE_TIME,
+      SOURCE,
+      LOADED_AT
+    FROM `{PROJECT_ID}.{DATASET_ID}.{stage_table}`;
+
+    COMMIT TRANSACTION;
+    """
+    client.query(sql, job_config=date_query_config(d_from, d_to)).result()
+    inserted = count_stage_rows(client, stage_table)
+    log.info("merge_done", stage_table=stage_table, inserted=inserted)
+    return inserted
+
+
+def count_stage_rows(client: bigquery.Client, stage_table: str) -> int:
+    """ステージテーブル行数を返す."""
+    sql = f"SELECT COUNT(*) AS cnt FROM `{PROJECT_ID}.{DATASET_ID}.{stage_table}`"
+    rows = list(client.query(sql).result())
+    return int(rows[0]["cnt"])
+
+
+def duplicate_inserted_key_count(client: bigquery.Client, stage_table: str) -> int:
+    """今回投入した論理キーに対する全体重複数を返す."""
+    sql = f"""
+    WITH stage_keys AS (
+      SELECT DISTINCT
+        TICKER,
+        FISCAL_YEAR_END,
+        QUARTER,
+        CATEGORY,
+        RECORD_TYPE,
+        REVISION_SEQ
+      FROM `{PROJECT_ID}.{DATASET_ID}.{stage_table}`
+    ),
+    target_key_counts AS (
+      SELECT
+        tgt.TICKER,
+        tgt.FISCAL_YEAR_END,
+        tgt.QUARTER,
+        tgt.CATEGORY,
+        tgt.RECORD_TYPE,
+        tgt.REVISION_SEQ,
+        COUNT(*) AS cnt
+      FROM `{TABLE_FQN}` AS tgt
+      INNER JOIN stage_keys AS sk
+        ON tgt.TICKER = sk.TICKER
+       AND COALESCE(tgt.FISCAL_YEAR_END, DATE '0001-01-01') = COALESCE(sk.FISCAL_YEAR_END, DATE '0001-01-01')
+       AND tgt.QUARTER = sk.QUARTER
+       AND tgt.CATEGORY = sk.CATEGORY
+       AND tgt.RECORD_TYPE = sk.RECORD_TYPE
+       AND tgt.REVISION_SEQ = sk.REVISION_SEQ
+      WHERE tgt.RECORD_TYPE = 'A'
+      GROUP BY 1,2,3,4,5,6
+      HAVING cnt > 1
+    )
+    SELECT COUNT(*) AS duplicate_key_count
+    FROM target_key_counts
+    """
+    rows = list(client.query(sql).result())
+    return int(rows[0]["duplicate_key_count"])
+
+
+def drop_stage_table(client: bigquery.Client, stage_table: str) -> None:
+    """ステージテーブルを削除する."""
+    client.delete_table(f"{PROJECT_ID}.{DATASET_ID}.{stage_table}", not_found_ok=True)
+    log.info("stage_dropped", stage_table=stage_table)
 
 
 # ============================================================
@@ -384,9 +575,19 @@ def main() -> None:
             log.info("no_records_after_transform")
             return
 
-        # 3. DELETE → INSERT
-        delete_actual_range(client, d_from, d_to)
-        inserted = insert_rows(client, out)
+        validate_transformed_rows(out, d_from, d_to)
+
+        # 3. Stage → logical-key replace
+        run_id = datetime.now(JST).strftime("%Y%m%d_%H%M%S")
+        stage_table = f"{TABLE_ID}_ACTUAL_STAGE_{run_id}"
+        try:
+            load_stage_table(client, out, stage_table)
+            inserted = merge_stage_rows(client, stage_table, d_from, d_to)
+            duplicate_keys = duplicate_inserted_key_count(client, stage_table)
+            if duplicate_keys:
+                raise RuntimeError(f"Duplicate inserted logical keys after merge: {duplicate_keys}")
+        finally:
+            drop_stage_table(client, stage_table)
 
         log.info("=== earnings_actual_load DONE ===", inserted=inserted)
 

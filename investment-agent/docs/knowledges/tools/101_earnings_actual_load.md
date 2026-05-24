@@ -24,7 +24,7 @@
 
 ```
 fin_summary
-  WHERE DISCLOSED_DATE BETWEEN @date_from AND @date_to
+  WHERE DISCLOSED_DATE BETWEEN 2017-01-01 AND @date_to
     AND (
       TYPE_OF_DOCUMENT LIKE '%FinancialStatements%'
       OR TYPE_OF_DOCUMENT IN ('EarnForecastRevision', 'REITEarnForecastRevision')
@@ -34,12 +34,14 @@ fin_summary
     │     STOCK_CODE_LIST: TSE 内国株式（プライム/スタンダード/グロース）
     │     DELISTED_STOCKS: 旧東証主要市場（バックフィル用）
     │
-    ├── R: 同一銘柄×開示日×FY で DISCLOSURE_NUMBER DESC 最新1件
-    └── F: 同一銘柄×FY×QUARTER で DISCLOSURE_NUMBER ASC 連番
+    ├── R: 同一銘柄×開示日×FY で最も進んだ期を残し、同一銘柄×FY×QUARTERでは最新開示1件
+    └── F: 同一銘柄×FY×QUARTER で全履歴ベースの DISCLOSURE_NUMBER ASC 連番
+                │
+           DISCLOSED_DATE BETWEEN @date_from AND @date_to に切り出し
                 │
            変換・マッピング
                 │
-    DELETE A レコード（対象期間） → INSERT
+    ステージテーブル → 対象期間A + 今回出力した論理キーをBQトランザクションで置換
                 │
     EARNINGS_DISCLOSURE_CALENDAR (RECORD_TYPE='A')
 ```
@@ -66,7 +68,12 @@ fin_summary
 
 ## ロード方式
 
-**冪等**: 対象期間の `RECORD_TYPE='A'` レコードを DELETE → 再 INSERT。
+**冪等**: 変換後データをステージテーブルへロードし、BQトランザクションで次を置換する。
+
+- 対象期間内の `RECORD_TYPE='A'`
+- 今回出力した論理キー（`TICKER`, `FISCAL_YEAR_END`, `QUARTER`, `CATEGORY`, `RECORD_TYPE`, `REVISION_SEQ`）に一致する既存A行
+
+これにより、週次ロードでもFの `REVISION_SEQ` は全履歴ベースで維持され、Rの後続開示が過去の同一FY/QUARTER行を置き換える。
 
 ## Phase 4-7 バックフィル
 
@@ -121,7 +128,7 @@ gcloud run jobs execute earnings-actual-load \
 
 - fin_summary 起点のため、fin_summary 未取得のTDnet開示は実績Aに入らない
 - J-REIT/ETF 系銘柄（1672-1697 等）は `STOCK_CODE_LIST.MARKET_CATEGORY` フィルタで通常ロード対象外
-- 同一銘柄×同一開示日×同一FYに複数の決算短信がある場合、`DISCLOSURE_NUMBER DESC` 最新1件のみ使用
+- 同一銘柄×同一開示日×同一FYに複数の決算短信がある場合、`TYPE_OF_CURRENT_PERIOD` が最も進んだ期を優先し、同一期の訂正・差替えは `DISCLOSURE_NUMBER DESC` 最新1件のみ使用
 - `DISCLOSURE_NUMBER` / `TYPE_OF_DOCUMENT` / `DOC_TITLE` は Phase 4 で物理DROP済み。実績A/予定Sロードとも出力しない
 - `--week` は常に今日起点で7日前〜今日。土日・休日も含む（TDnet は土日開示あり）
 
@@ -156,3 +163,25 @@ gcloud run jobs execute earnings-actual-load \
 - 互換: `DISCLOSURE_NUMBER` / `TYPE_OF_DOCUMENT` / `DOC_TITLE` は BQ DDL DROP 済み。実績A/予定Sロードとも出力対象外
 - smoke: 2162/2026-05-11 は `3Q×1件` になることをBQで確認
 - 未実施: 2017年以降バックフィル
+
+### 2026-05-24: Phase 4-7 バックフィル完了
+
+- `scripts/earnings_actual_backfill.py --mode all --execute` をローカル実行
+- run_id: `20260524_124252`
+- backup: `EARNINGS_DISCLOSURE_CALENDAR_BAK_20260524_124252`
+- 投入結果: 2017-01-01〜2026-05-22 のA行 `165,555` 件
+- 検証: S予定行 `4,925` 不変、論理PK重複0、2162/2026-05-11 は `3Q` のR 1件
+- 実行中に見つかった対策:
+  - バックアップ復元はpartitioned tableを再作成せず、既存テーブルへDELETE/INSERTで復元
+  - dry-runでも変換後キー重複を検証
+  - Rは同日同FYで最も進んだ期を残し、同一出力QUARTER内では最新開示1件に正規化
+  - FはFY/4Q/5Qなど変換後QUARTER単位でREVISION_SEQを採番
+
+### 2026-05-24: 通常ロードの差分更新を全履歴キー基準へ修正
+
+- 背景: 4-7後のレビューで、週次 `--week` が対象期間内だけでFの `REVISION_SEQ` を採番すると、過去F行と論理キーが衝突しうる点を検出
+- 修正:
+  - `EXTRACT_SQL` は `2017-01-01`〜`@date_to` の履歴でR/Fを正規化・採番し、最後に対象期間へ切り出す
+  - 通常ロードもステージテーブルを使い、対象期間A行に加えて今回出力した論理キーの既存A行を削除してからINSERT
+  - 投入後、今回の論理キーに全体重複がないことを検証
+  - `cloudbuild.earnings-actual-load.yaml` は明示 `docker push` + `gcloud run jobs update` 形式へ更新
