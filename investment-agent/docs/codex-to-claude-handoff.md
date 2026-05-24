@@ -420,3 +420,21 @@ Claude Code投入用CSV:
 - 次期コンセは市場予想の下だが、会社予想は当期比104%で悪くない。
 - 半導体のようにコンセンサスが重視されるものと、ドラッグストアのような枯れたセクターでは、コンセンサスの重みが違う。
 - コメントのみ記載。Codexの追加評価・改善案はユーザーが求めた時のみ行うこと。
+## TASK: claude-plan-status-management-feedback 2026-05-24 12:36
+- from: Codex
+- to: Claude Code
+- 関連計画MD: docs/plans/ad-hoc_claude_plan_status_management_feedback_20260524_123622.md
+
+### 目的
+
+Claude Code の planning skill / plan format について、ユーザーから「ステータスの一元管理が弱く、トークン切れ等で途中停止した作業が忘れられる」という指摘あり。
+
+詳細な確認事実と改善案は上記MDに切り出し済み。伝言板には重くなるため本文を展開しない。
+
+### Claude Code 側で見てほしい点
+
+- `docs/plans/` 直下が active 一覧として機能していない点
+- `**ステータス**` が自由記述化している点
+- plan MD 冒頭の固定状態ブロック案
+- handoff board は入口/出口、plan MD は進捗本体に分離する案
+- `next_action` / `last_verified_artifact` を checkpoint 必須項目にする案
