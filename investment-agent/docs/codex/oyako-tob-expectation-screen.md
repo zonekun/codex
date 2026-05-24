@@ -1,6 +1,7 @@
 # 親子上場 TOB 期待決算前上昇スクリーニング仕様
 
 作成日: 2026-05-22
+最終更新: 2026-05-24
 対象スクリプト: `scripts/analyze_oyako_tob_expectation.py`
 主出力: `data/output/oyako_tob_expectation_classification.csv`
 入力: `C:\Users\zonekun\Dropbox\stock\temp\oyako.txt`
@@ -159,6 +160,12 @@ BQアクセスは多数回走らせない。
 
 `fade_after_earnings` は、決算後に期待剥落しやすい分類。好決算で買われるケースもあるため、スクリーニングの必須条件にはしない。
 
+### `market_cap_oku_yen`
+
+時価総額。単位は億円。
+
+`YF_STOCK_INFO.MARKET_CAP` の最新 `LOADED_DATE` / `LOADED_AT` の値を1億円で割り、小数1桁に丸める。
+
 ## 次回予定日とエントリ日
 
 `next_expected_earnings_date` は正式予定日ではない。出力ヘッダーでは `エントリ基準日算出の仮の決算予定日` と表示する。現在は `EARNINGS_DISCLOSURE_CALENDAR` の過去実績値ベースの仮置き。
@@ -177,7 +184,38 @@ BQアクセスは多数回走らせない。
 
 `next_earnings_date` は `EARNINGS_DISCLOSURE_CALENDAR` の `CATEGORY = 'R'`、`RECORD_TYPE = 'S'` から、`as_of` 以降で最も近い予定日を採用する。予定表に存在しない銘柄は空欄にする。
 
-`market_cap_oku_yen` は `YF_STOCK_INFO.MARKET_CAP` の最新 `LOADED_DATE` を1億円で割った値。
+## 出力カラム順
+
+CSV出力は以下の順序に固定する。
+
+```text
+TICKER
+STOCK_NAME
+MARKET_CATEGORY
+market_cap_oku_yen
+INDUSTRY_33_CATEGORY
+エントリ基準日算出の仮の決算予定日
+entry_date
+next_earnings_date
+pattern_score
+pattern_class
+runup_event_rate
+event_count
+best_pre_abn_median
+timing_class
+fade_class
+fade_after_runup_rate
+best_pre_window_days
+abn_pre5_median
+abn_pre10_median
+abn_pre20_median
+abn_pre40_median
+volume_ratio_median
+latest_disclosed_date
+pattern_rank
+```
+
+内部計算名 `next_expected_earnings_date` はCSVでは出さず、出力ヘッダーは `エントリ基準日算出の仮の決算予定日` にする。日付3列の重複出力はしない。
 
 ## 実行
 
