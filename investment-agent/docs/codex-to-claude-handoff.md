@@ -468,3 +468,26 @@ Phase 4 fin_summary起点化と4-7バックフィル本実行はCodex側で完�
 ### 注意
 
 - `codex review --commit 82101a46` はCodex利用上限で中断。15:46以降に再実行可能表示。`py_compile`、BQ読み取り検証、空ステージでのBQトランザクション構文確認は通過済み。
+
+## TASK: oyako-tob-expectation-tool-handoff 2026-05-24 19:30
+- from: Codex
+- to: Claude Code
+- 関連計画MD: C:\Users\zonekun\Documents\codex\investment-agent\docs\codex\oyako-tob-expectation-screen.md
+
+### 目的
+
+Codex側で開発・改修した「親子上場 TOB 期待決算前上昇スクリーニング」ツールの受け渡し。
+
+### フルパス
+
+仕様MD:
+`C:\Users\zonekun\Documents\codex\investment-agent\docs\codex\oyako-tob-expectation-screen.md`
+
+スクリプト:
+`C:\Users\zonekun\Documents\codex\investment-agent\scripts\analyze_oyako_tob_expectation.py`
+
+### 簡単な説明
+
+親子上場関連銘柄について、過去の決算前にTOB期待で買われやすい癖を分類し、次回エントリ基準日・決算予定日・時価総額などをCSV出力するツール。
+
+細かい仕様、データソース、出力カラム順、実行方法は上記MDを参照してください。伝言板には詳細を展開しません。

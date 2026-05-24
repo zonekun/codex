@@ -1,6 +1,7 @@
 # 親子上場 TOB 期待決算前上昇スクリーニング仕様
 
 作成日: 2026-05-22
+最終更新: 2026-05-24
 対象スクリプト: `scripts/analyze_oyako_tob_expectation.py`
 主出力: `data/output/oyako_tob_expectation_classification.csv`
 入力: `C:\Users\zonekun\Dropbox\stock\temp\oyako.txt`
@@ -21,18 +22,20 @@
 
 - 対象 ticker: `oyako.txt` の1列目4桁コード。ファイルはタブ区切り、CP932/Shift-JIS。
 - 実績決算日: `gmailpj-357912.STOCK.FIN_SUMMARY`
+- 決算実績・決算予定日: `gmailpj-357912.STOCK.EARNINGS_DISCLOSURE_CALENDAR`
 - 株価: `gmailpj-357912.STOCK.STOCK_PRICE`
 - ベンチマーク: `gmailpj-357912.STOCK.INDEX_PRICE` の `INDEX_CODE = 'N225'`
 - 銘柄名・業種: `gmailpj-357912.STOCK.STOCK_CODE_LIST`
+- 時価総額: `gmailpj-357912.STOCK.YF_STOCK_INFO`
 - 除外: `gmailpj-357912.STOCK.DELISTED_STOCKS` に存在する ticker
-
-`EARNINGS_DISCLOSURE_CALENDAR` は今回使わない。実績がまだ入っていないため。
 
 ## BQアクセス方針
 
 BQアクセスは多数回走らせない。
 
 初回または `--refresh-cache` 指定時のみ、BQでイベント特徴量を一括取得し、`data/cache/oyako_tob_expectation_events.csv` にキャッシュする。以後のスコア調整・分類表再生成はこのキャッシュを使う。
+
+`EARNINGS_DISCLOSURE_CALENDAR` と `YF_STOCK_INFO` 由来の補助列は、キャッシュとは別に実行時点のBQから取得する。
 
 ## 対象イベント
 
@@ -157,14 +160,20 @@ BQアクセスは多数回走らせない。
 
 `fade_after_earnings` は、決算後に期待剥落しやすい分類。好決算で買われるケースもあるため、スクリーニングの必須条件にはしない。
 
+### `market_cap_oku_yen`
+
+時価総額。単位は億円。
+
+`YF_STOCK_INFO.MARKET_CAP` の最新 `LOADED_DATE` / `LOADED_AT` の値を1億円で割り、小数1桁に丸める。
+
 ## 次回予定日とエントリ日
 
-`next_expected_earnings_date` は正式予定日ではない。現在は実績ベースの仮置き。
+`next_expected_earnings_date` は正式予定日ではない。出力ヘッダーでは `エントリ基準日算出の仮の決算予定日` と表示する。現在は `EARNINGS_DISCLOSURE_CALENDAR` の過去実績値ベースの仮置き。
 
 ロジック:
 
-1. 銘柄ごとの最新実績決算を確認する。
-2. 最新が 1Q なら次は 2Q、2Q なら3Q、3QならFY、FYなら1Qとする。
+1. `EARNINGS_DISCLOSURE_CALENDAR` の `CATEGORY = 'R'`、`RECORD_TYPE = 'A'` から銘柄ごとの最新実績決算を確認する。
+2. 最新が 1Q なら次は中間決算、中間決算なら3Q、3Qなら本決算、本決算なら1Qとする。
 3. 過去の同じ四半期の発表日だけを年送りする。
 4. `as_of` 以降で最も近い日を採用する。
 5. 土日に投影された場合は前営業日に寄せる。
@@ -172,6 +181,41 @@ BQアクセスは多数回走らせない。
 このロジックにより、2020年の遅延決算日など別四半期の特殊日が次回予定日に混ざることを避ける。
 
 `entry_date` は `next_expected_earnings_date` から `best_pre_window_days` 営業日前にした日。日本の祝日は未反映で、平日ベースの概算。
+
+`next_earnings_date` は `EARNINGS_DISCLOSURE_CALENDAR` の `CATEGORY = 'R'`、`RECORD_TYPE = 'S'` から、`as_of` 以降で最も近い予定日を採用する。予定表に存在しない銘柄は空欄にする。
+
+## 出力カラム順
+
+CSV出力は以下の順序に固定する。
+
+```text
+TICKER
+STOCK_NAME
+MARKET_CATEGORY
+market_cap_oku_yen
+INDUSTRY_33_CATEGORY
+エントリ基準日算出の仮の決算予定日
+entry_date
+next_earnings_date
+pattern_score
+pattern_class
+runup_event_rate
+event_count
+best_pre_abn_median
+timing_class
+fade_class
+fade_after_runup_rate
+best_pre_window_days
+abn_pre5_median
+abn_pre10_median
+abn_pre20_median
+abn_pre40_median
+volume_ratio_median
+latest_disclosed_date
+pattern_rank
+```
+
+内部計算名 `next_expected_earnings_date` はCSVでは出さず、出力ヘッダーは `エントリ基準日算出の仮の決算予定日` にする。日付3列の重複出力はしない。
 
 ## 実行
 
@@ -204,7 +248,7 @@ Copy-Item -LiteralPath 'C:\Users\zonekun\Documents\codex\investment-agent\data\o
 2. `pattern_score`
 3. `timing_class`
 4. `entry_date`
-5. `next_expected_earnings_date`
+5. `エントリ基準日算出の仮の決算予定日`
 6. `runup_event_rate`
 7. `best_pre_abn_median`
 8. `event_count`
@@ -217,4 +261,4 @@ Copy-Item -LiteralPath 'C:\Users\zonekun\Documents\codex\investment-agent\data\o
 
 ## 注意
 
-`next_expected_earnings_date` は exit 判断には使わない。exit には正規の決算予定日が必要で、予定表データ整備後に別途置き換える。
+`エントリ基準日算出の仮の決算予定日` は exit 判断には使わない。exit には正規の決算予定日 `next_earnings_date` を使う。
