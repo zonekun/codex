@@ -15,7 +15,7 @@
 
 このリポジトリ作業では `ROBOCOPY` を使ってはならない。`robocopy /MIR` に限らず、dry-run、差分確認、単純コピー、同期、削除確認、検証目的でも禁止する。
 
-Claude Code から Codex への同期は必ず本書の既定手順だけを使う。ディレクトリ単位ミラーや汎用コピーコマンドは `docs/codex/**`、`docs/claude-md-sync.md`、`docs/codex-to-claude-handoff.md`、`AGENTS.md`、Codex 専用スクリプトなどの保護対象を削除・上書きする危険がある。
+Claude Code から Codex への同期は必ず本書の既定手順だけを使う。ディレクトリ単位ミラーや汎用コピーコマンドは `docs/codex/**`、`docs/claude-md-sync.md`、`AGENTS.md`、Codex 専用スクリプトなどの保護対象を削除・上書きする危険がある。伝言板の正本は `C:\gdrive\claude\investment-agent\docs\codex-to-claude-handoff.md` に置き、Codex 側 `Documents\codex` ツリーへ同期しない。
 
 ## 1. MD 同期
 
@@ -49,7 +49,6 @@ git restore --source=refs/remotes/claude/master -- investment-agent
 $codexProtected = @(
   "investment-agent/AGENTS.md",
   "investment-agent/docs/claude-md-sync.md",
-  "investment-agent/docs/codex-to-claude-handoff.md",
   "investment-agent/docs/codex",
   "investment-agent/scripts/sync_claude_md.py",
   "investment-agent/scripts/sync_codex_secrets.py",
@@ -108,6 +107,7 @@ Claude Code 側には同期用の仕組みを追加しない。Codex 側だけ�
 
 - `docs/claude-code-intake-checklist.md`
 - `docs/claude-md-sync.md`
+- `docs/codex-to-claude-handoff.md`
 - `docs/codex/**`
 - `docs/git-bootstrap-notes.md`
 - `docs/plans/*codex*.md`

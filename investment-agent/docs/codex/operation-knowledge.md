@@ -34,11 +34,13 @@ The operational source of truth remains the Claude Code side unless a task is ex
 - Rule placement and how to keep `AGENTS.md` thin: `docs/codex/rule-placement.md`
 - Codex display rules: `docs/codex/display-rules.md`
 - Codex Python / uv environment sharing rule: `docs/codex/uv-setup.md`
+- Codex Python code quality practices: `docs/codex/python-practices.md`
 - Long-running jobs, active context, monitoring, and execution-change rules: `docs/codex/long-running.md`
 - LINE / ntfy / notification reply waits: `docs/codex/notification-wait.md`
-- Claude Code <-> Codex message board and board rules: `docs/codex-to-claude-handoff.md`
+- Claude Code <-> Codex message board and board rules: `C:\gdrive\claude\investment-agent\docs\codex-to-claude-handoff.md`
 - Claude Markdown sync and Codex artifact protection: `docs/claude-md-sync.md`
 - Parallel work policy: `docs/codex/parallel-operation-policy.md`
+- Segment structure earnings analysis procedure: `docs/codex/segment-structure-codex-procedure.md`
 - Codex code review runbook: `skills/codex-code-reviewer.md`
 
 ## Startup And Workflow Routing
@@ -59,4 +61,4 @@ If the user says a notebook/book has already been run, first look in `CLAUDE.md`
 - Claude Code-side production operation decisions remain Claude Code-owned unless explicitly delegated.
 - `docs/knowledges/` is treated as Claude Code -> Codex synchronized knowledge. Codex should not directly update it for Codex-only behavior.
 - If `docs/knowledges/` needs a change, write a handoff note for Claude Code or ask the user how to reflect it.
-- Any operational rule change should be documented in the appropriate Codex doc and, when relevant, announced through `docs/codex-to-claude-handoff.md`.
+- Any operational rule change should be documented in the appropriate Codex doc and, when relevant, announced through `C:\gdrive\claude\investment-agent\docs\codex-to-claude-handoff.md`.

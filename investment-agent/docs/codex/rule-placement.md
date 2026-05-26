@@ -16,9 +16,10 @@ Use `AGENTS.md` only to point to the correct detailed document.
 - Rule placement policy: this file
 - Display and table formatting: `docs/codex/display-rules.md`
 - Python / uv environment sharing rule: `docs/codex/uv-setup.md`
+- Python code quality practices: `docs/codex/python-practices.md`
 - Long-running jobs and active context: `docs/codex/long-running.md`
 - LINE / ntfy / notification reply waits: `docs/codex/notification-wait.md`
-- Claude Code <-> Codex message board and board rules: `docs/codex-to-claude-handoff.md`
+- Claude Code <-> Codex message board and board rules: `C:\gdrive\claude\investment-agent\docs\codex-to-claude-handoff.md`
 - Claude Code Markdown sync and Codex artifact protection: `docs/claude-md-sync.md`
 - Parallel work policy: `docs/codex/parallel-operation-policy.md`
 - Codex code review procedure: `skills/codex-code-reviewer.md`

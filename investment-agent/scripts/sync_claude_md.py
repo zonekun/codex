@@ -38,6 +38,7 @@ DEFAULT_MANIFEST = (
 DEFAULT_EXCLUDES = (
     "docs/claude-code-intake-checklist.md",
     "docs/claude-md-sync.md",
+    "docs/codex-to-claude-handoff.md",
     "docs/codex/**",
     "docs/git-bootstrap-notes.md",
     "docs/plans/*codex*.md",
