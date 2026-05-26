@@ -23,6 +23,7 @@ Markdown と secrets / API keys は専用ツールで同期する。既定の確
 
 ```powershell
 $env:PYTHONUTF8='1'
+python .\scripts\sync_claude_md.py --self-check
 python .\scripts\sync_claude_md.py
 python .\scripts\sync_claude_md.py --apply
 ```
@@ -108,7 +109,7 @@ Claude Code 側には同期用の仕組みを追加しない。Codex 側だけ�
 - `docs/claude-code-intake-checklist.md`
 - `docs/claude-md-sync.md`
 - `docs/codex-to-claude-handoff.md`
-- `docs/codex/**`
+- `docs/codex/**`（`docs/codex/python-practices.md` を含む）
 - `docs/git-bootstrap-notes.md`
 - `docs/plans/*codex*.md`
 
