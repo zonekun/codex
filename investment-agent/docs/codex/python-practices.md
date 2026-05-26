@@ -24,19 +24,6 @@ Do not edit Claude-owned `CLAUDE.md` for Codex-only Python rules.
 - Writing Good CL Descriptions: https://google.github.io/eng-practices/review/developer/cl-descriptions.html
 - Small CLs: https://google.github.io/eng-practices/review/developer/small-cls.html
 
-## Scope
-
-- Apply this document to Python files that Codex creates.
-- Apply this document to Python lines that Codex changes.
-- Do not rewrite unrelated legacy code only to satisfy this document.
-- Do not use this document to override a workflow-specific runbook.
-- If this conflicts with a runbook, follow the runbook and report the conflict.
-- If this conflicts with a user instruction, state both and explain the resolution.
-- Prefer local repository patterns over new abstractions.
-- Prefer explicit verification over plausible reasoning.
-- Prefer small, reviewable changes over large rewrites.
-- Prefer maintainability over cleverness.
-
 ## Core Bar
 
 - Code must be importable without running the workflow.
@@ -76,17 +63,6 @@ Do not edit Claude-owned `CLAUDE.md` for Codex-only Python rules.
 - Add abstraction only when it removes real complexity.
 - Do not introduce a framework for a small script.
 
-## Simplicity
-
-- Prefer direct code that a future maintainer can scan.
-- Avoid over-engineering for imagined future use.
-- Avoid nested control flow where guard clauses are clearer.
-- Avoid multi-purpose functions.
-- Avoid hidden side effects in utility functions.
-- Avoid magic flags that change too many behaviors.
-- Avoid dynamic import unless a real dependency boundary requires it.
-- Avoid monkey patching, metaclasses, and clever finance one-liners.
-
 ## Functions
 
 - Prefer small, focused functions.
@@ -125,19 +101,6 @@ Do not edit Claude-owned `CLAUDE.md` for Codex-only Python rules.
 - Do not use mutable default arguments.
 - Use type aliases for repeated complex types.
 - Do not add runtime dependencies only for typing.
-
-## Data Models and Names
-
-- Use Pydantic v2 where the existing codebase expects Pydantic models.
-- Use dataclasses for simple internal records.
-- Use TypedDict for dictionary-shaped API or JSON boundaries.
-- Keep field names aligned with existing schema names.
-- Include units in field names when the value has a unit.
-- Example: use `market_cap_oku_yen`, not `market_cap`.
-- Use `snake_case` for variables, functions, modules, and files.
-- Use `CapWords` for classes and `UPPER_SNAKE_CASE` for constants.
-- Boolean names should read as true or false.
-- Avoid unexplained abbreviations.
 
 ## Comments and Docstrings
 
@@ -204,19 +167,6 @@ Do not edit Claude-owned `CLAUDE.md` for Codex-only Python rules.
 - Minimize API calls and cache where the workflow already has a cache pattern.
 - Verify external writes with actual row counts, paths, timestamps, or job IDs.
 
-## CLI Scripts
-
-- Put argument parsing in a small function or `main()`.
-- Keep parsing separate from transformation.
-- Provide explicit required arguments for destructive operations.
-- Provide dry-run when changing external state.
-- Return non-zero exit status on fatal failure.
-- Print a concise final summary.
-- Avoid interactive prompts in batch scripts unless the runbook requires them.
-- Make output paths configurable when practical.
-- Keep default output paths consistent with existing workflows.
-- Do not execute on import.
-
 ## Tests and Verification
 
 - Add tests when changing shared logic.
@@ -249,30 +199,6 @@ Do not edit Claude-owned `CLAUDE.md` for Codex-only Python rules.
 - Review tests as production-quality code.
 - Review documentation impact when behavior changes.
 
-## Review Reporting
-
-- Report observed facts before labels like bug or regression.
-- Confirm expected behavior from code, schema, docs, or user instruction.
-- Order findings by severity.
-- Include file and line references.
-- Separate required fixes from nits.
-- Avoid personal preference comments as blockers.
-- State review scope if it was partial.
-- State missing verification.
-- Keep summary secondary to findings.
-- If no findings exist, say so clearly and mention residual risk.
-
-## Commit and Handoff Notes
-
-- Write commit first lines that stand alone.
-- Explain what changed and why it changed.
-- Include important constraints.
-- Include validation performed.
-- Avoid vague messages like `fix bug`, `update`, or `misc`.
-- Do not rely only on external links for context.
-- Mention artifact paths in handoffs.
-- Mention row counts, timestamps, or job IDs when they prove completion.
-
 ## Codex Implementation Checklist
 
 - Read `AGENTS.md`.
@@ -303,12 +229,3 @@ Do not edit Claude-owned `CLAUDE.md` for Codex-only Python rules.
 - Do not hide failures behind empty outputs.
 - Do not mix unrelated refactors with behavior fixes.
 - Do not commit unrelated dirty files.
-
-## Exceptions
-
-- Emergency fixes may be smaller than this full bar.
-- Emergency fixes still need explicit residual risk.
-- Legacy code may remain below this bar outside the touched scope.
-- A runbook may override this document.
-- A verified repository convention may override a generic Google rule.
-- Codex treats this document as default behavior, not a suggestion.
