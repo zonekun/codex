@@ -26,6 +26,7 @@ When a new rule is needed:
 - Put rule-placement policy in `docs/codex/rule-placement.md`.
 - Put display behavior in `docs/codex/display-rules.md`.
 - Put uv / dependency / extras rules in `docs/codex/uv-setup.md`.
+- Put Codex Python code quality practices in `docs/codex/python-practices.md`.
 - Put long-running job and monitoring rules in `docs/codex/long-running.md`.
 - Put LINE / notification wait rules in `docs/codex/notification-wait.md`.
 - Put Claude Code mirror/sync rules in `docs/claude-md-sync.md`.
@@ -42,6 +43,7 @@ If a task needs a new detailed procedure, create or update an appropriate file u
 - Long-running task and active context rules: `docs/codex/long-running.md`
 - LINE / notification wait procedure: `docs/codex/notification-wait.md`
 - Codex Python / uv environment sharing rule: `docs/codex/uv-setup.md`
+- Codex Python code quality practices: `docs/codex/python-practices.md`
 - Codex display/table formatting: `docs/codex/display-rules.md`
 - Claude Code <-> Codex handoff board: `docs/codex-to-claude-handoff.md`
 - Claude Code Markdown sync and Codex artifact protection: `docs/claude-md-sync.md`
