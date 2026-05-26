@@ -46,7 +46,11 @@ DEFAULT_EXCLUDES = (
 CODEX_ARTIFACT_PATTERNS = ("*codex*", "*_codex_*")
 CODEX_PROTECTED_PATHS = (
     "docs/claude-code-handoff-template.md",
+    "docs/codex/python-practices.md",
     "docs/reviews/001_sync_claude_md_mirror_gap.md",
+)
+REQUIRED_PROTECTED_PATHS = (
+    "docs/codex/python-practices.md",
 )
 MANIFEST_MAX_AGE_DAYS = 7
 
@@ -412,6 +416,24 @@ def init_baseline(
     return 0
 
 
+def self_check() -> int:
+    errors: list[str] = []
+    for path in REQUIRED_PROTECTED_PATHS:
+        if not is_excluded(path, DEFAULT_EXCLUDES):
+            errors.append(f"{path} is not excluded from Claude Markdown sync")
+        if not is_codex_artifact(path):
+            errors.append(f"{path} is not treated as a Codex artifact")
+
+    if errors:
+        print("self-check failed:")
+        for error in errors:
+            print(f"  - {error}")
+        return 1
+
+    print("self-check passed: required Codex docs are protected from Claude sync.")
+    return 0
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Sync Claude Code Markdown updates into Codex."
@@ -423,6 +445,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--exclude", action="append", dest="excludes")
     parser.add_argument("--mode", choices=("safe", "mirror"), default="safe")
     parser.add_argument("--init-baseline", action="store_true")
+    parser.add_argument("--self-check", action="store_true")
     parser.add_argument("--apply", action="store_true")
     parser.add_argument("--delete", action="store_true", help="safe mode only: apply Claude-side deletions")
     parser.add_argument(
@@ -437,6 +460,9 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = parse_args()
+    if args.self_check:
+        return self_check()
+
     source_root = args.source.resolve()
     dest_root = args.dest.resolve()
     manifest_path = args.manifest
