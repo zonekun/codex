@@ -43,7 +43,72 @@ pymupdf 1.28.0 を導入し、本番と同型の構造で検証:
 - **現状構造**（`ThreadPoolExecutor` 内でネイティブ crash）: 親プロセスが終了コード **134（SIGABRT）で即死**＝封じ込め失敗。本番の「1 PDF が Job を道連れ」を再現。
 - **修正構造**（サブプロセス隔離）: crash した子は `returncode<0` で検知され当該 doc のみ skip、**他 doc は完走・親は生存（コード 0）**。
 
-（注: MuPDF `FzErrorLimit` を誘発する**実トリガー PDF は GCS 上の特定ファイル固有**で、当環境からは正確再現できていない。上記は「ネイティブ terminate はスレッドで封じ込め不能／サブプロセスで封じ込め可能」という**修正契約**の実証。crash の因果自体は一次ログの逐語で確定。）
+（注: 「ネイティブ terminate はスレッドで封じ込め不能／サブプロセスで封じ込め可能」という**修正契約**の実証。crash の因果自体は一次ログの逐語で確定。実トリガー PDF そのものは GCS 上の特定ファイルだが、**症状を出す PDF 構造は §1-B で手製再現に成功**した。）
+
+---
+
+## 1-B. そもそもの根本原因（深掘り）— 機能バグか？
+
+### 何が起きているか（MuPDF ソース逐語）
+
+エラーは PDF の **Type-3「stitching（縫合）関数」** のロードで発生する。stitching 関数は
+複数の 1 入力関数を定義域で繋ぎ合わせる PDF 標準の関数型で、Separation/DeviceN 色空間の
+**tint 変換**や shading で使われる。`get_text("text")` はページ内容の色設定オペレータ（`scn` 等）を
+解釈する際にこの関数をロードするため、**テキスト抽出でも評価経路に入る**（当環境で実証済み）。
+
+MuPDF の該当実装（`source/pdf/pdf-function.c` / `source/fitz/error.c`・上流 master 逐語確認）:
+
+1. `load_stitching_func`: サブ関数数 `k > MAX_STITCHING`（**`#define MAX_STITCHING 256`**）で
+   `fz_throw(FZ_ERROR_SYNTAX, "too many sub-functions in stitching function")`。
+2. サブ関数は `pdf_load_function_imp` で**再帰ロード**（`pdf_cycle` によるサイクル検出はあり＝
+   自己参照は "recursive function" で弾く。よって無限ループではなく**有限だが過大な深さ/幅**が問題）。
+3. `fz_push_try`: 例外スタック（`ctx->error.stack`・固定長）が溢れる直前に
+   `FZ_ERROR_LIMIT` で `"exception stack overflow!"` を throw。**設計上これは catch 可能**
+   （error.c は overflow 時も `error.top++` して fz_try/fz_catch に届くよう細工している）。
+
+つまり症状は **2 つの内部上限**の合わせ技:
+- **幅**: stitching 関数のサブ関数が 256 超 →「too many sub-functions」
+- **深さ**: stitching 関数が入れ子で深く連なる → 再帰ロードで例外スタック超過 →「exception stack overflow」
+
+### 手製 PDF で症状を再現（当環境 pymupdf 1.28.0・一次実証）
+
+Separation 色空間の tint 変換に病的な Type-3 関数を仕込んだ PDF を生成し `get_text("text")` で検証:
+
+| 再現ケース | 生成物 | 結果（本番ログとの一致） |
+|-----------|--------|--------------------------|
+| 幅: サブ関数 300 個（>256）の stitching | `/tmp/wide.pdf` | `MuPDF error: syntax error: too many sub-functions in stitching function` を**逐語再現** |
+| 深さ: 250 段ネストした stitching チェーン | `/tmp/nested_fn.pdf` | `MuPDF error: exception stack overflow!` / `limit error` を**逐語再現** |
+| 合流: 深チェーン末端に幅超過ノード | `/tmp/combo.pdf` | 上記エラーが**本番と同じ 8 回**出力 |
+
+→ 本番ログの 2 文言（"too many sub-functions" ×8 → FzErrorLimit "exception stack overflow"）が
+**この PDF 構造で確定的に発生する**ことを実証。引き金 PDF は「Separation/DeviceN 色空間 or shading の
+関数が過大に広い/深い」構造を持つと断定できる（owning 側で 9972 PDF の色空間/関数を確認すれば裏取り可）。
+
+### 「機能バグ」の帰属 — 3 層
+
+1. **PDF（真の起点）＝ 不正 PDF**。正常な決算説明 PDF は 256 超の入れ子/分岐関数を持たない。
+   壊れた PDF 生成器の産物か、意図的に病的なファイル。**当方コード・データ処理の論理バグではない**。
+2. **PyMuPDF/MuPDF（なぜ致命化するか）＝ 上流の既知の堅牢性上限（wontfix）**。
+   `FZ_ERROR_LIMIT` は C 層では catch 可能に設計されているが、PyMuPDF の **C++ バインディング**では
+   `mupdf::FzErrorLimit` が、直前の 8 連続 throw の unwinding 中に再 throw される等の条件で
+   `std::terminate` に化ける（本番 `signal 11`）。Artifex はこの系統（Issue #3608
+   `FzErrorLimit code=5`）を **"wontfix"**（malformed PDF に対する意図的な保護上限）とし、
+   かつ**バージョン依存**（#3608: 1.22.5 は通過・1.24.5 で発症）。
+   → **バージョン更新は信頼できる恒久対策にならない**。当環境の 1.28.0 は同じ病的 PDF を
+   graceful に catch（終了コード 0）した＝**致命化するか否かはビルド/版に依存**し、
+   in-process の `try/except` に頼れないことの裏付け。
+3. **当方コード＝論理バグなし・構造的弱点のみ**。`try/except`（`pdf_extract_chunk.py:107` /
+   `run_pipeline.py:643`）は Python 例外にしか効かず、抽出を **ThreadPoolExecutor（同一プロセス）**で
+   回していたため 1 PDF の native crash が Job を道連れにした。§2 の**サブプロセス隔離**が唯一の
+   版非依存な恒久対策。
+
+### 結論（機能バグか？への回答）
+
+- **当方の機能バグではない**（抽出ロジック・BQ ロジックは正しい）。
+- 起点は**不正 PDF**、致命化は **PyMuPDF C++ バインディングの既知・上流 wontfix な堅牢性限界**。
+- したがって「上流修正待ち」も「版固定」も当てにできず、**プロセス隔離（実装済み）が正解**。
+  補助策として、owning 側で①引き金 PDF の色空間/関数構造の確認、②必要なら当該 PDF の
+  除外/事前検知（ただし判定は MuPDF 依存で脆いため隔離の代替にはしない）。
 
 ---
 
