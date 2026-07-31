@@ -1,0 +1,234 @@
+diff --git a/investment-agent/scripts/corporate_ir/load_runner.py b/investment-agent/scripts/corporate_ir/load_runner.py
+index 7d73325..9292cd8 100644
+--- a/investment-agent/scripts/corporate_ir/load_runner.py
++++ b/investment-agent/scripts/corporate_ir/load_runner.py
+@@ -25,7 +25,7 @@ from corporate_ir.submission_date import derive_submission_date_assumed
+ from src.llm.pdf_extract_chunk import (
+     content_length,
+     extract_text_pdfminer,
+-    extract_text_pymupdf,
++    extract_text_pymupdf_isolated,
+ )
+ 
+ logger = structlog.get_logger(__name__)
+@@ -204,8 +204,13 @@ def doc_ids_in_bq_batch(bq_client, tickers: list[str]) -> set[str]:
+ 
+ 
+ def _extract_text(pdf_bytes: bytes) -> tuple[str, int]:
+-    """PyMuPDF 抽出→content_length 不足なら pdfminer フォールバック（013 §PDF処理戦略）。"""
+-    text, pages = extract_text_pymupdf(pdf_bytes)
++    """PyMuPDF 抽出→content_length 不足なら pdfminer フォールバック（013 §PDF処理戦略）。
++
++    PyMuPDF は**別プロセス隔離**で呼ぶ（`extract_text_pymupdf_isolated`）。不正 PDF による
++    MuPDF ネイティブクラッシュ（`FzErrorLimit` → SIGSEGV）が Load 相の ThreadPoolExecutor 全体
++    ＝Job を道連れにするのを防ぐ。子が落ちれば空抽出扱い→下の pdfminer フォールバックが受ける。
++    """
++    text, pages = extract_text_pymupdf_isolated(pdf_bytes)
+     if content_length(text) < _MIN_CONTENT_LEN:
+         alt = extract_text_pdfminer(pdf_bytes)
+         if content_length(alt) > content_length(text):
+diff --git a/investment-agent/src/llm/pdf_extract_chunk.py b/investment-agent/src/llm/pdf_extract_chunk.py
+index 78ee2b1..445c4ba 100644
+--- a/investment-agent/src/llm/pdf_extract_chunk.py
++++ b/investment-agent/src/llm/pdf_extract_chunk.py
+@@ -111,6 +111,82 @@ def extract_text_pymupdf(pdf_bytes: bytes) -> tuple[str, int]:
+             doc.close()
+ 
+ 
++# 隔離抽出のサブプロセス timeout（秒）。ハング PDF の保険（通常抽出は数秒で終わる）。
++_ISOLATED_EXTRACT_TIMEOUT = 120
++
++
++def _isolated_worker_argv(in_path: str, out_path: str) -> list[str]:
++    """隔離抽出の子プロセス起動 argv を組む（テストで差し替え可能なシーム）。"""
++    import sys  # noqa: PLC0415
++
++    return [sys.executable, "-m", "src.llm.pdf_extract_chunk",
++            "--extract", in_path, out_path]
++
++
++def extract_text_pymupdf_isolated(
++    pdf_bytes: bytes, *, timeout: int = _ISOLATED_EXTRACT_TIMEOUT
++) -> tuple[str, int]:
++    """`extract_text_pymupdf` を**別プロセスで**実行し、ネイティブクラッシュを封じ込める。
++
++    PyMuPDF(MuPDF) は不正 PDF（例: stitching function のサブ関数過多）に対し C++ 例外
++    `mupdf::FzErrorLimit` を throw し `std::terminate` → SIGSEGV/SIGABRT でプロセスごと落ちる
++    ことがある。ネイティブ層の terminate は Python の `try/except` では捕捉できず、同一プロセスの
++    `ThreadPoolExecutor` で回している Load 相では **1 つの PDF が Job 全体を道連れにする**
++    （tools-106 / corporate-ir-pipeline SIGSEGV 事象）。本関数は抽出を子プロセスへ隔離し、子が
++    signal 死（`returncode < 0`）・非0終了・timeout した場合は `("", 0)` を返す＝呼び出し側の
++    pdfminer フォールバックへ委ねる（当該 PDF のみ skip、Job は継続）。
++
++    戻り値・`[PAGE N]` マーカー・正規化は `extract_text_pymupdf` と同一（同関数を子側で呼ぶ）。
++    子プロセスは `python -m src.llm.pdf_extract_chunk --extract <in> <out>` として本モジュールを
++    再実行する（下部 `__main__` 参照）。PDF は一時ファイル経由で受け渡す（大容量 PDF 対応）。
++    """
++    import contextlib  # noqa: PLC0415
++    import subprocess  # noqa: PLC0415
++    import tempfile  # noqa: PLC0415
++    from pathlib import Path  # noqa: PLC0415
++
++    # プロジェクトルート（<root>/src/llm/pdf_extract_chunk.py → parents[2]）を cwd に据え、
++    # `-m src.llm.pdf_extract_chunk` を解決可能にする。
++    project_root = Path(__file__).resolve().parents[2]
++    in_path = out_path = None
++    try:
++        with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as fin:
++            fin.write(pdf_bytes)
++            in_path = fin.name
++        with tempfile.NamedTemporaryFile(suffix=".txt", delete=False) as fout:
++            out_path = fout.name
++        env = dict(os.environ)
++        env["PYTHONPATH"] = os.pathsep.join(
++            [str(project_root), env.get("PYTHONPATH", "")]
++        ).strip(os.pathsep)
++        try:
++            proc = subprocess.run(
++                _isolated_worker_argv(in_path, out_path),
++                capture_output=True, text=True, cwd=str(project_root),
++                env=env, timeout=timeout,
++            )
++        except subprocess.TimeoutExpired:
++            return "", 0
++        if proc.returncode != 0:
++            # returncode < 0 は signal 死（-11=SIGSEGV, -6=SIGABRT）＝ネイティブクラッシュ。
++            # 非0終了も含め抽出失敗として空を返し、呼び出し側の pdfminer フォールバックへ委ねる。
++            return "", 0
++        try:
++            page_count = int((proc.stdout or "0").strip() or "0")
++        except ValueError:
++            page_count = 0
++        try:
++            text = Path(out_path).read_text(encoding="utf-8")
++        except OSError:
++            return "", 0
++        return text, page_count
++    finally:
++        for p in (in_path, out_path):
++            if p is not None:
++                with contextlib.suppress(OSError):  # 未生成/既削除は無害
++                    os.unlink(p)
++
++
+ def extract_text_pdfminer(pdf_bytes: bytes) -> str:
+     """pdfminer.six でテキスト抽出（特殊フォント・埋め込みフォント対応）.
+ 
+@@ -353,3 +429,32 @@ def create_chunks(
+         {"chunk_text": f"文書タイトル: {doc_title}\n{chunk}"}
+         for chunk in splitter.split_text(text)
+     ]
++
++
++def _extract_worker_main(argv: list[str]) -> int:
++    """`extract_text_pymupdf_isolated` の子プロセス本体（`--extract <in_pdf> <out_txt>`）.
++
++    in_pdf を読み `extract_text_pymupdf` で抽出し、text を out_txt(utf-8)へ、page_count を
++    stdout へ出力して 0 で終了する。ここで PyMuPDF が SIGSEGV/SIGABRT で落ちても、死ぬのは
++    **この子プロセスだけ**であり、親は returncode<0 で検知して当該 PDF を skip する。
++    Python 例外は空抽出（"", 0）として正常終了扱いにする（親は空→pdfminer フォールバック）。
++    """
++    if len(argv) != 3 or argv[0] != "--extract":
++        return 2
++    _, in_path, out_path = argv
++    try:
++        with open(in_path, "rb") as f:
++            pdf_bytes = f.read()
++        text, page_count = extract_text_pymupdf(pdf_bytes)
++    except Exception:  # noqa: BLE001 — 抽出失敗は空扱い（親のフォールバックへ）
++        text, page_count = "", 0
++    with open(out_path, "w", encoding="utf-8") as f:
++        f.write(text)
++    print(page_count)
++    return 0
++
++
++if __name__ == "__main__":
++    import sys
++
++    raise SystemExit(_extract_worker_main(sys.argv[1:]))
+diff --git a/investment-agent/tests/test_pdf_extract_isolation.py b/investment-agent/tests/test_pdf_extract_isolation.py
+new file mode 100644
+index 0000000..b7b71eb
+--- /dev/null
++++ b/investment-agent/tests/test_pdf_extract_isolation.py
+@@ -0,0 +1,79 @@
++"""corporate-ir-pipeline Load 相 SIGSEGV 対策の回帰テスト（tools-106 / TASK 00072）.
++
++背景（一次ログ逐語）:
++  PyMuPDF(MuPDF) が不正 PDF（"too many sub-functions in stitching function"）に対し
++  C++ 例外 `mupdf::FzErrorLimit`（"exception stack overflow"）を throw → `std::terminate`
++  → `Container terminated on signal 11`。ネイティブ層 terminate は Python の try/except で
++  捕捉できず、Load 相の `ThreadPoolExecutor`（同一プロセス）では 1 つの PDF が Job 全体を
++  道連れにする。対策として PyMuPDF 抽出を**別プロセス隔離**する（`extract_text_pymupdf_isolated`）。
++
++本テストの契約:
++  (a) 挙動保存 — 隔離版は通常 PDF で直接版（`extract_text_pymupdf`）と同一の (text, page_count)
++      を返す（[PAGE N] マーカー・正規化を含む）。
++  (b) 封じ込め — 子プロセスが signal 死（SIGSEGV/SIGABRT 相当）しても、親は生存し ("", 0) を
++      返す（＝呼び出し側の pdfminer フォールバックへ委ね、Job は継続する）。
++
++実行: PYTHONUTF8=1 <python> -m pytest tests/test_pdf_extract_isolation.py -q
++"""
++
++from __future__ import annotations
++
++import pathlib
++import sys
++
++import pytest
++
++_ROOT = pathlib.Path(__file__).resolve().parents[1]
++sys.path.insert(0, str(_ROOT))              # repo root（src.* 解決）
++
++fitz = pytest.importorskip("fitz")          # PyMuPDF 未導入環境では skip
++
++from src.llm.pdf_extract_chunk import (  # noqa: E402
++    extract_text_pymupdf,
++    extract_text_pymupdf_isolated,
++)
++
++
++def _make_sample_pdf() -> bytes:
++    """3 ページの単純な PDF バイト列を生成する。"""
++    doc = fitz.open()
++    try:
++        for i in range(3):
++            page = doc.new_page()
++            page.insert_text((72, 72), f"sample page {i + 1} body text")
++        return doc.tobytes()
++    finally:
++        doc.close()
++
++
++def test_isolated_matches_direct() -> None:
++    """(a) 隔離版は直接版と同一の (text, page_count) を返す（挙動保存）。"""
++    pdf = _make_sample_pdf()
++    assert extract_text_pymupdf_isolated(pdf) == extract_text_pymupdf(pdf)
++
++
++def test_child_signal_death_is_contained(monkeypatch: pytest.MonkeyPatch) -> None:
++    """(b) 子プロセスが signal 死しても親は生存し ("", 0) を返す。
++
++    実トリガー PDF（MuPDF FzErrorLimit）は GCS 上の特定ファイル固有で本テストからは再現困難
++    なため、子プロセス起動 argv を差し替えて `os.abort()`（SIGABRT）で signal 死を注入し、
++    ラッパーの `returncode < 0 → ("", 0)` 経路を実 subprocess で検証する。
++    """
++    import src.llm.pdf_extract_chunk as mod
++
++    def _crashing_argv(in_path: str, out_path: str) -> list[str]:
++        return [sys.executable, "-c", "import os; os.abort()"]
++
++    monkeypatch.setattr(mod, "_isolated_worker_argv", _crashing_argv)
++    assert mod.extract_text_pymupdf_isolated(b"%PDF-1.7 dummy") == ("", 0)
++
++
++def test_child_timeout_is_contained(monkeypatch: pytest.MonkeyPatch) -> None:
++    """(b') 子プロセスがハングして timeout しても ("", 0) を返す。"""
++    import src.llm.pdf_extract_chunk as mod
++
++    def _hanging_argv(in_path: str, out_path: str) -> list[str]:
++        return [sys.executable, "-c", "import time; time.sleep(30)"]
++
++    monkeypatch.setattr(mod, "_isolated_worker_argv", _hanging_argv)
++    assert mod.extract_text_pymupdf_isolated(b"%PDF-1.7 dummy", timeout=1) == ("", 0)
